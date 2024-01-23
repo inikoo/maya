@@ -16,4 +16,8 @@ export default {
 	'hr-clocking-machines' : "api/hr/clocking-machines",
 	'hr-clocking-machines-detail' : "api/hr/clocking-machines/{}",
 	'hr-clocking-machines-add' : "api/hr/clocking-machines/{}/clockings",
+
+
+	//warehouse
+	'warehouse-index' : 'api/org/1/warehouses'
 };

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Pressable,
   Image,
+  useColorScheme,
 } from 'react-native';
 import {COLORS} from '~/Constant/Color';
 import {useNavigation} from '@react-navigation/native';
@@ -23,6 +24,8 @@ const Login = () => {
   const navigation = useNavigation();
   const [token, setToken] = useState(null);
   const dispatch = useDispatch();
+  const colorScheme = useColorScheme(); // Get the current color scheme
+
   const {
     control,
     handleSubmit,
@@ -40,20 +43,27 @@ const Login = () => {
       onLoginFailed,
     );
   };
+
   const onLoginSuccess = async (res: object) => {
-    console.log(res);
     setToken(res.token);
     const profile = await UpdateCredential(res.token);
     if (profile.status == 'Success') {
       dispatch(
-        Action.CreateUserSessionProperties({...profile.data, token: res.token}),
+        Action.CreateUserSessionProperties({
+          ...profile.data,
+          token: res.token,
+          active_organisation : profile.data.organisations[0].id,
+          active_warehouse : profile.data.warehouse[0]
+        }),
       );
-      navigation.navigate('Home');
+     navigation.navigate('Home')
+    }else{
+      console.log('failed to get user')
     }
   };
 
   const onLoginFailed = (res: object) => {
-    console.log(res);
+    console.log('ergg',res);
     /* if (res.response.data)
       showMessage({
         message: res.response.data.message,
@@ -84,8 +94,14 @@ const Login = () => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  {
+                    color: COLORS.black,
+                  },
+                ]}
                 placeholder="Email"
+                placeholderTextColor={COLORS.black}
                 onChangeText={onChange}
                 value={value}
                 onBlur={onBlur}
@@ -101,9 +117,15 @@ const Login = () => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  {
+                    color: COLORS.black,
+                  },
+                ]}
                 secureTextEntry={true}
                 placeholder="Password"
+                placeholderTextColor={COLORS.black}
                 onChangeText={onChange}
                 value={value}
                 onBlur={onBlur}
@@ -113,7 +135,12 @@ const Login = () => {
           />
           <View style={styles.loginBtnWrapper}>
             <Pressable style={styles.loginBtn} onPress={handleSubmit(onSubmit)}>
-              <Text style={{fontSize: 18, textAlign: 'center', color: 'white'}}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  textAlign: 'center',
+                  color: 'white',
+                }}>
                 Login
               </Text>
             </Pressable>

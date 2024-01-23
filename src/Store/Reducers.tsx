@@ -15,6 +15,7 @@ const defaultReducer = {
 
 export default {
   userReducer(state = {}, action : object) {
+    console.log('mauskReducer',action)
     switch (action.type) {
       case "CreateUserSession":
         state = {
@@ -30,6 +31,11 @@ export default {
           status: action.payload.status,
           roles: action.payload.roles,
           permissions: action.payload.permissions,
+          group:action.payload.group,
+          organisation:action.payload.organisation,
+          active_organisation:action.payload.active_organisation,
+          warehouse:action.payload.warehouse,
+          active_warehouse:action.payload.active_warehouse
         };
         WriteCredential(state);
         break;
