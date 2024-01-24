@@ -34,13 +34,13 @@ export async function UpdateCredential(token: object) {
       );
     });
 
-    const warehouse = await new Promise((resolve, reject) => {
+    /* const warehouse = await new Promise((resolve, reject) => {
       Request(
         'get',
         'warehouse-index',
         {Authorization: 'Bearer ' + token},
         {},
-        [],
+        [profile.data.organisations[0].id],
         warehouseRes => {
           resolve(warehouseRes);
         },
@@ -49,15 +49,15 @@ export async function UpdateCredential(token: object) {
           reject(err);
         },
       );
-    });
+    }); */
 
     return {
       status: 'Success',
       data: {
         ...profile.data,
-        group: profile.data.first_load.layout.group,
-        organisations: profile.data.first_load.layout.organisations,
-        warehouse: warehouse.data,
+        group: profile.data.group,
+        organisations: profile.data.organisations,
+      /*   warehouse: warehouse.data, */
       },
     };
   } catch (err) {

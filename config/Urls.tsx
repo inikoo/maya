@@ -19,5 +19,7 @@ export default {
 
 
 	//warehouse
-	'warehouse-index' : 'api/org/1/warehouses'
+	'warehouse-index' : 'api/org/{}/warehouses',
+	'locations-index' : 'api/org/{}/warehouses/{}/locations',
+	'locations-show' : 'api/org/{}/warehouses/locations/{}'
 };

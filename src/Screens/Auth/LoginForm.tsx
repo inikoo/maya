@@ -53,7 +53,7 @@ const Login = () => {
           ...profile.data,
           token: res.token,
           active_organisation : profile.data.organisations[0].id,
-          active_warehouse : profile.data.warehouse[0]
+        /*   active_warehouse : profile.data.warehouse[0] */
         }),
       );
      navigation.navigate('Home')

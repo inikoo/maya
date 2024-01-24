@@ -18,6 +18,7 @@ import {Picker} from '@react-native-picker/picker';
 import {useDispatch} from 'react-redux';
 import Action from '~/Store/Action';
 import CardContent from 'react-native-paper/lib/typescript/components/Card/CardContent';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -33,7 +34,6 @@ const Home = () => {
       if (value) {
         const data = JSON.parse(value);
         setUser(data);
-        console.log('set', data.active_organisation);
         setSelectedOrganisation(data.active_organisation);
       }
       console.log(JSON.parse(value));
@@ -56,14 +56,20 @@ const Home = () => {
 
   const menu = [
     {id: '1', text: 'Warehouse', icon: 'barn', screen: 'Warehouse'},
-    {id: '2', text: 'Warehouse Area', icon: 'google-maps', screen: 'Location'},
-    {id: '2', text: 'Location', icon: 'google-maps', screen: 'Location'},
-  
+ /*    {id: '2', text: 'Warehouse Area', icon: 'google-maps', screen: 'locations'}, */
+    {id: '2', text: 'Location', icon: 'google-maps', screen: 'locations'},
+    {id: '3', text: 'Product', icon: 'amplifier', screen: 'locations'},
   ];
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   return !loading ? (
     <SafeAreaView style={styles.container}>
@@ -100,10 +106,10 @@ const Home = () => {
               style={styles.picker}
               selectedValue={selectedOrganisation}
               onValueChange={ChangeOrganisation}>
-              {get(user, 'organisation', []).map(item => (
+              {get(user, 'organisations', []).map(item => (
                 <Picker.Item
                   key={item.slug}
-                  label={item.name}
+                  label={item.label}
                   value={item.id} // Use a unique identifier as the value
                 />
               ))}
@@ -133,26 +139,52 @@ const Home = () => {
           />
         </Card.Content>
         <Divider style={{margin: 15}} />
-        <Card>
-          <Card.Content>
-          <Text style={{marginBottom: 10}}>Active Warehouse</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 10,
-              }}>
-              <Avatar.Icon icon="barn" style={{ backgroundColor : '#87D068'}} size={60} />
-              <View style={{ padding: 10}}>
-                <Text style={{ fontSize : 16, fontWeight:'500', color:COLORS.black}}>{user.active_warehouse.name}</Text>
-                <View>
-                  <Chip style={styles.Chip}><Text style={{ fontSize :12 }}>Warehouse Area : {user.active_warehouse.number_warehouse_areas}</Text></Chip>
-                  <Chip style={styles.Chip}><Text style={{ fontSize :12 }}>Locations : {user.active_warehouse.number_locations}</Text></Chip>
+        {get(user,"active_warehouse") && (
+          <Card>
+            <Card.Content>
+              <Text style={{marginBottom: 10}}>Selected Warehouse</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                }}>
+                <Avatar.Icon
+                  icon="barn"
+                  style={{backgroundColor: '#87D068'}}
+                  size={60}
+                />
+                <View style={{padding: 10}}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '500',
+                      color: COLORS.black,
+                    }}>
+                    {get(user, ['active_warehouse', 'name'])}
+                  </Text>
+                  <View>
+                    <Chip style={styles.Chip}>
+                      <Text style={{fontSize: 12}}>
+                        Warehouse Area :{' '}
+                        {get(user, [
+                          'active_warehouse',
+                          'number_warehouse_areas',
+                        ])}
+                      </Text>
+                    </Chip>
+                    <Chip style={styles.Chip}>
+                      <Text style={{fontSize: 12}}>
+                        Locations :{' '}
+                        {get(user, ['active_warehouse', 'number_locations'])}
+                      </Text>
+                    </Chip>
+                  </View>
                 </View>
               </View>
-            </View>
-          </Card.Content>
-        </Card>
+            </Card.Content>
+          </Card>
+        )}
       </View>
     </SafeAreaView>
   ) : (
@@ -222,8 +254,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
   },
-  Chip:{
-    margin : 3,
+  Chip: {
+    margin: 3,
     backgroundColor: COLORS.white,
-  }
+  },
 });

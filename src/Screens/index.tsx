@@ -14,3 +14,5 @@ export { default as WorkingPlace } from './Attendence/WorkingPlace';
 
 //warehaouse
 export { default as Warehaouse } from './Warehouse';
+export { default as Locations } from './Locations/Locations';
+export { default as ScannerLoacation } from './Locations/Scanner';

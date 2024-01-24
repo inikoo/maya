@@ -15,7 +15,6 @@ const defaultReducer = {
 
 export default {
   userReducer(state = {}, action : object) {
-    console.log('mauskReducer',action)
     switch (action.type) {
       case "CreateUserSession":
         state = {
@@ -32,7 +31,7 @@ export default {
           roles: action.payload.roles,
           permissions: action.payload.permissions,
           group:action.payload.group,
-          organisation:action.payload.organisation,
+          organisations:action.payload.organisations,
           active_organisation:action.payload.active_organisation,
           warehouse:action.payload.warehouse,
           active_warehouse:action.payload.active_warehouse

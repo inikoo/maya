@@ -1,13 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, View, FlatList, StyleSheet, Text} from 'react-native';
+import {
+  ScrollView,
+  View,
+  FlatList,
+  StyleSheet,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Request} from '~/Utils';
 import {COLORS} from '~/Constant/Color';
 import {Avatar, Card, Badge} from 'react-native-paper';
-import {get} from 'lodash';
+import {get, toUpper} from 'lodash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch} from 'react-redux';
-import {Action} from '~/Store';
 
 interface ItemProps {
   name: string;
@@ -16,12 +21,11 @@ interface ItemProps {
   id: number;
 }
 
-const Warehouse = () => {
+const Locations = () => {
   const navigation = useNavigation();
   const [warehouse, setWarehouse] = useState<ItemProps[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [user, setUser] = useState<any>();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,12 +34,10 @@ const Warehouse = () => {
         if (value) {
           const data = JSON.parse(value);
           setUser(data);
-          getData(data); // Move the API call here after setting the user state
+          getData(data);
         }
       } catch (error) {
         console.error('Error retrieving data:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -46,10 +48,10 @@ const Warehouse = () => {
     setLoading(true);
     Request(
       'get',
-      'warehouse-index',
+      'locations-index',
       {},
       {},
-      [data.active_organisation],
+      [data.active_organisation, data.active_warehouse.id],
       onSuccess,
       onFailed,
     );
@@ -66,32 +68,20 @@ const Warehouse = () => {
     setLoading(false);
   };
 
-  const setSelectedWarehouse = async data => {
-    const updatedUserData = {
-      ...user,
-      active_warehouse: data,
-    };
-
-    dispatch(Action.CreateUserSessionProperties(updatedUserData));
-
-    setUser(updatedUserData);
-
-    getData(updatedUserData);
-  };
-
   const Item = (data: ItemProps) => {
     return (
-      <Card style={styles.card} onPress={() => setSelectedWarehouse(data)}>
+      <Card style={styles.card}>
         <Card.Content style={styles.cardContent}>
           <View style={styles.avatarTitleContainer}>
-            <Avatar.Icon icon="barn" style={styles.avatarStyle} size={50} />
+            <Avatar.Icon
+              icon="google-maps"
+              style={styles.avatarStyle}
+              size={50}
+            />
             <View style={styles.cardSubtitleContainer}>
-              <Text style={styles.cardTitle}>{data.name}</Text>
+              <Text style={styles.cardTitle}>{data.code}</Text>
               <Text style={styles.cardSubtitle}>
-                Warehouse areas: {data.number_warehouse_areas}
-              </Text>
-              <Text style={styles.cardSubtitle}>
-                Locations: {data.number_locations}
+                Warehouse Slug: {toUpper(data.warehouse_slug)}
               </Text>
             </View>
           </View>
@@ -105,22 +95,22 @@ const Warehouse = () => {
     );
   };
 
-  return (
-    <ScrollView>
-      {loading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          data={warehouse}
-          renderItem={({item}) => <Item {...item} />}
-          keyExtractor={item => item.id.toString()}
-        />
-      )}
-    </ScrollView>
+  return !loading ? (
+    <View>
+      <FlatList
+        data={warehouse}
+        renderItem={({item}) => <Item {...item} />}
+        keyExtractor={item => item.id.toString()}
+      />
+    </View>
+  ) : (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <ActivityIndicator size="large" color={COLORS.primary} />
+    </View>
   );
 };
 
-export default Warehouse;
+export default Locations;
 
 const styles = StyleSheet.create({
   card: {
