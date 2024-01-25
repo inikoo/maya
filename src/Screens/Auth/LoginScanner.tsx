@@ -1,22 +1,23 @@
 import React, {useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {useDispatch} from 'react-redux';
+import {showMessage} from 'react-native-flash-message';
 import {useNavigation} from '@react-navigation/native';
-import Action from '~/store/Action';
+import Action from '~/Store/Action';
 import {COLORS} from '~/Constant/Color';
-import {UpdateCredential} from '~/utils/auth';
+import {UpdateCredential} from '~/Utils/auth';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import Request from '~/utils/request';
+import Request from '~/Utils/request';
 import { Icon } from 'react-native-paper';
 import Logo from '../../assets/images/Logo.png';
 
 export default function LoginScanner() {
   const [scanned, setScanned] = useState(true);
- /*  const [token, setToken] = useState(null); */
-/*   const dispatch = useDispatch();
-  const navigation = useNavigation(); */
+  const [token, setToken] = useState(null);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-  /* const handleBarCodeScanned = async ({data}) => {
+  const handleBarCodeScanned = async ({data}) => {
     try {
       Request(
         'post',
@@ -43,7 +44,7 @@ export default function LoginScanner() {
       dispatch(
         Action.CreateUserSessionProperties({...profile.data, token: res.token}),
       );
-      navigation.navigate(ROUTES.BOTTOMHOME);
+      navigation.navigate('Home');
     } else {
       showMessage({
         message: 'failed to get user data',
@@ -68,9 +69,10 @@ export default function LoginScanner() {
     }
    
   };
-*/
+
   const onSuccess = e => {
-    console.log(e)
+    console.log('maujjjj')
+    handleBarCodeScanned(e);
   }; 
 
   return (

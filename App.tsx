@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import {Store} from './src/Store';
 import Routes from './src/Routes';
 import {AutocompleteDropdownContextProvider} from 'react-native-autocomplete-dropdown';
+import FlashMessage from "react-native-flash-message";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
           <Routes />
         </NavigationContainer>
       </AutocompleteDropdownContextProvider>
+      <FlashMessage position="top" />
     </Provider>
   );
 }
