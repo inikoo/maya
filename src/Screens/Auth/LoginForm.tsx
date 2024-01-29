@@ -1,15 +1,5 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  SafeAreaView,
-  TouchableOpacity,
-  Pressable,
-  Image,
-  useColorScheme,
-} from 'react-native';
+import { StyleSheet, Text, View, TextInput, SafeAreaView, TouchableOpacity, Pressable, Image } from 'react-native';
 import {COLORS} from '~/Constant/Color';
 import {useNavigation} from '@react-navigation/native';
 import Logo from '../../assets/images/Logo.png';
@@ -23,14 +13,8 @@ import {useForm, Controller} from 'react-hook-form';
 const Login = () => {
   const navigation = useNavigation();
   const [token, setToken] = useState(null);
+  const { control, handleSubmit, formState: {errors} } = useForm();
   const dispatch = useDispatch();
-  const colorScheme = useColorScheme(); // Get the current color scheme
-
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm();
 
   const onSubmit = async (data: object) => {
     await Request(
@@ -47,34 +31,18 @@ const Login = () => {
   const onLoginSuccess = async (res: object) => {
     setToken(res.token);
     const profile = await UpdateCredential(res.token);
-    if (profile.status == 'Success') {
-      dispatch(
-        Action.CreateUserSessionProperties({
-          ...profile.data,
-          token: res.token,
-          active_organisation : profile.data.organisations[0].id,
-        /*   active_warehouse : profile.data.warehouse[0] */
-        }),
-      );
-     navigation.navigate('Home')
-    }else{
-      console.log('failed to get user')
+    if(profile.status == 'Success') {
+      dispatch( Action.CreateUserSessionProperties({ ...profile.data, token: res.token }));
+      dispatch( Action.CreateUserOrganisationProperties({ 
+        organisations : profile.data.organisations, 
+        active_organisation : {...profile.data.organisations[0], active_authorised_fulfilments: profile.data.organisations[0].authorised_fulfilments[0]}
+      }));
     }
+    else console.log(profile.message)
   };
 
   const onLoginFailed = (res: object) => {
     console.log('ergg',res);
-    /* if (res.response.data)
-      showMessage({
-        message: res.response.data.message,
-        type: 'danger',
-      });
-    else {
-      showMessage({
-        message: 'failed to login',
-        type: 'danger',
-      });
-    } */
   };
 
   return (

@@ -20,6 +20,13 @@ export default {
 
 	//warehouse
 	'warehouse-index' : 'api/org/{}/warehouses',
+
+
+	//locatiom
 	'locations-index' : 'api/org/{}/warehouses/{}/locations',
-	'locations-show' : 'api/org/{}/warehouses/locations/{}'
+	'locations-show' : 'api/org/{}/warehouses/{}/locations/{}',
+
+	//pallete
+	'pallate-index' : 'api/org/{}/warehouses/fulfilments/{}/pallets',
+
 };

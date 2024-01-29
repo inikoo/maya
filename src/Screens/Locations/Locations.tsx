@@ -1,76 +1,25 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
-  ScrollView,
   View,
-  FlatList,
   StyleSheet,
   Text,
-  ActivityIndicator,
+  TextInput
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {Request} from '~/Utils';
+import {useSelector} from 'react-redux';
 import {COLORS} from '~/Constant/Color';
 import {Avatar, Card, Badge} from 'react-native-paper';
 import {get, toUpper} from 'lodash';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-interface ItemProps {
-  name: string;
-  number_warehouse_areas: number;
-  number_locations: number;
-  id: number;
-}
+import BaseList from '~/Components/Base/BaseList'
+import { useNavigation } from '@react-navigation/native';
 
 const Locations = () => {
-  const navigation = useNavigation();
-  const [warehouse, setWarehouse] = useState<ItemProps[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [user, setUser] = useState<any>();
+  const navigation = useNavigation()
+  const oraganisation = useSelector(state => state.organisationReducer);
+  const warehouse = useSelector(state => state.warehouseReducer);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const value = await AsyncStorage.getItem('@AuthenticationToken:Key');
-        if (value) {
-          const data = JSON.parse(value);
-          setUser(data);
-          getData(data);
-        }
-      } catch (error) {
-        console.error('Error retrieving data:', error);
-      }
-    };
-
-    fetchData(); // Call the fetchData function immediately
-  }, []);
-
-  const getData = data => {
-    setLoading(true);
-    Request(
-      'get',
-      'locations-index',
-      {},
-      {},
-      [data.active_organisation, data.active_warehouse.id],
-      onSuccess,
-      onFailed,
-    );
-  };
-
-  const onSuccess = (res: any) => {
-    if (res.data) {
-      setWarehouse(res.data);
-    }
-    setLoading(false);
-  };
-
-  const onFailed = (error: any) => {
-    setLoading(false);
-  };
-
-  const Item = (data: ItemProps) => {
+  const Item = ({item}) => {
     return (
-      <Card style={styles.card}>
+      <Card style={styles.card}  onPress={() => navigation.navigate('locations Detail',{location : item})}>
         <Card.Content style={styles.cardContent}>
           <View style={styles.avatarTitleContainer}>
             <Avatar.Icon
@@ -79,33 +28,29 @@ const Locations = () => {
               size={50}
             />
             <View style={styles.cardSubtitleContainer}>
-              <Text style={styles.cardTitle}>{data.code}</Text>
+              <Text style={styles.cardTitle}>{item.code}</Text>
               <Text style={styles.cardSubtitle}>
-                Warehouse Slug: {toUpper(data.warehouse_slug)}
+                Warehouse Slug: {toUpper(item.warehouse_slug)}
               </Text>
             </View>
           </View>
-          {get(user, ['active_warehouse', 'id']) == data.id && (
-            <Badge style={styles.badge} size={24}>
-              Selected
-            </Badge>
-          )}
         </Card.Content>
       </Card>
     );
   };
 
-  return !loading ? (
+  const ListHeaderComponent=()=>{
+    return (
+      <TextInput
+      style={styles.searchInput}
+      placeholder="Search..."
+    />
+    )
+  }
+
+  return (
     <View>
-      <FlatList
-        data={warehouse}
-        renderItem={({item}) => <Item {...item} />}
-        keyExtractor={item => item.id.toString()}
-      />
-    </View>
-  ) : (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator size="large" color={COLORS.primary} />
+       <BaseList urlKey='locations-index' args={[oraganisation.active_organisation.id,warehouse.id]} renderItem={Item} ListHeaderComponent={ListHeaderComponent}/>
     </View>
   );
 };
@@ -145,6 +90,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 5,
     right: 5,
-    backgroundColor: '#87D068', // Change the background color as needed
+    backgroundColor: '#87D068',
+  },
+  searchInput: {
+    height: 40,
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: '#A9A9A9',
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    marginHorizontal: 14,
+    marginVertical: 10
   },
 });

@@ -8,7 +8,8 @@ import {
   Profile,
   Warehaouse,
   Locations,
-  ScannerLoacation
+  ScannerLoacation,
+  LocationsDetail,
 } from '~/Screens';
 import {Icon} from 'react-native-paper';
 import ScanButton from '~/Components/MainNavigatorButton';
@@ -16,7 +17,8 @@ import CustomHomeHeader from '~/Components/CustomHeader';
 import {COLORS} from '~/Constant/Color';
 
 export default {
-  routes: [
+  
+  loginRoutes: [
     {
       name: 'Login Form',
       component: LoginForm,
@@ -31,6 +33,9 @@ export default {
         headerShown: false,
       },
     },
+  ],
+
+  routes: [
     {
       name: 'Home',
       component: Home,
@@ -39,6 +44,7 @@ export default {
           height: 164,
           backgroundColor: COLORS.primary,
         },
+        label:'Maya',
         headerTitle: (props: object) => <CustomHomeHeader {...props} />,
       },
     },
@@ -64,9 +70,9 @@ export default {
         headerTitle: (props: object) => <CustomHomeHeader {...props} />,
       },
     },
-    /* {
-      name: 'Locations',
-      component: Locations,
+    {
+      name: 'locations Detail',
+      component: LocationsDetail,
       options: {
         headerStyle: {
           height: 164,
@@ -74,7 +80,7 @@ export default {
         },
         headerTitle: (props: object) => <CustomHomeHeader {...props} />,
       },
-    }, */
+    },
   ],
 
   BottomNavigatorRoutes: [
@@ -112,46 +118,4 @@ export default {
     },
   ],
 
-  /*  BottomNavigatorRoutes: [
-    {
-      name: "Bottom Navigation",
-      option: {headerShown: false},
-      components: [
-        {
-          name: 'Home',
-          component: Home,
-          option: {
-            headerShown: false,
-            tabBarIcon: ({color}) => (
-              <Icon source="home" color={color} size={26} />
-            ),
-          },
-        },
-        {
-          name: 'Clocking Machine',
-          component: ClockingMachine,
-          renderLabel : ()=>null,
-          labeled : false,
-          option: { */
-  /* tabBarLabel: '', */
-  /*  headerShown: false,
-            tabBarIcon: ({color}) => (
-              <Icon source="home" color={color} size={26} />
-            ), */
-  /*   tabBarButton: (props) => (
-              <ScanButton children={props.children} onPress={props.onPress} />
-            ), */
-  /*   },
-        },
-        {
-          name: 'Profile',
-          component: WorkingPlace,
-          option: {
-            headerShown: true,
-            tabBarIcon: ({color}) => (
-              <Icon source="account" color={color} size={26} />
-            ),
-          },
-        },
-      ], */
 };

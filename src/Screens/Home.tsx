@@ -1,261 +1,162 @@
+import React, {useState} from 'react';
 import {
-  StyleSheet,
-  Text,
   View,
-  SafeAreaView,
-  ActivityIndicator,
+  Text,
+  TextInput,
   FlatList,
-  Pressable,
+  TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import {RemoveCredential} from '~/Utils/auth';
-import {Avatar, Card, Divider, Chip} from 'react-native-paper';
-import {COLORS} from '~/Constant/Color';
-import {get} from 'lodash';
-import {Picker} from '@react-native-picker/picker';
-import {useDispatch} from 'react-redux';
-import Action from '~/Store/Action';
-import CardContent from 'react-native-paper/lib/typescript/components/Card/CardContent';
-import { useFocusEffect } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+
+const menu = [
+  {
+    id: 1,
+    title: 'Warehouse',
+    total: '256',
+    screen: 'Warehouse',
+    backgroundColor: '#ffdcb2',
+    titleColor: '#ff8c00',
+  },
+  {
+    id: 2,
+    title: 'Locations',
+    total: '200',
+    screen: 'locations',
+    backgroundColor: '#bfdfdf',
+    titleColor: '#008080',
+  },
+  {
+    id: 3,
+    title: 'Pallete',
+    total: '890',
+    screen: 'Pallete',
+    backgroundColor: '#e2caf8',
+    titleColor: '#8a2be2',
+  },
+]
 
 const Home = () => {
   const navigation = useNavigation();
-  const [user, setUser] = useState();
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
-  const [selectedOrganisation, setSelectedOrganisation] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const value = await AsyncStorage.getItem('@AuthenticationToken:Key');
-      if (value) {
-        const data = JSON.parse(value);
-        setUser(data);
-        setSelectedOrganisation(data.active_organisation);
-      }
-      console.log(JSON.parse(value));
-    } catch (error) {
-      console.error('Error retrieving data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const ChangeOrganisation = (value, index) => {
-    dispatch(
-      Action.CreateUserSessionProperties({
-        ...user,
-        active_organisation: value,
-      }),
-    );
-    setSelectedOrganisation(value);
-  };
-
-  const menu = [
-    {id: '1', text: 'Warehouse', icon: 'barn', screen: 'Warehouse'},
- /*    {id: '2', text: 'Warehouse Area', icon: 'google-maps', screen: 'locations'}, */
-    {id: '2', text: 'Location', icon: 'google-maps', screen: 'locations'},
-    {id: '3', text: 'Product', icon: 'amplifier', screen: 'locations'},
-  ];
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchData();
-    }, [])
+  const renderAppointmentCard = ({item, index}) => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate(item.screen)}
+      style={[
+        styles.card,
+        {
+          backgroundColor: item.backgroundColor,
+          borderTopWidth: 4,
+          borderTopColor: item.titleColor,
+        },
+      ]}>
+      <Text style={[styles.cardTitle, {color: item.titleColor}]}>
+        {item.title}
+      </Text>
+      <View style={styles.cardDates}>
+        <Text style={styles.cardDate}>Total : {item.total}</Text>
+      </View>
+    </TouchableOpacity>
   );
+           
+  const searchFilter = item => {
+    const query = searchQuery.toLowerCase();
+    return item.title.toLowerCase().includes(query);
+  };
 
-  return !loading ? (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.cardContainer}>
-        <Card style={styles.card}>
-          <Card.Content style={styles.cardContent}>
-            <View style={styles.avatarTitleContainer}>
-              <Avatar.Icon
-                icon="office-building-cog-outline"
-                style={styles.avatarStyle}
-                size={30}
-              />
-              <Text style={styles.cardTitle}>Group</Text>
-            </View>
-            <View style={styles.cardSubtitleContainer}>
-              <Text style={styles.cardSubtitle}>
-                {get(user, ['group', 'label'])}
-              </Text>
-            </View>
-          </Card.Content>
-        </Card>
-        <Card style={styles.card}>
-          <Card.Content style={styles.cardContent}>
-            <View style={styles.avatarTitleContainer}>
-              <Avatar.Icon
-                icon="office-building"
-                style={styles.avatarStyle}
-                size={30}
-              />
-              <Text style={styles.cardTitle}>Organisation</Text>
-            </View>
-
-            <Picker
-              style={styles.picker}
-              selectedValue={selectedOrganisation}
-              onValueChange={ChangeOrganisation}>
-              {get(user, 'organisations', []).map(item => (
-                <Picker.Item
-                  key={item.slug}
-                  label={item.label}
-                  value={item.id} // Use a unique identifier as the value
-                />
-              ))}
-            </Picker>
-          </Card.Content>
-        </Card>
-      </View>
-      <View style={styles.container}>
-        <Card.Content style={styles.cardContent}>
-          <FlatList
-            data={menu}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <Pressable
-                style={styles.menu}
-                onPress={() => navigation.navigate(item.screen)}>
-                <Avatar.Icon
-                  icon={item.icon}
-                  style={styles.avatarStyle}
-                  size={50}
-                />
-                <Text style={{fontSize: 10}}>{item.text}</Text>
-              </Pressable>
-            )}
-            numColumns={4}
-            contentContainerStyle={styles.menuContainer}
-          />
-        </Card.Content>
-        <Divider style={{margin: 15}} />
-        {get(user,"active_warehouse") && (
-          <Card>
-            <Card.Content>
-              <Text style={{marginBottom: 10}}>Selected Warehouse</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginBottom: 10,
-                }}>
-                <Avatar.Icon
-                  icon="barn"
-                  style={{backgroundColor: '#87D068'}}
-                  size={60}
-                />
-                <View style={{padding: 10}}>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontWeight: '500',
-                      color: COLORS.black,
-                    }}>
-                    {get(user, ['active_warehouse', 'name'])}
-                  </Text>
-                  <View>
-                    <Chip style={styles.Chip}>
-                      <Text style={{fontSize: 12}}>
-                        Warehouse Area :{' '}
-                        {get(user, [
-                          'active_warehouse',
-                          'number_warehouse_areas',
-                        ])}
-                      </Text>
-                    </Chip>
-                    <Chip style={styles.Chip}>
-                      <Text style={{fontSize: 12}}>
-                        Locations :{' '}
-                        {get(user, ['active_warehouse', 'number_locations'])}
-                      </Text>
-                    </Chip>
-                  </View>
-                </View>
-              </View>
-            </Card.Content>
-          </Card>
-        )}
-      </View>
-    </SafeAreaView>
-  ) : (
-    <ActivityIndicator size="large" color={COLORS.primary} />
+  return (
+    <View style={styles.container}>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search..."
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+      />
+      <FlatList
+        contentContainerStyle={styles.listContainer}
+        data={menu.filter(searchFilter)}
+        renderItem={renderAppointmentCard}
+        keyExtractor={item => item.id.toString()}
+        numColumns={2}
+      />
+    </View>
   );
 };
-
-export default Home;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
   },
-  cardContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 5,
+  listContainer: {
+    paddingHorizontal: 5,
+  },
+  searchInput: {
+    height: 40,
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: '#A9A9A9',
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    marginHorizontal: 14,
   },
   card: {
     flex: 1,
-    margin: 8,
-    backgroundColor: '#ffff',
-  },
-  cardContent: {
-    flexDirection: 'column',
-    paddingHorizontal: 16,
-  },
-  avatarTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  leftContent: {
-    flexDirection: 'column',
+    marginBottom: 20,
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: {width: 0, height: 2},
+    shadowRadius: 4,
   },
   cardTitle: {
-    fontSize: 14,
-    marginHorizontal: 10,
-  },
-  cardSubtitle: {
     fontSize: 18,
-    color: COLORS.black,
+    fontWeight: 'bold',
+    paddingVertical: 5,
   },
-  avatarStyle: {
-    backgroundColor: COLORS.primary,
-  },
-  picker: {
-    width: '100%',
-    color: 'black',
-    backgroundColor: 'white',
-    fontSize: 10,
-  },
-  textContainer: {
-    marginLeft: 5,
-  },
-  cardSubtitleContainer: {
-    padding: 10,
-  },
-  menu: {
-    width: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
-  },
-  menuContainer: {
+  cardDates: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-evenly',
+    paddingVertical: 5,
   },
-  Chip: {
-    margin: 3,
-    backgroundColor: COLORS.white,
+  cardDate: {
+    color: '#888',
+  },
+  cardContent: {
+    justifyContent: 'space-between',
+    paddingTop: 10,
+  },
+  attendeesContainer: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+  },
+  attendeeImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 20,
+    marginLeft: -10,
+    borderWidth: 0.5,
+    marginTop: 3,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+  },
+  actionButton: {
+    marginTop: 15,
+    backgroundColor: '#DCDCDC',
+    padding: 8,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#00008B',
+    marginRight: 10,
+  },
+  buttonText: {
+    color: '#00008B',
   },
 });
+
+export default Home;
