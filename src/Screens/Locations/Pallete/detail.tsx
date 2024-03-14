@@ -24,21 +24,42 @@ function Scanner(props: Object) {
     setLoading(true);
     Request(
       'get',
-      'locations-show',
+      'pallate-show',
       {},
       {},
       [
         organisation.active_organisation.id,
         warehouse.id,
-        props.route.params.location.slug,
+        organisation.active_organisation.active_authorised_fulfilments.slug,
+        props.route.params.pallete.slug,
       ],
       onSuccessGetDetail,
       onFailedGetDetail,
     );
   };
+  
+
+  const palletRetrun = () => {
+    Request(
+      'patch',
+      'pallete-return',
+      {},
+      {},
+      [
+        organisation.active_organisation.id,
+        warehouse.id,
+        organisation.active_organisation.active_authorised_fulfilments.slug,
+        dataSelected.slug,
+      ],
+     (response)=>navigation.navigate('Home'),
+     (response)=>console.log('res',response),
+    );
+  };
+  
 
   const onSuccessGetDetail = (response: Object) => {
-    setDataSelected(response);
+    console.log('ss',response)
+    setDataSelected(response.data);
     setLoading(false);
   };
 
@@ -47,13 +68,13 @@ function Scanner(props: Object) {
     console.log('show', error);
   };
 
-  return !loading ? (
+  return !loading && dataSelected ? (
     <View>
       <Card style={styles.card}>
         <Card.Content>
           <View style={styles.cardContent}>
             <View style={styles.info}>
-              <Text style={styles.name}>{dataSelected.code}</Text>
+              <Text style={styles.name}>{dataSelected.slug}</Text>
               <View style={styles.rowContainer}>
                 <Chip
                   style={{
@@ -88,29 +109,27 @@ function Scanner(props: Object) {
                   </Text>
                 </View>
                 <View style={styles.descriptionRow}>
-                  <Text style={styles.descriptionTitle}>Audited At:</Text>
+                  <Text style={styles.descriptionTitle}>State :</Text>
                   <Text style={styles.descriptionText}>
-                    {dataSelected.audited_at && !isNull(dataSelected.audited_at)
-                      ? dayjs(dataSelected.audited_at).format('DD/MM/YY')
-                      : '-'}
+                  {defaultTo(dataSelected.state, '-')}
                   </Text>
                 </View>
                 <View style={styles.descriptionRow}>
-                  <Text style={styles.descriptionTitle}>Stock Value:</Text>
+                  <Text style={styles.descriptionTitle}>Customer Name :</Text>
                   <Text style={styles.descriptionText}>
-                    {dataSelected.stock_value}
+                  {defaultTo(dataSelected.customer_name, '-')}
                   </Text>
                 </View>
                 <View style={styles.descriptionRow}>
-                  <Text style={styles.descriptionTitle}>Max Volume:</Text>
+                  <Text style={styles.descriptionTitle}>Customer Reference:</Text>
                   <Text style={styles.descriptionText}>
-                    {defaultTo(dataSelected.max_volume, '-')}
+                    {defaultTo(dataSelected.customer_reference, '-')}
                   </Text>
                 </View>
                 <View style={styles.descriptionRow}>
-                  <Text style={styles.descriptionTitle}>Max Weight:</Text>
+                  <Text style={styles.descriptionTitle}>Location :</Text>
                   <Text style={styles.descriptionText}>
-                    {defaultTo(dataSelected.max_weight, '-')}
+                   
                   </Text>
                 </View>
               </View>
@@ -119,7 +138,10 @@ function Scanner(props: Object) {
             {/* Buttons */}
             <View style={styles.buttonContainer}>
               <Pressable style={styles.button} onPress={()=>navigation.navigate('Pallete',{location: dataSelected})}>
-                <Text style={styles.buttonText}>Pallete</Text>
+                <Text style={styles.buttonText}>Move</Text>
+              </Pressable>
+              <Pressable style={styles.button} onPress={()=>palletRetrun()}>
+                <Text style={styles.buttonText}>return</Text>
               </Pressable>
               <Pressable style={styles.button}>
                 <Text style={styles.buttonText}>Stored Item</Text>

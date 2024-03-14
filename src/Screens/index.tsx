@@ -18,5 +18,10 @@ export { default as Warehaouse } from './Warehouse';
 //Locations
 export { default as Locations } from './Locations/Locations';
 export { default as LocationsDetail } from './Locations/Detail';
-
 export { default as ScannerLoacation } from './Locations/Scanner';
+
+
+//pallete
+export { default as Pallete } from './Locations/Pallete/index';
+export { default as PalleteDetail } from './Locations/Pallete/detail';
+export { default as UnlocatedPallete } from './Pallet/unlocatedPallet';

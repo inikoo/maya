@@ -6,10 +6,13 @@ import {
   WorkingPlace,
   Home,
   Profile,
+  Pallete,
   Warehaouse,
   Locations,
   ScannerLoacation,
   LocationsDetail,
+  PalleteDetail,
+  UnlocatedPallete
 } from '~/Screens';
 import {Icon} from 'react-native-paper';
 import ScanButton from '~/Components/MainNavigatorButton';
@@ -73,6 +76,39 @@ export default {
     {
       name: 'locations Detail',
       component: LocationsDetail,
+      options: {
+        headerStyle: {
+          height: 164,
+          backgroundColor: COLORS.primary,
+        },
+        headerTitle: (props: object) => <CustomHomeHeader {...props} />,
+      },
+    },
+    {
+      name: 'Pallete',
+      component: Pallete,
+      options: {
+        headerStyle: {
+          height: 164,
+          backgroundColor: COLORS.primary,
+        },
+        headerTitle: (props: object) => <CustomHomeHeader {...props} />,
+      },
+    },
+    {
+      name: 'Pallete Detail',
+      component: PalleteDetail,
+      options: {
+        headerStyle: {
+          height: 164,
+          backgroundColor: COLORS.primary,
+        },
+        headerTitle: (props: object) => <CustomHomeHeader {...props} />,
+      },
+    },
+    {
+      name: 'Unlocated Pallet',
+      component: UnlocatedPallete,
       options: {
         headerStyle: {
           height: 164,

@@ -18,7 +18,7 @@ const HomeScreen = (props: Object) => {
   const [isListEnd, setIsListEnd] = useState(false);
 
   const requestAPI = () => {
-    Request('get', props.urlKey, {}, {perPage : 10, page : page}, props.args, onSuccess, onFailed);
+    Request('get', props.urlKey, {}, {perPage : 10, page : page, ...props.params}, props.args, onSuccess, onFailed);
   };
 
   const onSuccess = (results: Object) => {
@@ -45,6 +45,7 @@ const HomeScreen = (props: Object) => {
 
   const fetchMoreData = () => {
     if (!isListEnd && !moreLoading) {
+      console.log('sdfsdfsdf')
       setMoreLoading(true);
       setPage(page + 1);
     }
@@ -95,7 +96,8 @@ HomeScreen.defaultProps = {
   urlKey: '',
   args: [],
   renderItem: undefined,
-  ListHeaderComponent : undefined
+  ListHeaderComponent : undefined,
+  params : {}
 };
 
 const styles = StyleSheet.create({

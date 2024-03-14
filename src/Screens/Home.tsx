@@ -29,9 +29,9 @@ const menu = [
   },
   {
     id: 3,
-    title: 'Pallete',
+    title: 'Unlocated Pallete',
     total: '890',
-    screen: 'Pallete',
+    screen: 'Unlocated Pallet',
     backgroundColor: '#e2caf8',
     titleColor: '#8a2be2',
   },
