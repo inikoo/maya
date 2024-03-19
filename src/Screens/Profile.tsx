@@ -3,10 +3,11 @@ import React from 'react';
 import {Pressable} from 'react-native';
 import {RemoveCredential} from '~/Utils/auth';
 import {useNavigation} from '@react-navigation/native';
-
+import { useDispatch } from 'react-redux';
+import Action from '~/Store/Action';
 
 const Profile = () => {
-  const navigation = useNavigation();
+  const dispatch = useDispatch()
   return (
     <View
       style={{
@@ -17,7 +18,7 @@ const Profile = () => {
       <Pressable
         onPress={() => {
           RemoveCredential();
-          navigation.navigate('Login Form');
+          dispatch(Action.DestroyUserSessionProperties());
         }}>
         <Text>logout</Text>
       </Pressable>

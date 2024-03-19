@@ -1,101 +1,42 @@
-import React, {useState, useEffect} from 'react';
-import {ScrollView, View, FlatList, StyleSheet, Text} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {Request} from '~/Utils';
+import React from 'react';
+import {View, StyleSheet, Text} from 'react-native';
 import {COLORS} from '~/Constant/Color';
 import {Avatar, Card, Badge} from 'react-native-paper';
-import {get} from 'lodash';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch} from 'react-redux';
-import {Action} from '~/Store';
+import {useDispatch, useSelector} from 'react-redux';
+import BaseList from '~/Components/Base/BaseList'
+import { get } from 'lodash'
+import { Action } from '~/Store';
 
-interface ItemProps {
-  name: string;
-  number_warehouse_areas: number;
-  number_locations: number;
-  id: number;
-}
 
 const Warehouse = () => {
-  const navigation = useNavigation();
-  const [warehouse, setWarehouse] = useState<ItemProps[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<any>();
   const dispatch = useDispatch();
+  const organisation = useSelector(state => state.organisationReducer);
+  const warehouse = useSelector(state => state.warehouseReducer);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const value = await AsyncStorage.getItem('@AuthenticationToken:Key');
-        if (value) {
-          const data = JSON.parse(value);
-          setUser(data);
-          getData(data); // Move the API call here after setting the user state
-        }
-      } catch (error) {
-        console.error('Error retrieving data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData(); // Call the fetchData function immediately
-  }, []);
-
-  const getData = data => {
-    setLoading(true);
-    Request(
-      'get',
-      'warehouse-index',
-      {},
-      {},
-      [data.active_organisation],
-      onSuccess,
-      onFailed,
-    );
+  console.log('warehouse',warehouse)
+  
+  const setSelectedWarehouse = data => {
+    dispatch(Action.CreateWarehouseProperties(data));
   };
 
-  const onSuccess = (res: any) => {
-    if (res.data) {
-      setWarehouse(res.data);
-    }
-    setLoading(false);
-  };
 
-  const onFailed = (error: any) => {
-    setLoading(false);
-  };
-
-  const setSelectedWarehouse = async data => {
-    const updatedUserData = {
-      ...user,
-      active_warehouse: data,
-    };
-
-    dispatch(Action.CreateUserSessionProperties(updatedUserData));
-
-    setUser(updatedUserData);
-
-    getData(updatedUserData);
-  };
-
-  const Item = (data: ItemProps) => {
+  const Item = ({ item, index }) => {
     return (
-      <Card style={styles.card} onPress={() => setSelectedWarehouse(data)}>
+      <Card style={styles.card} onPress={() => setSelectedWarehouse(item)}>
         <Card.Content style={styles.cardContent}>
           <View style={styles.avatarTitleContainer}>
             <Avatar.Icon icon="barn" style={styles.avatarStyle} size={50} />
             <View style={styles.cardSubtitleContainer}>
-              <Text style={styles.cardTitle}>{data.name}</Text>
+              <Text style={styles.cardTitle}>{item.name}</Text>
               <Text style={styles.cardSubtitle}>
-                Warehouse areas: {data.number_warehouse_areas}
+                Warehouse areas: {item.number_warehouse_areas}
               </Text>
               <Text style={styles.cardSubtitle}>
-                Locations: {data.number_locations}
+                Locations: {item.number_locations}
               </Text>
             </View>
           </View>
-          {get(user, ['active_warehouse', 'id']) == data.id && (
+          {get(warehouse,['id']) == item.id && (
             <Badge style={styles.badge} size={24}>
               Selected
             </Badge>
@@ -106,17 +47,9 @@ const Warehouse = () => {
   };
 
   return (
-    <ScrollView>
-      {loading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          data={warehouse}
-          renderItem={({item}) => <Item {...item} />}
-          keyExtractor={item => item.id.toString()}
-        />
-      )}
-    </ScrollView>
+    <View>
+       <BaseList urlKey='warehouse-index' args={[organisation.active_organisation.id]} renderItem={Item}/>
+    </View>
   );
 };
 

@@ -8,18 +8,18 @@ import {
 import {useSelector} from 'react-redux';
 import {COLORS} from '~/Constant/Color';
 import {Avatar, Card, Badge} from 'react-native-paper';
-import {get, toUpper} from 'lodash';
 import BaseList from '~/Components/Base/BaseList'
 import { useNavigation } from '@react-navigation/native';
+import { isNull } from 'lodash'
 
-const Locations = () => {
+const Pallete = (props) => {
   const navigation = useNavigation()
   const oraganisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
 
   const Item = ({item}) => {
     return (
-      <Card style={styles.card}  onPress={() => navigation.navigate('locations Detail',{location : item})}>
+      <Card style={styles.card}  onPress={() => navigation.navigate('Pallete Detail',{pallete : item})}>
         <Card.Content style={styles.cardContent}>
           <View style={styles.avatarTitleContainer}>
             <Avatar.Icon
@@ -28,9 +28,15 @@ const Locations = () => {
               size={50}
             />
             <View style={styles.cardSubtitleContainer}>
-              <Text style={styles.cardTitle}>{item.code}</Text>
+              <Text style={styles.cardTitle}>{item.slug}</Text>
               <Text style={styles.cardSubtitle}>
-                Warehouse Slug: {toUpper(item.warehouse_slug)}
+                customer_name: {isNull(item.customer_name) ? '-' : item.customer_name}
+              </Text>
+              <Text style={styles.cardSubtitle}>
+               {item.state}
+              </Text>
+              <Text style={styles.cardSubtitle}>
+                {item.status}
               </Text>
             </View>
           </View>
@@ -50,12 +56,22 @@ const Locations = () => {
 
   return (
     <View>
-       <BaseList urlKey='locations-index' args={[oraganisation.active_organisation.id,warehouse.id]} renderItem={Item} ListHeaderComponent={ListHeaderComponent}/>
+       <BaseList 
+            urlKey='pallate-index' 
+            args={[
+                oraganisation.active_organisation.id,
+                warehouse.id,
+                oraganisation.active_organisation.active_authorised_fulfilments.slug,
+            ]}
+            params={{ 'pallets_filter[located]' : false }}
+            renderItem={Item} 
+            ListHeaderComponent={ListHeaderComponent}
+        />
     </View>
   );
 };
 
-export default Locations;
+export default Pallete;
 
 const styles = StyleSheet.create({
   card: {
