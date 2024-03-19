@@ -1,7 +1,5 @@
 import axios from "axios";
-/* import RNFetchBlob from "rn-fetch-blob"; */
-import validate from "validate.js";
-import {Sites,Urls} from "../../config";
+import { Sites, Urls } from "../../config/App";
 
 const CancelToken = axios.CancelToken;
 let api,

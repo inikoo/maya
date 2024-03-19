@@ -1,27 +1,19 @@
-// Home
-export { default as Home } from './Home';
-export { default as LoginForm } from './Auth/LoginForm';
-export { default as LoginScanner } from './Auth/LoginScanner';
-export { default as Profile } from './Profile';
+export { default as Dashboard } from './Dashboard';
+export { default as Login } from './auth/Login';
 
 
-//attendece
-export { default as Attendence } from './Attendence/Attendence';
-export { default as ClockingMachine } from './Attendence/ClockingMachine';
-export { default as WorkingPlace } from './Attendence/WorkingPlace';
+//warehouse
+export { default as Warehouse } from './Warehouse';
+
+//locations
+export { default as Locations } from './Location';
+export { default as Location } from './Location/Detail';
+export { default as LocationPallet } from './Location/Pallet';
+
+//palet
+export { default as Pallets } from './Pallet';
+export { default as Pallet } from './Pallet/Detail';
 
 
-
-//warehaouse
-export { default as Warehaouse } from './Warehouse';
-
-//Locations
-export { default as Locations } from './Locations/Locations';
-export { default as LocationsDetail } from './Locations/Detail';
-export { default as ScannerLoacation } from './Locations/Scanner';
-
-
-//pallete
-export { default as Pallete } from './Locations/Pallete/index';
-export { default as PalleteDetail } from './Locations/Pallete/detail';
-export { default as UnlocatedPallete } from './Pallet/unlocatedPallet';
+//stored Items
+export { default as StoredItems } from './StoredItems';

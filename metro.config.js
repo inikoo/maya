@@ -1,5 +1,4 @@
-const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
-const path = require('path');
+const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 
 /**
  * Metro configuration
@@ -7,18 +6,6 @@ const path = require('path');
  *
  * @type {import('metro-config').MetroConfig}
  */
-const config = {
-  // Add any specific configurations you need here
-};
+const config = {};
 
-// Get the default configuration from Metro
-const defaultConfig = getDefaultConfig(__dirname);
-
-// Set up the alias for the 'src' directory
-const sourceDir = path.resolve(__dirname, 'src');
-defaultConfig.resolver.extraNodeModules = {
-  '@': sourceDir,
-};
-
-// Merge the default config with your custom config
-module.exports = mergeConfig(defaultConfig, config);
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);
