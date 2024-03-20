@@ -82,6 +82,14 @@ function Routes() {
         ))
       ) : (
         <>
+          {ListRoutes.BottomNavigatorRoutes.map((item, index) => {
+            return (
+              <Stack.Screen key={index} name={item.name} options={item.option}>
+                {props => <BottomNavigation {...props} extraData={{...item}} />}
+              </Stack.Screen>
+            );
+          })}
+
           {ListRoutes.routes.map((item, index) => (
             <Stack.Screen
               key={index}
@@ -92,13 +100,6 @@ function Routes() {
               }}
             />
           ))}
-          {ListRoutes.BottomNavigatorRoutes.map((item, index) => {
-            return (
-              <Stack.Screen key={index} name={item.name} options={item.option}>
-                {props => <BottomNavigation {...props} extraData={{...item}} />}
-              </Stack.Screen>
-            );
-          })}
         </>
       )}
     </Stack.Navigator>

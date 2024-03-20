@@ -17,3 +17,7 @@ export { default as Pallet } from './Pallet/Detail';
 
 //stored Items
 export { default as StoredItems } from './StoredItems';
+
+
+//global Scanners
+export { default as GlobalScanner } from './GlobalScanner';

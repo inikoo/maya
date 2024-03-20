@@ -22,6 +22,8 @@ export default function BaseList(props) {
   const [isListEnd, setIsListEnd] = useState(false);
   const [search, setSearch] = useState('');
   const [activeSearch, setActiveSearch] = useState(false);
+  let timeoutId: any
+  
 
   const requestAPI = () => {
     Request(
@@ -36,7 +38,7 @@ export default function BaseList(props) {
   };
 
   const onSuccess = (results: Object) => {
-    if (results.data.length > 0) {
+    if (results.data.length > 0 && page != 1) {
       setData(prevData => [...prevData, ...results.data]);
     } else {
       setIsListEnd(true);
@@ -116,7 +118,7 @@ export default function BaseList(props) {
     return (
       <SearchBar
         platform="android"
-        onChangeText={newVal => setSearch(newVal)}
+        onChangeText={onSearch}
         placeholder="Search..."
         round
         showCancel
@@ -125,6 +127,9 @@ export default function BaseList(props) {
         onCancel={() => setActiveSearch(false)}
         value={search}
         showCancel={true}
+        showLoading={loading}
+        autoFocus={true}
+        lightTheme={true}
       />
     );
   };
@@ -149,6 +154,16 @@ export default function BaseList(props) {
     }
     return null;
   };
+
+  const onSearch=(value)=>{
+    setSearch(value)
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => {
+       setPage(1)
+       requestAPI();
+    }, 500)
+
+  }
 
   useEffect(() => {
     requestAPI();

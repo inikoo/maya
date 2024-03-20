@@ -7,7 +7,6 @@ import React from 'react';
 /* import {COLORS} from '~/Constant/Color'; */
 
 function BottomMenu(p) {
-  console.log('dfgdfg', p);
   const Tab = createBottomTabNavigator();
 
   const ScanButton = ({children, onPress}) => (
@@ -33,7 +32,7 @@ function BottomMenu(p) {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarStyle: {
+       /*  tabBarStyle: {
           bottom: 10,
           left: 0,
           height: 60,
@@ -44,7 +43,7 @@ function BottomMenu(p) {
           marginTop: 20,
           paddingTop: 12,
           ...style.shadow,
-        },
+        }, */
       }}>
       {p.extraData.components.map((item, index) => (
         <Tab.Screen

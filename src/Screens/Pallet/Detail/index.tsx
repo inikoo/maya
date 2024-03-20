@@ -90,7 +90,6 @@ function Scanner(props) {
 
   // Success callback for detail fetch
   const onSuccessGetDetail = response => {
-   
     setDataSelected(response.data);
     setLoading(false);
     formik.setFieldValue('location',{...response.data.location ,title :response.data.location.code, id: response.data.location.slug })
@@ -111,10 +110,6 @@ function Scanner(props) {
   const toggleChangeContent = () => {
     setPageMovement(!pageMovement);
   };
-
-
-
- 
 
   // Effect hook to fetch details on component mount
   useEffect(() => {

@@ -21,7 +21,7 @@ const Locations = (props) => {
       <TouchableOpacity 
         onPress={() => navigation.navigate('Location',{location : item})}
         style={styles.container}>
-        <View style={styles.text}>
+        <View>
           <View style={styles.row}>
           <Avatar
             size={40}

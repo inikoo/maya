@@ -33,4 +33,8 @@ export default {
 	'pallete-location' : 'api/org/{}/warehouses/{}/locations/{}/pallets/{}',
 	'pallete-return' : 'api/org/{}/warehouses/{}/fulfilments/{}/pallets/{}/return',
 
+
+
+	'global-search' : 'api/org/{}/warehouses/{}/scanners/{}'
+
 };

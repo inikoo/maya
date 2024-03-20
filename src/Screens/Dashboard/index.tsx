@@ -46,7 +46,7 @@ export default function Dashboard(props) {
   ].filter((item)=> {
     if(warehouse) return true
     else if (item.key == Warehouse) return true
-    else return true
+    else return false
   })
 
 
