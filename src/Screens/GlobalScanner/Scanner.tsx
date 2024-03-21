@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import LocationCard from './card/LocationCard';
 import PalletCard from './card/PalletCard';
@@ -26,7 +24,7 @@ export default function Scanner(p) {
     <View style={styles.container}>
       {!p.data ? (
         <View style={styles.qrCodeScanner}>
-          <QRCodeScanner onRead={onSuccess} showMarker={true} />
+           <QRCodeScanner onRead={onSuccess} showMarker={true} /> 
         </View>
       ) : (
         renderCard()

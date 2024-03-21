@@ -47,6 +47,7 @@ function BottomMenu(p) {
       }}>
       {p.extraData.components.map((item, index) => (
         <Tab.Screen
+          key={item.name}
           {...item}
           name={item.name}
           component={item.component}

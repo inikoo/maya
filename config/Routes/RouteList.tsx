@@ -8,10 +8,9 @@ import {
   Location,
   LocationPallet,
   Pallet,
-  GlobalScanner
+  GlobalScanner,
+  Profile
 } from '../../src/Screens';
-/* import CustomHomeHeader from '~/Components/CustomHeader'; */
-/* import {COLORS} from '~/Constant/Color'; */
 import {Icon} from '@rneui/base';
 import ScanButton from '../../src/Components/MainNavigatorButton';
 
@@ -63,7 +62,7 @@ export default {
       option: {headerShown: false},
       components: [
         {
-          name: 'Dashboard',
+          name: 'home',
           component: Dashboard,
           option: {
             tabBarIcon: ({color}) => (
@@ -89,7 +88,7 @@ export default {
         },
         {
           name: 'Profile',
-          component: Dashboard,
+          component: Profile,
           option: {
             tabBarIcon: ({color}) => (
               <Icon name="user" type='font-awesome' color={color} size={26} />

@@ -1,6 +1,6 @@
 export { default as Dashboard } from './Dashboard';
 export { default as Login } from './auth/Login';
-
+export { default as Profile } from './Profile';
 
 //warehouse
 export { default as Warehouse } from './Warehouse';
