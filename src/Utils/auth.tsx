@@ -26,7 +26,9 @@ export async function RemoveCredential() {
   try {
     await AsyncStorage.removeItem('@AuthenticationToken:Key');
     await AsyncStorage.removeItem('@organisation:Key');
+    console.log('dddd')
   } catch (err) {
+    console.log('sss',err)
     Alert.alert(err.message);
   }
 }

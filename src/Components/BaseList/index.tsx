@@ -26,15 +26,17 @@ export default function BaseList(props) {
   
 
   const requestAPI = () => {
-    Request(
-      'get',
-      props.urlKey,
-      {},
-      {perPage: 10, page: page, ...props.params, ['filter[global]'] : search},
-      props.args,
-      onSuccess,
-      onFailed,
-    );
+    if(!isListEnd){
+      Request(
+        'get',
+        props.urlKey,
+        {},
+        {perPage: 10, page: page, ...props.params, ['filter[global]'] : search},
+        props.args,
+        onSuccess,
+        onFailed,
+      );
+    }
   };
 
   const onSuccess = (results: Object) => {
@@ -45,7 +47,6 @@ export default function BaseList(props) {
     } else {
       setIsListEnd(true);
     }
-    console.log(results);
     setLoading(false);
     setMoreLoading(false);
   };

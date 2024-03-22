@@ -9,7 +9,8 @@ import {
   LocationPallet,
   Pallet,
   GlobalScanner,
-  Profile
+  Profile,
+  LoginScanner
 } from '../../src/Screens';
 import {Icon} from '@rneui/base';
 import ScanButton from '../../src/Components/MainNavigatorButton';
@@ -19,6 +20,13 @@ export default {
     {
       name: 'Login',
       component: Login,
+      options: {
+        headerShown: false,
+      },
+    },
+    {
+      name: 'Login Scanner',
+      component: LoginScanner,
       options: {
         headerShown: false,
       },

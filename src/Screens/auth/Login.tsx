@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   View,
   Keyboard,
+  TouchableOpacity,
 } from 'react-native';
 import {Button} from '@rneui/themed';
 import {useFormik} from 'formik';
@@ -15,12 +16,15 @@ import {UpdateCredential} from '~/Utils/auth';
 import {getBrand} from 'react-native-device-info';
 import {useDispatch} from 'react-redux';
 import Action from '~/Store/Action';
-import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import {useNavigation} from '@react-navigation/native';
 
 export default function Login() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const onSendtoServer = async (data: object) => {
+    console.log('pppp')
     await Request(
       'post',
       'login-form',
@@ -34,6 +38,7 @@ export default function Login() {
 
   const onLoginSuccess = async (res: {token: String}) => {
     const profile = await UpdateCredential(res.token);
+    console.log(profile)
     if (profile.status == 'Success') {
       dispatch(
         Action.CreateUserSessionProperties({...profile.data, token: res.token}),
@@ -48,12 +53,12 @@ export default function Login() {
           },
         }),
       );
-    }else {
+    } else {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: 'Error',
         textBody: 'Failed to find sessions',
-      })
+      });
     }
   };
 
@@ -69,7 +74,7 @@ export default function Login() {
       type: ALERT_TYPE.DANGER,
       title: 'Error',
       textBody: 'Failed to login',
-    })
+    });
   };
 
   const formik = useFormik({
@@ -113,6 +118,13 @@ export default function Login() {
               onPress={formik.handleSubmit}
               title="Login"
             />
+            <TouchableOpacity style={{ margin : 20, display: 'flex', justifyContent: 'center', alignItems:'center'}}>
+              <Text style={styles.goToScannerText}>
+                <Text onPress={() => navigation.navigate('Login Scanner')}>
+                  Login use QR code
+                </Text>
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </TouchableWithoutFeedback>

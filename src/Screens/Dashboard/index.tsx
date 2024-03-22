@@ -74,13 +74,6 @@ export default function Dashboard(props) {
         renderItem={renderListItem} 
         keyExtractor={(item) => `${item.id}`}
       />
-      <Pressable
-        onPress={() => {
-          RemoveCredential();
-          dispatch(Action.DestroyUserSessionProperties());
-        }}>
-        <Text>logout</Text>
-      </Pressable>
     </View>
   );
 }

@@ -1,64 +1,61 @@
-import React, {useEffect, useState} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomNavigation from './BottomNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Action from '../../src/Store/Action';
-import {UpdateCredential} from '~/Utils/auth';
+import { UpdateCredential, RemoveCredential } from '~/Utils/auth';
 import ListRoutes from './RouteList';
-import {Text} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 function Routes() {
-  const [userToken, setUserToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [userStorage, setUserStorage] = useState(null);
   const dispatch = useDispatch();
   const user = useSelector(state => state.userReducer);
 
-  const checkuser = async () => {
+  const checkUser = async () => {
     try {
-      const userStorage = await AsyncStorage.getItem(
-        '@AuthenticationToken:Key',
-      );
+      const storedUser = await AsyncStorage.getItem('@AuthenticationToken:Key');
       const organisation = await AsyncStorage.getItem('@organisation:Key');
       const warehouse = await AsyncStorage.getItem('@warehouse:Key');
-
-      if (!userStorage) setUserToken(null);
-      else {
-        const data = JSON.parse(userStorage);
+  
+      if (!storedUser) {
+        setUserStorage(null);
+      } else {
+        const data = JSON.parse(storedUser);
         const profile = await UpdateCredential(data.token);
-        console.log('inii',profile,data,user)
-        if (
-          profile.status == 'Success' &&
-          data.token &&
-          user.hasOwnProperty('token')
-        ) {
-          dispatch(
-            Action.CreateUserSessionProperties({...data, ...profile.data}),
-          );
 
-          if (organisation) {
-            dispatch(
-              Action.CreateUserOrganisationProperties(JSON.parse(organisation)),
-            );
+        if (profile.status === 'Success' && data.token) {
+          if (!user.token) {
+            dispatch(Action.CreateUserSessionProperties({ ...data, ...profile.data }));
+            if (organisation) dispatch(Action.CreateUserOrganisationProperties(JSON.parse(organisation)));
+            if (warehouse) dispatch(Action.CreateWarehouseProperties(JSON.parse(warehouse)));
           }
-          if (warehouse) {
-            dispatch(Action.CreateWarehouseProperties(JSON.parse(warehouse)));
-          }
-          setUserToken(data);
-        }else setUserToken(null);
+          setUserStorage(data);
+        } else {
+          setUserStorage(null);
+          RemoveCredential();
+          dispatch(Action.DestroyUserSessionProperties());
+        }
       }
     } catch (error) {
       console.error('Error fetching credentials from AsyncStorage:', error);
-      setUserToken(null);
+      setUserStorage(null);
+      RemoveCredential();
+      dispatch(Action.DestroyUserSessionProperties());
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   useEffect(() => {
-    const fetchData = async () => await checkuser();
+    console.log('ssss',user)
+    const fetchData = async () => {
+      await checkUser();
+    };
     fetchData();
   }, [user]);
 
@@ -68,35 +65,29 @@ function Routes() {
 
   return (
     <Stack.Navigator>
-      {!userToken ? (
+      {!userStorage ? (
         ListRoutes.loginRoutes.map((item, index) => (
           <Stack.Screen
             key={index}
             name={item.name}
             component={item.component}
-            options={{
-              ...item.options,
-            }}
+            options={{ ...item.options }}
           />
         ))
       ) : (
         <>
-          {ListRoutes.BottomNavigatorRoutes.map((item, index) => {
-            return (
-              <Stack.Screen key={index} name={item.name} options={item.option}>
-                {props => <BottomNavigation {...props} extraData={{...item}} />}
-              </Stack.Screen>
-            );
-          })}
+          {ListRoutes.BottomNavigatorRoutes.map((item, index) => (
+            <Stack.Screen key={item.name} name={item.name} options={item.option}>
+              {props => <BottomNavigation {...props} extraData={{ ...item }} />}
+            </Stack.Screen>
+          ))}
 
           {ListRoutes.routes.map((item, index) => (
             <Stack.Screen
-              key={index}
+              key={item.name}
               name={item.name}
               component={item.component}
-              options={{
-                ...item.options,
-              }}
+              options={{ ...item.options }}
             />
           ))}
         </>

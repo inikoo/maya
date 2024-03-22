@@ -11,66 +11,97 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useFormik} from 'formik';
 import Warehouse from '../../assets/image/warehouse.jpeg';
 import {UpdateCredential} from '~/Utils/auth';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
-import { get } from 'lodash';
+import {get} from 'lodash';
 import Request from '~/Utils/request';
+import {RemoveCredential} from '~/Utils/auth';
+import Action from '~/Store/Action';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 const EditProfile = props => {
   const oraganisation = useSelector(state => state.organisationReducer);
   const [selectedItem, setSelectedItem] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const user = useSelector(state => state.userReducer);
+  const dispatch = useDispatch();
 
-
-  const onSendToServer = async (data) => {
+  const onSendToServer = async data => {
+    console.log(data)
     await Request(
-        'post',
-        'profile',
-        {},
-        data,
-        [],
-        onSuccess,
-        onFailed,
-      );
+      'post',
+      'profile',
+      { ['Content-Type']: "multipart/form-data"},
+      {email : data.email, about : data.about },
+      [],
+      onSuccess,
+      onFailed,
+    );
   };
 
-  const onSuccess=(res)=>{
+  const onSuccess = res => {
     console.log(res)
-  }
+    const data = formik.data();
+    dispatch(
+      Action.CreateUserOrganisationProperties({
+        ...oraganisation,
+        active_organisation: {
+          ...data,
+          active_authorised_fulfilments: data.authorised_fulfilments[0],
+        },
+      }),
+    );
+  };
 
-  const onFailed=(res)=>{
+  const onFailed = res => {
     console.log(res)
-  }
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: 'Failed to update',
+    });
+  };
+
+  const logOut = () => {
+    RemoveCredential();
+    dispatch(Action.DestroyUserSessionProperties());
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      email: get(profileData, ['email']),
+      about: get(profileData, ['about']),
+      organisation: get(oraganisation, ['active_organisation']),
+    },
+    onSubmit: onSendToServer,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await UpdateCredential(user.token);
         if (data.status === 'Success') {
-          data.data.organisations.map((item)=> item.title = item.label)
+          data.data.organisations.map(item => (item.title = item.label));
           setProfileData({...data.data});
-          console.log(data.data)
-          setSelectedItem(oraganisation.active_organisation)
+          setSelectedItem(oraganisation.active_organisation);
+          // Set initial field values using setValues instead of setFieldValue
+          formik.setValues({
+            email: get(data, ['data','email']),
+            about: get(data, ['data','about']),
+          });
         }
+        console.log('aaa', data,user)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
-  const formik = useFormik({
-    initialValues: {
-      email: get(profileData,['email']),
-      note: get(profileData,['note']),
-      organisation : get(oraganisation,['active_organisation'])
-    },
-    onSubmit: onSendToServer,
-  });
 
-  console.log('ddd',profileData)
+
   return (
     <SafeAreaView
       style={{
@@ -104,7 +135,6 @@ const EditProfile = props => {
               }}></View>
           </TouchableOpacity>
         </View>
-
         <View>
           <View style={{marginBottom: 6}}>
             <Text>Organisation</Text>
@@ -120,9 +150,11 @@ const EditProfile = props => {
               <AutocompleteDropdown
                 clearOnFocus={false}
                 closeOnBlur={true}
-                initialValue={get(oraganisation,['active_organisation'])}
-                onSelectItem={(item)=>formik.setFieldValue('organisation',item)}
-                dataSet={get(profileData,['organisations'],[])}
+                initialValue={get(oraganisation, ['active_organisation'])}
+                onSelectItem={item =>
+                  formik.setFieldValue('organisation', item)
+                }
+                dataSet={get(profileData, ['organisations'], [])}
               />
             </View>
           </View>
@@ -182,6 +214,19 @@ const EditProfile = props => {
           }}
           onPress={formik.handleSubmit}>
           <Text style={{color: 'white'}}>Save Change</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            height: 44,
+            borderRadius: 6,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderColor: 'black',
+            backgroundColor: 'white', // Add some style
+            marginTop: 20, // Add some space between text input and button
+          }}
+          onPress={logOut}>
+          <Text>Log Out</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
