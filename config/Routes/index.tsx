@@ -28,11 +28,11 @@ function Routes() {
       else {
         const data = JSON.parse(userStorage);
         const profile = await UpdateCredential(data.token);
-
+        console.log('inii',profile,data,user)
         if (
-          profile.status === 'Success' &&
+          profile.status == 'Success' &&
           data.token &&
-          !user.hasOwnProperty('token')
+          user.hasOwnProperty('token')
         ) {
           dispatch(
             Action.CreateUserSessionProperties({...data, ...profile.data}),
@@ -46,9 +46,8 @@ function Routes() {
           if (warehouse) {
             dispatch(Action.CreateWarehouseProperties(JSON.parse(warehouse)));
           }
-        }
-
-        setUserToken(data);
+          setUserToken(data);
+        }else setUserToken(null);
       }
     } catch (error) {
       console.error('Error fetching credentials from AsyncStorage:', error);

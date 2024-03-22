@@ -38,11 +38,14 @@ export default function BaseList(props) {
   };
 
   const onSuccess = (results: Object) => {
-    if (results.data.length > 0 && page != 1) {
+    if (results.data.length != 0 && page != 1) {
       setData(prevData => [...prevData, ...results.data]);
+    } else if (results.data.length != 0 && page == 1) {
+      setData([...results.data]);
     } else {
       setIsListEnd(true);
     }
+    console.log(results);
     setLoading(false);
     setMoreLoading(false);
   };

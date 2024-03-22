@@ -15,7 +15,7 @@ import {UpdateCredential} from '~/Utils/auth';
 import {getBrand} from 'react-native-device-info';
 import {useDispatch} from 'react-redux';
 import Action from '~/Store/Action';
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 
 export default function Login() {
   const dispatch = useDispatch();

@@ -22,6 +22,7 @@ const Warehouse = (porps) => {
   };
 
   const Item = ({item, index}) => {
+    console.log(item)
     return (
       <TouchableOpacity
         style={styles.container}

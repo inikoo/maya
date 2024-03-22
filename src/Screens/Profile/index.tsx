@@ -1,3 +1,4 @@
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -5,38 +6,78 @@ import {
   ScrollView,
   Image,
   TextInput,
-  Modal,
 } from 'react-native';
-import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useFormik} from 'formik';
+import Warehouse from '../../assets/image/warehouse.jpeg';
+import {UpdateCredential} from '~/Utils/auth';
+import {useSelector} from 'react-redux';
+import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
+import { get } from 'lodash';
+import Request from '~/Utils/request';
 
-const EditProfile = ({navigation}) => {
-  const [name, setName] = useState('Melissa Peters');
-  const [email, setEmail] = useState('metperters@gmail.com');
-  const [password, setPassword] = useState('randompassword');
-  const [country, setCountry] = useState('Nigeria');
+const EditProfile = props => {
+  const oraganisation = useSelector(state => state.organisationReducer);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [profileData, setProfileData] = useState(null);
+  const user = useSelector(state => state.userReducer);
 
+
+  const onSendToServer = async (data) => {
+    await Request(
+        'post',
+        'profile',
+        {},
+        data,
+        [],
+        onSuccess,
+        onFailed,
+      );
+  };
+
+  const onSuccess=(res)=>{
+    console.log(res)
+  }
+
+  const onFailed=(res)=>{
+    console.log(res)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await UpdateCredential(user.token);
+        if (data.status === 'Success') {
+          data.data.organisations.map((item)=> item.title = item.label)
+          setProfileData({...data.data});
+          console.log(data.data)
+          setSelectedItem(oraganisation.active_organisation)
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const formik = useFormik({
+    initialValues: {
+      email: get(profileData,['email']),
+      note: get(profileData,['note']),
+      organisation : get(oraganisation,['active_organisation'])
+    },
+    onSubmit: onSendToServer,
+  });
+
+  console.log('ddd',profileData)
   return (
     <SafeAreaView
       style={{
         flex: 1,
         paddingHorizontal: 22,
+        marginBottom: 40,
       }}>
-      <View
-        style={{
-          marginHorizontal: 12,
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            left: 0,
-          }}></TouchableOpacity>
-
-        <Text>Edit Profile</Text>
-      </View>
-
       <ScrollView>
         <View
           style={{
@@ -44,15 +85,15 @@ const EditProfile = ({navigation}) => {
             marginVertical: 22,
           }}>
           <TouchableOpacity>
-            {/*  <Image
-                source={{ uri: selectedImage }}
-                style={{
-                  height: 170,
-                  width: 170,
-                  borderRadius: 85,
-                  borderWidth: 2,
-                }}
-              /> */}
+            <Image
+              source={Warehouse}
+              style={{
+                height: 170,
+                width: 170,
+                borderRadius: 85,
+                borderWidth: 2,
+              }}
+            />
 
             <View
               style={{
@@ -65,40 +106,31 @@ const EditProfile = ({navigation}) => {
         </View>
 
         <View>
-          <View
-            style={{
-              flexDirection: 'column',
-              marginBottom: 6,
-            }}>
-            <Text>Name</Text>
+          <View style={{marginBottom: 6}}>
+            <Text>Organisation</Text>
             <View
               style={{
                 height: 44,
-                width: '100%',
                 borderWidth: 1,
                 borderRadius: 4,
                 marginVertical: 6,
                 justifyContent: 'center',
                 paddingLeft: 8,
               }}>
-              <TextInput
-                value={name}
-                onChangeText={value => setName(value)}
-                editable={true}
+              <AutocompleteDropdown
+                clearOnFocus={false}
+                closeOnBlur={true}
+                initialValue={get(oraganisation,['active_organisation'])}
+                onSelectItem={(item)=>formik.setFieldValue('organisation',item)}
+                dataSet={get(profileData,['organisations'],[])}
               />
             </View>
           </View>
-
-          <View
-            style={{
-              flexDirection: 'column',
-              marginBottom: 6,
-            }}>
+          <View style={{marginBottom: 6}}>
             <Text>Email</Text>
             <View
               style={{
                 height: 44,
-                width: '100%',
                 borderWidth: 1,
                 borderRadius: 4,
                 marginVertical: 6,
@@ -106,40 +138,38 @@ const EditProfile = ({navigation}) => {
                 paddingLeft: 8,
               }}>
               <TextInput
-                value={email}
-                onChangeText={value => setEmail(value)}
+                onChangeText={formik.handleChange('email')}
+                value={formik.values.email}
                 editable={true}
               />
+              {formik.errors.email && (
+                <Text style={{color: 'red'}}>{formik.errors.email}</Text>
+              )}
             </View>
           </View>
 
-          <View
-            style={{
-              flexDirection: 'column',
-              marginBottom: 6,
-            }}>
-            <Text>Password</Text>
+          <View style={{marginBottom: 6}}>
+            <Text>About</Text>
             <View
               style={{
-                height: 44,
-                width: '100%',
-
                 borderWidth: 1,
                 borderRadius: 4,
                 marginVertical: 6,
-                justifyContent: 'center',
                 paddingLeft: 8,
               }}>
               <TextInput
-                value={password}
-                onChangeText={value => setPassword(value)}
+                multiline
+                onChangeText={formik.handleChange('note')}
+                value={formik.values.note}
                 editable={true}
-                secureTextEntry
+                numberOfLines={4}
               />
+              {formik.errors.note && (
+                <Text style={{color: 'red'}}>{formik.errors.note}</Text>
+              )}
             </View>
           </View>
         </View>
-
 
         <TouchableOpacity
           style={{
@@ -147,8 +177,11 @@ const EditProfile = ({navigation}) => {
             borderRadius: 6,
             alignItems: 'center',
             justifyContent: 'center',
-          }}>
-          <Text>Save Change</Text>
+            backgroundColor: 'blue', // Add some style
+            marginTop: 20, // Add some space between text input and button
+          }}
+          onPress={formik.handleSubmit}>
+          <Text style={{color: 'white'}}>Save Change</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
