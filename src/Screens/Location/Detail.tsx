@@ -7,6 +7,7 @@ import { Text, Card, Button, Icon } from '@rneui/themed';
 import { get, defaultTo, isNull } from "lodash"
 import dayjs from 'dayjs';
 import Location from '../../assets/image/location.jpg';
+import { COLORS } from '~/Utils/Colors';
 
 function Scanner(props) {
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,8 @@ function Scanner(props) {
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
   const navigation = useNavigation();
+
+  console.log('props',props)
 
   const getDetail = () => {
     setLoading(true);
@@ -126,6 +129,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginRight: 0,
     marginBottom: 0,
+    backgroundColor : COLORS.primary
   },
   buttonIcon: {
     marginRight: 10,

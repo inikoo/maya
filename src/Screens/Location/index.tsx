@@ -10,6 +10,7 @@ import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList';
 import {useNavigation} from '@react-navigation/native';
 import {Avatar, Icon} from '@rneui/themed'; // Import Icon from your icon library
+import { COLORS } from '~/Utils/Colors';
 
 const Locations = (props) => {
   const navigation = useNavigation();
@@ -26,7 +27,7 @@ const Locations = (props) => {
           <Avatar
             size={40}
             icon={{name: 'location-pin', type: 'material-icons'}}
-            containerStyle={{backgroundColor: '#9700b9', marginRight: 13}}
+            containerStyle={{ backgroundColor: COLORS.primary, marginRight: 13}}
           />
             <Text style={styles.title}>
               {item.code}
@@ -45,6 +46,7 @@ const Locations = (props) => {
         args={[oraganisation.active_organisation.id, warehouse.id]}
         renderItem={Item}
         navigation={props.navigation}
+        title='Location'
       />
     </View>
   );

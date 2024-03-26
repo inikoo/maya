@@ -1,18 +1,13 @@
 import React, { useLayoutEffect } from "react";
 import { FlatList, Text, View, TouchableHighlight, Image, Pressable } from "react-native";
 import styles from "./styles";
-import Location from '../../assets/image/location.jpg'
-import Warehouse from '../../assets/image/warehouse.jpeg'
-import StoredItem from '../../assets/image/stored_items.webp'
-import Pallet from '../../assets/image/pallet.jpg'
-import { RemoveCredential } from '~/Utils/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import Action from '~/Store/Action';
+import { Icon } from '@rneui/themed';
+import { COLORS } from "~/Utils/Colors";
 /* import MenuImage from "../../components/MenuImage/MenuImage"; */
 
 export default function Dashboard(props) {
   const { navigation } = props;
-  const dispatch = useDispatch()
   const warehouse = useSelector(state => state.warehouseReducer);
   const Bluprint = [
     {
@@ -20,32 +15,33 @@ export default function Dashboard(props) {
       title : 'Warehouse',
       key:'Warehouse',
       subtitle : 'place to store a all',
-      image : Warehouse
+      icon : 'warehouse'
     },
     {
       id : 2,
       title : 'Locations',
       key : 'Locations',
       subtitle : 'place to store a pallet',
-      image : Location
+      icon : 'location-pin'
     },
     {
       id : 3,
       title : 'Pallets',
       key : 'Pallets',
       subtitle : 'place to store a Stored Item',
-      image : Pallet
+      icon : 'pallet'
     },
     {
       id : 4,
       title : 'Stored Items',
       key : 'StoredItems',
       subtitle : 'place to store a Stored Item',
-      image : StoredItem
+      icon : 'brunch-dining'
     }
   ].filter((item)=> {
-    if(warehouse) return true
-    else if (item.key == Warehouse) return true
+    console.log(Object.keys(warehouse).length == 0,warehouse)
+    if(Object.keys(warehouse).length != 0) return true
+    else if (item.key == "Warehouse") return true
     else return false
   })
 
@@ -55,11 +51,16 @@ export default function Dashboard(props) {
   };
 
   const renderListItem = ({ item }) => (
-    <TouchableHighlight underlayColor="orange" onPress={() => onPressMenu(item)}>
+    <TouchableHighlight onPress={() => onPressMenu(item)}>
       <View style={styles.container}>
-        <Image style={styles.photo} source={item.image} />
+       <Icon
+        name={item.icon}
+        type='material-icons'
+        color={COLORS.primary}
+        size={150}
+        style={styles.photo}
+      />
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.category}>{item.subtitle}</Text>
       </View>
     </TouchableHighlight>
   );

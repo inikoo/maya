@@ -10,7 +10,12 @@ import {
   Pallet,
   GlobalScanner,
   Profile,
-  LoginScanner
+  ProfileDetail,
+  Organisation,
+  LoginScanner,
+  Fullfilment,
+  LocationScanner,
+  PalletScanner
 } from '../../src/Screens';
 import {Icon} from '@rneui/base';
 import ScanButton from '../../src/Components/MainNavigatorButton';
@@ -62,6 +67,26 @@ export default {
       name: 'StoredItems',
       component: StoredItems,
     },
+    {
+      name: 'Profile Detail',
+      component: ProfileDetail,
+    },
+    {
+      name: 'Organisation',
+      component: Organisation,
+    },
+    {
+      name: 'Fullfilment',
+      component: Fullfilment,
+    },
+    {
+      name: 'Location Scanner',
+      component: LocationScanner,
+    },
+    {
+      name: 'Pallet Scanner',
+      component: PalletScanner,
+    },
   ],
 
   BottomNavigatorRoutes: [
@@ -70,7 +95,7 @@ export default {
       option: {headerShown: false},
       components: [
         {
-          name: 'home',
+          name: 'Home',
           component: Dashboard,
           option: {
             tabBarIcon: ({color}) => (

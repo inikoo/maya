@@ -22,4 +22,10 @@ export default {
 			payload
 		};
 	},
+	DestroyWarehouseProperties(payload : object) {
+		return {
+			type: "DestroyWarehouse",
+			payload
+		};
+	},
 };

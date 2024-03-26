@@ -52,7 +52,6 @@ function Routes() {
   
 
   useEffect(() => {
-    console.log('ssss',user)
     const fetchData = async () => {
       await checkUser();
     };

@@ -10,12 +10,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList';
 import {Action} from '~/Store';
 import {Avatar, Icon} from '@rneui/themed'; // Import Icon from your icon library
+import { COLORS } from '~/Utils/Colors';
 
 const Warehouse = (porps) => {
   const dispatch = useDispatch();
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
-
 
   const setSelectedWarehouse = data => {
     dispatch(Action.CreateWarehouseProperties(data));
@@ -30,7 +30,7 @@ const Warehouse = (porps) => {
           <Avatar
             size={40}
             icon={{name: 'warehouse', type: 'material-community-icons'}}
-            containerStyle={{backgroundColor: '#9700b9', marginRight: 13}}
+            containerStyle={{ backgroundColor: COLORS.primary, marginRight: 13}}
           />
           <View style={styles.row}>
             <View style={styles.text}>
@@ -54,7 +54,7 @@ const Warehouse = (porps) => {
                 type="material-icons"
                 color="#00FF00"
                 size={20}
-                style={{marginLeft: 30}}
+                style={{marginLeft: 30 }}
               />
             )}
           </View>
@@ -70,6 +70,8 @@ const Warehouse = (porps) => {
         args={[organisation.active_organisation.id]}
         renderItem={Item}
         navigation={porps.navigation}
+        scanner={false}
+        title='Warehouses'
       />
     </View>
   );
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontFamily: 'TitilliumWeb-SemiBold',
-    color: '#9700b9',
+    color: COLORS.primary,
   },
   description: {
     fontSize: 12,

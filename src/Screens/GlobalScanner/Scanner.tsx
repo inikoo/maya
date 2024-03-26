@@ -16,8 +16,9 @@ export default function Scanner(p) {
     if (p.data.model_type == 'StoredItem') return <StoredItem data={p.data} />;
   };
 
-  const onSuccess = e => {
-    handleBarCodeScanned(e);
+  const onSuccess = async e => {
+    const data = await PrefixScanner(e.data)
+    handleBarCodeScanned(data);
   };
 
   return (

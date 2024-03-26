@@ -71,6 +71,17 @@ export default {
         };
         WriteWarehouse(state);
         break;
+        case 'DestroyWarehouse':
+          state = {
+           code : null,
+           id : null,
+           name : null,
+           number_location : null,
+           number_warehouse_areas : null,
+           slug : null
+          };
+          WriteWarehouse(state);
+          break;
     }
     return state;
   },

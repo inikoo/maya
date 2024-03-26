@@ -1,4 +1,6 @@
+import { COLORS } from '~/Utils/Colors';
 const React = require("react-native");
+
 
 const { StyleSheet } = React;
 
@@ -16,6 +18,7 @@ const styles = StyleSheet.create({
     marginTop: 150,
     marginBottom: 30,
     textAlign: "center",
+    color:COLORS.primary,
   },
   loginFormView: {
     flex: 1,
@@ -37,7 +40,8 @@ const styles = StyleSheet.create({
     height: 45,
     marginTop: 10,
     width: 350,
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: COLORS.primary,
   },
   fbLoginButton: {
     height: 45,

@@ -17,6 +17,7 @@ import Description from './Description';
 import Movement from './MovementPallet';
 import {useFormik} from 'formik';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import { COLORS } from '~/Utils/Colors';
 
 function Scanner(props) {
   // State variables
@@ -200,6 +201,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     marginLeft: 0,
     marginRight: 0,
+    backgroundColor : COLORS.primary,
     marginBottom: 0,
   },
   buttonIcon: {

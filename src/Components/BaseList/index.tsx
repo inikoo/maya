@@ -12,7 +12,9 @@ import {
 import {SearchBar} from '@rneui/base';
 import Request from '~/Utils/request';
 import {Icon} from '@rneui/themed'; // Import Icon from your icon library
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import {COLORS} from '~/Utils/Colors';
+import { useNavigation } from '@react-navigation/native';
 
 export default function BaseList(props) {
   const [page, setPage] = useState(1);
@@ -22,16 +24,16 @@ export default function BaseList(props) {
   const [isListEnd, setIsListEnd] = useState(false);
   const [search, setSearch] = useState('');
   const [activeSearch, setActiveSearch] = useState(false);
-  let timeoutId: any
-  
+  const navigation = useNavigation()
+  let timeoutId: any;
 
   const requestAPI = () => {
-    if(!isListEnd){
+    if (!isListEnd || search) {
       Request(
         'get',
         props.urlKey,
         {},
-        {perPage: 10, page: page, ...props.params, ['filter[global]'] : search},
+        {perPage: 10, page: page, ...props.params, ['filter[global]']: search},
         props.args,
         onSuccess,
         onFailed,
@@ -45,14 +47,13 @@ export default function BaseList(props) {
     } else if (results.data.length != 0 && page == 1) {
       setData([...results.data]);
     } else {
-      setIsListEnd(true);
+      if (!search) setIsListEnd(true);
     }
     setLoading(false);
     setMoreLoading(false);
   };
 
   const onFailed = (error: Object) => {
-    console.error(error)
     setLoading(false);
     setIsListEnd(true);
     setMoreLoading(false);
@@ -60,7 +61,7 @@ export default function BaseList(props) {
       type: ALERT_TYPE.DANGER,
       title: 'Error',
       textBody: error.response.data.message,
-    })
+    });
   };
 
   const fetchMoreData = () => {
@@ -71,20 +72,24 @@ export default function BaseList(props) {
   };
 
   const renderFooter = () => {
-    if(data.length > 0) {
+    if (data.length > 0) {
       return (
         <View v-if="data.length > 0" style={styles.footerText}>
-        {moreLoading && <ActivityIndicator />}
-        {isListEnd && <Text>No more data at the moment</Text>}
-      </View>
-      )
-    } else return
-  }
+          {moreLoading && <ActivityIndicator />}
+          {isListEnd && <Text>No more data at the moment</Text>}
+        </View>
+      );
+    } else return;
+  };
 
   const renderEmpty = () => (
     <View style={styles.emptyText}>
-      <Text>No Data at the moment</Text>
-      <Button onPress={() => requestAPI()} title="Refresh" />
+      <Text style={{padding: 10}}>No Data at the moment</Text>
+      <Button
+        onPress={() => requestAPI()}
+        title="Refresh"
+        color={COLORS.primary}
+      />
     </View>
   );
 
@@ -128,7 +133,9 @@ export default function BaseList(props) {
         showCancel
         showLoading={loading}
         cancelButtonTitle="Cancel"
-        onCancel={() => setActiveSearch(false)}
+        onCancel={() => {
+          setActiveSearch(false), setSearch(null);
+        }}
         value={search}
         showCancel={true}
         showLoading={loading}
@@ -159,14 +166,20 @@ export default function BaseList(props) {
     return null;
   };
 
-  const onSearch=(value)=>{
-    setSearch(value)
-    clearTimeout(timeoutId)
+  const onSearch = value => {
+    setSearch(value);
+    clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-       setPage(1)
-       requestAPI();
-    }, 500)
+      // Clear current data and reset page number
+      setData([]);
+      setPage(1);
+      requestAPI();
+    }, 500);
+  };
 
+  const goScanner=()=>{
+    console.log(`${props.title} Scanner`)
+    navigation.navigate(`${props.title} Scanner`)
   }
 
   useEffect(() => {
@@ -175,14 +188,19 @@ export default function BaseList(props) {
       headerRight: HeaderRight,
       headerShown: !activeSearch,
     });
-  }, [page, activeSearch]);
+  }, [page, activeSearch, search]);
 
   return loading ? (
     renderLoading()
   ) : (
-    <View>
+    <View style={styles.containerList}>
       {activeSearch && renderSearch()}
       {renderList()}
+      {props.scanner && (
+        <TouchableOpacity style={styles.ButtonScan} onPress={goScanner}>
+          <Icon name="qr-code-scanner" size={40} color="#ffff" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -193,6 +211,8 @@ BaseList.defaultProps = {
   renderItem: undefined,
   listHeaderComponent: undefined, // Corrected prop name
   params: {},
+  scanner: true,
+  title:''
 };
 
 const styles = StyleSheet.create({
@@ -231,5 +251,17 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  containerList: {
+    display: 'flex',
+    height: '100%',
+  },
+  ButtonScan: {
+    position: 'absolute',
+    right: 20,
+    bottom: 30,
+    backgroundColor: COLORS.primary,
+    borderRadius: 20,
+    padding: 10,
   },
 });
