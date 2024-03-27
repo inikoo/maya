@@ -26,6 +26,7 @@ export async function RemoveCredential() {
   try {
     await AsyncStorage.removeItem('@AuthenticationToken:Key');
     await AsyncStorage.removeItem('@organisation:Key');
+    await AsyncStorage.removeItem('@warehouse:Key');
   } catch (err) {
     Alert.alert(err.message);
   }
@@ -39,7 +40,7 @@ export async function WriteWarehouse(data: object) {
   }
 }
 
-export async function UpdateCredential(token: object) {
+export async function UpdateCredential(token = "") {
   try {
     const profile = await new Promise((resolve, reject) => {
       Request(
@@ -56,6 +57,35 @@ export async function UpdateCredential(token: object) {
     return {
       status: 'Success',
       data: profile.data,
+    };
+
+  } catch (error) {
+    return {
+      status: 'error',
+      data: null,
+      message: error,
+    };
+  }
+}
+
+
+export async function RefershToken(token = "") {
+  try {
+    const token = await new Promise((resolve, reject) => {
+       Request(
+        'post',
+        'login-form',
+        {},
+        data,
+        [],
+        token => resolve(token),
+        error => reject(error),
+      );
+    });
+
+    return {
+      status: 'Success',
+      data: token.data,
     };
 
   } catch (error) {
