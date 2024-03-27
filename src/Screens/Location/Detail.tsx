@@ -16,8 +16,6 @@ function Scanner(props) {
   const [dataSelected, setDataSelected] = useState(null);
   const navigation = useNavigation();
 
-  console.log('props',props)
-
   const getDetail = () => {
     setLoading(true);
     Request(
@@ -42,7 +40,6 @@ function Scanner(props) {
 
   const onFailedGetDetail = error => {
     setLoading(false);
-    console.log('show', error);
   };
 
   useEffect(() => {
@@ -54,19 +51,19 @@ function Scanner(props) {
       {!loading ? (
         <View style={styles.container}>
           <Card containerStyle={styles.cardContainer}>
-            <Card.Title>{get(dataSelected, 'code', '-')}</Card.Title>
+            <Card.Title style={styles.title}>{get(dataSelected, 'code', '-')}</Card.Title>
             <Card.Divider />
             <Image source={Location} style={styles.locationImage} />
             <View style={styles.descriptionContainer}>
-              <DetailRow title="Status" text={defaultTo(dataSelected.status, '-')} />
-              <DetailRow title="Created At" text={dayjs(dataSelected.created_at).format('DD/MM/YY')} />
-              <DetailRow title="Updated At" text={dayjs(dataSelected.updated_at).format('DD/MM/YY')} />
-              <DetailRow title="Audited At" text={dataSelected.audited_at && !isNull(dataSelected.audited_at)
+              <DetailRow title="Status :" text={defaultTo(dataSelected.status, '-')} />
+              <DetailRow title="Created At :" text={dayjs(dataSelected.created_at).format('DD/MM/YY')} />
+              <DetailRow title="Updated At :" text={dayjs(dataSelected.updated_at).format('DD/MM/YY')} />
+              <DetailRow title="Audited At :" text={dataSelected.audited_at && !isNull(dataSelected.audited_at)
                       ? dayjs(dataSelected.audited_at).format('DD/MM/YY')
                       : '-'} />
-              <DetailRow title="Stock Value" text={dataSelected.stock_value} />
-              <DetailRow title="Max Volume" text={defaultTo(dataSelected.max_volume, '-')} />
-              <DetailRow title="Max Weight" text={defaultTo(dataSelected.max_weight, '-')} />
+              <DetailRow title="Stock Value :" text={dataSelected.stock_value} />
+              <DetailRow title="Max Volume :" text={defaultTo(dataSelected.max_volume, '-')} />
+              <DetailRow title="Max Weight :" text={defaultTo(dataSelected.max_weight, '-')} />
             </View>
             <Button
               icon={<Icon name="pallet" color="#ffffff" iconStyle={styles.buttonIcon} />}
@@ -103,11 +100,15 @@ const styles = StyleSheet.create({
     width: '90%',
     borderRadius: 10,
     marginBottom: 20,
+    borderWidth:1,
+    borderColor:COLORS.dark
   },
   locationImage: {
     width: '100%',
     height: 200,
     resizeMode: 'cover',
+    borderWidth: 3,
+    borderColor : COLORS.dark
   },
   descriptionContainer: {
     marginVertical: 10,
@@ -133,7 +134,15 @@ const styles = StyleSheet.create({
   },
   buttonIcon: {
     marginRight: 10,
+    color: COLORS.dark
   },
+  title : {
+    fontSize : 20,
+    color : COLORS.primary,
+    textShadowColor: COLORS.dark, 
+    textShadowOffset: { width: 2, height: 2 }, 
+    textShadowRadius: 2,
+  }
 });
 
 export default Scanner;

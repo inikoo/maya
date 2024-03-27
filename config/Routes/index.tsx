@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, {useEffect, useState} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomNavigation from './BottomNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
-import Action from '../../src/Store/Action';
-import { UpdateCredential, RemoveCredential } from '~/Utils/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import Action from '~/Store/Action';
+import {UpdateCredential, RemoveCredential} from '~/Utils/auth';
 import ListRoutes from './RouteList';
+import {COLORS} from '~/Utils/Colors';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +21,7 @@ function Routes() {
       const storedUser = await AsyncStorage.getItem('@AuthenticationToken:Key');
       const organisation = await AsyncStorage.getItem('@organisation:Key');
       const warehouse = await AsyncStorage.getItem('@warehouse:Key');
-  
+
       if (!storedUser) {
         setUserStorage(null);
       } else {
@@ -29,9 +30,17 @@ function Routes() {
 
         if (profile.status === 'Success' && data.token) {
           if (!user.token) {
-            dispatch(Action.CreateUserSessionProperties({ ...data, ...profile.data }));
-            if (organisation) dispatch(Action.CreateUserOrganisationProperties(JSON.parse(organisation)));
-            if (warehouse) dispatch(Action.CreateWarehouseProperties(JSON.parse(warehouse)));
+            dispatch(
+              Action.CreateUserSessionProperties({...data, ...profile.data}),
+            );
+            if (organisation)
+              dispatch(
+                Action.CreateUserOrganisationProperties(
+                  JSON.parse(organisation),
+                ),
+              );
+            if (warehouse)
+              dispatch(Action.CreateWarehouseProperties(JSON.parse(warehouse)));
           }
           setUserStorage(data);
         } else {
@@ -49,7 +58,6 @@ function Routes() {
       setIsLoading(false);
     }
   };
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,14 +78,17 @@ function Routes() {
             key={index}
             name={item.name}
             component={item.component}
-            options={{ ...item.options }}
+            options={{...item.options}}
           />
         ))
       ) : (
         <>
           {ListRoutes.BottomNavigatorRoutes.map((item, index) => (
-            <Stack.Screen key={item.name} name={item.name} options={item.option}>
-              {props => <BottomNavigation {...props} extraData={{ ...item }} />}
+            <Stack.Screen
+              key={item.name}
+              name={item.name}
+              options={{ ...item.option}}>
+              {props => <BottomNavigation {...props} extraData={{...item}} />}
             </Stack.Screen>
           ))}
 
@@ -86,7 +97,7 @@ function Routes() {
               key={item.name}
               name={item.name}
               component={item.component}
-              options={{ ...item.options }}
+              options={{...item.option}}
             />
           ))}
         </>

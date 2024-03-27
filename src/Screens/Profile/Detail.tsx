@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   ScrollView,
   Image,
   TextInput,
 } from 'react-native';
+import { Text, Button } from '@rneui/base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useFormik} from 'formik';
 import Warehouse from '../../assets/image/warehouse.jpeg';
@@ -52,7 +52,7 @@ const EditProfile = props => {
   };
 
   const onFailed = res => {
-    console.log(res);
+    console.error(res);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -110,6 +110,7 @@ const EditProfile = props => {
                 width: 170,
                 borderRadius: 85,
                 borderWidth: 2,
+                borderColor:COLORS.dark,
               }}
             />
           </TouchableOpacity>
@@ -125,6 +126,7 @@ const EditProfile = props => {
                 marginVertical: 6,
                 justifyContent: 'center',
                 paddingLeft: 8,
+                backgroundColor: COLORS.whiteGray
               }}>
               <TextInput
                 onChangeText={formik.handleChange('email')}
@@ -145,6 +147,7 @@ const EditProfile = props => {
                 borderRadius: 4,
                 marginVertical: 6,
                 paddingLeft: 8,
+                backgroundColor: COLORS.whiteGray
               }}>
               <TextInput
                 multiline
@@ -166,11 +169,13 @@ const EditProfile = props => {
             borderRadius: 6,
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: COLORS.primary, // Add some style
-            marginTop: 20, // Add some space between text input and button
+            backgroundColor: COLORS.primary, 
+            marginTop: 20, 
+            borderWidth:1,
+            borderColor:COLORS.dark
           }}
           onPress={formik.handleSubmit}>
-          <Text style={{color: 'white'}}>Save Change</Text>
+          <Text>Save Change</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -181,6 +186,8 @@ const EditProfile = props => {
             borderColor: 'black',
             backgroundColor: 'white', // Add some style
             marginTop: 20, // Add some space between text input and button
+            borderWidth : 1,
+            borderColor:COLORS.dark
           }}
           onPress={() => navigation.goBack()}>
           <Text>Cancel</Text>

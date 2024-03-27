@@ -4,7 +4,6 @@ import Request from "./request";
 
 const PrefixScanner = e => {
     let dataWithoutPrefix;
-    console.log(e)
   
     if (e.startsWith("loc-")) {
       dataWithoutPrefix = e.substring(4);

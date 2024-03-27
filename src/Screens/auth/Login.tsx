@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   KeyboardAvoidingView,
   Text,
@@ -18,8 +18,7 @@ import {useDispatch} from 'react-redux';
 import Action from '~/Store/Action';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {COLORS} from '~/Utils/Colors';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -76,29 +75,6 @@ export default function Login() {
     onSubmit: onSendtoServer,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const storedUser = await AsyncStorage.getItem('@AuthenticationToken:Key');
-        const organisation = await AsyncStorage.getItem('@organisation:Key');
-        const warehouse = await AsyncStorage.getItem('@warehouse:Key');
-        
-        console.log(storedUser);
-        console.log(organisation);
-        console.log(warehouse);
-        
-        // Lakukan apa pun yang Anda perlu lakukan dengan data yang diambil dari AsyncStorage
-      } catch (error) {
-        // Tangani kesalahan jika diperlukan
-        console.error("Error fetching data from AsyncStorage:", error);
-      }
-    };
-  
-    fetchData(); // Panggil fungsi fetchData di dalam useEffect
-  
-  }, []);
-
-
   return (
     <KeyboardAvoidingView style={styles.containerView} behavior="padding">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -131,12 +107,15 @@ export default function Login() {
               onPress={formik.handleSubmit}
               title="Login"
             />
-            <TouchableOpacity style={{ margin : 20, display: 'flex', justifyContent: 'center', alignItems:'center'}}>
-              <Text style={styles.goToScannerText}>
-                <Text onPress={() => navigation.navigate('Login Scanner')}>
-                  Login use QR code
-                </Text>
-              </Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Login Scanner')}
+              style={{
+                margin: 20,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{ color : COLORS.dark}}>Login use QR code</Text>
             </TouchableOpacity>
           </View>
         </View>

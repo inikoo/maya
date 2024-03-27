@@ -1,10 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {TouchableOpacity, View} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {StyleSheet} from 'react-native';
-/* import {Home, WorkingPlace, Attendence, ClockingMachine} from '~/Screens'; */
 import React from 'react';
-import { COLORS } from '../../src/Utils/Colors';
+import { COLORS } from '~/Utils/Colors';
 
 function BottomMenu(p) {
   const Tab = createBottomTabNavigator();
@@ -14,6 +11,7 @@ function BottomMenu(p) {
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: COLORS.primary,
+        tabBarInactiveTintColor : COLORS.dark
       }}>
       {p.extraData.components.map((item, index) => (
         <Tab.Screen

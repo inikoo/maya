@@ -1,16 +1,12 @@
 import React, {useState} from 'react';
 import {ButtonGroup} from '@rneui/themed';
-import {Text, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import Search from './Search';
 import Scanner from './Scanner';
 import Request from '~/Utils/request';
 import {useSelector} from 'react-redux';
-import {
-  ALERT_TYPE,
-  Dialog,
-  AlertNotificationRoot,
-  Toast,
-} from 'react-native-alert-notification';
+import {COLORS} from '~/Utils/Colors';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 export default function GlobalSearch(props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -49,21 +45,17 @@ export default function GlobalSearch(props) {
   return (
     <>
       <ButtonGroup
-        buttons={['Search','Scan Qr']}
+        buttons={['Search', 'Scan Qr']}
         selectedIndex={selectedIndex}
-        onPress={value => {
-          setSelectedIndex(value);
-        }}
-        containerStyle={{marginBottom: 20}}
+        onPress={value => setSelectedIndex(value)}
+        containerStyle={styles.Button}
+        selectedButtonStyle={{backgroundColor: COLORS.primary}}
       />
-      {selectedIndex == 0 ? 
-      (
+      {selectedIndex == 0 ? (
         <Search searchFromServer={searchFromServer} data={dataRes} />
       ) : (
         <Scanner searchFromServer={searchFromServer} data={dataRes} />
-      )
-      }
-     
+      )}
     </>
   );
 }
@@ -76,4 +68,11 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     marginBottom: 10,
   },
+  Button : {
+    marginBottom: 20,
+    borderRadius: 10,
+    marginTop: 40,
+    marginRight: 20,
+    marginLeft: 20,
+  }
 });

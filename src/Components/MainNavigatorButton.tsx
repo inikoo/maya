@@ -1,27 +1,30 @@
 import {TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import { COLORS } from '~/Utils/Colors';
+import {COLORS} from '~/Utils/Colors';
 
-const ScanButton = ({children, onPress}) => (
-  <TouchableOpacity
-    style={{
-      top: -20,
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}
-    onPress={onPress}>
-    <View
+const ScanButton = ({children, onPress}) => {
+  return (
+    <TouchableOpacity
       style={{
-        width: 60,
-        height: 60,
-        paddingTop: 12,
-        borderRadius: 50,
-        backgroundColor : COLORS.primary
-      }}>
-      {children}
-    </View>
-  </TouchableOpacity>
-);
-
+        top: -20,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+      onPress={onPress}>
+      <View
+        style={{
+          width: 60,
+          height: 60,
+          paddingTop: 12,
+          borderRadius: 50,
+          backgroundColor: COLORS.primary,
+          borderWidth: 1,
+          borderColor: COLORS.dark,
+        }}>
+        {children}
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 export default ScanButton;

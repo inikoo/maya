@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { RecipeCard } from '../../../AppStyles';
+import {COLORS} from '~/Utils/Colors'
 
 const styles = StyleSheet.create({
   container: RecipeCard.container,
@@ -12,7 +13,9 @@ const styles = StyleSheet.create({
     padding: 40,
     backgroundColor :'#ffff',
     margin:20,
-    borderRadius:10
+    borderRadius:10,
+    borderWidth : 2,
+    borderColor : COLORS.dark
   },
   titleCard: {
     fontSize: 18,

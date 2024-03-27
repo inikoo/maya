@@ -1,15 +1,13 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  Dimensions,
   TouchableOpacity,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList';
 import {Action} from '~/Store';
-import {Avatar, Icon} from '@rneui/themed'; // Import Icon from your icon library
+import {Avatar, Icon, Text} from '@rneui/themed'; // Import Icon from your icon library
 import { COLORS } from '~/Utils/Colors';
 
 const Warehouse = (porps) => {
@@ -29,7 +27,7 @@ const Warehouse = (porps) => {
         <View style={styles.row}>
           <Avatar
             size={40}
-            icon={{name: 'warehouse', type: 'material-community-icons'}}
+            icon={{name: 'warehouse', type: 'material-community-icons', color:COLORS.dark}}
             containerStyle={{ backgroundColor: COLORS.primary, marginRight: 13}}
           />
           <View style={styles.row}>
@@ -86,6 +84,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 10,
     shadowColor: '#000',
+    borderWidth : 1,
+    borderColor : COLORS.dark,
     shadowOffset: {
       width: 0,
       height: 3,

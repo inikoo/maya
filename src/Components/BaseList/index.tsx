@@ -1,20 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   SafeAreaView,
   FlatList,
   ActivityIndicator,
-  Button,
   TouchableOpacity,
 } from 'react-native';
 import {SearchBar, BottomSheet} from '@rneui/base';
 import Request from '~/Utils/request';
-import {Icon} from '@rneui/themed'; // Import Icon from your icon library
+import {Icon, Text} from '@rneui/themed'; // Import Icon from your icon library
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {COLORS} from '~/Utils/Colors';
 import {useNavigation} from '@react-navigation/native';
+import Empty from '~/Components/Empty';
 
 export default function BaseList(props) {
   const [page, setPage] = useState(1);
@@ -25,11 +24,13 @@ export default function BaseList(props) {
   const [search, setSearch] = useState('');
   const [filterVisible, setFilterVisible] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
+  const [totalPage, setTotalPage] = useState(0);
   const navigation = useNavigation();
   let timeoutId: any;
 
   const requestAPI = () => {
     if (!isListEnd || search) {
+      setMoreLoading(true);
       Request(
         'get',
         props.urlKey,
@@ -50,13 +51,15 @@ export default function BaseList(props) {
     } else {
       if (!search) setIsListEnd(true);
     }
+    setTotalPage(results.meta.last_page)
     setLoading(false);
     setMoreLoading(false);
+    if(page == totalPage) setIsListEnd(true);
   };
 
   const onFailed = (error: Object) => {
+    if(page == totalPage) setIsListEnd(true);
     setLoading(false);
-    setIsListEnd(true);
     setMoreLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -84,14 +87,7 @@ export default function BaseList(props) {
   };
 
   const renderEmpty = () => (
-    <View style={styles.emptyText}>
-      <Text style={{padding: 10}}>No Data at the moment</Text>
-      <Button
-        onPress={() => requestAPI()}
-        title="Refresh"
-        color={COLORS.primary}
-      />
-    </View>
+    <Empty buttonOnPress={() => requestAPI()}/>
   );
 
   const renderItem = ({item}: {item: ItemData}) => {
@@ -155,6 +151,7 @@ export default function BaseList(props) {
               name="search"
               type="FontAwesome5"
               size={20}
+              color={COLORS.dark}
               style={{marginRight: 10}}
             />
           </TouchableOpacity>
@@ -163,6 +160,7 @@ export default function BaseList(props) {
               name="sort"
               type="MaterialIcons"
               size={20}
+              color={COLORS.dark}
               onPress={() => setFilterVisible(true)}
             />
           </TouchableOpacity>
@@ -184,7 +182,6 @@ export default function BaseList(props) {
   };
 
   const goScanner = () => {
-    console.log(`${props.title} Scanner`);
     navigation.navigate(`${props.title} Scanner`);
   };
 
@@ -204,7 +201,7 @@ export default function BaseList(props) {
       {renderList()}
       {props.scanner && (
         <TouchableOpacity style={styles.ButtonScan} onPress={goScanner}>
-          <Icon name="qr-code-scanner" size={40} color="#ffff" />
+          <Icon name="qr-code-scanner" size={40} color="#ffff"  color={COLORS.dark}/>
         </TouchableOpacity>
       )}
       <BottomSheet modalProps={{}} isVisible={filterVisible}>
@@ -268,10 +265,12 @@ const styles = StyleSheet.create({
   },
   containerList: {
     display: 'flex',
-    height: '100%',
+    height: '99%',
   },
   ButtonScan: {
     position: 'absolute',
+    borderWidth:2,
+    borderColor:COLORS.dark,
     right: 20,
     bottom: 30,
     backgroundColor: COLORS.primary,

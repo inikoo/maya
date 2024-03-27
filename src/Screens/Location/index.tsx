@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   Dimensions,
   TouchableOpacity,
@@ -9,7 +8,7 @@ import {
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList';
 import {useNavigation} from '@react-navigation/native';
-import {Avatar, Icon} from '@rneui/themed'; // Import Icon from your icon library
+import {Avatar, Text} from '@rneui/themed'; // Import Icon from your icon library
 import { COLORS } from '~/Utils/Colors';
 
 const Locations = (props) => {
@@ -26,7 +25,7 @@ const Locations = (props) => {
           <View style={styles.row}>
           <Avatar
             size={40}
-            icon={{name: 'location-pin', type: 'material-icons'}}
+            icon={{name: 'location-pin', type: 'material-icons', color:COLORS.dark}}
             containerStyle={{ backgroundColor: COLORS.primary, marginRight: 13}}
           />
             <Text style={styles.title}>
@@ -40,7 +39,6 @@ const Locations = (props) => {
 
 
   return (
-    <View>
       <BaseList
         urlKey="locations-index"
         args={[oraganisation.active_organisation.id, warehouse.id]}
@@ -48,7 +46,6 @@ const Locations = (props) => {
         navigation={props.navigation}
         title='Location'
       />
-    </View>
   );
 };
 
@@ -69,7 +66,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 7,
     alignItems: 'center',
-    margin : 5
+    margin : 5,
+    borderWidth : 1,
+    borderColor : COLORS.dark
   },
   title: {
     fontSize: 18,

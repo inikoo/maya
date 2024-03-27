@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {Icon} from '@rneui/themed'; // Assuming the icon component is imported correctly
-import {UpdateCredential} from '~/Utils/auth';
+import {Icon} from '@rneui/themed';
 import Action from '~/Store/Action';
+import Empty from '~/Components/Empty';
 
 const Organisation = props => {
   const user = useSelector(state => state.userReducer);
@@ -20,7 +20,6 @@ const Organisation = props => {
   const renderItem = ({item}) => <Item data={item} />
 
   const setOrganisation = data => {
-    console.log(data)
     dispatch(
       Action.CreateUserOrganisationProperties({
         organisations: organisation.organisations,
@@ -61,6 +60,11 @@ const Organisation = props => {
         data={organisation.active_organisation.authorised_fulfilments || []}
         renderItem={renderItem}
         keyExtractor={item => item.id}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <Empty useButton={false} />
+          </View>
+        )}
       />
     </SafeAreaView>
   );
@@ -71,7 +75,6 @@ export default Organisation;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
     marginTop: 20,
   },
   itemContainer: {
@@ -91,5 +94,10 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     marginBottom: 10,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

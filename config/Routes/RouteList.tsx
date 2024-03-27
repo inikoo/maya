@@ -15,10 +15,12 @@ import {
   LoginScanner,
   Fullfilment,
   LocationScanner,
-  PalletScanner
+  PalletScanner,
 } from '../../src/Screens';
 import {Icon} from '@rneui/base';
-import ScanButton from '../../src/Components/MainNavigatorButton';
+import ScanButton from '~/Components/MainNavigatorButton';
+import {COLORS} from '~/Utils/Colors';
+import BorderIcon from '~/Components/BorderIcon';
 
 export default {
   loginRoutes: [
@@ -98,9 +100,19 @@ export default {
           name: 'Home',
           component: Dashboard,
           option: {
-            tabBarIcon: ({color}) => (
-              <Icon name="home" color={color} size={26} />
-            ),
+            tabBarIcon: ({color}) => {
+              return color == COLORS.primary ? (
+                <BorderIcon
+                  name="home"
+                  type="foundation"
+                  size={26}
+                  color={color}
+                  shadowPos={{top: 4, left: 0}}
+                />
+              ) : (
+                <Icon name="home" type="foundation" color={color} size={26} />
+              );
+            },
           },
         },
         {
@@ -112,7 +124,7 @@ export default {
             tabBarLabel: '',
             headerShown: false,
             tabBarIcon: ({color}) => (
-              <Icon name="qr-code-scanner"  color={color} size={26} />
+              <Icon name="qr-code-scanner" color={COLORS.dark} size={26} />
             ),
             tabBarButton: props => (
               <ScanButton children={props.children} onPress={props.onPress} />
@@ -123,9 +135,19 @@ export default {
           name: 'Profile',
           component: Profile,
           option: {
-            tabBarIcon: ({color}) => (
-              <Icon name="user" type='font-awesome' color={color} size={26} />
-            ),
+            tabBarIcon: ({color}) => {
+              return color == COLORS.primary ? (
+                <BorderIcon
+                  name="user"
+                  type="font-awesome"
+                  size={26}
+                  color={color}
+                  shadowPos={{top: 3, left: 4}}
+                />
+              ) : (
+                <Icon name="user" type="font-awesome" color={color} size={26} />
+              );
+            },
           },
         },
       ],

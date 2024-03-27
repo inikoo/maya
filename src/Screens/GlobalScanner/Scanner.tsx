@@ -4,6 +4,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import LocationCard from './card/LocationCard';
 import PalletCard from './card/PalletCard';
 import StoredItem from './card/StoredItem';
+import { PrefixScanner } from '~/Utils';
 
 export default function Scanner(p) {
   const handleBarCodeScanned = async (data) => {

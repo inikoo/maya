@@ -1,18 +1,11 @@
-import React, {useLayoutEffect} from 'react';
-import {
-  FlatList,
-  Text,
-  View,
-  TouchableHighlight,
-  Image,
-  Pressable,
-  Button,
-} from 'react-native';
+import React from 'react';
+import {FlatList, View, TouchableHighlight} from 'react-native';
 import styles from './styles';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {COLORS} from '~/Utils/Colors';
-import {PricingCard, lightColors, Icon} from '@rneui/themed';
-/* import MenuImage from "../../components/MenuImage/MenuImage"; */
+import {Icon, Text, Button} from '@rneui/themed';
+import {v4 as uuidv4} from 'uuid';
+import BorderIcon from '~/Components/BorderIcon';
 
 export default function Dashboard(props) {
   const {navigation} = props;
@@ -20,32 +13,64 @@ export default function Dashboard(props) {
   const organisation = useSelector(state => state.organisationReducer);
   const Bluprint = [
     {
-      id: 1,
+      id: uuidv4(),
       title: 'Warehouse',
       key: 'Warehouse',
-      subtitle: 'place to store a all',
-      icon: 'warehouse',
+      icon: {
+        name: 'warehouse',
+        type: 'material-icons',
+        shadowPos: {top: 6, left: 23},
+      },
     },
     {
-      id: 2,
+      id: uuidv4(),
+      title: 'Delivery',
+      key: 'Delivery',
+      icon: {
+        name: 'truck',
+        type: 'font-awesome',
+        shadowPos: {top: 0, left: 10},
+      },
+    },
+    {
+      id: uuidv4(),
+      title: 'Return',
+      key: 'Return',
+      icon: {
+        name: 'trolley',
+        type: 'material-icons',
+        shadowPos: {top: 0, left: 10},
+      },
+    },
+    {
+      id: uuidv4(),
       title: 'Locations',
       key: 'Locations',
-      subtitle: 'place to store a pallet',
-      icon: 'location-pin',
+      icon: {
+        name: 'location-pin',
+        type: 'material-icons',
+        shadowPos: {top: 0, left: 15},
+      },
     },
     {
-      id: 3,
+      id: uuidv4(),
       title: 'Pallets',
       key: 'Pallets',
-      subtitle: 'place to store a Stored Item',
-      icon: 'pallet',
+      icon: {
+        name: 'pallet',
+        type: 'material-icons',
+        shadowPos: {top: 0, left: 10},
+      },
     },
     {
-      id: 4,
+      id: uuidv4(),
       title: 'Stored Items',
       key: 'StoredItems',
-      subtitle: 'place to store a Stored Item',
-      icon: 'brunch-dining',
+      icon: {
+        name: 'box',
+        type: 'entypo',
+        shadowPos: {top: 0, left: 24},
+      },
     },
   ].filter(item => {
     if (Object.keys(warehouse).length != 0) return true;
@@ -58,18 +83,22 @@ export default function Dashboard(props) {
   };
 
   const renderListItem = ({item}) => (
-    <TouchableHighlight onPress={() => onPressMenu(item)}>
-      <View style={styles.container}>
-        <Icon
-          name={item.icon}
-          type="material-icons"
-          color={COLORS.primary}
-          size={150}
-          style={styles.photo}
-        />
-        <Text style={styles.title}>{item.title}</Text>
-      </View>
-    </TouchableHighlight>
+    <View>
+      <TouchableHighlight
+        underlayColor={COLORS.darkGrey}
+        style={styles.container}
+        onPress={() => onPressMenu(item)}>
+        <View>
+          <BorderIcon
+            name={item.icon.name}
+            type={item.icon.type}
+            size={50}
+            shadowPos={item.icon.shadowPos}
+          />
+          <Text style={styles.title}>{item.title}</Text>
+        </View>
+      </TouchableHighlight>
+    </View>
   );
 
   return (
@@ -86,12 +115,12 @@ export default function Dashboard(props) {
         />
       ) : Object.keys(organisation).length == 0 ? (
         <View style={styles.containerCard}>
-          <Icon
-            name="warning-amber"
-            type="material-icons"
-            color={COLORS.primary}
+           <BorderIcon
+             name="warning-amber"
+             type="material-icons"
+             color={COLORS.primary}
             size={60}
-            style={{marginBottom: 10}}
+            shadowPos={{top: 7, left: 3}}
           />
           <Text style={styles.titleCard}>
             You need set up organisation first !
@@ -104,12 +133,12 @@ export default function Dashboard(props) {
         </View>
       ) : (
         <View style={styles.containerCard}>
-          <Icon
-            name="warning-amber"
-            type="material-icons"
-            color={COLORS.primary}
+          <BorderIcon
+             name="warning-amber"
+             type="material-icons"
+             color={COLORS.primary}
             size={60}
-            style={{marginBottom: 10}}
+            shadowPos={{top: 7, left: 3}}
           />
           <Text style={styles.titleCard}>
             You need set up Fullfilment first !

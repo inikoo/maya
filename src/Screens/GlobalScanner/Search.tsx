@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-  Text,
   View,
   StyleSheet,
   TextInput,
@@ -12,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import LocationCard from './card/LocationCard';
 import PalletCard from './card/PalletCard'
 import StoredItem  from './card/StoredItem';
+import {COLORS} from '~/Utils/Colors';
 
 export default function GlobalSearch(p) {
   const [inputValue, setInputValue] = useState('');
@@ -52,7 +52,7 @@ export default function GlobalSearch(p) {
         <TouchableOpacity
           style={styles.buttonContainer}
           onPress={() => setInputValue('')}>
-          <Icon name="manage-search" size={200} />
+          <Icon name="manage-search" size={200} color={COLORS.dark}/>
         </TouchableOpacity>
       ) : (
         renderCard()
