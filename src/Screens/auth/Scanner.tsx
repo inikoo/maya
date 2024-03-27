@@ -38,16 +38,6 @@ export default function LoginScanner() {
       dispatch(
         Action.CreateUserSessionProperties({...profile.data, token: res.token}),
       );
-      dispatch(
-        Action.CreateUserOrganisationProperties({
-          organisations: profile.data.organisations,
-          active_organisation: {
-            ...profile.data.organisations[0],
-            active_authorised_fulfilments:
-              profile.data.organisations[0].authorised_fulfilments[0],
-          },
-        }),
-      );
     } else {
       Toast.show({
         type: ALERT_TYPE.DANGER,

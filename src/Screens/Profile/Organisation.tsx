@@ -21,12 +21,14 @@ const Organisation = props => {
   const renderItem = ({item}) => <Item data={item} />;
 
   const setOrganisation = data => {
+    console.log(data)
     dispatch(
       Action.CreateUserOrganisationProperties({
         organisations: user.organisations,
         active_organisation: {
           ...data,
-          active_authorised_fulfilments: data.authorised_fulfilments[0],
+       /*    active_authorised_fulfilments: data.authorised_fulfilments[0], */
+       active_authorised_fulfilments: null,
         },
       }),
     );
@@ -40,7 +42,7 @@ const Organisation = props => {
         onPress={() => setOrganisation(data.data)}>
         <View style={styles.itemContent}>
           <Text style={styles.label}>{data.data.label}</Text>
-          {organisation.active_organisation.id == data.data.id && (
+          {organisation.active_organisation?.id == data.data.id && (
             <Icon
               name="check-circle"
               type="material-icons"
@@ -57,7 +59,6 @@ const Organisation = props => {
     const fetchData = async () => {
       try {
         const data = await UpdateCredential(user.token);
-        console.log('Data received:', data);
         if (data.status === 'Success') {
           setProfileData({...data.data});
         }

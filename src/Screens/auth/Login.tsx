@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Text,
@@ -18,13 +18,14 @@ import {useDispatch} from 'react-redux';
 import Action from '~/Store/Action';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const onSendtoServer = async (data: object) => {
-    console.log('pppp')
     await Request(
       'post',
       'login-form',
@@ -38,20 +39,9 @@ export default function Login() {
 
   const onLoginSuccess = async (res: {token: String}) => {
     const profile = await UpdateCredential(res.token);
-    console.log(profile)
     if (profile.status == 'Success') {
       dispatch(
         Action.CreateUserSessionProperties({...profile.data, token: res.token}),
-      );
-      dispatch(
-        Action.CreateUserOrganisationProperties({
-          organisations: profile.data.organisations,
-          active_organisation: {
-            ...profile.data.organisations[0],
-            active_authorised_fulfilments:
-              profile.data.organisations[0].authorised_fulfilments[0],
-          },
-        }),
       );
     } else {
       Toast.show({
@@ -85,6 +75,29 @@ export default function Login() {
     },
     onSubmit: onSendtoServer,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const storedUser = await AsyncStorage.getItem('@AuthenticationToken:Key');
+        const organisation = await AsyncStorage.getItem('@organisation:Key');
+        const warehouse = await AsyncStorage.getItem('@warehouse:Key');
+        
+        console.log(storedUser);
+        console.log(organisation);
+        console.log(warehouse);
+        
+        // Lakukan apa pun yang Anda perlu lakukan dengan data yang diambil dari AsyncStorage
+      } catch (error) {
+        // Tangani kesalahan jika diperlukan
+        console.error("Error fetching data from AsyncStorage:", error);
+      }
+    };
+  
+    fetchData(); // Panggil fungsi fetchData di dalam useEffect
+  
+  }, []);
+
 
   return (
     <KeyboardAvoidingView style={styles.containerView} behavior="padding">

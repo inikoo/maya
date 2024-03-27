@@ -20,8 +20,9 @@ const Profile = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector(state => state.userReducer);
+  const organisation = useSelector(state => state.organisationReducer);
 
-console.log(user)  
+
   const logOut = () => {
     RemoveCredential();
     dispatch(Action.DestroyUserSessionProperties());
@@ -48,7 +49,11 @@ console.log(user)
       title: 'Logout',
       onPress: logOut, // Remove the parentheses here
     },
-  ];
+  ].filter(item => {
+    if (Object.keys(organisation).length != 0) return true;
+    else if (item.title == 'Fullfilment') return false;
+    else return true;
+  });
 
   const renderItem = ({ item }) => (
     <Item

@@ -17,24 +17,38 @@ const Organisation = props => {
   const organisation = useSelector(state => state.organisationReducer);
   const dispatch = useDispatch();
 
-  const renderItem = ({item}) => <Item data={item} />;
+  const renderItem = ({item}) => <Item data={item} />
+
+  const setOrganisation = data => {
+    console.log(data)
+    dispatch(
+      Action.CreateUserOrganisationProperties({
+        organisations: organisation.organisations,
+        active_organisation: {
+          ...organisation.active_organisation,
+          active_authorised_fulfilments: data,
+        },
+      }),
+    );
+    dispatch(Action.CreateWarehouseProperties(data));
+  };
 
   const Item = data => {
     return (
       <TouchableOpacity
         style={styles.itemContainer}
-   /*      onPress={() => setOrganisation(data.data)} */
+        onPress={() => setOrganisation(data.data)}
         >
         <View style={styles.itemContent}>
           <Text style={styles.label}>{data.data.code}</Text>
-{/*           {organisation.active_organisation.id == data.data.id && (
+          {organisation.active_organisation.active_authorised_fulfilments?.id == data.data.id && (
             <Icon
               name="check-circle"
               type="material-icons"
               color="#00FF00"
               size={20}
             />
-          )} */}
+          )}
         </View>
       </TouchableOpacity>
     );

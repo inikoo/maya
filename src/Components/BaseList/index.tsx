@@ -9,12 +9,12 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
-import {SearchBar} from '@rneui/base';
+import {SearchBar, BottomSheet} from '@rneui/base';
 import Request from '~/Utils/request';
 import {Icon} from '@rneui/themed'; // Import Icon from your icon library
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {COLORS} from '~/Utils/Colors';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function BaseList(props) {
   const [page, setPage] = useState(1);
@@ -23,8 +23,9 @@ export default function BaseList(props) {
   const [moreLoading, setMoreLoading] = useState(false);
   const [isListEnd, setIsListEnd] = useState(false);
   const [search, setSearch] = useState('');
+  const [filterVisible, setFilterVisible] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   let timeoutId: any;
 
   const requestAPI = () => {
@@ -158,7 +159,12 @@ export default function BaseList(props) {
             />
           </TouchableOpacity>
           <TouchableOpacity>
-            <Icon name="sort" type="MaterialIcons" size={20} />
+            <Icon
+              name="sort"
+              type="MaterialIcons"
+              size={20}
+              onPress={() => setFilterVisible(true)}
+            />
           </TouchableOpacity>
         </View>
       );
@@ -177,10 +183,10 @@ export default function BaseList(props) {
     }, 500);
   };
 
-  const goScanner=()=>{
-    console.log(`${props.title} Scanner`)
-    navigation.navigate(`${props.title} Scanner`)
-  }
+  const goScanner = () => {
+    console.log(`${props.title} Scanner`);
+    navigation.navigate(`${props.title} Scanner`);
+  };
 
   useEffect(() => {
     requestAPI();
@@ -201,6 +207,14 @@ export default function BaseList(props) {
           <Icon name="qr-code-scanner" size={40} color="#ffff" />
         </TouchableOpacity>
       )}
+      <BottomSheet modalProps={{}} isVisible={filterVisible}>
+        <View style={{padding: 20, backgroundColor: '#ffff'}}>
+          <Text>filter</Text>
+          <TouchableOpacity onPress={()=>setFilterVisible(false)}>
+            <Text>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </BottomSheet>
     </View>
   );
 }
@@ -212,7 +226,7 @@ BaseList.defaultProps = {
   listHeaderComponent: undefined, // Corrected prop name
   params: {},
   scanner: true,
-  title:''
+  title: '',
 };
 
 const styles = StyleSheet.create({
