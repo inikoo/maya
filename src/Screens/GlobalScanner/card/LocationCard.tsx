@@ -7,9 +7,11 @@ import {
 } from 'react-native';
 import {Avatar} from '@rneui/base';
 import {useNavigation} from '@react-navigation/native';
+import { MAINCOLORS } from '~/Utils/Colors';
 
 export default function LocationCard(p) {
   const navigation = useNavigation();
+  console.log(p)
 
   return (
     <TouchableOpacity
@@ -20,7 +22,7 @@ export default function LocationCard(p) {
           <Avatar
             size={40}
             icon={{name: 'location-pin', type: 'material-icons'}}
-            containerStyle={{backgroundColor: '#9700b9', marginRight: 13}}
+            containerStyle={{backgroundColor: MAINCOLORS.primary, marginRight: 13}}
           />
           <Text style={styles.title}>{p.data.model.code}</Text>
         </View>

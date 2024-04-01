@@ -6,9 +6,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import Action from '~/Store/Action';
 import {UpdateCredential, RemoveCredential} from '~/Utils/auth';
 import ListRoutes from './RouteList';
-import {COLORS} from '~/Utils/Colors';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import CustomDrawer from '../../src/Components/CustomDrawer';
 
 const Stack = createNativeStackNavigator();
+/* const Drawer = createDrawerNavigator(); */
 
 function Routes() {
   const [isLoading, setIsLoading] = useState(true);
@@ -58,6 +60,7 @@ function Routes() {
       setIsLoading(false);
     }
   };
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,7 +74,14 @@ function Routes() {
   }
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator 
+    screenOptions={{
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }}
+    >
       {!userStorage ? (
         ListRoutes.loginRoutes.map((item, index) => (
           <Stack.Screen
@@ -87,7 +97,7 @@ function Routes() {
             <Stack.Screen
               key={item.name}
               name={item.name}
-              options={{ ...item.option}}>
+              options={{...item.option}}>
               {props => <BottomNavigation {...props} extraData={{...item}} />}
             </Stack.Screen>
           ))}

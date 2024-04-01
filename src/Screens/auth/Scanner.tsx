@@ -6,6 +6,7 @@ import {UpdateCredential} from '~/Utils/auth';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Request from '~/Utils/request';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import { MAINCOLORS } from '~/Utils/Colors';
 
 export default function LoginScanner() {
   const [scanned, setScanned] = useState(true);
@@ -67,14 +68,9 @@ export default function LoginScanner() {
           <QRCodeScanner
             onRead={onSuccess}
             showMarker={true}
-            /*  topContent={
-              <View style={styles.topContentContainer}>
-                <View style={styles.row}>
-                  <Image source={Logo} style={styles.logo} />
-                  <Text style={styles.loginContinueTxt}></Text>
-                </View>
-              </View>
-            } */
+            markerStyle={{
+                borderColor : MAINCOLORS.primary
+            }}
             bottomContent={
               <View style={styles.topContentContainer}>
                 <View style={styles.row}>

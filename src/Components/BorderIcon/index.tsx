@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {COLORS} from '~/Utils/Colors';
+import {COLORS,MAINCOLORS} from '~/Utils/Colors';
 import {Icon} from '@rneui/themed';
 
 export default function BorderIcons(props) {
@@ -28,8 +28,8 @@ BorderIcons.defaultProps = {
   name: '',
   type: 'antdesign',
   size: 10,
-  color: COLORS.primary,
-  borderColor: COLORS.dark,
+  color: MAINCOLORS.primary,
+  borderColor: COLORS.grey7,
   shadowPos: {
     top: 0,
     left: 10,

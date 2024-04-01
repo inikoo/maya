@@ -6,12 +6,13 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import {SearchBar, BottomSheet} from '@rneui/base';
 import Request from '~/Utils/request';
 import {Icon, Text} from '@rneui/themed'; // Import Icon from your icon library
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
-import {COLORS} from '~/Utils/Colors';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {useNavigation} from '@react-navigation/native';
 import Empty from '~/Components/Empty';
 
@@ -58,6 +59,7 @@ export default function BaseList(props) {
   };
 
   const onFailed = (error: Object) => {
+    console.log(error)
     if(page == totalPage) setIsListEnd(true);
     setLoading(false);
     setMoreLoading(false);
@@ -150,8 +152,8 @@ export default function BaseList(props) {
             <Icon
               name="search"
               type="FontAwesome5"
-              size={20}
-              color={COLORS.dark}
+              size={25}
+              color={COLORS.grey8}
               style={{marginRight: 10}}
             />
           </TouchableOpacity>
@@ -159,8 +161,8 @@ export default function BaseList(props) {
             <Icon
               name="sort"
               type="MaterialIcons"
-              size={20}
-              color={COLORS.dark}
+              size={25}
+              color={COLORS.grey8}
               onPress={() => setFilterVisible(true)}
             />
           </TouchableOpacity>
@@ -259,7 +261,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   list: {
-    paddingTop: 30,
+    paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 20,
   },
@@ -270,10 +272,10 @@ const styles = StyleSheet.create({
   ButtonScan: {
     position: 'absolute',
     borderWidth:2,
-    borderColor:COLORS.dark,
+    borderColor:COLORS.grey4,
     right: 20,
     bottom: 30,
-    backgroundColor: COLORS.primary,
+    backgroundColor: MAINCOLORS.warning,
     borderRadius: 20,
     padding: 10,
   },

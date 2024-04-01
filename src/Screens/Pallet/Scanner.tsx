@@ -9,7 +9,7 @@ export default function PalletScanner() {
 
   return (
     <BaseScanner
-      urlKey="pallate-show"
+      urlKey="pallet-show"
       title="Pallet"
       scannerKey='pallet'
       showMarker={true}

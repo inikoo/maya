@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {StyleSheet} from 'react-native';
 import React from 'react';
-import { COLORS } from '~/Utils/Colors';
+import { COLORS, MAINCOLORS} from '~/Utils/Colors';
 
 function BottomMenu(p) {
   const Tab = createBottomTabNavigator();
@@ -10,8 +10,8 @@ function BottomMenu(p) {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: COLORS.primary,
-        tabBarInactiveTintColor : COLORS.dark
+        tabBarActiveTintColor: COLORS.yellow3,
+        tabBarInactiveTintColor : MAINCOLORS.white
       }}>
       {p.extraData.components.map((item, index) => (
         <Tab.Screen

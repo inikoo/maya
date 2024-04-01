@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList';
 import {Action} from '~/Store';
 import {Avatar, Icon, Text} from '@rneui/themed'; // Import Icon from your icon library
-import { COLORS } from '~/Utils/Colors';
+import { COLORS, MAINCOLORS } from '~/Utils/Colors';
 
 const Warehouse = (porps) => {
   const dispatch = useDispatch();
@@ -27,8 +27,8 @@ const Warehouse = (porps) => {
         <View style={styles.row}>
           <Avatar
             size={40}
-            icon={{name: 'warehouse', type: 'material-community-icons', color:COLORS.dark}}
-            containerStyle={{ backgroundColor: COLORS.primary, marginRight: 13}}
+            icon={{name: 'warehouse', type: 'material-community-icons', color:MAINCOLORS.white}}
+            containerStyle={{ backgroundColor: MAINCOLORS.primary, marginRight: 13}}
           />
           <View style={styles.row}>
             <View style={styles.text}>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: '#000',
     borderWidth : 1,
-    borderColor : COLORS.dark,
+    borderColor : COLORS.grey5,
     shadowOffset: {
       width: 0,
       height: 3,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontFamily: 'TitilliumWeb-SemiBold',
-    color: COLORS.primary,
+    color: MAINCOLORS.primary,
   },
   description: {
     fontSize: 12,

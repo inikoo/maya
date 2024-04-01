@@ -1,4 +1,4 @@
-export { default as Dashboard } from './Dashboard';
+export { default as Dashboard } from './Dashboard/index.tsx';
 export { default as Login } from './auth/Login';
 export { default as LoginScanner } from './auth/Scanner';
 export { default as Profile } from './Profile';
@@ -23,6 +23,9 @@ export { default as PalletScanner } from './Pallet/Scanner';
 //stored Items
 export { default as StoredItems } from './StoredItems';
 
+//delivery
+export { default as Delivery } from './Delivery';
+export { default as DeliveryDetail } from './Delivery/Detail.tsx';
 
 //global Scanners
 export { default as GlobalScanner } from './GlobalScanner';

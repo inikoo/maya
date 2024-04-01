@@ -5,7 +5,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {Text} from '@rneui/themed';
-import {defaultTo} from 'lodash';
+import {defaultTo,get} from 'lodash';
 
 
 function Description(props) {
@@ -27,7 +27,7 @@ function Description(props) {
       <DetailRow title="State" text={defaultTo(props.data.state, '-')} />
       <DetailRow
         title="Location"
-        text={defaultTo(props.data.location.slug, '-')}
+        text={get(props,['data','location','slug'], '-')}
       />
     </View>
   );

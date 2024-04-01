@@ -16,10 +16,12 @@ import {
   Fullfilment,
   LocationScanner,
   PalletScanner,
+  Delivery,
+  DeliveryDetail,
 } from '../../src/Screens';
 import {Icon} from '@rneui/base';
 import ScanButton from '~/Components/MainNavigatorButton';
-import {COLORS} from '~/Utils/Colors';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import BorderIcon from '~/Components/BorderIcon';
 
 export default {
@@ -89,6 +91,14 @@ export default {
       name: 'Pallet Scanner',
       component: PalletScanner,
     },
+    {
+      name: 'Delivery',
+      component: Delivery,
+    },
+    {
+      name: 'Delivery Detail',
+      component: DeliveryDetail,
+    },
   ],
 
   BottomNavigatorRoutes: [
@@ -100,16 +110,9 @@ export default {
           name: 'Home',
           component: Dashboard,
           option: {
+            headerShown : false,
             tabBarIcon: ({color}) => {
-              return color == COLORS.primary ? (
-                <BorderIcon
-                  name="home"
-                  type="foundation"
-                  size={26}
-                  color={color}
-                  shadowPos={{top: 4, left: 0}}
-                />
-              ) : (
+              return (
                 <Icon name="home" type="foundation" color={color} size={26} />
               );
             },
@@ -136,15 +139,7 @@ export default {
           component: Profile,
           option: {
             tabBarIcon: ({color}) => {
-              return color == COLORS.primary ? (
-                <BorderIcon
-                  name="user"
-                  type="font-awesome"
-                  size={26}
-                  color={color}
-                  shadowPos={{top: 3, left: 4}}
-                />
-              ) : (
+              return (
                 <Icon name="user" type="font-awesome" color={color} size={26} />
               );
             },
