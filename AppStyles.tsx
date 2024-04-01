@@ -7,7 +7,7 @@ const recipeNumColums = 2;
 const RECIPE_ITEM_HEIGHT = 60;
 const RECIPE_ITEM_MARGIN = 20;
 
-export const RecipeCard = StyleSheet.create({
+export const AppStyles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -38,5 +38,11 @@ export const RecipeCard = StyleSheet.create({
     paddingRight :3,
     justifyContent : 'center',
     textAlign: 'center'
-  }
+  },
+  TextInput: {
+    flexDirection: 'row',
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    paddingBottom: 8,
+  },
 });

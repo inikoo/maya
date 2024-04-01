@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
+  Image
 } from 'react-native';
 import {Icon, Avatar} from '@rneui/base';
 import {useNavigation} from '@react-navigation/native';
@@ -12,6 +13,7 @@ import LocationCard from './card/LocationCard';
 import PalletCard from './card/PalletCard'
 import StoredItem  from './card/StoredItem';
 import {COLORS} from '~/Utils/Colors';
+import ImageSearch from '../../assets/image/20944142.jpg'
 
 export default function GlobalSearch(p) {
   const [inputValue, setInputValue] = useState('');
@@ -52,7 +54,8 @@ export default function GlobalSearch(p) {
         <TouchableOpacity
           style={styles.buttonContainer}
           onPress={() => setInputValue('')}>
-          <Icon name="manage-search" size={200} color={COLORS.dark}/>
+         {/*  <Icon name="manage-search" size={200} color={COLORS.dark}/> */}
+         <Image source={ImageSearch} style={{ width : 300 , height : 300}} />
         </TouchableOpacity>
       ) : (
         renderCard()

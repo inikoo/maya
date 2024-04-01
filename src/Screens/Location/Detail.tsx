@@ -7,7 +7,7 @@ import { Text, Card, Button, Icon } from '@rneui/themed';
 import { get, defaultTo, isNull } from "lodash"
 import dayjs from 'dayjs';
 import Location from '../../assets/image/location.jpg';
-import { COLORS } from '~/Utils/Colors';
+import { COLORS, MAINCOLORS } from '~/Utils/Colors';
 
 function Scanner(props) {
   const [loading, setLoading] = useState(true);
@@ -26,7 +26,7 @@ function Scanner(props) {
       [
         organisation.active_organisation.id,
         warehouse.id,
-        props.route.params.location.slug,
+        props.route.params.location.id,
       ],
       onSuccessGetDetail,
       onFailedGetDetail
@@ -101,14 +101,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
     borderWidth:1,
-    borderColor:COLORS.dark
+    borderColor:COLORS.grey5
   },
   locationImage: {
     width: '100%',
     height: 200,
     resizeMode: 'cover',
     borderWidth: 3,
-    borderColor : COLORS.dark
+    borderColor : COLORS.grey5
   },
   descriptionContainer: {
     marginVertical: 10,
@@ -130,16 +130,16 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginRight: 0,
     marginBottom: 0,
-    backgroundColor : COLORS.primary
+    backgroundColor : MAINCOLORS.primary
   },
   buttonIcon: {
     marginRight: 10,
-    color: COLORS.dark
+    color: MAINCOLORS.white
   },
   title : {
     fontSize : 20,
-    color : COLORS.primary,
-    textShadowColor: COLORS.dark, 
+    color : MAINCOLORS.primary,
+    textShadowColor: MAINCOLORS.black, 
     textShadowOffset: { width: 2, height: 2 }, 
     textShadowRadius: 2,
   }

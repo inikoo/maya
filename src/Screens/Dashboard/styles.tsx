@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { RecipeCard } from '../../../AppStyles';
+import { AppStyles } from '../../../AppStyles';
 import {COLORS} from '~/Utils/Colors'
 
 const styles = StyleSheet.create({
-  container: RecipeCard.container,
-  photo: RecipeCard.photo,
-  title: RecipeCard.title,
-  category: RecipeCard.category,
+  container: AppStyles.container,
+  photo: AppStyles.photo,
+  title: AppStyles.title,
+  category: AppStyles.category,
   containerCard: {
     justifyContent: 'center',
     alignItems: 'center',

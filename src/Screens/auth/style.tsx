@@ -1,47 +1,39 @@
-import { COLORS } from '~/Utils/Colors';
-const React = require("react-native");
+import { MAINCOLORS } from '~/Utils/Colors';
+import { AppStyles } from '../../../AppStyles'
+const React = require('react-native');
 
-
-const { StyleSheet } = React;
+const {StyleSheet} = React;
 
 const styles = StyleSheet.create({
+  FormTextInput: AppStyles.TextInput,
   containerView: {
-    flex: 1,
-    alignItems: "center"
+    flex: 1, 
+    justifyContent: 'center'
   },
-  loginScreenContainer: {
-    flex: 1,
+  image: {
+    height: 300, 
+    width: 300
   },
-  logoText: {
-    fontSize: 40,
-    fontWeight: "800",
-    marginTop: 150,
-    marginBottom: 30,
-    textAlign: "center",
-    color: COLORS.primary,
-    textShadowColor: COLORS.dark, 
-    textShadowOffset: { width: 3, height: 3 }, 
-    textShadowRadius: 4,
+  loginText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 28,
+    fontWeight: '500',
+    color: '#333',
+    marginBottom: 20,
   },
-  loginFormView: {
-    flex: 1,
+  inputIcon:{
+    marginRight: 5, 
+    paddingVertical: 8
   },
-  loginFormTextInput: {
-    height: 43,
-    fontSize: 14,
-    borderRadius: 5,
-    borderWidth: 0.6,
-    borderColor: COLORS.dark,
-    backgroundColor: COLORS.whiteGray,
-    paddingLeft: 10,
-    marginTop: 5,
-    marginBottom: 5,
+  input:{
+    flex: 1, 
+    paddingVertical: 0
   },
   loginButton: {
-    height: 45,
-    marginTop: 10,
-    width: 350,
-    alignItems: "center",
+    backgroundColor: MAINCOLORS.primary,
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 30,
   },
 });
 export default styles;

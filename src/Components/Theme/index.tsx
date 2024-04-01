@@ -1,52 +1,47 @@
 import {createTheme} from '@rneui/themed';
-import {COLORS} from '~/Utils/Colors';
+import {COLORS, MAINCOLORS } from '~/Utils/Colors';
 
 const theme = createTheme({
   lightColors: {
-    primary: COLORS.primary,
+    primary: MAINCOLORS.primary,
   },
   darkColors: {
-    primary: COLORS.primary,
+    primary: MAINCOLORS.primary,
   },
   components: {
     Button: {
-        titleStyle : { color : COLORS.dark },
-        buttonStyle : {
-            borderRadius: 5,
-            borderWidth: 1,
-            borderColor: COLORS.dark,
-        }
+        titleStyle : { color : MAINCOLORS.white },
     },
     Text : {
       style : { 
-        color : COLORS.dark
+        color : MAINCOLORS.black
       }
     },
     ButtonGroup : {
       textStyle : {
-        color : COLORS.black
+        color : MAINCOLORS.black
       },
       selectedTextStyle : {
-        color : COLORS.black
+        color : COLORS.grey8
       },
-      containerStyle : {
+ /*      containerStyle : {
         borderRadius: 5,
         borderTopWidth: 1,
         borderLeftWidth : 1,
         borderBottomWidth : 1,
         borderRightWidth : 1,
-        borderColor: COLORS.dark,
-      },
+        borderColor: ,
+      }, */
       buttonContainerStyle : {
         borderRadius: 5,
-        borderRightWidth: 1,
-        borderColor: COLORS.dark,
+       /*  borderRightWidth: 1, */
+      /*   borderColor: MAINCOLORS.black, */
       }
     },
     Avatar : {
       containerStyle : {
         borderWidth : 1,
-        borderColor : COLORS.dark
+        borderColor : COLORS.grey7
       }
     }
   },

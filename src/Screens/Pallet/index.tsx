@@ -11,7 +11,7 @@ import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList';
 import {useNavigation} from '@react-navigation/native';
 import {Avatar, Icon} from '@rneui/themed'; // Import Icon from your icon library
-import { COLORS } from '~/Utils/Colors';
+import { COLORS, MAINCOLORS } from '~/Utils/Colors';
 
 const Pallet = props => {
   const navigation = useNavigation();
@@ -25,7 +25,7 @@ const Pallet = props => {
           <Avatar
             size={40}
             icon={{name: 'pallet', type: 'FontAwesome6'}}
-            containerStyle={{backgroundColor: COLORS.primary , marginRight: 13}}
+            containerStyle={{backgroundColor: MAINCOLORS.primary , marginRight: 13}}
           />
           <View style={styles.row}>
             <View style={styles.text}>
@@ -45,14 +45,14 @@ const Pallet = props => {
   return (
     <View>
       <BaseList
-        urlKey="pallate-index"
+        urlKey="pallet-index"
         navigation={props.navigation}
         args={[
           oraganisation.active_organisation.id,
           warehouse.id,
-          oraganisation.active_organisation.active_authorised_fulfilments.slug,
+          oraganisation.active_organisation.active_authorised_fulfilments.id,
         ]}
-        params={{'pallets_filter[located]': false}}
+       /*  params={{'pallets_filter[located]': false}} */
         renderItem={Item}
         title='Pallets'
       />

@@ -1,6 +1,6 @@
 import {TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {COLORS} from '~/Utils/Colors';
+import {COLORS,MAINCOLORS} from '~/Utils/Colors';
 
 const ScanButton = ({children, onPress}) => {
   return (
@@ -17,9 +17,9 @@ const ScanButton = ({children, onPress}) => {
           height: 60,
           paddingTop: 12,
           borderRadius: 50,
-          backgroundColor: COLORS.primary,
-          borderWidth: 1,
-          borderColor: COLORS.dark,
+          backgroundColor: '#FF8880',
+      /*     borderWidth: 2,
+          borderColor: MAINCOLORS.white, */
         }}>
         {children}
       </View>

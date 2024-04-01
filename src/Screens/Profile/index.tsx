@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {RemoveCredential} from '~/Utils/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import Action from '~/Store/Action';
-import {COLORS} from '~/Utils/Colors';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {v4 as uuidv4} from 'uuid';
 import {Icon} from '@rneui/themed';
 
@@ -42,6 +42,11 @@ const Profile = props => {
     },
     {
       id: uuidv4(),
+      title: 'Warehouse',
+      onPress: () => navigation.navigate('Warehouse'),
+    },
+    {
+      id: uuidv4(),
       title: 'Detail Profile',
       onPress: () => navigation.navigate('Profile Detail'),
     },
@@ -62,7 +67,7 @@ const Profile = props => {
 
   const Item = ({title, onPress}) => (
     <TouchableHighlight
-      underlayColor={COLORS.primary}
+      underlayColor={MAINCOLORS.primary}
       style={styles.itemContainer}
       onPress={onPress}>
       <View style={styles.itemContent}>
@@ -121,17 +126,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
     color: COLORS.black,
-    textShadowColor: COLORS.primary, 
+    textShadowColor: MAINCOLORS.primary, 
     textShadowOffset: { width: 1, height: 1 }, 
     textShadowRadius: 4,
   },
   itemContainer: {
-    backgroundColor: COLORS.darkGrey,
+    backgroundColor: COLORS.grey8,
     marginBottom: 10,
     borderRadius: 10,
     elevation: 3,
     borderWidth:1,
-    borderColor:COLORS.dark
+    borderColor:COLORS.grey7
   },
   itemContent: {
     flexDirection: 'row',

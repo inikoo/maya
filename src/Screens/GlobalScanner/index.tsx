@@ -5,7 +5,7 @@ import Search from './Search';
 import Scanner from './Scanner';
 import Request from '~/Utils/request';
 import {useSelector} from 'react-redux';
-import {COLORS} from '~/Utils/Colors';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 export default function GlobalSearch(props) {
@@ -30,6 +30,7 @@ export default function GlobalSearch(props) {
   };
 
   const onSuccess = result => {
+    console.log('ooo',result)
     setdataRes(result.data);
   };
 
@@ -49,7 +50,7 @@ export default function GlobalSearch(props) {
         selectedIndex={selectedIndex}
         onPress={value => setSelectedIndex(value)}
         containerStyle={styles.Button}
-        selectedButtonStyle={{backgroundColor: COLORS.primary}}
+        selectedButtonStyle={{backgroundColor: MAINCOLORS.primary}}
       />
       {selectedIndex == 0 ? (
         <Search searchFromServer={searchFromServer} data={dataRes} />

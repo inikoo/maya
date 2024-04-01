@@ -2,7 +2,6 @@
 import React, {useState, useEffect} from 'react';
 import {Request} from '~/Utils';
 import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
 import {
   View,
   ScrollView,
@@ -17,7 +16,7 @@ import Description from './Description';
 import Movement from './MovementPallet';
 import {useFormik} from 'formik';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
-import { COLORS } from '~/Utils/Colors';
+import { COLORS, MAINCOLORS } from '~/Utils/Colors';
 
 function Scanner(props) {
   // State variables
@@ -63,9 +62,48 @@ function Scanner(props) {
     })
   }
 
+
+
+  const ChangeStatus = async (data: object) => {
+    await Request(
+      'patch',
+      'pallete-location',
+      {},
+      {},
+      [
+        organisation.active_organisation.id,
+        warehouse.id,
+        data.location.id,
+        dataSelected.id,
+      ],
+     onMoveSuccess,
+     onMoveFailed,
+    );
+  };
+
+  const ChangeStatusSuccess = (response)=>{
+    Toast.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: 'Success',
+      textBody: 'Pallet already move to new Location',
+    })
+    setPageMovement(false)
+    getDetail();
+  }
+
+  const ChangeStatusFailed = (response)=>{
+    console.error(response)
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Success',
+      textBody: response.response.data.message,
+    })
+  }
+
+
   const formik = useFormik({
     initialValues: {
-      location: null,
+      location: {id : null},
     },
     onSubmit: MoveToNewLocation,
   });
@@ -75,13 +113,13 @@ function Scanner(props) {
     setLoading(true);
     Request(
       'get',
-      'pallate-show',
+      'pallet-show',
       {},
       {},
       [
         organisation.active_organisation.id,
         warehouse.id,
-        organisation.active_organisation.active_authorised_fulfilments.slug,
+        organisation.active_organisation.active_authorised_fulfilments.id,
         props.route.params.pallete.id,
       ],
       onSuccessGetDetail,
@@ -91,9 +129,10 @@ function Scanner(props) {
 
   // Success callback for detail fetch
   const onSuccessGetDetail = response => {
+    console.log(response)
     setDataSelected(response.data);
     setLoading(false);
-    formik.setFieldValue('location',{...response.data.location ,title :response.data.location.code, id: response.data.location.slug })
+    formik.setFieldValue('location',{...response.data.location ,title :response.data.location.code, id: get(response,['data','location','id'], null)})
   };
 
   // Error callback for detail fetch
@@ -128,7 +167,22 @@ function Scanner(props) {
             {!pageMovement ? (
               <View style={styles.descriptionContainer}>
                 <Description data={dataSelected} />
-                <Button
+                {dataSelected.status == 'returned' && dataSelected.state == 'picking' ? (
+                  <Button
+                  icon={
+                    <Icon
+                      name="truck-loading"
+                      type='font-awesome-5'
+                      color="#ffffff"
+                      iconStyle={styles.buttonIcon}
+                    />
+                  }
+                  onPress={toggleChangeContent}
+                  buttonStyle={styles.button}
+                  title="Picking"
+                  />
+                ) : (
+                  <Button
                   icon={
                     <Icon
                       name="location-pin"
@@ -140,12 +194,13 @@ function Scanner(props) {
                   buttonStyle={styles.button}
                   title="Move Location "
                 />
+                )}
               </View>
             ) : (
               <View>
                 <Movement
                   onChange={formik.handleChange('location')}
-                  value={formik.values.location}
+                  value={get(formik,['values','location'],{id : null})}
                   form={formik}
                 />
                 {formik.errors.location && (
@@ -201,7 +256,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     marginLeft: 0,
     marginRight: 0,
-    backgroundColor : COLORS.primary,
+    backgroundColor : MAINCOLORS.primary,
     marginBottom: 0,
   },
   buttonIcon: {

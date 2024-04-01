@@ -1,16 +1,14 @@
 import React from 'react';
 import {
-  KeyboardAvoidingView,
-  Text,
-  TextInput,
-  TouchableWithoutFeedback,
+  SafeAreaView,
   View,
-  Keyboard,
+  TextInput,
+  Image,
   TouchableOpacity,
 } from 'react-native';
-import {Button} from '@rneui/themed';
+import {Text, Button} from '@rneui/base';
+import LoginSVG from '../../assets/image/20945391.jpg';
 import {useFormik} from 'formik';
-import styles from './style';
 import Request from '~/Utils/request';
 import {UpdateCredential} from '~/Utils/auth';
 import {getBrand} from 'react-native-device-info';
@@ -18,9 +16,11 @@ import {useDispatch} from 'react-redux';
 import Action from '~/Store/Action';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
-import {COLORS} from '~/Utils/Colors';
+import styles from './style';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {MAINCOLORS} from '~/Utils/Colors';
 
-export default function Login() {
+const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -76,50 +76,76 @@ export default function Login() {
   });
 
   return (
-    <KeyboardAvoidingView style={styles.containerView} behavior="padding">
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.loginScreenContainer}>
-          <View style={styles.loginFormView}>
-            <Text style={styles.logoText}>MAYA</Text>
+    <SafeAreaView style={styles.containerView}>
+      <View style={{paddingHorizontal: 25}}>
+        <View style={{alignItems: 'center'}}>
+          <Image source={LoginSVG} style={styles.image} />
+        </View>
+
+        <Text style={styles.loginText}>Login</Text>
+        <View style={{marginBottom: 25}}>
+          <View style={styles.FormTextInput}>
+            <MaterialIcons
+              name="alternate-email"
+              size={18}
+              color="#666"
+              style={styles.inputIcon}
+            />
             <TextInput
               placeholder="Username"
               placeholderTextColor="#c4c3cb"
-              style={styles.loginFormTextInput}
               onChangeText={formik.handleChange('username')}
               value={formik.values.username}
+              style={styles.input}
             />
-            {formik.errors.username && (
-              <Text style={{color: 'red'}}>{formik.errors.username}</Text>
-            )}
+          </View>
+          {formik.errors.username && (
+            <Text style={{color: MAINCOLORS.danger}}>
+              {formik.errors.username}
+            </Text>
+          )}
+        </View>
+
+        <View style={{marginBottom: 25}}>
+          <View style={styles.FormTextInput}>
+            <MaterialIcons
+              name="lock-outline"
+              size={18}
+              color="#666"
+              style={styles.inputIcon}
+            />
             <TextInput
               placeholder="Password"
               placeholderTextColor="#c4c3cb"
-              style={styles.loginFormTextInput}
+              style={styles.input}
               secureTextEntry={true}
               onChangeText={formik.handleChange('password')}
               value={formik.values.password}
             />
-            {formik.errors.password && (
-              <Text style={{color: 'red'}}>{formik.errors.password}</Text>
-            )}
-            <Button
-              buttonStyle={styles.loginButton}
-              onPress={formik.handleSubmit}
-              title="Login"
-            />
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Login Scanner')}
-              style={{
-                margin: 20,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={{ color : COLORS.dark}}>Login use QR code</Text>
-            </TouchableOpacity>
           </View>
+          {formik.errors.password && (
+            <Text style={{color: MAINCOLORS.danger}}>
+              {formik.errors.password}
+            </Text>
+          )}
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+
+        <Button
+          buttonStyle={styles.loginButton}
+          onPress={formik.handleSubmit}
+          title="Login"
+        />
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Login Scanner')}
+          style={{
+            alignItems: 'center',
+          }}>
+          <Text>Login use QR code</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
-}
+};
+
+export default LoginScreen;

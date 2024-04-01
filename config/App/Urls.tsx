@@ -25,14 +25,19 @@ export default {
 	//locatiom
 	'locations-index' : 'api/org/{}/warehouses/{}/locations',
 	'locations-show' : 'api/org/{}/warehouses/{}/locations/{}',
-	'location-pallate-index' : 'api/org/{}/warehouses/{}/fulfilments/{}/locations/{}/pallets',
+	'location-pallet-index' : 'api/org/{}/warehouses/{}/fulfilments/{}/locations/{}/pallets',
 
 	//pallete
-	'pallate-index' : 'api/org/{}/warehouses/{}/fulfilments/{}/pallets',
-	'pallate-show' : 'api/org/{}/warehouses/{}/fulfilments/{}/pallets/{}',
+	'pallet-index' : 'api/org/{}/warehouses/{}/fulfilments/{}/pallets',
+	'pallet-show' : 'api/org/{}/warehouses/{}/fulfilments/{}/pallets/{}',
 	'pallete-location' : 'api/org/{}/warehouses/{}/locations/{}/pallets/{}',
 	'pallete-return' : 'api/org/{}/warehouses/{}/fulfilments/{}/pallets/{}/return',
 
+
+	//delivery
+	'delivery-index' : "api/org/{}/warehouses/{}/pallet-deliveries",
+	'delivery-show' : "api/org/{}/warehouses/{}/pallet-deliveries/{}",
+	'delivery-pallet-index' : "api/org/{}/warehouses/{}/pallet-deliveries/{}/pallets",
 
 
 	'global-search' : 'api/org/{}/warehouses/{}/scanners/{}'

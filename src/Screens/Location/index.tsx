@@ -9,7 +9,7 @@ import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList';
 import {useNavigation} from '@react-navigation/native';
 import {Avatar, Text} from '@rneui/themed'; // Import Icon from your icon library
-import { COLORS } from '~/Utils/Colors';
+import { COLORS, MAINCOLORS } from '~/Utils/Colors';
 
 const Locations = (props) => {
   const navigation = useNavigation();
@@ -25,8 +25,8 @@ const Locations = (props) => {
           <View style={styles.row}>
           <Avatar
             size={40}
-            icon={{name: 'location-pin', type: 'material-icons', color:COLORS.dark}}
-            containerStyle={{ backgroundColor: COLORS.primary, marginRight: 13}}
+            icon={{name: 'location-pin', type: 'material-icons', color:MAINCOLORS.white}}
+            containerStyle={{ backgroundColor: MAINCOLORS.primary, marginRight: 13}}
           />
             <Text style={styles.title}>
               {item.code}
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin : 5,
     borderWidth : 1,
-    borderColor : COLORS.dark
+    borderColor: COLORS.grey6
   },
   title: {
     fontSize: 18,
@@ -84,9 +84,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  /*  status: (status) => ({
-    fontSize: 14,
-    fontFamily: 'TitilliumWeb-Light',
-    color: status === 'Sudah Selesai' ? WARNA_UTAMA : status === 'Masih Dicuci' ? WARNA_WARNING : WARNA_ABU_ABU,
-  }) */
 });

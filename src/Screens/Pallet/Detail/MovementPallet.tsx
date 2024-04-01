@@ -28,8 +28,9 @@ function Movement(props) {
 
   // Success callback for detail fetch
   const onSuccess = (res: any) => {
+    console.log(res)
     if (res.data) {
-      let newData = res.data.map(set => ({...set, id: set.slug, title: set.code}));
+      let newData = res.data.map(set => ({...set, title: set.code}));
       setOptions(newData);
     }
   };
@@ -49,6 +50,7 @@ function Movement(props) {
 
   // Set initial value
   useEffect(() => {
+    console.log(props)
     setValue(props.value);
   }, [props.value]);
 
@@ -69,7 +71,7 @@ function Movement(props) {
           autoFocus: false,
         }}
         debounce={500}
-        initialValue={props.value} // Set default value here
+        initialValue={props.value} 
       />
     </View>
   );
