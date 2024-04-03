@@ -11,13 +11,11 @@ import { MAINCOLORS } from '~/Utils/Colors';
 
 export default function LocationCard(p) {
   const navigation = useNavigation();
-  console.log(p)
-
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('Location', {location: p.data.model})}
       style={styles.cardContainer}>
-      <View style={styles.text}>
+      <View>
         <View style={styles.row}>
           <Avatar
             size={40}
@@ -47,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardContainer: {
-    width: '90%',
+    width: 350,
     padding: 17,
     backgroundColor: 'white',
     flexDirection: 'row',

@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Request } from '~/Utils';
-import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { View, ScrollView, StyleSheet, ActivityIndicator, Image } from 'react-native';
-import { Text, Card, Button, Icon } from '@rneui/themed';
-import { get, defaultTo, isNull } from "lodash"
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, Image, View, ActivityIndicator} from 'react-native';
+import {Request} from '~/Utils';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {Text, SpeedDial} from '@rneui/themed';
+import {get, defaultTo, isNull} from 'lodash';
 import dayjs from 'dayjs';
-import Location from '../../assets/image/location.jpg';
-import { COLORS, MAINCOLORS } from '~/Utils/Colors';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
-function Scanner(props) {
+const Detail = props => {
   const [loading, setLoading] = useState(true);
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
   const navigation = useNavigation();
+  const [open, setOpen] = useState(false); // Corrected from React.useState to useState
 
   const getDetail = () => {
     setLoading(true);
@@ -29,86 +30,135 @@ function Scanner(props) {
         props.route.params.location.id,
       ],
       onSuccessGetDetail,
-      onFailedGetDetail
+      onFailedGetDetail,
     );
   };
 
   const onSuccessGetDetail = response => {
+    console.log(response);
     setDataSelected(response);
     setLoading(false);
   };
 
   const onFailedGetDetail = error => {
     setLoading(false);
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message,
+    });
   };
 
   useEffect(() => {
     getDetail();
   }, []);
 
-  return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
-      {!loading ? (
-        <View style={styles.container}>
-          <Card containerStyle={styles.cardContainer}>
-            <Card.Title style={styles.title}>{get(dataSelected, 'code', '-')}</Card.Title>
-            <Card.Divider />
-            <Image source={Location} style={styles.locationImage} />
-            <View style={styles.descriptionContainer}>
-              <DetailRow title="Status :" text={defaultTo(dataSelected.status, '-')} />
-              <DetailRow title="Created At :" text={dayjs(dataSelected.created_at).format('DD/MM/YY')} />
-              <DetailRow title="Updated At :" text={dayjs(dataSelected.updated_at).format('DD/MM/YY')} />
-              <DetailRow title="Audited At :" text={dataSelected.audited_at && !isNull(dataSelected.audited_at)
-                      ? dayjs(dataSelected.audited_at).format('DD/MM/YY')
-                      : '-'} />
-              <DetailRow title="Stock Value :" text={dataSelected.stock_value} />
-              <DetailRow title="Max Volume :" text={defaultTo(dataSelected.max_volume, '-')} />
-              <DetailRow title="Max Weight :" text={defaultTo(dataSelected.max_weight, '-')} />
-            </View>
-            <Button
-              icon={<Icon name="pallet" color="#ffffff" iconStyle={styles.buttonIcon} />}
-              buttonStyle={styles.button}
-              onPress={()=>navigation.navigate('Location Pallet',{location: dataSelected})}
-              title="Pallet List"
-            />
-          </Card>
+  return !loading ? (
+    <View style={styles.container}>
+      <Image
+        source={require('../../assets/image/location.jpg')}
+        style={styles.img}
+        resizeMode="cover"
+      />
+      <View style={styles.cont3}>
+        <Text style={styles.title}>{get(dataSelected, 'code', '-')}</Text>
+        <View style={styles.descriptionContainer}>
+          <DetailRow
+            title="Status :"
+            text={defaultTo(dataSelected.status, '-')}
+          />
+          <DetailRow
+            title="Created At :"
+            text={dayjs(dataSelected.created_at).format('DD/MM/YY')}
+          />
+       {/*    <DetailRow
+            title="Updated At :"
+            text={dayjs(dataSelected.updated_at).format('DD/MM/YY')}
+          /> */}
+          <DetailRow
+            title="Audited At :"
+            text={
+              dataSelected.audited_at && !isNull(dataSelected.audited_at)
+                ? dayjs(dataSelected.audited_at).format('DD/MM/YY')
+                : '-'
+            }
+          />
+          <DetailRow title="Stock Value :" text={dataSelected.stock_value} />
+          <DetailRow
+            title="Max Volume :"
+            text={defaultTo(dataSelected.max_volume, '-')}
+          />
+          <DetailRow
+            title="Max Weight :"
+            text={defaultTo(dataSelected.max_weight, '-')}
+          />
         </View>
-      ) : (
-        <ActivityIndicator size="large" />
-      )}
-    </ScrollView>
+      </View>
+      <SpeedDial
+        isOpen={open}
+        icon={{name: 'settings', color: COLORS.grey8}}
+        openIcon={{name: 'close', color: COLORS.grey8}}
+        onOpen={() => setOpen(!open)}
+        onClose={() => setOpen(!open)}
+        buttonStyle={{backgroundColor: MAINCOLORS.primary}}
+        style={styles.speedDial} // Added style prop
+        direction="down"
+        onPress={() => setOpen(!open)}>
+        <SpeedDial.Action
+          icon={{name: 'pallet', color: COLORS.grey8, size: 18}}
+          title="Pallet"
+          buttonStyle={{backgroundColor: MAINCOLORS.primary}}
+          iconContainerStyle={{paddingTop: 10}}
+          onPress={() =>
+            navigation.navigate('Location Pallet', {location: dataSelected})
+          }
+        />
+      </SpeedDial>
+    </View>
+  ) : (
+    <ActivityIndicator size="large" />
   );
-}
+};
 
-const DetailRow = ({ title, text }) => (
+export default Detail;
+
+const DetailRow = ({title, text, renderContent}) => (
   <View style={styles.descriptionRow}>
     <Text style={styles.descriptionTitle}>{title}</Text>
-    <Text style={styles.descriptionText}>{text}</Text>
+    {!renderContent ? (
+      <Text style={styles.descriptionText}>{text}</Text>
+    ) : (
+      renderContent
+    )}
   </View>
 );
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flexGrow: 1,
-  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#121212',
   },
-  cardContainer: {
-    width: '90%',
-    borderRadius: 10,
-    marginBottom: 20,
-    borderWidth:1,
-    borderColor:COLORS.grey5
+  title: {
+    fontSize: 25,
+    fontFamily: 'Montserrat_700Bold',
+    marginTop: 30,
+    fontWeight: 'bold',
+    color:MAINCOLORS.primary
   },
-  locationImage: {
+  img: {
+    height: '60%',
     width: '100%',
-    height: 200,
-    resizeMode: 'cover',
-    borderWidth: 3,
-    borderColor : COLORS.grey5
+  },
+  cont3: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    width: '100%',
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    paddingHorizontal: 20,
+    marginTop: -50,
   },
   descriptionContainer: {
     marginVertical: 10,
@@ -120,29 +170,15 @@ const styles = StyleSheet.create({
   },
   descriptionTitle: {
     fontWeight: 'bold',
+    fontSize: 16,
     marginRight: 10,
   },
   descriptionText: {
     flex: 1,
   },
-  button: {
-    borderRadius: 0,
-    marginLeft: 0,
-    marginRight: 0,
-    marginBottom: 0,
-    backgroundColor : MAINCOLORS.primary
+  speedDial: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
-  buttonIcon: {
-    marginRight: 10,
-    color: MAINCOLORS.white
-  },
-  title : {
-    fontSize : 20,
-    color : MAINCOLORS.primary,
-    textShadowColor: MAINCOLORS.black, 
-    textShadowOffset: { width: 2, height: 2 }, 
-    textShadowRadius: 2,
-  }
 });
-
-export default Scanner;

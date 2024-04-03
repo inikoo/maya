@@ -18,6 +18,8 @@ import {
   PalletScanner,
   Delivery,
   DeliveryDetail,
+  Return,
+  ReturnDetail
 } from '../../src/Screens';
 import {Icon} from '@rneui/base';
 import ScanButton from '~/Components/MainNavigatorButton';
@@ -98,6 +100,14 @@ export default {
     {
       name: 'Delivery Detail',
       component: DeliveryDetail,
+    },
+    {
+      name: 'Return',
+      component: Return,
+    },
+    {
+      name: 'Return Detail',
+      component: ReturnDetail,
     },
   ],
 

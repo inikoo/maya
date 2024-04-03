@@ -27,5 +27,10 @@ export { default as StoredItems } from './StoredItems';
 export { default as Delivery } from './Delivery';
 export { default as DeliveryDetail } from './Delivery/Detail.tsx';
 
+
+//return
+export { default as Return } from './Return';
+export { default as ReturnDetail } from './Return/Detail.tsx';
+
 //global Scanners
 export { default as GlobalScanner } from './GlobalScanner';

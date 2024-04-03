@@ -14,7 +14,8 @@ const theme = createTheme({
     },
     Text : {
       style : { 
-        color : MAINCOLORS.black
+        color : MAINCOLORS.black,
+        fontFamily : 'Roboto'
       }
     },
     ButtonGroup : {

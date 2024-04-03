@@ -15,6 +15,7 @@ export default function GlobalSearch(props) {
   const [dataRes, setdataRes] = useState(null);
 
   const searchFromServer = data => {
+    console.log(data)
     if (data == '') setdataRes(null);
     else {
       Request(
@@ -30,12 +31,11 @@ export default function GlobalSearch(props) {
   };
 
   const onSuccess = result => {
-    console.log('ooo',result)
     setdataRes(result.data);
   };
 
   const onFailed = error => {
-    console.error(error);
+    setdataRes(null);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',

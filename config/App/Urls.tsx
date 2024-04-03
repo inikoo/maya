@@ -20,6 +20,7 @@ export default {
 
 	//warehouse
 	'warehouse-index' : 'api/org/{}/warehouses',
+	'warehouse-count-data' : 'api/org/{}/warehouses/{}',
 
 
 	//locatiom
@@ -39,6 +40,11 @@ export default {
 	'delivery-show' : "api/org/{}/warehouses/{}/pallet-deliveries/{}",
 	'delivery-pallet-index' : "api/org/{}/warehouses/{}/pallet-deliveries/{}/pallets",
 
+
+	//return
+	'return-index' : "api/org/{}/warehouses/{}/pallet-returns",
+	'return-show' : "api/org/{}/warehouses/{}/pallet-returns/{}",
+	'return-pallet-index' : "api/org/{}/warehouses/{}/pallet-returns/{}/pallets",
 
 	'global-search' : 'api/org/{}/warehouses/{}/scanners/{}'
 
