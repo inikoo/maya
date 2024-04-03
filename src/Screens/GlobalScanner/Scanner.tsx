@@ -1,33 +1,17 @@
-import React, { useState } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import LocationCard from './card/LocationCard';
-import PalletCard from './card/PalletCard';
-import StoredItem from './card/StoredItem';
-import { SpeedDial, Button } from '@rneui/themed';
-import { COLORS, MAINCOLORS } from '~/Utils/Colors';
+import {Button} from '@rneui/themed';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 
-export default function Scanner(props) {
+export default function ScannerPage(props) {
   const [scanned, setScanned] = useState(true);
-  const [open, setOpen] = useState(false); // State for SpeedDial
 
-  const handleBarCodeScanned = async (data) => {
+  const handleBarCodeScanned = async data => {
     props.searchFromServer(data);
   };
 
-  const renderCard = () => {
-    if (props.data?.model_type === 'Location') return <LocationCard data={props.data} />;
-    if (props.data?.model_type === 'Pallet') return <PalletCard data={props.data} />;
-    if (props.data?.model_type === 'StoredItem') return <StoredItem data={props.data} />;
-  };
-
-  const onSuccess = async (e) => {
+  const onSuccess = async e => {
     setScanned(false);
     handleBarCodeScanned(e.data);
   };
@@ -36,14 +20,16 @@ export default function Scanner(props) {
     <View style={styles.container}>
       {scanned ? (
         <View style={styles.qrCodeScanner}>
-          <QRCodeScanner onRead={onSuccess} showMarker={true} />
+          <QRCodeScanner
+            onRead={onSuccess}
+            showMarker={true}
+            markerStyle={{borderColor: MAINCOLORS.primary}}
+          />
         </View>
       ) : (
         <View style={styles.scrollViewContainer}>
           {!props.data && (
-            <TouchableOpacity
-             
-              style={styles.noResultContainer}>
+            <TouchableOpacity style={styles.noResultContainer}>
               <View style={styles.imageContainer}>
                 <Image
                   source={require('../../assets/image/20944142.jpg')}
@@ -53,27 +39,14 @@ export default function Scanner(props) {
               </View>
 
               <Text style={styles.tryAgainText}>
-                No results found. Try again. 
+                No results found. Try again.
               </Text>
-              <Button onPress={() => setScanned(true)} buttonStyle={{ margin : 20}}>
+              <Button
+                onPress={() => setScanned(true)}
+                buttonStyle={{margin: 20}}>
                 Scan again
               </Button>
             </TouchableOpacity>
-          )}
-          {props.data && (
-            <View style={styles.cardContainer}>
-              {renderCard()}
-              <SpeedDial
-                isOpen={open}
-                icon={{ name: 'close', color: COLORS.grey8 }}
-                openIcon={{ name: 'close', color: COLORS.grey8 }}
-                buttonStyle={{ backgroundColor: MAINCOLORS.danger }}
-                style={styles.speedDial}
-                overlayColor={'transparent'}
-                onOpen={()=>onSuccess({data : '' })}
-                >
-              </SpeedDial>
-            </View>
           )}
         </View>
       )}

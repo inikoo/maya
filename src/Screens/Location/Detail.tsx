@@ -96,19 +96,14 @@ const Detail = props => {
       </View>
       <SpeedDial
         isOpen={open}
-        icon={{name: 'settings', color: COLORS.grey8}}
-        openIcon={{name: 'close', color: COLORS.grey8}}
         onOpen={() => setOpen(!open)}
         onClose={() => setOpen(!open)}
-        buttonStyle={{backgroundColor: MAINCOLORS.primary}}
         style={styles.speedDial} // Added style prop
         direction="down"
         onPress={() => setOpen(!open)}>
         <SpeedDial.Action
-          icon={{name: 'pallet', color: COLORS.grey8, size: 18}}
+          icon={{ name: 'pallet' }}
           title="Pallet"
-          buttonStyle={{backgroundColor: MAINCOLORS.primary}}
-          iconContainerStyle={{paddingTop: 10}}
           onPress={() =>
             navigation.navigate('Location Pallet', {location: dataSelected})
           }

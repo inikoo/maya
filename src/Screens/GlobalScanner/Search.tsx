@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -11,30 +11,38 @@ import {
   ScrollView,
 } from 'react-native';
 import {Icon} from '@rneui/base';
-import {useNavigation} from '@react-navigation/native';
 import LocationCard from './card/LocationCard';
 import PalletCard from './card/PalletCard';
 import StoredItem from './card/StoredItem';
+import DeliveryCard from './card/DeliveryCard'
+import ReturnCard from './card/ReturnCard'
 
-export default function GlobalSearch(p) {
-  const [inputValue, setInputValue] = useState('');
-  const navigation = useNavigation();
+export default function SearchPage(p) {
+  const [inputValue, setInputValue] = useState(p.value);
 
   const handleSearch = () => {
     p.searchFromServer(inputValue);
   };
 
+  const onClear = () => {
+    p.searchFromServer('');
+  };
 
   const renderCard = () => {
-    if (p.data?.model_type === 'Location') return <LocationCard data={p.data} />;
+    if (p.data?.model_type === 'Location')return <LocationCard data={p.data} />;
     if (p.data?.model_type === 'Pallet') return <PalletCard data={p.data} />;
     if (p.data?.model_type === 'StoredItem') return <StoredItem data={p.data} />;
+    if (p.data?.model_type === 'PalletDelivery') return <DeliveryCard data={p.data} />;
+    if (p.data?.model_type === 'PalletReturn') return <ReturnCard data={p.data} />;
   };
+
+  useEffect(() => {
+    setInputValue(p.value);
+  }, [p.value]);
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : null}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}>
       <View style={styles.inputContainer}>
         <TextInput
@@ -45,9 +53,15 @@ export default function GlobalSearch(p) {
           placeholder="Search..."
           onSubmitEditing={handleSearch}
         />
-        <TouchableOpacity onPress={handleSearch} style={styles.searchIcon}>
-          <Icon name="search" size={24} />
-        </TouchableOpacity>
+        {!p.value ? (
+          <TouchableOpacity onPress={handleSearch} style={styles.searchIcon}>
+            <Icon name="search" size={24} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={onClear} style={styles.searchIcon}>
+            <Icon name="close" size={24} />
+          </TouchableOpacity>
+        )}
       </View>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         {!p.data && (

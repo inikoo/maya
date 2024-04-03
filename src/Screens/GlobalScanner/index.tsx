@@ -1,41 +1,44 @@
 import React, {useState} from 'react';
-import {ButtonGroup} from '@rneui/themed';
+import {SpeedDial} from '@rneui/themed';
 import {StyleSheet} from 'react-native';
-import Search from './Search';
-import Scanner from './Scanner';
+import SearchPage from './Search';
+import ScannerPage from './Scanner';
 import Request from '~/Utils/request';
 import {useSelector} from 'react-redux';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import {ActivityIndicator, View} from 'react-native';
 
 export default function GlobalSearch(props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataRes, setdataRes] = useState(null);
+  const [Search, setSearch] = useState(null);
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
-  const searchFromServer = data => {
-    console.log(data)
-    if (data == '') setdataRes(null);
-    else {
-      Request(
-        'get',
-        'global-search',
-        {},
-        {},
-        [organisation.active_organisation.id, warehouse.id, data],
-        onSuccess,
-        onFailed,
-      );
-    }
+  const searchFromServer = (data: String) => {
+    setLoading(true);
+    Request(
+      'get',
+      'global-search',
+      {},
+      {},
+      [organisation.active_organisation.id, warehouse.id, data],
+      onSuccess,
+      onFailed,
+    );
   };
 
   const onSuccess = result => {
     setdataRes(result.data);
+    setSelectedIndex(0);
+    setLoading(false);
   };
 
-  const onFailed = error => {
+  const onFailed = (error: object) => {
     setdataRes(null);
+    setLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -43,21 +46,48 @@ export default function GlobalSearch(props) {
     });
   };
 
-  return (
+  const onChangeMode = (index: number) => {
+    setOpen(!open);
+    setSelectedIndex(index);
+  };
+
+  const onSearch = (value: string) => {
+    if (value == '') {
+      setdataRes(null);
+      setSearch(null);
+    } else {
+      searchFromServer(value);
+      setSearch(value);
+    }
+  };
+
+  return !loading ? (
     <>
-      <ButtonGroup
-        buttons={['Search', 'Scan Qr']}
-        selectedIndex={selectedIndex}
-        onPress={value => setSelectedIndex(value)}
-        containerStyle={styles.Button}
-        selectedButtonStyle={{backgroundColor: MAINCOLORS.primary}}
-      />
       {selectedIndex == 0 ? (
-        <Search searchFromServer={searchFromServer} data={dataRes} />
+        <SearchPage searchFromServer={onSearch} data={dataRes} value={Search} />
       ) : (
-        <Scanner searchFromServer={searchFromServer} data={dataRes} />
+        <ScannerPage searchFromServer={onSearch} data={dataRes} />
       )}
+      <SpeedDial
+        isOpen={open}
+        onOpen={() => setOpen(!open)}
+        onClose={() => setOpen(!open)}>
+        <SpeedDial.Action
+          icon={{name: 'search'}}
+          title="Search"
+          onPress={() => onChangeMode(0)}
+        />
+        <SpeedDial.Action
+          icon={{name: 'qr-code-scanner'}}
+          title="Scanner"
+          onPress={() => onChangeMode(1)}
+        />
+      </SpeedDial>
     </>
+  ) : (
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <ActivityIndicator size="large" />
+    </View>
   );
 }
 
@@ -69,11 +99,11 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     marginBottom: 10,
   },
-  Button : {
+  Button: {
     marginBottom: 20,
     borderRadius: 10,
     marginTop: 40,
     marginRight: 20,
     marginLeft: 20,
-  }
+  },
 });

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {v4 as uuidv4} from 'uuid';
-import {Avatar, Divider, Card, Icon, Text, Button} from '@rneui/base';
+import { Avatar, Divider, Card, Icon, Text } from '@rneui/base';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {useSelector} from 'react-redux';
 import SetUpOrganisation from './SetUpOrganisation';

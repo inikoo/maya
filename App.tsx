@@ -10,7 +10,7 @@ import {COLORS,MAINCOLORS} from '~/Utils/Colors';
 import { ThemeProvider } from '@rneui/themed';
 import { theme } from '~/Components/Theme';
 const MyTheme = {
-  dark: false,
+  dark: true,
   colors: {
     primary: MAINCOLORS.primary,
     background: MAINCOLORS.background,

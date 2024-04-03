@@ -25,7 +25,7 @@ const Return = (props) => {
           <View style={styles.row}>
           <Avatar
             size={40}
-            icon={{    name: 'truck', type: 'font-awesome', color:MAINCOLORS.white}}
+            icon={{ name: 'trolley', type: 'material-icons', color:MAINCOLORS.white}}
             containerStyle={{ backgroundColor: MAINCOLORS.primary, marginRight: 13}}
           />
             <Text style={styles.title}>

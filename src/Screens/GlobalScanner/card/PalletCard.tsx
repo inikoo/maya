@@ -8,21 +8,21 @@ import {
 import {Avatar} from '@rneui/base';
 import {useNavigation} from '@react-navigation/native';
 
-export default function LocationCard(p) {
+export default function PalletCard(p) {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Location', {location: p.data.model})}
+      onPress={() => navigation.navigate('Pallet',{pallete : p.data.model})}
       style={styles.cardContainer}>
-      <View style={styles.text}>
+      <View>
         <View style={styles.row}>
           <Avatar
             size={40}
-            icon={{name: 'location-pin', type: 'material-icons'}}
+            icon={{name: 'pallet', type: 'FontAwesome6'}}
             containerStyle={{backgroundColor: '#9700b9', marginRight: 13}}
           />
-          <Text style={styles.title}>{p.data.model.code}</Text>
+          <Text style={styles.title}>{p.data.model.slug}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardContainer: {
-    width: '90%',
+    width: 350,
     padding: 17,
     backgroundColor: 'white',
     flexDirection: 'row',

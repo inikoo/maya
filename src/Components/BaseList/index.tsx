@@ -6,7 +6,6 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  ScrollView
 } from 'react-native';
 import {SearchBar, BottomSheet} from '@rneui/base';
 import Request from '~/Utils/request';
