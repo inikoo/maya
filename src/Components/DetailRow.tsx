@@ -1,11 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 
-const DetailRow = ({ title, text }) => {
+
+const DetailRow = ({title, text, titleStyle, textStyle}) => {
   return (
     <View style={styles.row}>
-      <Text style={styles.title}>{typeof title === 'function' ? title() : title}:</Text>
-      <Text style={styles.text}>{typeof text === 'function' ? text() : text}</Text>
+      <Text style={{...styles.title, ...titleStyle}}>
+        {typeof title === 'function' ? title() : title} :
+      </Text>
+      <Text style={{...styles.text, ...textStyle}}>
+        {typeof text === 'function' ? text() : text}
+      </Text>
     </View>
   );
 };
@@ -13,6 +18,8 @@ const DetailRow = ({ title, text }) => {
 DetailRow.defaultProps = {
   title: '-',
   text: '-',
+  titleStyle: {},
+  textStyle: {},
 };
 
 const styles = StyleSheet.create({

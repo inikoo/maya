@@ -5,18 +5,14 @@ import BaseList from '~/Components/BaseList';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Icon, Dialog} from '@rneui/themed';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {IconColor} from '~/Utils';
+import Information from '~/Components/loactionComponents/Information';
 
 const Locations = props => {
   const navigation = useNavigation();
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [openDialog, setOpenDialog] = useState(false);
-
-  const IconColor = (allow, stock) => {
-    if (allow && stock) return MAINCOLORS.success;
-    if (!allow && stock) return MAINCOLORS.warning;
-    return COLORS.black; // default color if neither allow nor stock
-  };
 
   const setDialog = () => {
     setOpenDialog(!openDialog);
@@ -82,67 +78,7 @@ const Locations = props => {
       />
       <Dialog isVisible={openDialog} onBackdropPress={setDialog}>
         <Dialog.Title title="Info" />
-        <View style={styles.row}>
-          <Icon
-            name="box"
-            type="font-awesome-5"
-            size={10}
-            style={{...styles.icon, marginRight: 10}}
-            color={COLORS.black}
-          />
-          <Text style={styles.dialogText}>Stock</Text>
-        </View>
-        <View style={styles.row}>
-          <Icon
-            name="hand-holding-water"
-            type="font-awesome-5"
-            size={10}
-            style={{...styles.icon, marginRight: 10}}
-            color={COLORS.black}
-          />
-          <Text style={styles.dialogText}>Dropshipping</Text>
-        </View>
-        <View style={styles.row}>
-          <Icon
-            name="pallet"
-            type="font-awesome-5"
-            size={10}
-            style={{...styles.icon, marginRight: 10}}
-            color={COLORS.black}
-          />
-          <Text style={styles.dialogText}>Fulfilment</Text>
-        </View>
-
-        <View style={styles.row}>
-          <Icon
-            name="dot-fill"
-            type="octicon"
-            size={10}
-            style={{...styles.icon, marginRight: 10}}
-            color={MAINCOLORS.success}
-          />
-          <Text style={styles.dialogText}>Pallets still accommodated.</Text>
-        </View>
-
-        <View style={styles.row}>
-          <Icon
-            name="dot-fill"
-            type="octicon"
-            size={10}
-            style={{...styles.icon, marginRight: 10}}
-            color={MAINCOLORS.warning}
-          />
-          <Text style={styles.dialogText}>Location packed with pallets</Text>
-        </View>
-        <View style={styles.row}>
-          <Icon
-            name="dot-fill"
-            type="octicon"
-            size={10}
-            style={{...styles.icon, marginRight: 10}}
-          />
-          <Text style={styles.dialogText}>Location is inactive</Text>
-        </View>
+        <Information />
       </Dialog>
     </>
   );
@@ -185,9 +121,5 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginHorizontal: 5,
-  },
-  dialogText: {
-    fontSize: 12,
-    fontFamily: 'TitilliumWeb-Regular',
   },
 });

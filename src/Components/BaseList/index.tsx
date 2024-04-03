@@ -28,18 +28,19 @@ export default function BaseList(props) {
   const [totalPage, setTotalPage] = useState(0);
   const navigation = useNavigation();
   const [open, setOpen] = React.useState(false);
+  const [TotalData, setTotalData] = React.useState(0);
   const dialAction = [
     ...props.settingOptions.map(item => ({...item})),
     {
       icon: {name: 'qr-code-scanner'},
       title: 'Scanner',
-      key : 'scanner',
+      key: 'scanner',
       onPress: () => goScanner(),
     },
-  ].filter((item)=>{
-    if(!props.scanner && item.key == "scanner")  return false
-    return true
-  })
+  ].filter(item => {
+    if (!props.scanner && item.key == 'scanner') return false;
+    return true;
+  });
   let timeoutId: any;
 
   const requestAPI = () => {
@@ -66,6 +67,7 @@ export default function BaseList(props) {
     setTotalPage(results.meta.last_page);
     setLoading(false);
     setMoreLoading(false);
+    setTotalData(results.meta.total);
     if (page == totalPage) setIsListEnd(true);
   };
 
@@ -115,17 +117,25 @@ export default function BaseList(props) {
 
   const renderList = () => {
     return (
-      <FlatList
-        data={data}
-        keyExtractor={(item, index) => index.toString()} // Key extractor function
-        renderItem={props.renderItem ? props.renderItem : renderItem}
-        ListHeaderComponent={props.listHeaderComponent} // Corrected prop name
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={renderEmpty}
-        onEndReachedThreshold={0.2}
-        onEndReached={fetchMoreData}
-        style={styles.list}
-      />
+      <View >
+        <View style={{ backgroundColor : COLORS.grey7, padding : 10 , paddingHorizontal : 18}}>
+        <Text style={{fontSize: 14, fontWeight: '700', marginLeft : 8}}>
+          Records : {TotalData}{' '}
+        </Text>
+        </View>
+        
+        <FlatList
+          data={data}
+          keyExtractor={(item, index) => index.toString()} // Key extractor function
+          renderItem={props.renderItem ? props.renderItem : renderItem}
+          ListHeaderComponent={props.listHeaderComponent} // Corrected prop name
+          ListFooterComponent={renderFooter}
+          ListEmptyComponent={renderEmpty}
+          onEndReachedThreshold={0.2}
+          onEndReached={fetchMoreData}
+          style={styles.list}
+        />
+      </View>
     );
   };
 
@@ -192,7 +202,7 @@ export default function BaseList(props) {
 
   const goScanner = () => {
     navigation.navigate(`${props.title} Scanner`);
-    setOpen(false)
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -210,19 +220,14 @@ export default function BaseList(props) {
       {activeSearch && renderSearch()}
       {renderList()}
       {props.settingButton && (
-       <SpeedDial
-       isOpen={open}
-       onOpen={() => setOpen(!open)}
-       onClose={() => setOpen(!open)}
-     >
-       {dialAction.map((item, index) => (
-         <SpeedDial.Action
-           key={index}
-           {...item}
-         />
-       ))}
-     </SpeedDial>
-     
+        <SpeedDial
+          isOpen={open}
+          onOpen={() => setOpen(!open)}
+          onClose={() => setOpen(!open)}>
+          {dialAction.map((item, index) => (
+            <SpeedDial.Action key={index} {...item} />
+          ))}
+        </SpeedDial>
       )}
       <BottomSheet modalProps={{}} isVisible={filterVisible}>
         <View style={{padding: 20, backgroundColor: '#ffff'}}>
