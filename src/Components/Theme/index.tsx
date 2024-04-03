@@ -14,7 +14,8 @@ const theme = createTheme({
     },
     Text : {
       style : { 
-        color : MAINCOLORS.black
+        color : MAINCOLORS.black,
+        fontFamily: 'Nunito-Bold',
       }
     },
     ButtonGroup : {
@@ -43,6 +44,16 @@ const theme = createTheme({
         borderWidth : 1,
         borderColor : COLORS.grey7
       }
+    },
+    SpeedDial : {
+      buttonStyle:{backgroundColor: MAINCOLORS.primary},
+      openIcon:{name: 'close', color: COLORS.grey8},
+      icon:{name: 'settings', color: COLORS.grey8}
+    },
+    SpeedDialAction:{
+      icon: {color: COLORS.grey8, size: 18},
+      buttonStyle:{backgroundColor: MAINCOLORS.primary},
+      iconContainerStyle:{paddingTop: 10}
     }
   },
 });

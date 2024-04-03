@@ -6,7 +6,6 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  ScrollView
 } from 'react-native';
 import {SearchBar, BottomSheet} from '@rneui/base';
 import Request from '~/Utils/request';
@@ -30,7 +29,8 @@ export default function BaseList(props) {
   let timeoutId: any;
 
   const requestAPI = () => {
-    if (!isListEnd || search) {
+    console.log(isListEnd,search,totalPage,page)
+    if ((!isListEnd || search) && (page != totalPage)){
       setMoreLoading(true);
       Request(
         'get',
@@ -55,7 +55,7 @@ export default function BaseList(props) {
     setTotalPage(results.meta.last_page)
     setLoading(false);
     setMoreLoading(false);
-    if(page == totalPage) setIsListEnd(true);
+    if(page == totalPage) setIsListEnd(true) 
   };
 
   const onFailed = (error: Object) => {

@@ -17,7 +17,7 @@ const ScanButton = ({children, onPress}) => {
           height: 60,
           paddingTop: 12,
           borderRadius: 50,
-          backgroundColor: '#FF8880',
+          backgroundColor: MAINCOLORS.warning,
       /*     borderWidth: 2,
           borderColor: MAINCOLORS.white, */
         }}>

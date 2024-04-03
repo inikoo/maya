@@ -1,25 +1,36 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Image} from 'react-native';
 import {Icon, Text, Button} from '@rneui/themed';
 import {COLORS} from '~/Utils/Colors';
-import { noop } from 'lodash'
+import {noop} from 'lodash';
 
 const Empty = props => {
   return (
     <View style={styles.container}>
-      <Icon
-        name={props.icon.name}
-        type={props.icon.type}
-        size={props.icon.size}
-        color={props.icon.color}
-      />
+      {props.useImage ? (
+        <Icon
+          name={props.icon.name}
+          type={props.icon.type}
+          size={props.icon.size}
+          color={props.icon.color}
+        />
+      ) : (
+        <View style={{height: 300, width: 300}}>
+          <Image
+            source={require('../../assets/image/9264822.jpg')}
+            style={{flex: 1, width: '100%', height: '100%'}}
+            resizeMode="contain"
+          />
+        </View>
+      )}
+
       <Text style={styles.title}>{props.title}</Text>
       <Text style={styles.subtitle}>{props.subtitle}</Text>
 
       <View>
         {props.useButton && (
           <Button
-            onPress={(e)=>props.buttonOnPress(e)}
+            onPress={e => props.buttonOnPress(e)}
             containerStyle={styles.button}
             size={props.button.size}
             color={props.button.color}>
@@ -35,6 +46,7 @@ Empty.defaultProps = {
   title: 'Empty',
   useButton: true,
   subtitle: 'you dont have any data in here',
+  useIcon: false,
   icon: {
     name: 'inbox',
     type: 'antdesign',
@@ -46,7 +58,7 @@ Empty.defaultProps = {
     text: 'Reload',
     color: 'primary',
   },
-  buttonOnPress : noop
+  buttonOnPress: noop,
 };
 
 const styles = StyleSheet.create({

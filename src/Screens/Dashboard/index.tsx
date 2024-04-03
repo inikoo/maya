@@ -1,27 +1,29 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect } from 'react';
 import {
   View,
   SafeAreaView,
   ScrollView,
   ImageBackground,
-  Image,
+  ActivityIndicator,
   TouchableOpacity,
   TextInput
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import profileImage from '../../assets/image/user-profile.jpg';
 import {v4 as uuidv4} from 'uuid';
-import {Avatar, Divider, Card, Icon, Text, Button} from '@rneui/base';
+import { Avatar, Divider, Card, Icon, Text } from '@rneui/base';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {useSelector} from 'react-redux';
-import LoginSVG from '../../assets/image/learning.jpg';
 import SetUpOrganisation from './SetUpOrganisation';
 import SetUpFullfilment from './SetUpFullfilment';
+import { Request } from '~/Utils';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 export default function HomeScreen({navigation}) {
   const warehouse = useSelector(state => state.warehouseReducer);
   const organisation = useSelector(state => state.organisationReducer);
   const user = useSelector(state => state.userReducer);
+  const [loading, setLoading] = useState(false);
+  const [countData, setCountData] = useState([]);
 
   const Bluprint = [
     /* {
@@ -74,7 +76,7 @@ export default function HomeScreen({navigation}) {
         shadowPos: {top: 0, left: 10},
       },
     },
- /*    {
+    {
       id: uuidv4(),
       title: 'Stored Items',
       key: 'StoredItems',
@@ -83,31 +85,45 @@ export default function HomeScreen({navigation}) {
         type: 'entypo',
         shadowPos: {top: 0, left: 24},
       },
-    }, */
+    },
   ];
 
-  const stat = [
-    {
-      id: uuidv4(),
-      title: 'Location',
-      total: 100,
-    },
-    {
-      id: uuidv4(),
-      title: 'Pallet',
-      total: 100,
-    },
-    {
-      id: uuidv4(),
-      title: 'Delivery',
-      total: 100,
-    },
-    {
-      id: uuidv4(),
-      title: 'Stored Items',
-      total: 100,
-    },
-  ];
+  const reqCountData = () => {
+    console.log(organisation.active_organisation,warehouse.id)
+     if(organisation.active_organisation && warehouse.id){
+      setLoading(true);
+      Request(
+        'get',
+        'warehouse-count-data',
+        {},
+        {},
+        [
+          organisation.active_organisation.id,
+          warehouse.id,
+        ],
+        onSuccessGetCount,
+        onFailedGetCount,
+      );
+     }
+  };
+
+  const onSuccessGetCount = response => {
+    setCountData(response.data.stats);
+    setLoading(false);
+  };
+
+  const onFailedGetCount = error => {
+    setLoading(false);
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message,
+    });
+  };
+
+  useEffect(() => {
+    reqCountData();
+  }, [organisation,warehouse]);
 
   const onPressMenu = item => {
     navigation.navigate(item.key);
@@ -143,17 +159,17 @@ export default function HomeScreen({navigation}) {
   };
 
   const renderStat = () => {
-    return (
+    return  !loading ? (
       <View
         style={{
           flexDirection: 'row',
           flexWrap: 'wrap',
         }}>
-        {stat.map((item, index) => (
+        {Object.entries(countData).map(([key, item]) => (
           <TouchableOpacity
-            key={item.id}
-            onPress={() => onPressMenu(item)}
-            style={{width: '50%', padding: 5}}>
+            key={key}
+            /* onPress={() => onPressMenu(item)} */
+            style={{ width: '50%', padding: 5 }}>
             <Card
               containerStyle={{
                 borderRadius: 10,
@@ -162,26 +178,28 @@ export default function HomeScreen({navigation}) {
                 marginRight: 0,
                 marginLeft: 0,
               }}>
-              <Text style={{fontSize: 14, marginBottom: 5, fontWeight: '700'}}>
-                {item.title}
+              <Text style={{ fontSize: 14, marginBottom: 5, fontWeight: '700' }}>
+                {item.label}
               </Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Icon
                   name="tags"
                   type="antdesign"
                   size={15}
                   color={MAINCOLORS.danger}
-                  style={{marginRight: 5}}
+                  style={{ marginRight: 5 }}
                 />
-                <Text style={{fontSize: 12, color: '#444'}}>
-                  Total: {item.total}
+                <Text style={{ fontSize: 12, color: '#444' }}>
+                  Total: {item.count}
                 </Text>
               </View>
             </Card>
           </TouchableOpacity>
         ))}
       </View>
-    );
+    ) : (
+      <ActivityIndicator size="large" />
+    )
   };
 
   return (
@@ -201,14 +219,15 @@ export default function HomeScreen({navigation}) {
               </Text>
               <TouchableOpacity onPress={() => navigation.openDrawer()}>
                 <ImageBackground
-                  source={profileImage}
+                  source={require('../../assets/image/user-profile.jpg')}
                   style={{width: 35, height: 35}}
                   imageStyle={{borderRadius: 25}}
                 />
               </TouchableOpacity>
             </View>
 
-            <View
+            <TouchableOpacity
+              onPress={()=>navigation.navigate("Scan")}
               style={{
                 flexDirection: 'row',
                 borderColor: '#C6C6C6',
@@ -228,7 +247,7 @@ export default function HomeScreen({navigation}) {
                 placeholder="Search"
                 style={{padding: 0, margin: 0, marginLeft: 8}}
               />
-            </View>
+            </TouchableOpacity>
 
             <View
               style={{

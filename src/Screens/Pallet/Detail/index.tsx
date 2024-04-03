@@ -15,8 +15,13 @@ import PalletImg from '../../../assets/image/pallet.jpg';
 import Description from './Description';
 import Movement from './MovementPallet';
 import {useFormik} from 'formik';
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
-import { COLORS, MAINCOLORS } from '~/Utils/Colors';
+import {
+  ALERT_TYPE,
+  Dialog,
+  AlertNotificationRoot,
+  Toast,
+} from 'react-native-alert-notification';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 
 function Scanner(props) {
   // State variables
@@ -38,31 +43,29 @@ function Scanner(props) {
         data.location.id,
         dataSelected.id,
       ],
-     onMoveSuccess,
-     onMoveFailed,
+      onMoveSuccess,
+      onMoveFailed,
     );
   };
 
-  const onMoveSuccess = (response)=>{
+  const onMoveSuccess = response => {
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
       textBody: 'Pallet already move to new Location',
-    })
-    setPageMovement(false)
+    });
+    setPageMovement(false);
     getDetail();
-  }
+  };
 
-  const onMoveFailed = (response)=>{
-    console.error(response)
+  const onMoveFailed = response => {
+    console.error(response);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Success',
       textBody: response.response.data.message,
-    })
-  }
-
-
+    });
+  };
 
   const ChangeStatus = async (data: object) => {
     await Request(
@@ -76,34 +79,33 @@ function Scanner(props) {
         data.location.id,
         dataSelected.id,
       ],
-     onMoveSuccess,
-     onMoveFailed,
+      onMoveSuccess,
+      onMoveFailed,
     );
   };
 
-  const ChangeStatusSuccess = (response)=>{
+  const ChangeStatusSuccess = response => {
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
       textBody: 'Pallet already move to new Location',
-    })
-    setPageMovement(false)
+    });
+    setPageMovement(false);
     getDetail();
-  }
+  };
 
-  const ChangeStatusFailed = (response)=>{
-    console.error(response)
+  const ChangeStatusFailed = response => {
+    console.error(response);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Success',
       textBody: response.response.data.message,
-    })
-  }
-
+    });
+  };
 
   const formik = useFormik({
     initialValues: {
-      location: {id : null},
+      location: {id: null},
     },
     onSubmit: MoveToNewLocation,
   });
@@ -129,10 +131,14 @@ function Scanner(props) {
 
   // Success callback for detail fetch
   const onSuccessGetDetail = response => {
-    console.log(response)
+    console.log(response);
     setDataSelected(response.data);
     setLoading(false);
-    formik.setFieldValue('location',{...response.data.location ,title :response.data.location.code, id: get(response,['data','location','id'], null)})
+    formik.setFieldValue('location', {
+      ...response.data.location,
+      title: response.data.location.code,
+      id: get(response, ['data', 'location', 'id'], null),
+    });
   };
 
   // Error callback for detail fetch
@@ -143,7 +149,7 @@ function Scanner(props) {
       type: ALERT_TYPE.DANGER,
       title: 'Error',
       textBody: error.response.data.message,
-    })
+    });
   };
 
   // Function to toggle overlay visibility
@@ -167,22 +173,7 @@ function Scanner(props) {
             {!pageMovement ? (
               <View style={styles.descriptionContainer}>
                 <Description data={dataSelected} />
-                {dataSelected.status == 'returned' && dataSelected.state == 'picking' ? (
-                  <Button
-                  icon={
-                    <Icon
-                      name="truck-loading"
-                      type='font-awesome-5'
-                      color="#ffffff"
-                      iconStyle={styles.buttonIcon}
-                    />
-                  }
-                  onPress={toggleChangeContent}
-                  buttonStyle={styles.button}
-                  title="Picking"
-                  />
-                ) : (
-                  <Button
+                <Button
                   icon={
                     <Icon
                       name="location-pin"
@@ -194,19 +185,18 @@ function Scanner(props) {
                   buttonStyle={styles.button}
                   title="Move Location "
                 />
-                )}
               </View>
             ) : (
               <View>
                 <Movement
                   onChange={formik.handleChange('location')}
-                  value={get(formik,['values','location'],{id : null})}
+                  value={get(formik, ['values', 'location'], {id: null})}
                   form={formik}
                 />
                 {formik.errors.location && (
                   <Text style={{color: 'red'}}>{formik.errors.location}</Text>
                 )}
-                 <Button
+                <Button
                   icon={
                     <Icon
                       name="location-pin"
@@ -217,6 +207,21 @@ function Scanner(props) {
                   onPress={formik.handleSubmit}
                   buttonStyle={styles.button}
                   title="Send to location "
+                />
+
+                <Button
+                  icon={
+                    <Icon
+                      name="location-pin"
+                      color={MAINCOLORS.black}
+                      iconStyle={styles.buttonIcon}
+                    />
+                  }
+
+                  onPress={toggleChangeContent}
+                  buttonStyle={styles.cancelButton}
+                  titleStyle={{ color : COLORS.black}}
+                  title="Cancel"
                 />
               </View>
             )}
@@ -256,8 +261,16 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     marginLeft: 0,
     marginRight: 0,
-    backgroundColor : MAINCOLORS.primary,
+    backgroundColor: MAINCOLORS.primary,
     marginBottom: 0,
+  },
+  cancelButton: {
+    borderRadius: 0,
+    marginLeft: 0,
+    marginRight: 0,
+    backgroundColor: '#E2E8F0',
+    marginTop: 10,
+    color : COLORS.black
   },
   buttonIcon: {
     marginRight: 10,

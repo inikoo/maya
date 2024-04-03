@@ -13,26 +13,24 @@ import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {Avatar, Text} from '@rneui/themed';
 import {defaultTo} from 'lodash';
 import BaseList from '~/Components/BaseList';
-import { useNavigation } from '@react-navigation/native';
 
 const DeliveryDetail = props => {
   const [loading, setLoading] = useState(true);
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
-  const navigation = useNavigation()
 
   const getDetail = () => {
     setLoading(true);
     Request(
       'get',
-      'delivery-show',
+      'return-show',
       {},
       {},
       [
         organisation.active_organisation.id,
         warehouse.id,
-        props.route.params.delivery.id,
+        props.route.params.return.id,
       ],
       onSuccessGetDetail,
       onFailedGetDetail,
@@ -126,11 +124,11 @@ const DeliveryDetail = props => {
 
           <ScrollView>
           <BaseList
-            urlKey="delivery-pallet-index"
+            urlKey="return-pallet-index"
             args={[
               organisation.active_organisation.id,
               warehouse.id,
-              props.route.params.delivery.id,
+              props.route.params.return.id,
             ]}
             renderItem={Item}
             navigation={props.navigation}
