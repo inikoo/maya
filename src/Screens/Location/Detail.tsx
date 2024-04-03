@@ -8,6 +8,7 @@ import {get, defaultTo, isNull} from 'lodash';
 import dayjs from 'dayjs';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import DetailRow from '~/Components/DetailRow';
 
 const Detail = props => {
   const [loading, setLoading] = useState(true);
@@ -71,10 +72,10 @@ const Detail = props => {
             title="Created At :"
             text={dayjs(dataSelected.created_at).format('DD/MM/YY')}
           />
-       {/*    <DetailRow
+          <DetailRow
             title="Updated At :"
             text={dayjs(dataSelected.updated_at).format('DD/MM/YY')}
-          /> */}
+          />
           <DetailRow
             title="Audited At :"
             text={
@@ -102,7 +103,7 @@ const Detail = props => {
         direction="down"
         onPress={() => setOpen(!open)}>
         <SpeedDial.Action
-          icon={{ name: 'pallet' }}
+          icon={{name: 'pallet'}}
           title="Pallet"
           onPress={() =>
             navigation.navigate('Location Pallet', {location: dataSelected})
@@ -117,17 +118,6 @@ const Detail = props => {
 
 export default Detail;
 
-const DetailRow = ({title, text, renderContent}) => (
-  <View style={styles.descriptionRow}>
-    <Text style={styles.descriptionTitle}>{title}</Text>
-    {!renderContent ? (
-      <Text style={styles.descriptionText}>{text}</Text>
-    ) : (
-      renderContent
-    )}
-  </View>
-);
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -140,7 +130,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_700Bold',
     marginTop: 30,
     fontWeight: 'bold',
-    color:MAINCOLORS.primary
+    color: MAINCOLORS.primary,
   },
   img: {
     height: '60%',
@@ -157,19 +147,6 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     marginVertical: 10,
-  },
-  descriptionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
-  descriptionTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginRight: 10,
-  },
-  descriptionText: {
-    flex: 1,
   },
   speedDial: {
     position: 'absolute',

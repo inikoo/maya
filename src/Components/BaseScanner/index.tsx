@@ -1,42 +1,43 @@
 import React, {useState} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import {Text} from '@rneui/base';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import Request from '~/Utils/request';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
-import { PrefixScanner } from '~/Utils';
+import {PrefixScanner, Request} from '~/Utils';
 
 export default function BaseScanner(p) {
   const [scanned, setScanned] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  const handleBarCodeScanned = async (data) => {
-    try {
-      Request(
-        'get',
-        p.urlKey,
-        p.params,
-        {},
-        [...p.args, data],
-        onSuccess,
-        onFailed,
-      );
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: 'Error',
-        textBody: 'Failed to perform',
-      });
-    }
+
+  const handleBarCodeScanned = (data: String) => {
+    setLoading(true);
+    Request(
+      'get',
+      p.urlKey,
+      p.params,
+      {},
+      [...p.args, data],
+      onSuccess,
+      onFailed,
+    );
   };
 
   const onSuccess = async res => {
     setScanned(false);
-    navigation.navigate(p.title, { [p.scannerKey] : res })
+    setLoading(false);
+    navigation.navigate(p.title, {[p.scannerKey]: res.data.model});
   };
 
   const onFailed = res => {
     setScanned(false);
-    console.error(res)
+    setLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -45,11 +46,18 @@ export default function BaseScanner(p) {
   };
 
   const onSuccessScanner = async e => {
-    const data = await PrefixScanner(e.data)
-    handleBarCodeScanned(data);
+    if (PrefixScanner(p.prefix, e.data)) handleBarCodeScanned(e.data);
+    else {
+      setScanned(false);
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Error',
+        textBody: `you only can scan ${p.title} here`,
+      });
+    }
   };
 
-  return (
+  return !loading ? (
     <View style={styles.container}>
       {scanned ? (
         <View style={styles.qrCodeScanner}>
@@ -63,15 +71,24 @@ export default function BaseScanner(p) {
         </TouchableOpacity>
       )}
     </View>
+  ) : (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+      }}>
+      <ActivityIndicator size={'large'} />
+    </View>
   );
 }
 
 BaseScanner.defaultProps = {
-  urlKey: '',
+  urlKey: 'global-search',
   args: [],
   params: {},
   title: '',
-  scannerKey:''
+  scannerKey: '',
+  prefix: '',
 };
 
 const styles = StyleSheet.create({
@@ -102,7 +119,7 @@ const styles = StyleSheet.create({
   logo: {
     maxHeight: 100,
     width: 100,
-    marginRight: 10, // Add margin for separation
+    marginRight: 10,
   },
   loginContinueTxt: {
     fontSize: 21,

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View} from 'react-native';
 import BaseScanner from '~/Components/BaseScanner';
 import {useSelector} from 'react-redux';
+import {MAINCOLORS} from '~/Utils/Colors';
 
 export default function PalletScanner() {
   const organisation = useSelector(state => state.organisationReducer);
@@ -9,15 +10,12 @@ export default function PalletScanner() {
 
   return (
     <BaseScanner
-      urlKey="pallet-show"
       title="Pallet"
-      scannerKey='pallet'
+      scannerKey="pallet"
       showMarker={true}
-      args={[
-        organisation.active_organisation.id,
-        warehouse.id,
-        organisation.active_organisation.active_authorised_fulfilments.slug,
-      ]}
+      markerStyle={{borderColor: MAINCOLORS.primary}}
+      prefix="pal"
+      args={[organisation.active_organisation.id, warehouse.id]}
     />
   );
 }

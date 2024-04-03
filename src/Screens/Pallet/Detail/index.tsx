@@ -34,7 +34,7 @@ function Scanner(props) {
   const MoveToNewLocation = async (data: object) => {
     await Request(
       'patch',
-      'pallete-location',
+      'pallet-location',
       {},
       {},
       [
@@ -70,7 +70,7 @@ function Scanner(props) {
   const ChangeStatus = async (data: object) => {
     await Request(
       'patch',
-      'pallete-location',
+      'pallet-location',
       {},
       {},
       [
@@ -122,7 +122,7 @@ function Scanner(props) {
         organisation.active_organisation.id,
         warehouse.id,
         organisation.active_organisation.active_authorised_fulfilments.id,
-        props.route.params.pallete.id,
+        props.route.params.pallet.id,
       ],
       onSuccessGetDetail,
       onFailedGetDetail,

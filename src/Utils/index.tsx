@@ -2,20 +2,9 @@ import {WriteCredential, UpdateCredential, RemoveCredential} from './auth';
 import Request from './request';
 import {Dimensions} from 'react-native';
 
-const PrefixScanner = e => {
-  let dataWithoutPrefix;
-
-  if (e.startsWith('loc-')) {
-    dataWithoutPrefix = e.substring(4);
-  } else if (e.startsWith('pal-')) {
-    dataWithoutPrefix = e.substring(4);
-  } else if (e.startsWith('item-')) {
-    dataWithoutPrefix = e.substring(5);
-  } else {
-    dataWithoutPrefix = e;
-  }
-
-  return dataWithoutPrefix;
+const PrefixScanner = (prefix : string, value : 'string') => {
+  if (value.startsWith(`${prefix}-`)) return true
+  return false
 };
 
 const FindDimensions = () => {

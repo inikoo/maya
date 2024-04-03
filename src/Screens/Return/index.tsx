@@ -11,7 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Avatar, Text} from '@rneui/themed'; // Import Icon from your icon library
 import { COLORS, MAINCOLORS } from '~/Utils/Colors';
 
-const Return = (props) => {
+const Returns = (props) => {
   const navigation = useNavigation();
   const oraganisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
@@ -19,7 +19,7 @@ const Return = (props) => {
   const Item = ({item}) => {
     return (
       <TouchableOpacity 
-        onPress={() => navigation.navigate('Return Detail',{return : item})}
+        onPress={() => navigation.navigate('Return',{return : item})}
         style={styles.container}>
         <View>
           <View style={styles.row}>
@@ -44,13 +44,12 @@ const Return = (props) => {
         args={[oraganisation.active_organisation.id, warehouse.id]}
         renderItem={Item}
         navigation={props.navigation}
-        title='Delivery'
-        scanner={false}
+        title='Return'
       />
   );
 };
 
-export default Return;
+export default Returns;
 
 const styles = StyleSheet.create({
   container: {

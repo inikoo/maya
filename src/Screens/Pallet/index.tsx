@@ -3,15 +3,13 @@ import {
   StyleSheet,
   Text,
   View,
-  Dimensions,
   TouchableOpacity,
-  TextInput,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList';
 import {useNavigation} from '@react-navigation/native';
-import {Avatar, Icon} from '@rneui/themed'; // Import Icon from your icon library
-import { COLORS, MAINCOLORS } from '~/Utils/Colors';
+import {Avatar} from '@rneui/themed'; // Import Icon from your icon library
+import {MAINCOLORS } from '~/Utils/Colors';
 
 const Pallet = props => {
   const navigation = useNavigation();
@@ -20,7 +18,7 @@ const Pallet = props => {
 
   const Item = ({item, index}) => {
     return (
-      <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('Pallet',{pallete : item})}>
+      <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('Pallet',{pallet : item})}>
         <View style={styles.row}>
           <Avatar
             size={40}
@@ -43,7 +41,6 @@ const Pallet = props => {
   };
 
   return (
-    <View>
       <BaseList
         urlKey="pallet-index"
         navigation={props.navigation}
@@ -52,11 +49,9 @@ const Pallet = props => {
           warehouse.id,
           oraganisation.active_organisation.active_authorised_fulfilments.id,
         ]}
-       /*  params={{'pallets_filter[located]': false}} */
         renderItem={Item}
-        title='Pallets'
+        title='Pallet'
       />
-    </View>
   );
 };
 
