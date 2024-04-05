@@ -17,6 +17,7 @@ const Delivery = (props) => {
   const warehouse = useSelector(state => state.warehouseReducer);
 
   const Item = ({item}) => {
+    console.log('delivery',item)
     return (
       <TouchableOpacity 
         onPress={() => navigation.navigate('Delivery',{delivery : item})}

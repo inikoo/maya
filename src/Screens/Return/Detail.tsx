@@ -134,6 +134,8 @@ const DeliveryDetail = props => {
             navigation={props.navigation}
             title="Delivery"
             scanner={false}
+            settingButton={false}
+            showRecords={false}
           />
           </ScrollView>
 

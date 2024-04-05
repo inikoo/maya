@@ -57,6 +57,7 @@ export default function BaseList(props) {
   };
 
   const onSuccess = (results: Object) => {
+    console.log(results);
     if (results.data.length != 0 && page != 1) {
       setData(prevData => [...prevData, ...results.data]);
     } else if (results.data.length != 0 && page == 1) {
@@ -76,11 +77,20 @@ export default function BaseList(props) {
     if (page == totalPage) setIsListEnd(true);
     setLoading(false);
     setMoreLoading(false);
-    Toast.show({
-      type: ALERT_TYPE.DANGER,
-      title: 'Error',
-      textBody: error.response.data.message,
-    });
+    if(error?.response?.data?.message){
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Error',
+        textBody: error.response.data.message,
+      });
+    }else {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Error',
+        textBody: 'failed from server',
+      });
+    }
+ 
   };
 
   const fetchMoreData = () => {

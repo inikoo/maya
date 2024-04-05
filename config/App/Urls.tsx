@@ -33,6 +33,7 @@ export default {
 	'pallet-show' : 'api/org/{}/warehouses/{}/fulfilments/{}/pallets/{}',
 	'pallet-location' : 'api/org/{}/warehouses/{}/locations/{}/pallets/{}',
 	'pallet-return' : 'api/org/{}/warehouses/{}/fulfilments/{}/pallets/{}/return',
+	'pallet-change-sattus-state' : 'api/org/{}/warehouses/{}/fulfilments/{}/pallets/{}',
 
 
 	//delivery

@@ -89,7 +89,6 @@ export default function HomeScreen({navigation}) {
   ];
 
   const reqCountData = () => {
-    console.log(organisation.active_organisation,warehouse.id)
      if(organisation.active_organisation && warehouse.id){
       setLoading(true);
       Request(

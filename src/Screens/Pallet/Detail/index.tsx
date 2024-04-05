@@ -8,32 +8,32 @@ import {defaultTo} from 'lodash';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import DetailRow from '~/Components/DetailRow';
 import Barcode from 'react-native-barcode-builder';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import { MAINCOLORS } from '~/Utils/Colors';
 
 function PalletDetail(props) {
   const [loading, setLoading] = useState(true);
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
-  const [pageMovement, setPageMovement] = useState(false);
   const [open, setOpen] = useState(false);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+  const [finalFeatures, setFinalFeatures] = useState([]);
 
-
-/*   const ChangeStatus = async (data: object) => {
+  const ChangeStatus = async (data: object) => {
     await Request(
       'patch',
-      'pallet-location',
+      'pallet-change-sattus-state',
       {},
-      {},
+      data,
       [
         organisation.active_organisation.id,
         warehouse.id,
-        data.location.id,
+        organisation.active_organisation.active_authorised_fulfilments.id,
         dataSelected.id,
       ],
-      onMoveSuccess,
-      onMoveFailed,
+      ChangeStatusSuccess,
+      ChangeStatusFailed,
     );
   };
 
@@ -43,19 +43,25 @@ function PalletDetail(props) {
       title: 'Success',
       textBody: 'Pallet already move to new Location',
     });
-    setPageMovement(false);
     getDetail();
   };
 
   const ChangeStatusFailed = response => {
-    console.error(response);
-    Toast.show({
-      type: ALERT_TYPE.DANGER,
-      title: 'Success',
-      textBody: response.response.data.message,
-    });
-  }; */
-
+    if(response?.response?.data?.message){
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'failed',
+        textBody: response.response.data.message,
+      });
+    }else {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'failed',
+        textBody: 'server error',
+      });
+    }
+ 
+  };
 
   // Function to fetch details
   const getDetail = () => {
@@ -80,6 +86,7 @@ function PalletDetail(props) {
   const onSuccessGetDetail = response => {
     setDataSelected(response.data);
     setLoading(false);
+    setUpFeaturesPallet(response.data.state,response.data.status);
   };
 
   // Error callback for detail fetch
@@ -139,6 +146,133 @@ function PalletDetail(props) {
     );
   };
 
+  const buttonFeatures = [
+    {
+      icon: {
+        name: 'location-pin',
+        type: 'material-icons',
+      },
+      key: 'move_location',
+      title: 'Move Location',
+      onPress: () =>
+        navigation.navigate('Pallet Movement', {pallet: dataSelected}),
+    },
+    {
+      icon: {
+        name: 'times',
+        type: 'font-awesome-5',
+      },
+      title: 'not received',
+      key: 'not_recived',
+      onPress: ()=>ChangeStatus({ status : "not-received"}),
+    },
+    {
+      icon: {
+        name: 'check',
+        type: 'font-awesome-5',
+      },
+      title: 'recived',
+      key: 'received',
+      onPress: ()=>ChangeStatus({ status : "received"}),
+    },
+    {
+      icon: {
+        name: 'check',
+        type: 'font-awesome-5',
+      },
+      title: 'Picking',
+      key: 'picking',
+      buttonStyle:{backgroundColor: MAINCOLORS.success},
+      onPress: ()=>ChangeStatus({ status : "picking"}),
+    },
+    {
+      icon: {
+        name: 'glass-fragile',
+        type: 'material-community',
+      },
+      title: 'Damaged',
+      key: 'damaged',
+      buttonStyle:{backgroundColor: MAINCOLORS.danger},
+      onPress: ()=>ChangeStatus({ status : "damaged"}),
+    },
+    {
+      icon: {
+        name: 'ghost',
+        type: 'font-awesome-5',
+      },
+      title: 'Lost',
+      key: 'lost',
+      buttonStyle:{backgroundColor: MAINCOLORS.danger},
+      onPress: ()=>ChangeStatus({ status : "lost"}),
+    },
+   /*  {
+      icon: {
+        name: 'box',
+        type: 'entypo',
+      },
+      title: 'Stored Items',
+      key: 'stored_item',
+    }, */
+  ];
+
+  const filterFeatures = filter => {
+    console.log(';',filter)
+    const data = buttonFeatures.filter(item => {
+      console.log('sss',filter,item.key)
+      return filter.includes(item.key);
+    });
+    setFinalFeatures(data);
+  };
+
+  const setUpFeaturesPallet = (state,status) => {
+    console.log(state,status)
+    if(status == "receiving" ){
+      if (state == 'storing')
+        filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
+      if (state == 'recived')
+        filterFeatures(['recived', 'not_recived', , 'stored_item']);
+      if (state == 'booking-in')
+        filterFeatures(['move_location', 'not_recived', 'stored_item']);
+      if (state == 'booked-in')
+        filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
+      if (state == 'picking')
+        filterFeatures(['picking', 'lost', 'damaged', 'stored_item']);
+      if (state == 'not-received')
+        filterFeatures(['received']);
+    }if(status == 'not-received'){
+      filterFeatures(['received']);
+    }if(status == 'storing'){
+      if (state == 'storing')
+        filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
+      if (state == 'recived')
+        filterFeatures(['recived', 'not_recived', , 'stored_item']);
+      if (state == 'booking-in')
+        filterFeatures(['move_location', 'not_recived', 'stored_item']);
+      if (state == 'booked-in')
+        filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
+      if (state == 'picking')
+        filterFeatures(['picking', 'lost', 'damaged', 'stored_item']);
+      if (state == 'not-received')
+        filterFeatures(['received']);
+    }if(status == 'returning'){
+        if (state == 'storing')
+        filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
+        if (state == 'recived')
+          filterFeatures(['recived', 'not_recived', , 'stored_item']);
+        if (state == 'booking-in')
+          filterFeatures(['move_location', 'not_recived', 'stored_item']);
+        if (state == 'booked-in')
+          filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
+        if (state == 'picking')
+          filterFeatures(['picking', 'lost', 'damaged', 'stored_item']);
+        if (state == 'not-received')
+          filterFeatures(['received']);
+    }if(status == 'returned'){
+        filterFeatures([]);
+    }if(status == 'incident'){
+        filterFeatures([]);
+  };
+}
 
   useEffect(() => {
     getDetail();
@@ -147,22 +281,19 @@ function PalletDetail(props) {
   return !loading ? (
     <View style={styles.container}>
       <ScrollView>{renderContent()}</ScrollView>
-      <SpeedDial
-        isOpen={open}
-        onOpen={() => setOpen(!open)}
-        onClose={() => setOpen(!open)}
-        style={styles.speedDial}
-        onPress={() => setOpen(!open)}>
-        <SpeedDial.Action
-          icon={{name: 'location-pin', type: 'material-icons'}}
-          title="Move Location"
-          onPress={() => navigation.navigate('Pallet Movement',{pallet : dataSelected})}
-        />
-        <SpeedDial.Action
-          icon={{name: 'box', type: 'entypo'}}
-          title="Stored Items"
-        />
-      </SpeedDial>
+      {finalFeatures.length != 0 && (
+        <SpeedDial
+          isOpen={open}
+          onOpen={() => setOpen(!open)}
+          onClose={() => setOpen(!open)}
+          style={styles.speedDial}
+          onPress={() => setOpen(!open)}>
+          {finalFeatures.map((item, index) => {
+            console.log('jkfdhg',finalFeatures)
+            return <SpeedDial.Action {...item} />;
+          })}
+        </SpeedDial>
+      )}
     </View>
   ) : (
     <View

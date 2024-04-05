@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Icon,Dialog} from '@rneui/themed';
 import {MAINCOLORS,COLORS } from '~/Utils/Colors';
 import Information from '~/Components/palletComponents/Information';
+import PalletCard from '~/Components/palletComponents/ListCard';
 
 const Pallet = props => {
   const navigation = useNavigation();
@@ -22,35 +23,6 @@ const Pallet = props => {
     setOpenDialog(!openDialog);
   }
 
-  const Item = ({item}) => {
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Pallet',{pallet : item})}
-        style={styles.container}>
-        <View style={styles.row}>
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>{item.reference}</Text>
-          </View>
-          <View style={styles.iconContainer}>
-            <View style={styles.row}>
-              <Icon
-                {...item.state_icon.app}
-                size={15}
-                style={{...styles.icon}}
-              />
-              <Icon
-                 {...item.status_icon.app}
-                size={15}
-                style={styles.icon}
-              />
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-
   return (
     <>
       <BaseList
@@ -61,7 +33,7 @@ const Pallet = props => {
           warehouse.id,
           oraganisation.active_organisation.active_authorised_fulfilments.id,
         ]}
-        renderItem={Item}
+        renderItem={(data)=><PalletCard data={data.item} />}
         title='Pallet'
         settingOptions={[
           {
@@ -81,40 +53,4 @@ const Pallet = props => {
 
 export default Pallet;
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 17,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-    margin: 5,
-    borderWidth: 1,
-    borderColor: COLORS.grey6,
-  },
-  title: {
-    fontSize: 18,
-    fontFamily: 'TitilliumWeb-SemiBold',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
-  },
-  textContainer: {
-    flex: 1,
-    alignItems: 'flex-start',
-  },
-  iconContainer: {
-    alignItems: 'flex-end',
-  },
-  icon: {
-    marginHorizontal: 5,
-  },
-});
+const styles = StyleSheet.create({});
