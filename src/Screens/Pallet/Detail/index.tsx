@@ -1,73 +1,26 @@
 // Import necessary components
 import React, {useState, useEffect} from 'react';
+import {View, ScrollView, StyleSheet, ActivityIndicator} from 'react-native';
 import {Request} from '~/Utils';
 import {useSelector} from 'react-redux';
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  ActivityIndicator,
-  Image,
-} from 'react-native';
-import {Text, Card, Button, Icon, Overlay} from '@rneui/themed';
-import {get, defaultTo} from 'lodash';
-import PalletImg from '../../../assets/image/pallet.jpg';
-import Description from './Description';
-import Movement from './MovementPallet';
-import {useFormik} from 'formik';
-import {
-  ALERT_TYPE,
-  Dialog,
-  AlertNotificationRoot,
-  Toast,
-} from 'react-native-alert-notification';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {Text, SpeedDial} from '@rneui/themed';
+import {defaultTo} from 'lodash';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import DetailRow from '~/Components/DetailRow';
+import Barcode from 'react-native-barcode-builder';
+import { useNavigation } from '@react-navigation/native';
 
-function Scanner(props) {
-  // State variables
+function PalletDetail(props) {
   const [loading, setLoading] = useState(true);
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
   const [pageMovement, setPageMovement] = useState(false);
+  const [open, setOpen] = useState(false);
+  const navigation = useNavigation()
 
-  const MoveToNewLocation = async (data: object) => {
-    await Request(
-      'patch',
-      'pallet-location',
-      {},
-      {},
-      [
-        organisation.active_organisation.id,
-        warehouse.id,
-        data.location.id,
-        dataSelected.id,
-      ],
-      onMoveSuccess,
-      onMoveFailed,
-    );
-  };
 
-  const onMoveSuccess = response => {
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: 'Success',
-      textBody: 'Pallet already move to new Location',
-    });
-    setPageMovement(false);
-    getDetail();
-  };
-
-  const onMoveFailed = response => {
-    console.error(response);
-    Toast.show({
-      type: ALERT_TYPE.DANGER,
-      title: 'Success',
-      textBody: response.response.data.message,
-    });
-  };
-
-  const ChangeStatus = async (data: object) => {
+/*   const ChangeStatus = async (data: object) => {
     await Request(
       'patch',
       'pallet-location',
@@ -101,14 +54,8 @@ function Scanner(props) {
       title: 'Success',
       textBody: response.response.data.message,
     });
-  };
+  }; */
 
-  const formik = useFormik({
-    initialValues: {
-      location: {id: null},
-    },
-    onSubmit: MoveToNewLocation,
-  });
 
   // Function to fetch details
   const getDetail = () => {
@@ -131,19 +78,12 @@ function Scanner(props) {
 
   // Success callback for detail fetch
   const onSuccessGetDetail = response => {
-    console.log(response);
     setDataSelected(response.data);
     setLoading(false);
-    formik.setFieldValue('location', {
-      ...response.data.location,
-      title: response.data.location.code,
-      id: get(response, ['data', 'location', 'id'], null),
-    });
   };
 
   // Error callback for detail fetch
   const onFailedGetDetail = error => {
-    console.error('show', error);
     setLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -152,129 +92,138 @@ function Scanner(props) {
     });
   };
 
-  // Function to toggle overlay visibility
-  const toggleChangeContent = () => {
-    setPageMovement(!pageMovement);
+  const renderContent = () => {
+    return (
+      <View style={styles.containerContent}>
+        <View style={styles.barcodeContainer}>
+          <Barcode value={`loc-${dataSelected.slug}`} width={1} height={70} />
+          <Text style={styles.barcodeText}>{`loc-${dataSelected.slug}`}</Text>
+        </View>
+        <View style={styles.rowDetail}>
+          <DetailRow
+            title="Reference"
+            text={defaultTo(dataSelected.reference, '-')}
+          />
+        </View>
+        <View style={styles.rowDetail}>
+          <DetailRow
+            title="Customer Name"
+            text={defaultTo(dataSelected.customer_name, '-')}
+          />
+        </View>
+        <View style={styles.rowDetail}>
+          <DetailRow
+            title="Customer Reference"
+            text={defaultTo(dataSelected.customer_reference, '-')}
+          />
+        </View>
+        <View style={styles.rowDetail}>
+          <DetailRow
+            title="Location"
+            text={defaultTo(dataSelected.location?.code, '-')}
+          />
+        </View>
+        <View style={styles.rowDetail}>
+          <DetailRow
+            title="Status"
+            text={defaultTo(dataSelected.status, '-')}
+          />
+        </View>
+        <View style={styles.rowDetail}>
+          <DetailRow title="State" text={defaultTo(dataSelected.state, '-')} />
+        </View>
+        <View style={styles.rowDetail}>
+          <DetailRow title="Notes" text={defaultTo(dataSelected.notes, '-')} />
+        </View>
+      </View>
+    );
   };
 
-  // Effect hook to fetch details on component mount
+
   useEffect(() => {
     getDetail();
-  }, []);
+  }, [props.route.params.pallet]);
 
-  return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
-      {!loading ? (
-        <View style={styles.container}>
-          <Card containerStyle={styles.cardContainer}>
-            <Card.Title>{get(dataSelected, 'reference', '-')}</Card.Title>
-            <Card.Divider />
-            <Image source={PalletImg} style={styles.locationImage} />
-            {!pageMovement ? (
-              <View style={styles.descriptionContainer}>
-                <Description data={dataSelected} />
-                <Button
-                  icon={
-                    <Icon
-                      name="location-pin"
-                      color="#ffffff"
-                      iconStyle={styles.buttonIcon}
-                    />
-                  }
-                  onPress={toggleChangeContent}
-                  buttonStyle={styles.button}
-                  title="Move Location "
-                />
-              </View>
-            ) : (
-              <View>
-                <Movement
-                  onChange={formik.handleChange('location')}
-                  value={get(formik, ['values', 'location'], {id: null})}
-                  form={formik}
-                />
-                {formik.errors.location && (
-                  <Text style={{color: 'red'}}>{formik.errors.location}</Text>
-                )}
-                <Button
-                  icon={
-                    <Icon
-                      name="location-pin"
-                      color="#ffffff"
-                      iconStyle={styles.buttonIcon}
-                    />
-                  }
-                  onPress={formik.handleSubmit}
-                  buttonStyle={styles.button}
-                  title="Send to location "
-                />
-
-                <Button
-                  icon={
-                    <Icon
-                      name="location-pin"
-                      color={MAINCOLORS.black}
-                      iconStyle={styles.buttonIcon}
-                    />
-                  }
-
-                  onPress={toggleChangeContent}
-                  buttonStyle={styles.cancelButton}
-                  titleStyle={{ color : COLORS.black}}
-                  title="Cancel"
-                />
-              </View>
-            )}
-          </Card>
-        </View>
-      ) : (
-        <ActivityIndicator size="large" />
-      )}
-    </ScrollView>
+  return !loading ? (
+    <View style={styles.container}>
+      <ScrollView>{renderContent()}</ScrollView>
+      <SpeedDial
+        isOpen={open}
+        onOpen={() => setOpen(!open)}
+        onClose={() => setOpen(!open)}
+        style={styles.speedDial}
+        onPress={() => setOpen(!open)}>
+        <SpeedDial.Action
+          icon={{name: 'location-pin', type: 'material-icons'}}
+          title="Move Location"
+          onPress={() => navigation.navigate('Pallet Movement',{pallet : dataSelected})}
+        />
+        <SpeedDial.Action
+          icon={{name: 'box', type: 'entypo'}}
+          title="Stored Items"
+        />
+      </SpeedDial>
+    </View>
+  ) : (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+      }}>
+      <ActivityIndicator size="large" />
+    </View>
   );
 }
 
 // Styles
 const styles = StyleSheet.create({
-  scrollView: {
-    flexGrow: 1,
-  },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
   },
-  cardContainer: {
-    width: '90%',
-    borderRadius: 10,
+  containerContent: {
+    flex: 1,
+    padding: 20,
+  },
+  rowDetail: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#CCCCCC',
+    paddingVertical: 15,
+  },
+  barcodeContainer: {
+    alignItems: 'center',
     marginBottom: 20,
   },
-  locationImage: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
+  barcodeText: {
+    fontWeight: 'bold',
+    marginTop: 5,
+    fontSize: 16,
   },
-  descriptionContainer: {
-    marginVertical: 10,
+  chipContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 5,
   },
-  button: {
-    borderRadius: 0,
-    marginLeft: 0,
-    marginRight: 0,
-    backgroundColor: MAINCOLORS.primary,
-    marginBottom: 0,
+  chip: {
+    marginVertical: 2,
+    marginHorizontal: 2,
   },
-  cancelButton: {
-    borderRadius: 0,
-    marginLeft: 0,
-    marginRight: 0,
-    backgroundColor: '#E2E8F0',
-    marginTop: 10,
-    color : COLORS.black
+  speedDial: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
   },
-  buttonIcon: {
-    marginRight: 10,
+  iconContainer: {
+    alignItems: 'flex-end',
+  },
+  icon: {
+    marginHorizontal: 5,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
   },
 });
 
-export default Scanner;
+export default PalletDetail;

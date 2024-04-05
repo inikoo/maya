@@ -117,13 +117,20 @@ export default function BaseList(props) {
 
   const renderList = () => {
     return (
-      <View >
-        <View style={{ backgroundColor : COLORS.grey7, padding : 10 , paddingHorizontal : 18}}>
-        <Text style={{fontSize: 14, fontWeight: '700', marginLeft : 8}}>
-          Records : {TotalData}{' '}
-        </Text>
-        </View>
-        
+      <View>
+        {props.showRecords && (
+          <View
+            style={{
+              backgroundColor: COLORS.grey7,
+              padding: 10,
+              paddingHorizontal: 18,
+            }}>
+            <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
+              Records : {TotalData}{' '}
+            </Text>
+          </View>
+        )}
+
         <FlatList
           data={data}
           keyExtractor={(item, index) => index.toString()} // Key extractor function
@@ -251,6 +258,7 @@ BaseList.defaultProps = {
   title: '',
   settingButton: true,
   settingOptions: [],
+  showRecords: true,
 };
 
 const styles = StyleSheet.create({

@@ -19,6 +19,7 @@ export { default as LocationScanner } from './Location/Scanner';
 export { default as Pallets } from './Pallet';
 export { default as Pallet } from './Pallet/Detail';
 export { default as PalletScanner } from './Pallet/Scanner';
+export { default as MovePallet } from './Pallet/Detail/MovePallet';
 
 //stored Items
 export { default as StoredItems } from './StoredItems';

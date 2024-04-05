@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
-  Image,
   View,
   ActivityIndicator,
   ScrollView,
@@ -12,7 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Text, SpeedDial, Icon, Chip, Dialog} from '@rneui/themed';
 import {defaultTo, isNull} from 'lodash';
 import dayjs from 'dayjs';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {MAINCOLORS} from '~/Utils/Colors';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import DetailRow from '~/Components/DetailRow';
 import Barcode from 'react-native-barcode-builder';

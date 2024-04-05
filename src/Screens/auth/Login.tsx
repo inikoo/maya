@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -23,8 +23,10 @@ import {MAINCOLORS} from '~/Utils/Colors';
 const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
 
   const onSendtoServer = async (data: object) => {
+    setLoading(true);
     await Request(
       'post',
       'login-form',
@@ -37,6 +39,7 @@ const LoginScreen = () => {
   };
 
   const onLoginSuccess = async (res: {token: String}) => {
+    setLoading(false);
     const profile = await UpdateCredential(res.token);
     if (profile.status == 'Success') {
       dispatch(
@@ -54,11 +57,16 @@ const LoginScreen = () => {
   const onLoginFailed = (res: {
     response: {data: {[key: string]: string[]}};
   }) => {
-    for (let error in res.response.data.errors) {
-      formik.setErrors({
-        [error]: res.response.data.errors[error][0],
-      });
+    setLoading(false);
+    console.log(res)
+    if(res?.response?.data?.errors){
+      for (let error in res.response.data.errors) {
+        formik.setErrors({
+          [error]: res.response.data.errors[error][0],
+        });
+      }
     }
+   
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -133,6 +141,7 @@ const LoginScreen = () => {
         <Button
           buttonStyle={styles.loginButton}
           onPress={formik.handleSubmit}
+          loading={loading}
           title="Login"
         />
 

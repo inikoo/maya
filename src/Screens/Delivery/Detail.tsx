@@ -14,6 +14,7 @@ import {Avatar, Text} from '@rneui/themed';
 import {defaultTo} from 'lodash';
 import BaseList from '~/Components/BaseList';
 import { useNavigation } from '@react-navigation/native';
+import DetailRow from '~/Components/DetailRow';
 
 const DeliveryDetail = props => {
   const [loading, setLoading] = useState(true);
@@ -44,12 +45,6 @@ const DeliveryDetail = props => {
     setLoading(false);
   };
 
-  const DetailRow = ({title, text}) => (
-    <View style={styles.descriptionRow}>
-      <Text style={styles.descriptionTitle}>{title}</Text>
-      <Text style={styles.descriptionText}>{text}</Text>
-    </View>
-  );
 
   const onFailedGetDetail = error => {
     setLoading(false);
@@ -136,6 +131,8 @@ const DeliveryDetail = props => {
             navigation={props.navigation}
             title="Delivery"
             scanner={false}
+            settingButton={false}
+            showRecords={false}
           />
           </ScrollView>
 
@@ -180,14 +177,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     marginBottom: 6,
-  },
-  descriptionRow: {
-    flexDirection: 'row',
-    marginBottom: 5,
-  },
-  descriptionTitle: {
-    fontWeight: 'bold',
-    marginRight: 10,
   },
   containerItem: {
     padding: 10,

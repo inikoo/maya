@@ -45,6 +45,8 @@ const Returns = (props) => {
         renderItem={Item}
         navigation={props.navigation}
         title='Return'
+        settingButton={false}
+        showRecords={false}
       />
   );
 };
