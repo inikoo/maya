@@ -7,23 +7,35 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: adopt
+          cache: gradle
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Setup Node  
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Run npm Install
+        run: |
+             npm install
 
-      - name: Build Android Release
-        run: cd android && ./gradlew clean && ./gradlew assembleRelease
+      - name: Build application
+        run: cd android && ./gradlew clean && ./gradlew bundleRelease --warning-mode all
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+      - name: Upload application
+        uses: actions/upload-artifact@v2
         with:
-          name: release
-          path: android\app\build\outputs\apk\release\app-release.apk
+          name: app
+          path: android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 3
