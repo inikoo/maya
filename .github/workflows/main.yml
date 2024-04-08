@@ -34,7 +34,7 @@ jobs:
         run: cd android && ./gradlew clean && ./gradlew bundleRelease --warning-mode all
 
       - name: Upload application
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: app
           path: android/app/build/outputs/bundle/release/app.aab
