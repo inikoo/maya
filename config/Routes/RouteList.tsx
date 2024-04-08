@@ -16,10 +16,13 @@ import {
   Fullfilment,
   LocationScanner,
   PalletScanner,
-  Delivery,
+  Deliveries,
   DeliveryDetail,
-  Return,
-  ReturnDetail
+  Returns,
+  ReturnDetail,
+  DeliveryScanner,
+  ReturnScanner,
+  MovePallet
 } from '../../src/Screens';
 import {Icon} from '@rneui/base';
 import ScanButton from '~/Components/MainNavigatorButton';
@@ -94,20 +97,32 @@ export default {
       component: PalletScanner,
     },
     {
-      name: 'Delivery',
-      component: Delivery,
+      name: 'Pallet Movement',
+      component: MovePallet,
     },
     {
-      name: 'Delivery Detail',
+      name: 'Deliveries',
+      component: Deliveries,
+    },
+    {
+      name: 'Delivery',
       component: DeliveryDetail,
     },
     {
-      name: 'Return',
-      component: Return,
+      name: 'Delivery Scanner',
+      component: DeliveryScanner,
     },
     {
-      name: 'Return Detail',
+      name: 'Returns',
+      component: Returns,
+    },
+    {
+      name: 'Return',
       component: ReturnDetail,
+    },
+    {
+      name: 'Return Scanner',
+      component: ReturnScanner,
     },
   ],
 

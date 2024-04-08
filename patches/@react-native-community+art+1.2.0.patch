@@ -1,0 +1,802 @@
+diff --git a/node_modules/@react-native-community/art/.eslintcache b/node_modules/@react-native-community/art/.eslintcache
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/.eslintrc.js b/node_modules/@react-native-community/art/.eslintrc.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/.flowconfig b/node_modules/@react-native-community/art/.flowconfig
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/.gitattributes b/node_modules/@react-native-community/art/.gitattributes
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/.prettierrc.js b/node_modules/@react-native-community/art/.prettierrc.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/CONTRIBUTING.md b/node_modules/@react-native-community/art/CONTRIBUTING.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/LICENSE b/node_modules/@react-native-community/art/LICENSE
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/README.md b/node_modules/@react-native-community/art/README.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ReactNativeART.podspec b/node_modules/@react-native-community/art/ReactNativeART.podspec
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.gradle/4.10.1/fileChanges/last-build.bin b/node_modules/@react-native-community/art/android/.gradle/4.10.1/fileChanges/last-build.bin
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.gradle/4.10.1/fileHashes/fileHashes.bin b/node_modules/@react-native-community/art/android/.gradle/4.10.1/fileHashes/fileHashes.bin
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.gradle/4.10.1/fileHashes/fileHashes.lock b/node_modules/@react-native-community/art/android/.gradle/4.10.1/fileHashes/fileHashes.lock
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.gradle/4.10.1/gc.properties b/node_modules/@react-native-community/art/android/.gradle/4.10.1/gc.properties
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.gradle/4.10.1/taskHistory/taskHistory.bin b/node_modules/@react-native-community/art/android/.gradle/4.10.1/taskHistory/taskHistory.bin
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.gradle/4.10.1/taskHistory/taskHistory.lock b/node_modules/@react-native-community/art/android/.gradle/4.10.1/taskHistory/taskHistory.lock
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock b/node_modules/@react-native-community/art/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.gradle/buildOutputCleanup/cache.properties b/node_modules/@react-native-community/art/android/.gradle/buildOutputCleanup/cache.properties
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.gradle/buildOutputCleanup/outputFiles.bin b/node_modules/@react-native-community/art/android/.gradle/buildOutputCleanup/outputFiles.bin
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.gradle/vcs-1/gc.properties b/node_modules/@react-native-community/art/android/.gradle/vcs-1/gc.properties
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/caches/build_file_checksums.ser b/node_modules/@react-native-community/art/android/.idea/caches/build_file_checksums.ser
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/caches/gradle_models.ser b/node_modules/@react-native-community/art/android/.idea/caches/gradle_models.ser
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/codeStyles/Project.xml b/node_modules/@react-native-community/art/android/.idea/codeStyles/Project.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/gradle.xml b/node_modules/@react-native-community/art/android/.idea/gradle.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_core_common_1_1_1_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_core_common_1_1_1_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_core_runtime_1_1_1_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_core_runtime_1_1_1_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_lifecycle_common_1_1_1_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_lifecycle_common_1_1_1_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_lifecycle_livedata_1_1_1_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_lifecycle_livedata_1_1_1_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_lifecycle_livedata_core_1_1_1_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_lifecycle_livedata_core_1_1_1_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_lifecycle_runtime_1_1_1_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_lifecycle_runtime_1_1_1_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_lifecycle_viewmodel_1_1_1_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__android_arch_lifecycle_viewmodel_1_1_1_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_animated_vector_drawable_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_animated_vector_drawable_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_appcompat_v7_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_appcompat_v7_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_asynclayoutinflater_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_asynclayoutinflater_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_collections_28_0_0_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_collections_28_0_0_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_coordinatorlayout_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_coordinatorlayout_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_cursoradapter_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_cursoradapter_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_customview_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_customview_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_documentfile_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_documentfile_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_drawerlayout_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_drawerlayout_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_interpolator_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_interpolator_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_loader_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_loader_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_localbroadcastmanager_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_localbroadcastmanager_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_print_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_print_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_slidingpanelayout_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_slidingpanelayout_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_annotations_28_0_0_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_annotations_28_0_0_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_compat_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_compat_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_core_ui_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_core_ui_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_core_utils_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_core_utils_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_fragment_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_fragment_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_vector_drawable_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_support_vector_drawable_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_swiperefreshlayout_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_swiperefreshlayout_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_versionedparcelable_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_versionedparcelable_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_viewpager_28_0_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_android_support_viewpager_28_0_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_drawee_1_10_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_drawee_1_10_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_fbcore_1_10_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_fbcore_1_10_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_fresco_1_10_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_fresco_1_10_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_imagepipeline_1_10_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_imagepipeline_1_10_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_imagepipeline_base_1_10_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_imagepipeline_base_1_10_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_imagepipeline_okhttp3_1_10_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_fresco_imagepipeline_okhttp3_1_10_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_infer_annotation_infer_annotation_0_11_2_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_infer_annotation_infer_annotation_0_11_2_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_react_react_native_0_59_9_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_react_react_native_0_59_9_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_soloader_soloader_0_6_0_aar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_facebook_soloader_soloader_0_6_0_aar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_google_code_findbugs_jsr305_3_0_2_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_google_code_findbugs_jsr305_3_0_2_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_parse_bolts_bolts_tasks_1_4_0_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_parse_bolts_bolts_tasks_1_4_0_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_squareup_okhttp3_okhttp_3_12_1_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_squareup_okhttp3_okhttp_3_12_1_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_squareup_okhttp3_okhttp_urlconnection_3_12_1_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_squareup_okhttp3_okhttp_urlconnection_3_12_1_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_squareup_okio_okio_1_15_0_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__com_squareup_okio_okio_1_15_0_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__javax_inject_javax_inject_1_jar.xml b/node_modules/@react-native-community/art/android/.idea/libraries/Gradle__javax_inject_javax_inject_1_jar.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/misc.xml b/node_modules/@react-native-community/art/android/.idea/misc.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/modules.xml b/node_modules/@react-native-community/art/android/.idea/modules.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/runConfigurations.xml b/node_modules/@react-native-community/art/android/.idea/runConfigurations.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/vcs.xml b/node_modules/@react-native-community/art/android/.idea/vcs.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/.idea/workspace.xml b/node_modules/@react-native-community/art/android/.idea/workspace.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/android.iml b/node_modules/@react-native-community/art/android/android.iml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/build.gradle b/node_modules/@react-native-community/art/android/build.gradle
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/build/.transforms/ba4ed5c7c4360791fd89ae53c2396ac9/results.bin b/node_modules/@react-native-community/art/android/build/.transforms/ba4ed5c7c4360791fd89ae53c2396ac9/results.bin
+new file mode 100755
+index 0000000..47444ea
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/.transforms/ba4ed5c7c4360791fd89ae53c2396ac9/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/@react-native-community/art/android/build/.transforms/ba4ed5c7c4360791fd89ae53c2396ac9/transformed/classes/classes_dex/classes.dex b/node_modules/@react-native-community/art/android/build/.transforms/ba4ed5c7c4360791fd89ae53c2396ac9/transformed/classes/classes_dex/classes.dex
+new file mode 100755
+index 0000000..a448d2d
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/.transforms/ba4ed5c7c4360791fd89ae53c2396ac9/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/@react-native-community/art/android/build/.transforms/d1adf33a22f11e51f9dd7efcbea03513/results.bin b/node_modules/@react-native-community/art/android/build/.transforms/d1adf33a22f11e51f9dd7efcbea03513/results.bin
+new file mode 100755
+index 0000000..c1a3c00
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/.transforms/d1adf33a22f11e51f9dd7efcbea03513/results.bin
+@@ -0,0 +1 @@
++i/classes_dex
+diff --git a/node_modules/@react-native-community/art/android/build/.transforms/d5c88f28b3da3de401664c9d4e561d96/results.bin b/node_modules/@react-native-community/art/android/build/.transforms/d5c88f28b3da3de401664c9d4e561d96/results.bin
+new file mode 100755
+index 0000000..9fc9a00
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/.transforms/d5c88f28b3da3de401664c9d4e561d96/results.bin
+@@ -0,0 +1 @@
++i/classes_global-synthetics
+diff --git a/node_modules/@react-native-community/art/android/build/generated/source/buildConfig/debug/com/reactnativecommunity/art/BuildConfig.java b/node_modules/@react-native-community/art/android/build/generated/source/buildConfig/debug/com/reactnativecommunity/art/BuildConfig.java
+new file mode 100755
+index 0000000..58ab436
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/generated/source/buildConfig/debug/com/reactnativecommunity/art/BuildConfig.java
+@@ -0,0 +1,10 @@
++/**
++ * Automatically generated file. DO NOT MODIFY
++ */
++package com.reactnativecommunity.art;
++
++public final class BuildConfig {
++  public static final boolean DEBUG = Boolean.parseBoolean("true");
++  public static final String LIBRARY_PACKAGE_NAME = "com.reactnativecommunity.art";
++  public static final String BUILD_TYPE = "debug";
++}
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml b/node_modules/@react-native-community/art/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+new file mode 100755
+index 0000000..30b16f9
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.reactnativecommunity.art" >
++
++    <uses-sdk android:minSdkVersion="21" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json b/node_modules/@react-native-community/art/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
+new file mode 100755
+index 0000000..bd44c11
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
+@@ -0,0 +1,18 @@
++{
++  "version": 3,
++  "artifactType": {
++    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
++    "kind": "Directory"
++  },
++  "applicationId": "com.reactnativecommunity.art",
++  "variantName": "debug",
++  "elements": [
++    {
++      "type": "SINGLE",
++      "filters": [],
++      "attributes": [],
++      "outputFile": "AndroidManifest.xml"
++    }
++  ],
++  "elementType": "File"
++}
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/aar_metadata/debug/aar-metadata.properties b/node_modules/@react-native-community/art/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
+new file mode 100755
+index 0000000..776557e
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/aar_metadata/debug/aar-metadata.properties
+@@ -0,0 +1,5 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json b/node_modules/@react-native-community/art/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
+new file mode 100755
+index 0000000..9e26dfe
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/annotation_processor_list/debug/annotationProcessors.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/@react-native-community/art/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
+new file mode 100755
+index 0000000..09c237e
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/@react-native-community/art/android/build/intermediates/compile_r_class_jar/debug/R.jar
+new file mode 100755
+index 0000000..25cd82d
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/compile_r_class_jar/debug/R.jar differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/compile_symbol_list/debug/R.txt b/node_modules/@react-native-community/art/android/build/intermediates/compile_symbol_list/debug/R.txt
+new file mode 100755
+index 0000000..a9551e5
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/compile_symbol_list/debug/R.txt
+@@ -0,0 +1 @@
++int string app_name 0x0
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/@react-native-community/art/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+new file mode 100755
+index 0000000..3bda8bc
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1 @@
++#Mon Apr 08 09:20:54 SGT 2024
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml b/node_modules/@react-native-community/art/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml
+new file mode 100755
+index 0000000..6c1cb44
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="app_name">ReactNativeART</string>
++</resources>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/@react-native-community/art/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+new file mode 100755
+index 0000000..75f655f
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\res"><file path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\res\values\strings.xml" qualifiers=""><string name="app_name">ReactNativeART</string></file></source></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\build\generated\res\resValues\debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\build\generated\res\resValues\debug"/></dataSet><mergedItems/></merger>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/@react-native-community/art/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+new file mode 100755
+index 0000000..3bfda32
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\debug\jniLibs"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/@react-native-community/art/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+new file mode 100755
+index 0000000..b8b62d6
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\debug\shaders"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/incremental/packageDebugAssets/merger.xml b/node_modules/@react-native-community/art/android/build/intermediates/incremental/packageDebugAssets/merger.xml
+new file mode 100755
+index 0000000..bb7ac0c
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/incremental/packageDebugAssets/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\debug\assets"/></dataSet><dataSet config="generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\build\intermediates\shader_assets\debug\out"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTGroupShadowNode.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTGroupShadowNode.class
+new file mode 100755
+index 0000000..f5c8976
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTGroupShadowNode.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTGroupViewManager.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTGroupViewManager.class
+new file mode 100755
+index 0000000..04c11c6
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTGroupViewManager.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTPackage.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTPackage.class
+new file mode 100755
+index 0000000..4614fb0
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTPackage.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTRenderableViewManager.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTRenderableViewManager.class
+new file mode 100755
+index 0000000..23b6bdf
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTRenderableViewManager.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTShapeShadowNode.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTShapeShadowNode.class
+new file mode 100755
+index 0000000..73d8893
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTShapeShadowNode.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTShapeViewManager.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTShapeViewManager.class
+new file mode 100755
+index 0000000..08b5d62
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTShapeViewManager.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceView.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceView.class
+new file mode 100755
+index 0000000..1a116d4
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceView.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceViewManager$1.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceViewManager$1.class
+new file mode 100755
+index 0000000..9e4b163
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceViewManager$1.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceViewManager.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceViewManager.class
+new file mode 100755
+index 0000000..7c0551e
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceViewManager.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceViewShadowNode.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceViewShadowNode.class
+new file mode 100755
+index 0000000..52c6a5b
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTSurfaceViewShadowNode.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTTextShadowNode.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTTextShadowNode.class
+new file mode 100755
+index 0000000..c928797
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTTextShadowNode.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTTextViewManager.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTTextViewManager.class
+new file mode 100755
+index 0000000..d67b8cf
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTTextViewManager.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTVirtualNode.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTVirtualNode.class
+new file mode 100755
+index 0000000..f85ba75
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/ARTVirtualNode.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/BuildConfig.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/BuildConfig.class
+new file mode 100755
+index 0000000..0ef723f
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/BuildConfig.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/PropHelper.class b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/PropHelper.class
+new file mode 100755
+index 0000000..db7e13a
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/javac/debug/classes/com/reactnativecommunity/art/PropHelper.class differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/local_only_symbol_list/debug/R-def.txt b/node_modules/@react-native-community/art/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
+new file mode 100755
+index 0000000..34ca0ec
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
+@@ -0,0 +1,3 @@
++R_DEF: Internal format may change without notice
++local
++string app_name
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt b/node_modules/@react-native-community/art/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+new file mode 100755
+index 0000000..7f7096c
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,7 @@
++1<?xml version="1.0" encoding="utf-8"?>
++2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++3    package="com.reactnativecommunity.art" >
++4
++5    <uses-sdk android:minSdkVersion="21" />
++6
++7</manifest>
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml b/node_modules/@react-native-community/art/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+new file mode 100755
+index 0000000..30b16f9
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.reactnativecommunity.art" >
++
++    <uses-sdk android:minSdkVersion="21" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/navigation_json/debug/navigation.json b/node_modules/@react-native-community/art/android/build/intermediates/navigation_json/debug/navigation.json
+new file mode 100755
+index 0000000..0637a08
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/navigation_json/debug/navigation.json
+@@ -0,0 +1 @@
++[]
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/packaged_res/debug/values/values.xml b/node_modules/@react-native-community/art/android/build/intermediates/packaged_res/debug/values/values.xml
+new file mode 100755
+index 0000000..6c1cb44
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/packaged_res/debug/values/values.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="app_name">ReactNativeART</string>
++</resources>
+\ No newline at end of file
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar b/node_modules/@react-native-community/art/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar
+new file mode 100755
+index 0000000..61abe92
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar differ
+diff --git a/node_modules/@react-native-community/art/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/@react-native-community/art/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+new file mode 100755
+index 0000000..a904481
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+@@ -0,0 +1,2 @@
++com.reactnativecommunity.art
++string app_name
+diff --git a/node_modules/@react-native-community/art/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/@react-native-community/art/android/build/outputs/logs/manifest-merger-debug-report.txt
+new file mode 100755
+index 0000000..afa3745
+--- /dev/null
++++ b/node_modules/@react-native-community/art/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,17 @@
++-- Merging decision tree log ---
++manifest
++ADDED from C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\AndroidManifest.xml:1:1-2:46
++INJECTED from C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\AndroidManifest.xml:1:1-2:46
++	package
++		ADDED from C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\AndroidManifest.xml:2:5-43
++		INJECTED from C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\AndroidManifest.xml
++	xmlns:android
++		ADDED from C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\AndroidManifest.xml:1:11-69
++uses-sdk
++INJECTED from C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\AndroidManifest.xml reason: use-sdk injection requested
++INJECTED from C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\AndroidManifest.xml
++INJECTED from C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\AndroidManifest.xml
++	android:targetSdkVersion
++		INJECTED from C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\AndroidManifest.xml
++	android:minSdkVersion
++		INJECTED from C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\src\main\AndroidManifest.xml
+diff --git a/node_modules/@react-native-community/art/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/@react-native-community/art/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+new file mode 100755
+index 0000000..209f225
+Binary files /dev/null and b/node_modules/@react-native-community/art/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
+diff --git a/node_modules/@react-native-community/art/android/gradle.properties b/node_modules/@react-native-community/art/android/gradle.properties
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/gradle/wrapper/gradle-wrapper.jar b/node_modules/@react-native-community/art/android/gradle/wrapper/gradle-wrapper.jar
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/gradle/wrapper/gradle-wrapper.properties b/node_modules/@react-native-community/art/android/gradle/wrapper/gradle-wrapper.properties
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/gradlew.bat b/node_modules/@react-native-community/art/android/gradlew.bat
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/local.properties b/node_modules/@react-native-community/art/android/local.properties
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/proguard-rules.pro b/node_modules/@react-native-community/art/android/proguard-rules.pro
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/AndroidManifest.xml b/node_modules/@react-native-community/art/android/src/main/AndroidManifest.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTGroupShadowNode.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTGroupShadowNode.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTGroupViewManager.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTGroupViewManager.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTPackage.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTPackage.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTRenderableViewManager.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTRenderableViewManager.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTShapeShadowNode.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTShapeShadowNode.java
+old mode 100644
+new mode 100755
+index cf57bbb..c45f9e8
+--- a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTShapeShadowNode.java
++++ b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTShapeShadowNode.java
+@@ -22,7 +22,7 @@ import com.facebook.react.common.ReactConstants;
+ import com.facebook.react.uimanager.annotations.ReactProp;
+ import javax.annotation.Nullable;
+ 
+-import static com.facebook.react.common.ArrayUtils.copyArray;
++/* import static com.facebook.react.common.ArrayUtils.copyArray; */
+ 
+ /**
+  * Shadow node for virtual ARTShape view
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTShapeViewManager.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTShapeViewManager.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTSurfaceView.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTSurfaceView.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTSurfaceViewManager.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTSurfaceViewManager.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTSurfaceViewShadowNode.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTSurfaceViewShadowNode.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTTextShadowNode.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTTextShadowNode.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTTextViewManager.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTTextViewManager.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTVirtualNode.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/ARTVirtualNode.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/PropHelper.java b/node_modules/@react-native-community/art/android/src/main/java/com/reactnativecommunity/art/PropHelper.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/android/src/main/res/values/strings.xml b/node_modules/@react-native-community/art/android/src/main/res/values/strings.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/babel.config.js b/node_modules/@react-native-community/art/babel.config.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/docs/api.md b/node_modules/@react-native-community/art/docs/api.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/index.d.ts b/node_modules/@react-native-community/art/index.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ART.xcodeproj/project.pbxproj b/node_modules/@react-native-community/art/ios/ART.xcodeproj/project.pbxproj
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ART.xcodeproj/xcuserdata/kacper.xcuserdatad/xcschemes/xcschememanagement.plist b/node_modules/@react-native-community/art/ios/ART.xcodeproj/xcuserdata/kacper.xcuserdatad/xcschemes/xcschememanagement.plist
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTCGFloatArray.h b/node_modules/@react-native-community/art/ios/ARTCGFloatArray.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTContainer.h b/node_modules/@react-native-community/art/ios/ARTContainer.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTGroup.h b/node_modules/@react-native-community/art/ios/ARTGroup.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTGroup.m b/node_modules/@react-native-community/art/ios/ARTGroup.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTNode.h b/node_modules/@react-native-community/art/ios/ARTNode.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTNode.m b/node_modules/@react-native-community/art/ios/ARTNode.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTRenderable.h b/node_modules/@react-native-community/art/ios/ARTRenderable.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTRenderable.m b/node_modules/@react-native-community/art/ios/ARTRenderable.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTShadow.h b/node_modules/@react-native-community/art/ios/ARTShadow.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTShape.h b/node_modules/@react-native-community/art/ios/ARTShape.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTShape.m b/node_modules/@react-native-community/art/ios/ARTShape.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTSurfaceView.h b/node_modules/@react-native-community/art/ios/ARTSurfaceView.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTSurfaceView.m b/node_modules/@react-native-community/art/ios/ARTSurfaceView.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTText.h b/node_modules/@react-native-community/art/ios/ARTText.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTText.m b/node_modules/@react-native-community/art/ios/ARTText.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ARTTextFrame.h b/node_modules/@react-native-community/art/ios/ARTTextFrame.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/Brushes/ARTBrush.h b/node_modules/@react-native-community/art/ios/Brushes/ARTBrush.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/Brushes/ARTBrush.m b/node_modules/@react-native-community/art/ios/Brushes/ARTBrush.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/Brushes/ARTLinearGradient.h b/node_modules/@react-native-community/art/ios/Brushes/ARTLinearGradient.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/Brushes/ARTLinearGradient.m b/node_modules/@react-native-community/art/ios/Brushes/ARTLinearGradient.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/Brushes/ARTPattern.h b/node_modules/@react-native-community/art/ios/Brushes/ARTPattern.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/Brushes/ARTPattern.m b/node_modules/@react-native-community/art/ios/Brushes/ARTPattern.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/Brushes/ARTRadialGradient.h b/node_modules/@react-native-community/art/ios/Brushes/ARTRadialGradient.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/Brushes/ARTRadialGradient.m b/node_modules/@react-native-community/art/ios/Brushes/ARTRadialGradient.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/Brushes/ARTSolidColor.h b/node_modules/@react-native-community/art/ios/Brushes/ARTSolidColor.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/Brushes/ARTSolidColor.m b/node_modules/@react-native-community/art/ios/Brushes/ARTSolidColor.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/RCTConvert+ART.h b/node_modules/@react-native-community/art/ios/RCTConvert+ART.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/RCTConvert+ART.m b/node_modules/@react-native-community/art/ios/RCTConvert+ART.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTGroupManager.h b/node_modules/@react-native-community/art/ios/ViewManagers/ARTGroupManager.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTGroupManager.m b/node_modules/@react-native-community/art/ios/ViewManagers/ARTGroupManager.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTNodeManager.h b/node_modules/@react-native-community/art/ios/ViewManagers/ARTNodeManager.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTNodeManager.m b/node_modules/@react-native-community/art/ios/ViewManagers/ARTNodeManager.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTRenderableManager.h b/node_modules/@react-native-community/art/ios/ViewManagers/ARTRenderableManager.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTRenderableManager.m b/node_modules/@react-native-community/art/ios/ViewManagers/ARTRenderableManager.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTShapeManager.h b/node_modules/@react-native-community/art/ios/ViewManagers/ARTShapeManager.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTShapeManager.m b/node_modules/@react-native-community/art/ios/ViewManagers/ARTShapeManager.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTSurfaceViewManager.h b/node_modules/@react-native-community/art/ios/ViewManagers/ARTSurfaceViewManager.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTSurfaceViewManager.m b/node_modules/@react-native-community/art/ios/ViewManagers/ARTSurfaceViewManager.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTTextManager.h b/node_modules/@react-native-community/art/ios/ViewManagers/ARTTextManager.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/ios/ViewManagers/ARTTextManager.m b/node_modules/@react-native-community/art/ios/ViewManagers/ARTTextManager.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/jest.config.js b/node_modules/@react-native-community/art/jest.config.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/ARTSerializablePath.js b/node_modules/@react-native-community/art/lib/ARTSerializablePath.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/ClippingRectangle.js b/node_modules/@react-native-community/art/lib/ClippingRectangle.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/Group.js b/node_modules/@react-native-community/art/lib/Group.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/LinearGradient.js b/node_modules/@react-native-community/art/lib/LinearGradient.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/Pattern.js b/node_modules/@react-native-community/art/lib/Pattern.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/RadialGradient.js b/node_modules/@react-native-community/art/lib/RadialGradient.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/Shape.js b/node_modules/@react-native-community/art/lib/Shape.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/Surface.js b/node_modules/@react-native-community/art/lib/Surface.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/Text.js b/node_modules/@react-native-community/art/lib/Text.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/__tests__/helpers.test.js b/node_modules/@react-native-community/art/lib/__tests__/helpers.test.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/helpers.js b/node_modules/@react-native-community/art/lib/helpers.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/index.js b/node_modules/@react-native-community/art/lib/index.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/nativeComponents.js b/node_modules/@react-native-community/art/lib/nativeComponents.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@react-native-community/art/lib/types.js b/node_modules/@react-native-community/art/lib/types.js
+old mode 100644
+new mode 100755

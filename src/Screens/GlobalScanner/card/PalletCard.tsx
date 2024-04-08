@@ -13,7 +13,7 @@ export default function PalletCard(p) {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Pallet',{pallete : p.data.model})}
+      onPress={() => navigation.navigate('Pallet',{pallet : p.data.model})}
       style={styles.cardContainer}>
       <View>
         <View style={styles.row}>

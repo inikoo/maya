@@ -10,17 +10,19 @@ import {
 import {useSelector} from 'react-redux';
 import {Request} from '~/Utils';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
-import {Avatar, Text} from '@rneui/themed';
-import {defaultTo} from 'lodash';
+import {Avatar, Text, Chip} from '@rneui/themed';
+import {defaultTo, get} from 'lodash';
 import BaseList from '~/Components/BaseList';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import DetailRow from '~/Components/DetailRow';
+import PalletCard from '~/Components/palletComponents/ListCard';
 
 const DeliveryDetail = props => {
   const [loading, setLoading] = useState(true);
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const getDetail = () => {
     setLoading(true);
@@ -44,43 +46,56 @@ const DeliveryDetail = props => {
     setLoading(false);
   };
 
-  const DetailRow = ({title, text}) => (
-    <View style={styles.descriptionRow}>
-      <Text style={styles.descriptionTitle}>{title}</Text>
-      <Text style={styles.descriptionText}>{text}</Text>
-    </View>
-  );
-
   const onFailedGetDetail = error => {
     setLoading(false);
   };
 
-  const Item = ({item, index}) => {
+  const headerCard = () => {
     return (
-      <TouchableOpacity
-        style={styles.containerItem}
-        onPress={() => navigation.navigate('Pallet', {pallete: item})}>
-        <View style={styles.row}>
+      <View
+        style={{
+          backgroundColor: MAINCOLORS.warning,
+          padding: 20,
+          borderRadius: 10,
+        }}>
+        <View style={styles.header}>
           <Avatar
-            size={40}
-            icon={{name: 'pallet', type: 'FontAwesome6'}}
-            containerStyle={{
-              backgroundColor: MAINCOLORS.primary,
-              marginRight: 13,
+            size={35}
+            icon={{
+              name: 'truck',
+              type: 'font-awesome',
+              color: MAINCOLORS.white,
+            }}
+            containerStyle={styles.avatarContainer}
+          />
+          <Text style={styles.reference}>{dataSelected.reference}</Text>
+        </View>
+        <View style={styles.detailsContainer}>
+          <DetailRow
+            title="Customer Name"
+            text={defaultTo(dataSelected.customer_name, '-')}
+          />
+          <DetailRow
+            title="State"
+            text={() => {
+              return (
+                <Chip
+                  title={dataSelected.state}
+                  color={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
+                  buttonStyle={{padding: 1, marginHorizontal: 2}}
+                  titleStyle={{fontSize: 12}}
+                />
+              );
             }}
           />
-          <View style={styles.row}>
-            <View style={styles.text}>
-              <View style={styles.row}>
-                <Text style={styles.title}>{item.reference}</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.description}>{item.state_label}</Text>
-              </View>
-            </View>
-          </View>
         </View>
-      </TouchableOpacity>
+        <View style={styles.detailsContainer}>
+          <DetailRow
+            title="Total Pallet"
+            text={defaultTo(dataSelected.number_pallets, 0)}
+          />
+        </View>
+      </View>
     );
   };
 
@@ -94,52 +109,23 @@ const DeliveryDetail = props => {
         <ActivityIndicator size="large" color={MAINCOLORS.primary} />
       ) : (
         <View style={styles.contentContainer}>
-          <View
-            style={{
-              backgroundColor: MAINCOLORS.warning,
-              padding: 20,
-              borderRadius: 10,
-            }}>
-            <View style={styles.header}>
-              <Avatar
-                size={40}
-                icon={{
-                  name: 'truck',
-                  type: 'font-awesome',
-                  color: MAINCOLORS.white,
-                }}
-                containerStyle={styles.avatarContainer}
-              />
-              <Text style={styles.reference}>{dataSelected.reference}</Text>
-            </View>
-            <View style={styles.detailsContainer}>
-              <DetailRow
-                title="Customer Name:"
-                text={defaultTo(dataSelected.customer_name, '-')}
-              />
-              <DetailRow
-                title="State:"
-                text={defaultTo(dataSelected.state, '-')}
-              />
-            </View>
-          </View>
-
+          {headerCard()}
           <ScrollView>
-          <BaseList
-            urlKey="delivery-pallet-index"
-            args={[
-              organisation.active_organisation.id,
-              warehouse.id,
-              props.route.params.delivery.id,
-            ]}
-            renderItem={Item}
-            navigation={props.navigation}
-            title="Delivery"
-            scanner={false}
-          />
+            <BaseList
+              urlKey="delivery-pallet-index"
+              args={[
+                organisation.active_organisation.id,
+                warehouse.id,
+                props.route.params.delivery.id,
+              ]}
+              renderItem={data => <PalletCard data={data.item} />}
+              navigation={props.navigation}
+              title="Delivery"
+              scanner={false}
+              settingButton={false}
+              showRecords={false}
+            />
           </ScrollView>
-
-          
         </View>
       )}
     </SafeAreaView>
@@ -150,13 +136,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: MAINCOLORS.background,
-    /*     paddingHorizontal: 20,
-    paddingVertical: 20 */
+    justifyContent: 'center',
   },
   contentContainer: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingVertical: 5,
     borderRadius: 20,
     marginTop: 10,
   },
@@ -168,51 +153,19 @@ const styles = StyleSheet.create({
   avatarContainer: {
     backgroundColor: MAINCOLORS.primary,
     marginRight: 13,
+    marginLeft: 5,
   },
   reference: {
     fontWeight: '500',
     fontSize: 20,
   },
   detailsContainer: {
-    marginLeft: 10,
+    marginLeft: 5,
   },
   title: {
     fontSize: 18,
     fontWeight: '500',
     marginBottom: 6,
-  },
-  descriptionRow: {
-    flexDirection: 'row',
-    marginBottom: 5,
-  },
-  descriptionTitle: {
-    fontWeight: 'bold',
-    marginRight: 10,
-  },
-  containerItem: {
-    padding: 10,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-    alignItems: 'center',
-    marginBottom: 4,
-    borderWidth: 1,
-    borderColor: COLORS.grey6,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  list: {
-    margin: 5,
   },
 });
 

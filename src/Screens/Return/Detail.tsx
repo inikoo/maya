@@ -57,7 +57,7 @@ const DeliveryDetail = props => {
     return (
       <TouchableOpacity
         style={styles.containerItem}
-        onPress={() => navigation.navigate('Pallet', {pallete: item})}>
+        onPress={() => navigation.navigate('Pallet', {pallet: item})}>
         <View style={styles.row}>
           <Avatar
             size={40}
@@ -134,6 +134,8 @@ const DeliveryDetail = props => {
             navigation={props.navigation}
             title="Delivery"
             scanner={false}
+            settingButton={false}
+            showRecords={false}
           />
           </ScrollView>
 

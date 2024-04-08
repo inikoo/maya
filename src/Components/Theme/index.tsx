@@ -48,7 +48,8 @@ const theme = createTheme({
     SpeedDial : {
       buttonStyle:{backgroundColor: MAINCOLORS.primary},
       openIcon:{name: 'close', color: COLORS.grey8},
-      icon:{name: 'settings', color: COLORS.grey8}
+      icon:{name: 'settings', color: COLORS.grey8},
+      overlayColor : 'transparent'
     },
     SpeedDialAction:{
       icon: {color: COLORS.grey8, size: 18},

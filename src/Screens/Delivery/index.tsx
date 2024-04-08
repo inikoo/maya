@@ -17,9 +17,10 @@ const Delivery = (props) => {
   const warehouse = useSelector(state => state.warehouseReducer);
 
   const Item = ({item}) => {
+    console.log('delivery',item)
     return (
       <TouchableOpacity 
-        onPress={() => navigation.navigate('Delivery Detail',{delivery : item})}
+        onPress={() => navigation.navigate('Delivery',{delivery : item})}
         style={styles.container}>
         <View>
           <View style={styles.row}>
@@ -45,7 +46,6 @@ const Delivery = (props) => {
         renderItem={Item}
         navigation={props.navigation}
         title='Delivery'
-        scanner={false}
       />
   );
 };

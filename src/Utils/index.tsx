@@ -1,21 +1,11 @@
 import {WriteCredential, UpdateCredential, RemoveCredential} from './auth';
 import Request from './request';
 import {Dimensions} from 'react-native';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 
-const PrefixScanner = e => {
-  let dataWithoutPrefix;
-
-  if (e.startsWith('loc-')) {
-    dataWithoutPrefix = e.substring(4);
-  } else if (e.startsWith('pal-')) {
-    dataWithoutPrefix = e.substring(4);
-  } else if (e.startsWith('item-')) {
-    dataWithoutPrefix = e.substring(5);
-  } else {
-    dataWithoutPrefix = e;
-  }
-
-  return dataWithoutPrefix;
+const PrefixScanner = (prefix : string, value : 'string') => {
+  if (value.startsWith(`${prefix}-`)) return true
+  return false
 };
 
 const FindDimensions = () => {
@@ -25,6 +15,12 @@ const FindDimensions = () => {
   };
 };
 
+const IconColor = (allow, stock) => {
+  if (allow && stock) return MAINCOLORS.success;
+  if (!allow && stock) return MAINCOLORS.warning;
+  return COLORS.black; // default color if neither allow nor stock
+};
+
 export {
   WriteCredential,
   UpdateCredential,
@@ -32,4 +28,5 @@ export {
   Request,
   PrefixScanner,
   FindDimensions,
+  IconColor
 };

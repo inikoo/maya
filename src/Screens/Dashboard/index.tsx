@@ -38,8 +38,8 @@ export default function HomeScreen({navigation}) {
     }, */
     {
       id: uuidv4(),
-      title: 'Delivery',
-      key: 'Delivery',
+      title: 'Deliveries',
+      key: 'Deliveries',
       icon: {
         name: 'truck',
         type: 'font-awesome',
@@ -48,8 +48,8 @@ export default function HomeScreen({navigation}) {
     },
     {
       id: uuidv4(),
-      title: 'Return',
-      key: 'Return',
+      title: 'Returns',
+      key: 'Returns',
       icon: {
         name: 'trolley',
         type: 'material-icons',
@@ -89,7 +89,6 @@ export default function HomeScreen({navigation}) {
   ];
 
   const reqCountData = () => {
-    console.log(organisation.active_organisation,warehouse.id)
      if(organisation.active_organisation && warehouse.id){
       setLoading(true);
       Request(

@@ -19,18 +19,21 @@ export { default as LocationScanner } from './Location/Scanner';
 export { default as Pallets } from './Pallet';
 export { default as Pallet } from './Pallet/Detail';
 export { default as PalletScanner } from './Pallet/Scanner';
+export { default as MovePallet } from './Pallet/Detail/MovePallet';
 
 //stored Items
 export { default as StoredItems } from './StoredItems';
 
 //delivery
-export { default as Delivery } from './Delivery';
-export { default as DeliveryDetail } from './Delivery/Detail.tsx';
+export { default as Deliveries } from './Delivery';
+export { default as DeliveryDetail } from './Delivery/Detail';
+export { default as DeliveryScanner } from './Delivery/Scanner';
 
 
 //return
-export { default as Return } from './Return';
-export { default as ReturnDetail } from './Return/Detail.tsx';
+export { default as Returns } from './Return';
+export { default as ReturnDetail } from './Return/Detail';
+export { default as ReturnScanner } from './Return/Scanner';
 
 //global Scanners
 export { default as GlobalScanner } from './GlobalScanner';

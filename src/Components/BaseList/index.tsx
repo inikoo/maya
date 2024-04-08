@@ -14,6 +14,7 @@ import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {useNavigation} from '@react-navigation/native';
 import Empty from '~/Components/Empty';
+import {SpeedDial} from '@rneui/themed';
 
 export default function BaseList(props) {
   const [page, setPage] = useState(1);
@@ -26,25 +27,37 @@ export default function BaseList(props) {
   const [activeSearch, setActiveSearch] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
   const navigation = useNavigation();
+  const [open, setOpen] = React.useState(false);
+  const [TotalData, setTotalData] = React.useState(0);
+  const dialAction = [
+    ...props.settingOptions.map(item => ({...item})),
+    {
+      icon: {name: 'qr-code-scanner'},
+      title: 'Scanner',
+      key: 'scanner',
+      onPress: () => goScanner(),
+    },
+  ].filter(item => {
+    if (!props.scanner && item.key == 'scanner') return false;
+    return true;
+  });
   let timeoutId: any;
 
   const requestAPI = () => {
-    console.log(isListEnd,search,totalPage,page)
-    if ((!isListEnd || search) && (page != totalPage)){
-      setMoreLoading(true);
-      Request(
-        'get',
-        props.urlKey,
-        {},
-        {perPage: 10, page: page, ...props.params, ['filter[global]']: search},
-        props.args,
-        onSuccess,
-        onFailed,
-      );
-    }
+    setMoreLoading(true);
+    Request(
+      'get',
+      props.urlKey,
+      {},
+      {perPage: 10, page: page, ...props.params, ['filter[global]']: search},
+      props.args,
+      onSuccess,
+      onFailed,
+    );
   };
 
   const onSuccess = (results: Object) => {
+    console.log(results);
     if (results.data.length != 0 && page != 1) {
       setData(prevData => [...prevData, ...results.data]);
     } else if (results.data.length != 0 && page == 1) {
@@ -52,22 +65,32 @@ export default function BaseList(props) {
     } else {
       if (!search) setIsListEnd(true);
     }
-    setTotalPage(results.meta.last_page)
+    setTotalPage(results.meta.last_page);
     setLoading(false);
     setMoreLoading(false);
-    if(page == totalPage) setIsListEnd(true) 
+    setTotalData(results.meta.total);
+    if (page == totalPage) setIsListEnd(true);
   };
 
   const onFailed = (error: Object) => {
-    console.log(error)
-    if(page == totalPage) setIsListEnd(true);
+    console.log(error);
+    if (page == totalPage) setIsListEnd(true);
     setLoading(false);
     setMoreLoading(false);
-    Toast.show({
-      type: ALERT_TYPE.DANGER,
-      title: 'Error',
-      textBody: error.response.data.message,
-    });
+    if(error?.response?.data?.message){
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Error',
+        textBody: error.response.data.message,
+      });
+    }else {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Error',
+        textBody: 'failed from server',
+      });
+    }
+ 
   };
 
   const fetchMoreData = () => {
@@ -88,9 +111,7 @@ export default function BaseList(props) {
     } else return;
   };
 
-  const renderEmpty = () => (
-    <Empty buttonOnPress={() => requestAPI()}/>
-  );
+  const renderEmpty = () => <Empty buttonOnPress={() => requestAPI()} />;
 
   const renderItem = ({item}: {item: ItemData}) => {
     return <Text>{item.name}</Text>;
@@ -99,26 +120,39 @@ export default function BaseList(props) {
   const renderLoading = () => {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" />
-        </View>
+        <ActivityIndicator size="large" />
       </SafeAreaView>
     );
   };
 
   const renderList = () => {
     return (
-      <FlatList
-        data={data}
-        keyExtractor={(item, index) => index.toString()} // Key extractor function
-        renderItem={props.renderItem ? props.renderItem : renderItem}
-        ListHeaderComponent={props.listHeaderComponent} // Corrected prop name
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={renderEmpty}
-        onEndReachedThreshold={0.2}
-        onEndReached={fetchMoreData}
-        style={styles.list}
-      />
+      <View>
+        {props.showRecords && (
+          <View
+            style={{
+              backgroundColor: COLORS.grey7,
+              padding: 10,
+              paddingHorizontal: 18,
+            }}>
+            <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
+              Records : {TotalData}{' '}
+            </Text>
+          </View>
+        )}
+
+        <FlatList
+          data={data}
+          keyExtractor={(item, index) => index.toString()} // Key extractor function
+          renderItem={props.renderItem ? props.renderItem : renderItem}
+          ListHeaderComponent={props.listHeaderComponent} // Corrected prop name
+          ListFooterComponent={renderFooter}
+          ListEmptyComponent={renderEmpty}
+          onEndReachedThreshold={0.2}
+          onEndReached={fetchMoreData}
+          style={styles.list}
+        />
+      </View>
     );
   };
 
@@ -185,6 +219,7 @@ export default function BaseList(props) {
 
   const goScanner = () => {
     navigation.navigate(`${props.title} Scanner`);
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -201,15 +236,20 @@ export default function BaseList(props) {
     <View style={styles.containerList}>
       {activeSearch && renderSearch()}
       {renderList()}
-      {props.scanner && (
-        <TouchableOpacity style={styles.ButtonScan} onPress={goScanner}>
-          <Icon name="qr-code-scanner" size={40} color="#ffff"  color={COLORS.dark}/>
-        </TouchableOpacity>
+      {props.settingButton && (
+        <SpeedDial
+          isOpen={open}
+          onOpen={() => setOpen(!open)}
+          onClose={() => setOpen(!open)}>
+          {dialAction.map((item, index) => (
+            <SpeedDial.Action key={index} {...item} />
+          ))}
+        </SpeedDial>
       )}
       <BottomSheet modalProps={{}} isVisible={filterVisible}>
         <View style={{padding: 20, backgroundColor: '#ffff'}}>
           <Text>filter</Text>
-          <TouchableOpacity onPress={()=>setFilterVisible(false)}>
+          <TouchableOpacity onPress={() => setFilterVisible(false)}>
             <Text>Close</Text>
           </TouchableOpacity>
         </View>
@@ -226,23 +266,22 @@ BaseList.defaultProps = {
   params: {},
   scanner: true,
   title: '',
+  settingButton: true,
+  settingOptions: [],
+  showRecords: true,
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   title: {
     fontSize: 25,
     fontWeight: '700',
     marginVertical: 15,
     marginHorizontal: 10,
-  },
-  loading: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   footerText: {
     flex: 1,
@@ -271,8 +310,8 @@ const styles = StyleSheet.create({
   },
   ButtonScan: {
     position: 'absolute',
-    borderWidth:2,
-    borderColor:COLORS.grey4,
+    borderWidth: 2,
+    borderColor: COLORS.grey4,
     right: 20,
     bottom: 30,
     backgroundColor: MAINCOLORS.warning,

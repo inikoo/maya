@@ -85,10 +85,10 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            storeFile file('maya_key_store.keystore')
+            storePassword 'maya123'
+            keyAlias 'maya'
+            keyPassword 'maya123'
         }
     }
     buildTypes {
@@ -119,3 +119,5 @@ dependencies {
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services' 

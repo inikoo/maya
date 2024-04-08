@@ -21,7 +21,7 @@ const LocationPallet = (props) => {
 
   const Item = ({item, index}) => {
     return (
-      <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('Pallet',{pallete : item})}>
+      <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('Pallet',{pallet : item})}>
         <View style={styles.row}>
           <Avatar
             size={40}

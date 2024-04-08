@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
+import React from 'react';
 import BaseScanner from '~/Components/BaseScanner';
 import {useSelector} from 'react-redux';
+import { MAINCOLORS } from '~/Utils/Colors';
 
 export default function LocationScanner() {
   const organisation = useSelector(state => state.organisationReducer);
@@ -9,10 +9,11 @@ export default function LocationScanner() {
 
   return (
     <BaseScanner
-      urlKey="locations-show"
       title="Location"
       scannerKey='location'
+      prefix='loc'
       showMarker={true}
+      markerStyle={{ borderColor : MAINCOLORS.primary }}
       args={[organisation.active_organisation.id, warehouse.id]}
     />
   );

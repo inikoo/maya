@@ -48,6 +48,7 @@ export const COLORS = {
     primary: '#4F46E5',
     secondary: COLORS.indigo6,
     warning : COLORS.yellow4,
+    success : '#87D068',
     danger : COLORS.red4,
     info : COLORS.indigo3,
     background : COLORS.grey8,

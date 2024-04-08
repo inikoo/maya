@@ -13,7 +13,7 @@ export default function LocationCard(p) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Delivery Detail', {delivery: p.data.model})}
+      onPress={() => navigation.navigate('Delivery', {delivery: p.data.model})}
       style={styles.cardContainer}>
       <View>
         <View style={styles.row}>

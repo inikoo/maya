@@ -1,13 +1,22 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Image, View, ActivityIndicator} from 'react-native';
-import {Request} from '~/Utils';
+import {
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
+import {Request, IconColor} from '~/Utils';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {Text, SpeedDial} from '@rneui/themed';
-import {get, defaultTo, isNull} from 'lodash';
+import {Text, SpeedDial, Icon, Chip, Dialog} from '@rneui/themed';
+import {defaultTo, isNull} from 'lodash';
 import dayjs from 'dayjs';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {MAINCOLORS} from '~/Utils/Colors';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import DetailRow from '~/Components/DetailRow';
+import Barcode from 'react-native-barcode-builder';
+import Information from '~/Components/loactionComponents/Information';
+
 
 const Detail = props => {
   const [loading, setLoading] = useState(true);
@@ -15,7 +24,8 @@ const Detail = props => {
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
   const navigation = useNavigation();
-  const [open, setOpen] = useState(false); // Corrected from React.useState to useState
+  const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const getDetail = () => {
     setLoading(true);
@@ -35,7 +45,6 @@ const Detail = props => {
   };
 
   const onSuccessGetDetail = response => {
-    console.log(response);
     setDataSelected(response);
     setLoading(false);
   };
@@ -49,131 +58,230 @@ const Detail = props => {
     });
   };
 
-  useEffect(() => {
-    getDetail();
-  }, []);
-
-  return !loading ? (
-    <View style={styles.container}>
-      <Image
-        source={require('../../assets/image/location.jpg')}
-        style={styles.img}
-        resizeMode="cover"
-      />
-      <View style={styles.cont3}>
-        <Text style={styles.title}>{get(dataSelected, 'code', '-')}</Text>
-        <View style={styles.descriptionContainer}>
+  const renderContent = () => {
+    return (
+      <View style={styles.containerContent}>
+        <View style={styles.barcodeContainer}>
+          <Barcode value={`loc-${dataSelected.slug}`} width={1} height={70} />
+          <Text style={styles.barcodeText}>{`loc-${dataSelected.slug}`}</Text>
+        </View>
+        <View style={styles.rowDetail}>
+          <DetailRow title="Code" text={defaultTo(dataSelected.code, '-')} />
+        </View>
+        <View style={styles.rowDetail}>
           <DetailRow
-            title="Status :"
-            text={defaultTo(dataSelected.status, '-')}
+            title="Status"
+            text={() => {
+              return (
+                <Chip
+                  title={defaultTo(dataSelected.status, '-')}
+                  color={
+                    dataSelected?.status == 'operational'
+                      ? MAINCOLORS.success
+                      : MAINCOLORS.danger
+                  }
+                  buttonStyle={{padding: 1, marginHorizontal: 2}}
+                  titleStyle={{fontSize: 14}}
+                />
+              );
+            }}
           />
+        </View>
+        <View style={styles.rowDetail}>
           <DetailRow
-            title="Created At :"
-            text={dayjs(dataSelected.created_at).format('DD/MM/YY')}
+            title="Created At"
+            text={dayjs(dataSelected.created_at).format('DD-MM-YYYY')}
           />
-       {/*    <DetailRow
-            title="Updated At :"
-            text={dayjs(dataSelected.updated_at).format('DD/MM/YY')}
-          /> */}
+        </View>
+        <View style={styles.rowDetail}>
           <DetailRow
-            title="Audited At :"
+            title="Updated At"
+            text={dayjs(dataSelected.updated_at).format('DD-MM-YYYY')}
+          />
+        </View>
+        <View style={styles.rowDetail}>
+          <DetailRow
+            title="Audited At"
             text={
               dataSelected.audited_at && !isNull(dataSelected.audited_at)
                 ? dayjs(dataSelected.audited_at).format('DD/MM/YY')
                 : '-'
             }
           />
-          <DetailRow title="Stock Value :" text={dataSelected.stock_value} />
+        </View>
+        <View style={styles.rowDetail}>
+          <DetailRow title="Stock Value" text={dataSelected.stock_value} />
+        </View>
+        <View style={styles.rowDetail}>
           <DetailRow
-            title="Max Volume :"
+            title="Max Volume"
             text={defaultTo(dataSelected.max_volume, '-')}
           />
+        </View>
+        <View style={styles.rowDetail}>
           <DetailRow
-            title="Max Weight :"
+            title="Max Weight"
             text={defaultTo(dataSelected.max_weight, '-')}
           />
         </View>
+        <View style={styles.rowDetail}>
+          <DetailRow
+            title="Tags"
+            text={() => {
+              return dataSelected.tags.map((tag, index) => (
+                <Chip
+                  key={index}
+                  title={tag}
+                  color={`#${Math.floor(Math.random() * 16777215).toString(
+                    16,
+                  )}`}
+                  buttonStyle={{padding: 1, marginHorizontal: 2}}
+                  titleStyle={{fontSize: 12}}
+                />
+              ));
+            }}
+          />
+        </View>
+
+        <View style={styles.rowDetail}>
+          <DetailRow
+            title="Location status"
+            text={() => (
+              <View style={styles.iconContainer}>
+                <View style={styles.row}>
+                  <Icon
+                    name="box"
+                    type="font-awesome-5"
+                    size={15}
+                    style={{...styles.icon}}
+                    color={IconColor(
+                      dataSelected.allow_stocks,
+                      dataSelected.has_stock_slots,
+                    )}
+                  />
+                  <Icon
+                    name="hand-holding-water"
+                    type="font-awesome-5"
+                    size={15}
+                    style={styles.icon}
+                    color={IconColor(
+                      dataSelected.allow_dropshipping,
+                      dataSelected.has_dropshipping_slots,
+                    )}
+                  />
+                  <Icon
+                    name="pallet"
+                    type="font-awesome-5"
+                    size={15}
+                    style={styles.icon}
+                    color={IconColor(
+                      dataSelected.allow_fulfilment,
+                      dataSelected.has_fulfilment,
+                    )}
+                  />
+                </View>
+              </View>
+            )}
+          />
+        </View>
       </View>
+    );
+  };
+
+  const setDialog = () => {
+    setOpenDialog(!openDialog);
+  };
+
+  useEffect(() => {
+    getDetail();
+  }, []);
+
+  return !loading ? (
+    <View style={styles.container}>
+      <ScrollView>{renderContent()}</ScrollView>
       <SpeedDial
         isOpen={open}
         onOpen={() => setOpen(!open)}
         onClose={() => setOpen(!open)}
         style={styles.speedDial} // Added style prop
-        direction="down"
         onPress={() => setOpen(!open)}>
         <SpeedDial.Action
-          icon={{ name: 'pallet' }}
+          icon = {{name: 'info', type: 'antdesign'}}
+          title = 'Info'
+          onPress = {() => setDialog()}
+        />
+        <SpeedDial.Action
+          icon={{name: 'pallet'}}
           title="Pallet"
           onPress={() =>
             navigation.navigate('Location Pallet', {location: dataSelected})
           }
         />
       </SpeedDial>
+      <Dialog isVisible={openDialog} onBackdropPress={setDialog}>
+        <Dialog.Title title="Info" />
+        <Information />
+      </Dialog>
     </View>
   ) : (
-    <ActivityIndicator size="large" />
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+      }}>
+      <ActivityIndicator size="large" />
+    </View>
   );
 };
 
 export default Detail;
 
-const DetailRow = ({title, text, renderContent}) => (
-  <View style={styles.descriptionRow}>
-    <Text style={styles.descriptionTitle}>{title}</Text>
-    {!renderContent ? (
-      <Text style={styles.descriptionText}>{text}</Text>
-    ) : (
-      renderContent
-    )}
-  </View>
-);
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFFFFF', // Set background color to white
+  },
+  containerContent: {
+    flex: 1,
+    padding: 20,
+  },
+  rowDetail: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#CCCCCC', // Light gray border color
+    paddingVertical: 15,
+  },
+  barcodeContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#121212',
+    marginBottom: 20,
   },
-  title: {
-    fontSize: 25,
-    fontFamily: 'Montserrat_700Bold',
-    marginTop: 30,
+  barcodeText: {
     fontWeight: 'bold',
-    color:MAINCOLORS.primary
-  },
-  img: {
-    height: '60%',
-    width: '100%',
-  },
-  cont3: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    width: '100%',
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    paddingHorizontal: 20,
-    marginTop: -50,
-  },
-  descriptionContainer: {
-    marginVertical: 10,
-  },
-  descriptionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
-  descriptionTitle: {
-    fontWeight: 'bold',
+    marginTop: 5,
     fontSize: 16,
-    marginRight: 10,
   },
-  descriptionText: {
-    flex: 1,
+  chipContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 5,
+  },
+  chip: {
+    marginVertical: 2,
+    marginHorizontal: 2,
   },
   speedDial: {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    bottom: 20,
+    right: 20,
+  },
+  iconContainer: {
+    alignItems: 'flex-end',
+  },
+  icon: {
+    marginHorizontal: 5,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
   },
 });
