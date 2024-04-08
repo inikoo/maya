@@ -6,6 +6,8 @@ export default {
 	"firebase-token" : "api/firebase-token",
 
 
+	//Notification
+	'notification' : 'api/profile/notifications',
 
 	//working places
 	'hr-working-places' : "api/hr/workplaces",
