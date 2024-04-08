@@ -22,7 +22,7 @@ const MyTheme = {
     notification: COLORS.grey6,
   },
 };
-
+ 
 export default function App() {
 
   async function requestUserPermission() {
