@@ -5,10 +5,24 @@ import BaseList from '~/Components/BaseList';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Avatar} from '@rneui/themed';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import { Request } from '~/Utils';
 
 const Notifications = props => {
   const navigation = useNavigation();
   const [openDialog, setOpenDialog] = useState(false);
+
+
+  const readNotification = (data)=>{
+    Request(
+      'patch',
+      'notification-read',
+      {},
+      {},
+      [data.id],
+      ()=>NavigationPush(data.data),
+      ()=>NavigationPush(data.data),
+    );
+  }
 
 
   const NavigationPush=(data)=>{
@@ -19,7 +33,7 @@ const Notifications = props => {
 
   const Item = ({item}) => {
     return (
-      <TouchableOpacity style={styles.container} onPress={()=>NavigationPush(item.data)}>
+      <TouchableOpacity style={styles.container} onPress={()=>readNotification(item)}>
         <View style={styles.row}>
           <Avatar
             size={40}

@@ -68,6 +68,12 @@ const Locations = props => {
         renderItem={Item}
         navigation={props.navigation}
         title="Location"
+        sort={[
+          {
+            title: 'Code',
+            key: 'code',
+          },
+        ]}
         settingOptions={[
           {
             icon: {name: 'info', type: 'antdesign'},

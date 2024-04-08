@@ -6,10 +6,11 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {SearchBar, BottomSheet} from '@rneui/base';
 import Request from '~/Utils/request';
-import {Icon, Text} from '@rneui/themed'; // Import Icon from your icon library
+import {Icon, Text, Chip} from '@rneui/themed'; // Import Icon from your icon library
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {useNavigation} from '@react-navigation/native';
@@ -27,8 +28,10 @@ export default function BaseList(props) {
   const [activeSearch, setActiveSearch] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
   const navigation = useNavigation();
-  const [open, setOpen] = React.useState(false);
-  const [TotalData, setTotalData] = React.useState(0);
+  const [open, setOpen] = useState(false);
+  const [TotalData, setTotalData] = useState(0);
+  const [sortValue, setSortValue] = useState([]);
+
   const dialAction = [
     ...props.settingOptions.map(item => ({...item})),
     {
@@ -44,6 +47,7 @@ export default function BaseList(props) {
   let timeoutId: any;
 
   const requestAPI = () => {
+    console.log('ss',sortValue)
     setMoreLoading(true);
     Request(
       'get',
@@ -77,20 +81,19 @@ export default function BaseList(props) {
     if (page == totalPage) setIsListEnd(true);
     setLoading(false);
     setMoreLoading(false);
-    if(error?.response?.data?.message){
+    if (error?.response?.data?.message) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: 'Error',
         textBody: error.response.data.message,
       });
-    }else {
+    } else {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: 'Error',
         textBody: 'failed from server',
       });
     }
- 
   };
 
   const fetchMoreData = () => {
@@ -125,20 +128,67 @@ export default function BaseList(props) {
     );
   };
 
+  const setSortValueItem = (value) => {
+    const sort = [...sortValue];
+    const key = value.key;
+    console.log('ddd',key,sort)
+    if (sort.includes(key) || sort.includes(`-${key}`)) {
+        const index = sort.indexOf(key);
+        if (index !== -1) {
+            const index2 = sort.indexOf(`-${key}`);
+            sort.splice(index2, 1);
+        } else {
+            const hyphenatedIndex = sort.indexOf(`-${key}`);
+            if (hyphenatedIndex !== -1) {
+                sort.splice(hyphenatedIndex, 1); 
+            }
+        }
+    } else {
+        const hyphenatedIndex = sort.indexOf(`-${key}`);
+        if (hyphenatedIndex !== -1) {
+            sort.splice(hyphenatedIndex, 1); // Remove -key if found
+        } else {
+            sort.push(key); // Add key if not found
+        }
+    }
+    setSortValue(sort)
+};
+
+
+
   const renderList = () => {
     return (
       <View>
         {props.showRecords && (
-          <View
-            style={{
+          <ScrollView
+            horizontal={true}
+            contentContainerStyle={{
+              minWidth: '100%',
               backgroundColor: COLORS.grey7,
-              padding: 10,
-              paddingHorizontal: 18,
             }}>
-            <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
-              Records : {TotalData}{' '}
-            </Text>
-          </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center', // Align items horizontally
+                padding: 10,
+                backgroundColor: COLORS.grey7,
+              }}>
+              <View style={styles.ContinerSort}>
+                <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
+                  Records : {TotalData}
+                </Text>
+              </View>
+              {props.sort.map((item, index) => (
+                <TouchableOpacity key={index} style={styles.ContinerSort} onPress={()=>setSortValueItem(item)}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
+                    {item.title}{' '}
+                    <Icon name="caretup" type="antdesign" size={9} />
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
         )}
 
         <FlatList
@@ -269,6 +319,7 @@ BaseList.defaultProps = {
   settingButton: true,
   settingOptions: [],
   showRecords: true,
+  sort: [],
 };
 
 const styles = StyleSheet.create({
@@ -317,5 +368,14 @@ const styles = StyleSheet.create({
     backgroundColor: MAINCOLORS.warning,
     borderRadius: 20,
     padding: 10,
+  },
+  ContinerSort: {
+    flexDirection: 'row',
+    alignItems: 'center', // Align items horizontally
+    backgroundColor: COLORS.grey5,
+    borderRadius: 10,
+    padding: 5,
+    marginRight: 10,
+    paddingHorizontal: 10,
   },
 });
