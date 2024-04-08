@@ -31,7 +31,7 @@ jobs:
              npm install
 
       - name: Build application
-        run: cd android && ./gradlew clean && ./gradlew :app:bundleRelease
+        run: cd android && gradlew.bat clean && gradlew.bat :app:bundleRelease --warning-mode all
 
       - name: Upload application
         uses: actions/upload-artifact@v2
