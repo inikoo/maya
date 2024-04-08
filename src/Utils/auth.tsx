@@ -1,6 +1,7 @@
 import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Request from './request';
+import messaging from '@react-native-firebase/messaging';
 
 
 export async function WriteCredential(data: object) {
@@ -40,33 +41,7 @@ export async function WriteWarehouse(data: object) {
   }
 }
 
-export async function UpdateCredential(token = "") {
-  try {
-    const profile = await new Promise((resolve, reject) => {
-      Request(
-        'get',
-        'profile',
-        {Authorization: 'Bearer ' + token},
-        {},
-        [],
-        profileRes => resolve(profileRes),
-        error => reject(error),
-      );
-    });
 
-    return {
-      status: 'Success',
-      data: profile.data,
-    };
-
-  } catch (error) {
-    return {
-      status: 'error',
-      data: null,
-      message: error,
-    };
-  }
-}
 
 
 export async function RefershToken(token = "") {
@@ -90,6 +65,80 @@ export async function RefershToken(token = "") {
 
   } catch (error) {
     return {
+      status: 'error',
+      data: null,
+      message: error,
+    };
+  }
+}
+
+
+export async function UpdateCredential(token = "") {
+  try {
+    const profile = await new Promise((resolve, reject) => {
+      Request(
+        'get',
+        'profile',
+        { Authorization: 'Bearer ' + token },
+        {},
+        [],
+        profileRes => resolve(profileRes),
+        error => reject(error),
+      );
+    });
+
+    await sendFirebaseToken(); // Send Firebase token after updating profile
+
+    return {
+      status: 'Success',
+      data: profile.data,
+    };
+
+  } catch (error) {
+    throw {
+      status: 'error',
+      data: null,
+      message: error,
+    };
+  }
+}
+
+export async function getFirebaseToken() {
+  try {
+    const token = await messaging().getToken();
+    return token;
+  } catch (error) {
+    throw {
+      status: 'error',
+      data: null,
+      message: error,
+    };
+  }
+}
+
+export async function sendFirebaseToken() {
+  try {
+    const token = await getFirebaseToken();
+
+    const response = await new Promise((resolve, reject) => {
+      Request(
+        'patch',
+        'firebase-token',
+        {}, // Assuming you need to send some data here
+        { firebase_token: token },
+        [],
+        token => {resolve(token),console.log(token)},
+        error => reject(error),
+      );
+    });
+
+    return {
+      status: 'Success',
+      data: response.data,
+    };
+
+  } catch (error) {
+    throw {
       status: 'error',
       data: null,
       message: error,
