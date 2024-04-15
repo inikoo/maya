@@ -10,7 +10,6 @@ import {Icon} from '@rneui/themed';
 import {COLORS } from '~/Utils/Colors';
 
 const PalletCard = props => {
-  console.log(props)
   const navigation = useNavigation();
 
   return (

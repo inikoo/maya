@@ -10,6 +10,7 @@ import BaseList from '~/Components/BaseList';
 import {useNavigation} from '@react-navigation/native';
 import {Avatar, Text} from '@rneui/themed'; // Import Icon from your icon library
 import { COLORS, MAINCOLORS } from '~/Utils/Colors';
+import { CheckBox } from '@rneui/base';
 
 const Delivery = (props) => {
   const navigation = useNavigation();

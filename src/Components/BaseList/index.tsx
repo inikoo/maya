@@ -6,15 +6,18 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {SearchBar, BottomSheet} from '@rneui/base';
 import Request from '~/Utils/request';
-import {Icon, Text} from '@rneui/themed'; // Import Icon from your icon library
+import {Icon, Text, Chip} from '@rneui/themed'; // Import Icon from your icon library
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {useNavigation} from '@react-navigation/native';
 import Empty from '~/Components/Empty';
 import {SpeedDial} from '@rneui/themed';
+import Filter from '~/Components/Filter';
+import { isObject, isArray } from "lodash"
 
 export default function BaseList(props) {
   const [page, setPage] = useState(1);
@@ -27,8 +30,11 @@ export default function BaseList(props) {
   const [activeSearch, setActiveSearch] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
   const navigation = useNavigation();
-  const [open, setOpen] = React.useState(false);
-  const [TotalData, setTotalData] = React.useState(0);
+  const [open, setOpen] = useState(false);
+  const [TotalData, setTotalData] = useState(0);
+  const [sortValue, setSortValue] = useState([]);
+  const [filterValue, setFilterValue] = useState([]);
+
   const dialAction = [
     ...props.settingOptions.map(item => ({...item})),
     {
@@ -43,21 +49,41 @@ export default function BaseList(props) {
   });
   let timeoutId: any;
 
+
+  const setFilterToServer = () => {
+    let filter = [...filterValue]; // Assuming filterValue is defined elsewhere
+    for (const f in filter) {
+      if (isObject(filter[f]) || isArray(filter[f])) {
+        filter[f] = filter[f].toString(); // Update filter with the stringified value
+      }
+    }
+    return filter;
+  };
+  
+
   const requestAPI = () => {
-    setMoreLoading(true);
+    const filter = setFilterToServer();   
+    setMoreLoading(true); 
     Request(
       'get',
       props.urlKey,
       {},
-      {perPage: 10, page: page, ...props.params, ['filter[global]']: search},
+      {
+        perPage: 10,
+        page: page,
+        ...props.params,
+        ['filter[global]']: search,
+        sort: sortValue,
+        ...filter
+      },
       props.args,
       onSuccess,
-      onFailed,
+      onFailed
     );
   };
+  
 
   const onSuccess = (results: Object) => {
-    console.log(results);
     if (results.data.length != 0 && page != 1) {
       setData(prevData => [...prevData, ...results.data]);
     } else if (results.data.length != 0 && page == 1) {
@@ -77,20 +103,19 @@ export default function BaseList(props) {
     if (page == totalPage) setIsListEnd(true);
     setLoading(false);
     setMoreLoading(false);
-    if(error?.response?.data?.message){
+    if (error?.response?.data?.message) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: 'Error',
         textBody: error.response.data.message,
       });
-    }else {
+    } else {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: 'Error',
         textBody: 'failed from server',
       });
     }
- 
   };
 
   const fetchMoreData = () => {
@@ -125,20 +150,74 @@ export default function BaseList(props) {
     );
   };
 
+  const setSortValueItem = value => {
+    const sort = [...sortValue];
+    const key = value.key;
+    const hyphenatedKey = `-${key}`;
+
+    // Check if the key or its hyphenated version is already in the sort array
+    const includesKey = sort.includes(key);
+    const includesHyphenatedKey = sort.includes(hyphenatedKey);
+
+    if (includesKey || includesHyphenatedKey) {
+      // If key or hyphenated key is found, remove it
+      const index = includesKey
+        ? sort.indexOf(key)
+        : sort.indexOf(hyphenatedKey);
+      if (includesKey) sort.splice(index, 1, `-${key}`);
+      else sort.splice(index, 1);
+    } else {
+      sort.push(key);
+    }
+
+    setSortValue(sort);
+  };
+
+  const renderIconSort = item => {
+    if (sortValue.includes(item.key) && sortValue.length > 0)
+      return <Icon name="caretup" type="antdesign" size={9} />;
+    else if (sortValue.includes(`-${item.key}`) && sortValue.length > 0)
+      return <Icon name="caretdown" type="antdesign" size={9} />;
+    return;
+  };
+
   const renderList = () => {
     return (
       <View>
         {props.showRecords && (
-          <View
-            style={{
+          <ScrollView
+            horizontal={true}
+            contentContainerStyle={{
+              minWidth: '100%',
               backgroundColor: COLORS.grey7,
-              padding: 10,
-              paddingHorizontal: 18,
             }}>
-            <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
-              Records : {TotalData}{' '}
-            </Text>
-          </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center', // Align items horizontally
+                padding: 10,
+                backgroundColor: COLORS.grey7,
+              }}>
+              <View style={styles.ContinerSort}>
+                <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
+                  Records : {TotalData}
+                </Text>
+              </View>
+              {props.sort.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.ContinerSort}
+                    onPress={() => setSortValueItem(item)}>
+                    <Text
+                      style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
+                      {item.title} {renderIconSort(item)}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </ScrollView>
         )}
 
         <FlatList
@@ -222,13 +301,17 @@ export default function BaseList(props) {
     setOpen(false);
   };
 
+  const onChangeFilter=(value)=>{
+    setFilterValue(value)
+  }
+
   useEffect(() => {
     requestAPI();
     props.navigation.setOptions({
       headerRight: HeaderRight,
       headerShown: !activeSearch,
     });
-  }, [page, activeSearch, search]);
+  }, [page, activeSearch, search, sortValue, filterValue]);
 
   return loading ? (
     renderLoading()
@@ -248,9 +331,15 @@ export default function BaseList(props) {
       )}
       <BottomSheet modalProps={{}} isVisible={filterVisible}>
         <View style={{padding: 20, backgroundColor: '#ffff'}}>
-          <Text>filter</Text>
-          <TouchableOpacity onPress={() => setFilterVisible(false)}>
-            <Text>Close</Text>
+          <Filter 
+              bluprint={props.filter} 
+              onChangeFilter={onChangeFilter}
+              value={filterValue}
+            />
+          <TouchableOpacity
+            onPress={() => setFilterVisible(false)}
+            style={{position: 'absolute', top: 10, right: 10}}>
+            <Text style={{color: MAINCOLORS.danger}}>Close</Text>
           </TouchableOpacity>
         </View>
       </BottomSheet>
@@ -269,6 +358,8 @@ BaseList.defaultProps = {
   settingButton: true,
   settingOptions: [],
   showRecords: true,
+  sort: [],
+  filter: [],
 };
 
 const styles = StyleSheet.create({
@@ -317,5 +408,14 @@ const styles = StyleSheet.create({
     backgroundColor: MAINCOLORS.warning,
     borderRadius: 20,
     padding: 10,
+  },
+  ContinerSort: {
+    flexDirection: 'row',
+    alignItems: 'center', // Align items horizontally
+    backgroundColor: COLORS.grey5,
+    borderRadius: 10,
+    padding: 5,
+    marginRight: 10,
+    paddingHorizontal: 10,
   },
 });

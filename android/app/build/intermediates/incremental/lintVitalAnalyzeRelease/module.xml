@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="C:\Users\62852\Project\maya2\Maya\android\app"
+    name=":app"
+    type="APP"
+    maven="Maya:app:"
+    agpVersion="8.1.1"
+    buildFolder="build"
+    bootClassPath="C:\Users\62852\AppData\Local\Android\Sdk\platforms\android-34\android.jar;C:\Users\62852\AppData\Local\Android\Sdk\build-tools\34.0.0\core-lambda-stubs.jar"
+    javaSourceLevel="17"
+    compileTarget="android-34"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>

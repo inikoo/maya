@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -6,16 +6,16 @@ import {
   ImageBackground,
   ActivityIndicator,
   TouchableOpacity,
-  TextInput
+  TextInput,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {v4 as uuidv4} from 'uuid';
-import { Avatar, Divider, Card, Icon, Text } from '@rneui/base';
+import {Avatar, Divider, Card, Icon, Text} from '@rneui/base';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {useSelector} from 'react-redux';
 import SetUpOrganisation from './SetUpOrganisation';
 import SetUpFullfilment from './SetUpFullfilment';
-import { Request } from '~/Utils';
+import {Request} from '~/Utils';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 export default function HomeScreen({navigation}) {
@@ -89,21 +89,18 @@ export default function HomeScreen({navigation}) {
   ];
 
   const reqCountData = () => {
-     if(organisation.active_organisation && warehouse.id){
+    if (organisation.active_organisation && warehouse.id) {
       setLoading(true);
       Request(
         'get',
         'warehouse-count-data',
         {},
         {},
-        [
-          organisation.active_organisation.id,
-          warehouse.id,
-        ],
+        [organisation.active_organisation.id, warehouse.id],
         onSuccessGetCount,
         onFailedGetCount,
       );
-     }
+    }
   };
 
   const onSuccessGetCount = response => {
@@ -122,7 +119,7 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     reqCountData();
-  }, [organisation,warehouse]);
+  }, [organisation, warehouse]);
 
   const onPressMenu = item => {
     navigation.navigate(item.key);
@@ -158,7 +155,7 @@ export default function HomeScreen({navigation}) {
   };
 
   const renderStat = () => {
-    return  !loading ? (
+    return !loading ? (
       <View
         style={{
           flexDirection: 'row',
@@ -168,7 +165,7 @@ export default function HomeScreen({navigation}) {
           <TouchableOpacity
             key={key}
             /* onPress={() => onPressMenu(item)} */
-            style={{ width: '50%', padding: 5 }}>
+            style={{width: '50%', padding: 5}}>
             <Card
               containerStyle={{
                 borderRadius: 10,
@@ -177,18 +174,18 @@ export default function HomeScreen({navigation}) {
                 marginRight: 0,
                 marginLeft: 0,
               }}>
-              <Text style={{ fontSize: 14, marginBottom: 5, fontWeight: '700' }}>
+              <Text style={{fontSize: 14, marginBottom: 5, fontWeight: '700'}}>
                 {item.label}
               </Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Icon
                   name="tags"
                   type="antdesign"
                   size={15}
                   color={MAINCOLORS.danger}
-                  style={{ marginRight: 5 }}
+                  style={{marginRight: 5}}
                 />
-                <Text style={{ fontSize: 12, color: '#444' }}>
+                <Text style={{fontSize: 12, color: '#444'}}>
                   Total: {item.count}
                 </Text>
               </View>
@@ -198,7 +195,7 @@ export default function HomeScreen({navigation}) {
       </View>
     ) : (
       <ActivityIndicator size="large" />
-    )
+    );
   };
 
   return (
@@ -216,17 +213,32 @@ export default function HomeScreen({navigation}) {
               <Text style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}>
                 Hello {user.username}
               </Text>
-              <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                <ImageBackground
-                  source={require('../../assets/image/user-profile.jpg')}
-                  style={{width: 35, height: 35}}
-                  imageStyle={{borderRadius: 25}}
-                />
-              </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: 20,
+                }}>
+                <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
+                  <Icon
+                    name="notifications-outline"
+                    type="ionicon"
+                    style={{width: 35, height: 35, padding: 5, marginRight: 5}}
+                  />
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                  <ImageBackground
+                    source={require('../../assets/image/user-profile.jpg')}
+                    style={{width: 35, height: 35}}
+                    imageStyle={{borderRadius: 25}}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
 
             <TouchableOpacity
-              onPress={()=>navigation.navigate("Scan")}
+              onPress={() => navigation.navigate('Scan')}
               style={{
                 flexDirection: 'row',
                 borderColor: '#C6C6C6',
