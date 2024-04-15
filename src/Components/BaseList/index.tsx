@@ -47,13 +47,18 @@ export default function BaseList(props) {
   let timeoutId: any;
 
   const requestAPI = () => {
-    console.log('ss',sortValue)
     setMoreLoading(true);
     Request(
       'get',
       props.urlKey,
       {},
-      {perPage: 10, page: page, ...props.params, ['filter[global]']: search},
+      {
+        perPage: 10,
+        page: page,
+        ...props.params,
+        ['filter[global]']: search,
+        sort: sortValue,
+      },
       props.args,
       onSuccess,
       onFailed,
@@ -61,7 +66,6 @@ export default function BaseList(props) {
   };
 
   const onSuccess = (results: Object) => {
-    console.log(results);
     if (results.data.length != 0 && page != 1) {
       setData(prevData => [...prevData, ...results.data]);
     } else if (results.data.length != 0 && page == 1) {
@@ -128,33 +132,36 @@ export default function BaseList(props) {
     );
   };
 
-  const setSortValueItem = (value) => {
+  const setSortValueItem = value => {
     const sort = [...sortValue];
     const key = value.key;
-    console.log('ddd',key,sort)
-    if (sort.includes(key) || sort.includes(`-${key}`)) {
-        const index = sort.indexOf(key);
-        if (index !== -1) {
-            const index2 = sort.indexOf(`-${key}`);
-            sort.splice(index2, 1);
-        } else {
-            const hyphenatedIndex = sort.indexOf(`-${key}`);
-            if (hyphenatedIndex !== -1) {
-                sort.splice(hyphenatedIndex, 1); 
-            }
-        }
+    const hyphenatedKey = `-${key}`;
+
+    // Check if the key or its hyphenated version is already in the sort array
+    const includesKey = sort.includes(key);
+    const includesHyphenatedKey = sort.includes(hyphenatedKey);
+
+    if (includesKey || includesHyphenatedKey) {
+      // If key or hyphenated key is found, remove it
+      const index = includesKey
+        ? sort.indexOf(key)
+        : sort.indexOf(hyphenatedKey);
+      if (includesKey) sort.splice(index, 1, `-${key}`);
+      else sort.splice(index, 1);
     } else {
-        const hyphenatedIndex = sort.indexOf(`-${key}`);
-        if (hyphenatedIndex !== -1) {
-            sort.splice(hyphenatedIndex, 1); // Remove -key if found
-        } else {
-            sort.push(key); // Add key if not found
-        }
+      sort.push(key);
     }
-    setSortValue(sort)
-};
 
+    setSortValue(sort);
+  };
 
+  const renderIconSort = (item) => {
+    if (sortValue.includes(item.key) && sortValue.length > 0)
+      return <Icon name="caretup" type="antdesign" size={9} />;
+    else if (sortValue.includes(`-${item.key}`) && sortValue.length > 0)
+      return <Icon name="caretdown" type="antdesign" size={9} />;
+    return 
+  };
 
   const renderList = () => {
     return (
@@ -178,15 +185,19 @@ export default function BaseList(props) {
                   Records : {TotalData}
                 </Text>
               </View>
-              {props.sort.map((item, index) => (
-                <TouchableOpacity key={index} style={styles.ContinerSort} onPress={()=>setSortValueItem(item)}>
-                  <Text
-                    style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
-                    {item.title}{' '}
-                    <Icon name="caretup" type="antdesign" size={9} />
-                  </Text>
-                </TouchableOpacity>
-              ))}
+              {props.sort.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.ContinerSort}
+                    onPress={() => setSortValueItem(item)}>
+                    <Text
+                      style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
+                      {item.title} {renderIconSort(item)}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
           </ScrollView>
         )}
@@ -278,7 +289,7 @@ export default function BaseList(props) {
       headerRight: HeaderRight,
       headerShown: !activeSearch,
     });
-  }, [page, activeSearch, search]);
+  }, [page, activeSearch, search, sortValue]);
 
   return loading ? (
     renderLoading()
