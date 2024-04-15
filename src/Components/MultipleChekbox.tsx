@@ -21,10 +21,8 @@ const Filter = props => {
 
   useEffect(() => {
     const finalOptions = props.options.map(item => {
-      console.log( props.value.includes(item.value))
       return { ...item,  checked: props.value.includes(item.value)}
     })
-    console.log(finalOptions)
     setValue(finalOptions);
   }, []);
   
