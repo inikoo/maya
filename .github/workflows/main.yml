@@ -34,7 +34,7 @@ jobs:
         run: cd android && ./gradlew clean && ./gradlew bundleRelease --warning-mode all
 
       - name: Upload application
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app
           path: android/app/build/outputs/bundle/release/app.aab
@@ -45,7 +45,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Download APK artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4   
         with:
           name: app
           path: android/app/build/outputs/apk/release/app-release.apk
