@@ -15,14 +15,15 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
+          distribution: adopt
 
       - name: Validate Gradle wrapper
         run: ./gradlew wrapper --gradle-version 7.3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Install npm dependencies
         run: npm install
