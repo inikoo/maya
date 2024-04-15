@@ -29,7 +29,7 @@ jobs:
         run: npm install
 
       - name: Build application
-        run: cd android && ./gradlew clean bundleRelease --warning-mode all
+        run: cd android && ./gradlew clean && ./gradlew bundleRelease --warning-mode all
 
       - name: Upload application artifact
         uses: actions/upload-artifact@v2
