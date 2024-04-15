@@ -2,7 +2,7 @@ name: Build and Release Android App
 
 on:
   push:
-    branches: [main]
+    branches: [arya]
 
 jobs:
   build:
@@ -34,8 +34,41 @@ jobs:
         run: cd android && ./gradlew clean && ./gradlew bundleRelease --warning-mode all
 
       - name: Upload application
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
-          name: app
-          path: android/app/build/outputs/bundle/release/app.aab
+          name: app-release
+          path: ./build/outputs/apk/release/app-release.aab
           retention-days: 3
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v2   
+        with:
+          name: app-release
+          path: android/app/build/outputs/apk/release/app-release.apk
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v1.0.0
+          release_name: Release 1.0.0
+          draft: false
+          prerelease: false
+
+      - name: Upload APK to Release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/vnd.android.package-archive
