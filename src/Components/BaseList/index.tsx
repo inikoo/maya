@@ -16,6 +16,8 @@ import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {useNavigation} from '@react-navigation/native';
 import Empty from '~/Components/Empty';
 import {SpeedDial} from '@rneui/themed';
+import Filter from '~/Components/Filter';
+import { isObject, isArray } from "lodash"
 
 export default function BaseList(props) {
   const [page, setPage] = useState(1);
@@ -31,6 +33,7 @@ export default function BaseList(props) {
   const [open, setOpen] = useState(false);
   const [TotalData, setTotalData] = useState(0);
   const [sortValue, setSortValue] = useState([]);
+  const [filterValue, setFilterValue] = useState([]);
 
   const dialAction = [
     ...props.settingOptions.map(item => ({...item})),
@@ -46,8 +49,21 @@ export default function BaseList(props) {
   });
   let timeoutId: any;
 
+
+  const setFilterToServer = () => {
+    let filter = [...filterValue]; // Assuming filterValue is defined elsewhere
+    for (const f in filter) {
+      if (isObject(filter[f]) || isArray(filter[f])) {
+        filter[f] = filter[f].toString(); // Update filter with the stringified value
+      }
+    }
+    return filter;
+  };
+  
+
   const requestAPI = () => {
-    setMoreLoading(true);
+    const filter = setFilterToServer();   
+    setMoreLoading(true); 
     Request(
       'get',
       props.urlKey,
@@ -58,12 +74,14 @@ export default function BaseList(props) {
         ...props.params,
         ['filter[global]']: search,
         sort: sortValue,
+        ...filter
       },
       props.args,
       onSuccess,
-      onFailed,
+      onFailed
     );
   };
+  
 
   const onSuccess = (results: Object) => {
     if (results.data.length != 0 && page != 1) {
@@ -155,12 +173,12 @@ export default function BaseList(props) {
     setSortValue(sort);
   };
 
-  const renderIconSort = (item) => {
+  const renderIconSort = item => {
     if (sortValue.includes(item.key) && sortValue.length > 0)
       return <Icon name="caretup" type="antdesign" size={9} />;
     else if (sortValue.includes(`-${item.key}`) && sortValue.length > 0)
       return <Icon name="caretdown" type="antdesign" size={9} />;
-    return 
+    return;
   };
 
   const renderList = () => {
@@ -283,13 +301,17 @@ export default function BaseList(props) {
     setOpen(false);
   };
 
+  const onChangeFilter=(value)=>{
+    setFilterValue(value)
+  }
+
   useEffect(() => {
     requestAPI();
     props.navigation.setOptions({
       headerRight: HeaderRight,
       headerShown: !activeSearch,
     });
-  }, [page, activeSearch, search, sortValue]);
+  }, [page, activeSearch, search, sortValue, filterValue]);
 
   return loading ? (
     renderLoading()
@@ -309,9 +331,15 @@ export default function BaseList(props) {
       )}
       <BottomSheet modalProps={{}} isVisible={filterVisible}>
         <View style={{padding: 20, backgroundColor: '#ffff'}}>
-          <Text>filter</Text>
-          <TouchableOpacity onPress={() => setFilterVisible(false)}>
-            <Text>Close</Text>
+          <Filter 
+              bluprint={props.filter} 
+              onChangeFilter={onChangeFilter}
+              value={filterValue}
+            />
+          <TouchableOpacity
+            onPress={() => setFilterVisible(false)}
+            style={{position: 'absolute', top: 10, right: 10}}>
+            <Text style={{color: MAINCOLORS.danger}}>Close</Text>
           </TouchableOpacity>
         </View>
       </BottomSheet>
@@ -331,6 +359,7 @@ BaseList.defaultProps = {
   settingOptions: [],
   showRecords: true,
   sort: [],
+  filter: [],
 };
 
 const styles = StyleSheet.create({

@@ -42,6 +42,42 @@ const Pallet = props => {
             onPress: () => setDialog(),
           },
         ]}
+        filter={[
+          {
+            title : 'Status',
+            key : 'pallets_elements[status]',
+            type : "checkBox",
+            propsItem : {
+              options : [
+                {
+                  label : 'Receiving',
+                  value : 'receiving',
+                },
+                {
+                  label : 'Not Received',
+                  value : 'not-received',
+                },
+                {
+                  label : 'Storing',
+                  value : 'storing',
+                },
+                {
+                  label : 'Returning',
+                  value : 'return',
+                },
+                {
+                  label : 'Returned',
+                  value : 'returned',
+                },
+                {
+                  label : 'Incident',
+                  value : 'incident',
+                },
+              ]
+            }
+          }
+        
+        ]}
       />
       <Dialog isVisible={openDialog} onBackdropPress={setDialog}>
       <Dialog.Title title="Info" />
