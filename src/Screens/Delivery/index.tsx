@@ -1,53 +1,90 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList';
 import {useNavigation} from '@react-navigation/native';
 import {Avatar, Text} from '@rneui/themed'; // Import Icon from your icon library
-import { COLORS, MAINCOLORS } from '~/Utils/Colors';
-import { CheckBox } from '@rneui/base';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {CheckBox} from '@rneui/base';
 
-const Delivery = (props) => {
+const Delivery = props => {
   const navigation = useNavigation();
   const oraganisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
 
   const Item = ({item}) => {
-    console.log('delivery',item)
     return (
-      <TouchableOpacity 
-        onPress={() => navigation.navigate('Delivery',{delivery : item})}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Delivery', {delivery: item})}
         style={styles.container}>
         <View>
           <View style={styles.row}>
-          <Avatar
-            size={40}
-            icon={{name: 'truck', type: 'font-awesome', color:MAINCOLORS.white}}
-            containerStyle={{ backgroundColor: MAINCOLORS.primary, marginRight: 13}}
-          />
-            <Text style={styles.title}>
-              {item.reference}
-            </Text>
+            <Avatar
+              size={40}
+              icon={{
+                name: 'truck',
+                type: 'font-awesome',
+                color: MAINCOLORS.white,
+              }}
+              containerStyle={{
+                backgroundColor: MAINCOLORS.primary,
+                marginRight: 13,
+              }}
+            />
+            <Text style={styles.title}>{item.reference}</Text>
           </View>
         </View>
       </TouchableOpacity>
     );
   };
 
-
   return (
-      <BaseList
-        urlKey='delivery-index'
-        args={[oraganisation.active_organisation.id, warehouse.id]}
-        renderItem={Item}
-        navigation={props.navigation}
-        title='Delivery'
-      />
+    <BaseList
+      urlKey="delivery-index"
+      args={[oraganisation.active_organisation.id, warehouse.id]}
+      renderItem={Item}
+      navigation={props.navigation}
+      title="Delivery"
+      filter={[
+        {
+          title: 'State',
+          key: 'elements[state]',
+          type: 'checkBox',
+          propsItem: {
+            options: [
+              {
+                label: 'in Process',
+                value: 'in-process',
+              },
+              {
+                label: 'Submitted',
+                value: 'submitted',
+              },
+              {
+                label: 'Confirmed',
+                value: 'confirmed',
+              },
+              {
+                label: 'Received',
+                value: 'received',
+              },
+              {
+                label: 'Not Received',
+                value: 'not-received',
+              },
+              {
+                label: 'Booking In',
+                value: 'booking-in',
+              },
+              {
+                label: 'Booked In',
+                value: 'booked-in',
+              },
+            ],
+          },
+        },
+      ]}
+    />
   );
 };
 
@@ -68,9 +105,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 7,
     alignItems: 'center',
-    margin : 5,
-    borderWidth : 1,
-    borderColor: COLORS.grey6
+    margin: 5,
+    borderWidth: 1,
+    borderColor: COLORS.grey6,
   },
   title: {
     fontSize: 18,

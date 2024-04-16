@@ -6,7 +6,7 @@ import {get} from 'lodash';
 import MultipleChekbox from '~/Components/MultipleChekbox';
 
 const Filter = props => {
-  const [finalValue, setfinalValue] = useState([]);
+  const [finalValue, setfinalValue] = useState({});
 
   const onValueChange = (key, newValue) => {
     let finalData = finalValue;
@@ -35,6 +35,7 @@ const Filter = props => {
         {props.bluprint.map(e => renderItem(e))}
       </View>
       <Button onPress={()=>props.onChangeFilter(finalValue)} buttonStyle={styles.loginButton} title="Apply" />
+      <Button onPress={()=>props.onResetFilter(finalValue)} type='outline' titleStyle={{ color : MAINCOLORS.primary }} title="Reset" />
     </View>
   );
 };
@@ -42,7 +43,8 @@ const Filter = props => {
 Filter.defaultProps = {
   bluprint: [],
   onChangeFilter: () => null,
-  value : []
+  onResetFilter: () => null,
+  value : {}
 };
 
 const styles = StyleSheet.create({
@@ -50,6 +52,12 @@ const styles = StyleSheet.create({
     backgroundColor: MAINCOLORS.primary,
     padding: 8,
     borderRadius: 10,
+    marginBottom : 5
+  },
+  cancelButton: {
+    padding: 8,
+    borderRadius: 10,
+    color:MAINCOLORS.black
   },
 });
 

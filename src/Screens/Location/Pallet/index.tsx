@@ -49,6 +49,7 @@ const LocationPallet = (props) => {
        <BaseList 
          urlKey='location-pallet-index' 
             navigation={props.navigation}
+            prefix='pallets'
             args={[
                 oraganisation.active_organisation.id,
                 warehouse.id,

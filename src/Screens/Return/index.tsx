@@ -47,6 +47,45 @@ const Returns = (props) => {
         title='Return'
         settingButton={false}
         showRecords={false}
+        filter={[
+          {
+            title: 'State',
+            key: 'elements[state]',
+            type: 'checkBox',
+            propsItem: {
+              options: [
+                {
+                  label: 'in Process',
+                  value: 'in-process',
+                },
+                {
+                  label: 'Submitted',
+                  value: 'submitted',
+                },
+                {
+                  label: 'Confirmed',
+                  value: 'confirmed',
+                },
+                {
+                  label: 'Picking',
+                  value: 'picking',
+                },
+                {
+                  label: 'Picked',
+                  value: 'picked',
+                },
+                {
+                  label: 'Dispatched',
+                  value: 'dispatched',
+                },
+                {
+                  label: 'Cancel',
+                  value: 'cancel',
+                },
+              ],
+            },
+          },
+        ]}
       />
   );
 };

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -33,7 +33,7 @@ export default function BaseList(props) {
   const [open, setOpen] = useState(false);
   const [TotalData, setTotalData] = useState(0);
   const [sortValue, setSortValue] = useState([]);
-  const [filterValue, setFilterValue] = useState([]);
+  const [filterValue, setFilterValue] = useState({});
 
   const dialAction = [
     ...props.settingOptions.map(item => ({...item})),
@@ -51,26 +51,26 @@ export default function BaseList(props) {
 
 
   const setFilterToServer = () => {
-    let filter = [...filterValue]; // Assuming filterValue is defined elsewhere
-    for (const f in filter) {
-      if (isObject(filter[f]) || isArray(filter[f])) {
-        filter[f] = filter[f].toString(); // Update filter with the stringified value
+    let filter = {...filterValue}; 
+    for (const key in filter) {
+      if (isObject(filter[key]) || isArray(filter[key])) {
+        filter[key] = filter[key].toString();
       }
-    }
+   } 
     return filter;
   };
   
 
   const requestAPI = () => {
-    const filter = setFilterToServer();   
+    const filter = setFilterToServer();
     setMoreLoading(true); 
     Request(
       'get',
       props.urlKey,
       {},
       {
-        perPage: 10,
-        page: page,
+        [props.prefix ? `${props.prefix}_perPage` : 'perPage']: 10,
+        [props.prefix ? `${props.prefix}Page` : 'page']: page,
         ...props.params,
         ['filter[global]']: search,
         sort: sortValue,
@@ -84,11 +84,14 @@ export default function BaseList(props) {
   
 
   const onSuccess = (results: Object) => {
-    if (results.data.length != 0 && page != 1) {
+    console.log(results)
+    if (results.data.length != 0 && page != 1 && Object.keys(filterValue).length < 0) {
       setData(prevData => [...prevData, ...results.data]);
     } else if (results.data.length != 0 && page == 1) {
       setData([...results.data]);
-    } else {
+    } else if (Object.keys(filterValue).length > 0 ) {
+      setData([...results.data]);
+    }else {
       if (!search) setIsListEnd(true);
     }
     setTotalPage(results.meta.last_page);
@@ -301,11 +304,19 @@ export default function BaseList(props) {
     setOpen(false);
   };
 
-  const onChangeFilter=(value)=>{
-    setFilterValue(value)
-  }
+  const onChangeFilter = (value) => {
+    setFilterValue(prev => ({ ...prev, ...value }));
+    setFilterVisible(false)
+  };
+  
+
+  const onResetFilter = () => {
+    setFilterValue({})
+    setFilterVisible(false)
+  };
 
   useEffect(() => {
+    console.log('ppp')
     requestAPI();
     props.navigation.setOptions({
       headerRight: HeaderRight,
@@ -335,6 +346,7 @@ export default function BaseList(props) {
               bluprint={props.filter} 
               onChangeFilter={onChangeFilter}
               value={filterValue}
+              onResetFilter={onResetFilter}
             />
           <TouchableOpacity
             onPress={() => setFilterVisible(false)}

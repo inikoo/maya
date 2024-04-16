@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 import {
   StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList';
@@ -35,6 +32,7 @@ const Pallet = props => {
         ]}
         renderItem={(data)=><PalletCard data={data.item} />}
         title='Pallet'
+        prefix='pallets'
         settingOptions={[
           {
             icon: {name: 'info', type: 'antdesign'},
