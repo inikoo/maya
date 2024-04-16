@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import {SearchBar, BottomSheet} from '@rneui/base';
 import Request from '~/Utils/request';
@@ -34,6 +35,7 @@ export default function BaseList(props) {
   const [TotalData, setTotalData] = useState(0);
   const [sortValue, setSortValue] = useState([]);
   const [filterValue, setFilterValue] = useState({});
+  const [refreshing, setRefreshing] = useState(false);
 
   const dialAction = [
     ...props.settingOptions.map(item => ({...item})),
@@ -85,6 +87,7 @@ export default function BaseList(props) {
 
   const onSuccess = (results: Object) => {
     console.log(results)
+    setRefreshing(false);
     if (results.data.length != 0 && page != 1 && Object.keys(filterValue).length < 0) {
       setData(prevData => [...prevData, ...results.data]);
     } else if (results.data.length != 0 && page == 1) {
@@ -105,6 +108,7 @@ export default function BaseList(props) {
     console.log(error);
     if (page == totalPage) setIsListEnd(true);
     setLoading(false);
+    setRefreshing(false);
     setMoreLoading(false);
     if (error?.response?.data?.message) {
       Toast.show({
@@ -233,6 +237,12 @@ export default function BaseList(props) {
           onEndReachedThreshold={0.2}
           onEndReached={fetchMoreData}
           style={styles.list}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
         />
       </View>
     );
@@ -315,8 +325,12 @@ export default function BaseList(props) {
     setFilterVisible(false)
   };
 
-  useEffect(() => {
-    console.log('ppp')
+  const onRefresh = () => {
+    setRefreshing(true)
+    requestAPI();
+  };
+
+  useEffect(() => { 
     requestAPI();
     props.navigation.setOptions({
       headerRight: HeaderRight,
