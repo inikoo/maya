@@ -2,7 +2,7 @@
 <resources>
     <integer name="react_native_dev_server_port">8081</integer>
     <integer name="react_native_inspector_proxy_port">8081</integer>
-    <string name="app_name">Maya</string>
+    <string name="app_name">Aiku</string>
     <string name="default_web_client_id" translatable="false">1039986628290-q299b6firlo54n3ul1taagdc1uvsg0gk.apps.googleusercontent.com</string>
     <string name="firebase_database_url" translatable="false">https://aiku-demo-default-rtdb.asia-southeast1.firebasedatabase.app</string>
     <string name="gcm_defaultSenderId" translatable="false">1039986628290</string>

@@ -10,13 +10,14 @@ import {
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {v4 as uuidv4} from 'uuid';
-import {Avatar, Divider, Card, Icon, Text} from '@rneui/base';
+import {Avatar, Divider, Card, Icon, Text, Badge} from '@rneui/themed';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {useSelector} from 'react-redux';
 import SetUpOrganisation from './SetUpOrganisation';
 import SetUpFullfilment from './SetUpFullfilment';
 import {Request} from '~/Utils';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import {get} from 'lodash';
 
 export default function HomeScreen({navigation}) {
   const warehouse = useSelector(state => state.warehouseReducer);
@@ -24,6 +25,7 @@ export default function HomeScreen({navigation}) {
   const user = useSelector(state => state.userReducer);
   const [loading, setLoading] = useState(false);
   const [countData, setCountData] = useState([]);
+  const [notification, setNotification] = useState([]);
 
   const Bluprint = [
     /* {
@@ -117,8 +119,34 @@ export default function HomeScreen({navigation}) {
     });
   };
 
+  const getNotification = () => {
+    if (organisation.active_organisation && warehouse.id) {
+      setLoading(true);
+      Request(
+        'get',
+        'notification',
+        {},
+        {[`notifications_filter[filter]`]: 'unread'},
+        [],
+        res => setNotification(res.data),
+        res => {
+          Toast.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            textBody: get(
+              res,
+              ['response', 'data', 'message'],
+              'failed to get notification',
+            ),
+          });
+        },
+      );
+    }
+  };
+
   useEffect(() => {
     reqCountData();
+    getNotification();
   }, [organisation, warehouse]);
 
   const onPressMenu = item => {
@@ -219,12 +247,25 @@ export default function HomeScreen({navigation}) {
                   justifyContent: 'space-between',
                   marginBottom: 20,
                 }}>
-                <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-                  <Icon
-                    name="notifications-outline"
-                    type="ionicon"
-                    style={{width: 35, height: 35, padding: 5, marginRight: 5}}
-                  />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Notification')}>
+                  <View>
+                    <Icon
+                      name="notifications-outline"
+                      type="ionicon"
+                      style={{
+                        width: 35,
+                        height: 35,
+                        padding: 5,
+                        marginRight: 15,
+                      }}
+                    />
+                    <Badge
+                      status="primary"
+                      value={notification.length}
+                      containerStyle={{position: 'absolute', top: 0, left: 18}}
+                    />
+                  </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity>

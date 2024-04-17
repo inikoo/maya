@@ -85,8 +85,7 @@ export default function BaseList(props) {
   };
   
 
-  const onSuccess = (results: Object) => {
-    console.log(results)
+  const onSuccess = (results: Object) => {           
     setRefreshing(false);
     if (results.data.length != 0 && page != 1 && Object.keys(filterValue).length < 0) {
       setData(prevData => [...prevData, ...results.data]);

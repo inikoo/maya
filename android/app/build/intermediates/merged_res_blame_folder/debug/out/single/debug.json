@@ -28,12 +28,20 @@
         "source": "com.maya.app-main-45:/mipmap-hdpi/ic_launcher.png"
     },
     {
+        "merged": "com.maya.app-merged_res-43:/mipmap-mdpi_ic_launcher_foreground.png.flat",
+        "source": "com.maya.app-main-45:/mipmap-mdpi/ic_launcher_foreground.png"
+    },
+    {
         "merged": "com.maya.app-merged_res-43:/drawable-mdpi_node_modules_reactnativeratings_dist_images_star.png.flat",
         "source": "com.maya.app-main-45:/drawable-mdpi/node_modules_reactnativeratings_dist_images_star.png"
     },
     {
         "merged": "com.maya.app-merged_res-43:/drawable-xhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
         "source": "com.maya.app-main-45:/drawable-xhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.maya.app-merged_res-43:/mipmap-ldpi_ic_launcher.png.flat",
+        "source": "com.maya.app-main-45:/mipmap-ldpi/ic_launcher.png"
     },
     {
         "merged": "com.maya.app-merged_res-43:/mipmap-hdpi_ic_launcher_round.png.flat",
@@ -52,12 +60,24 @@
         "source": "com.maya.app-main-45:/drawable-xxxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
     },
     {
+        "merged": "com.maya.app-merged_res-43:/mipmap-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.maya.app-main-45:/mipmap-xhdpi/ic_launcher_foreground.png"
+    },
+    {
         "merged": "com.maya.app-merged_res-43:/drawable-mdpi_src_assets_image_9264822.jpg.flat",
         "source": "com.maya.app-main-45:/drawable-mdpi/src_assets_image_9264822.jpg"
     },
     {
         "merged": "com.maya.app-merged_res-43:/drawable-mdpi_src_assets_image_20943993.jpg.flat",
         "source": "com.maya.app-main-45:/drawable-mdpi/src_assets_image_20943993.jpg"
+    },
+    {
+        "merged": "com.maya.app-merged_res-43:/mipmap-hdpi_ic_launcher_foreground.png.flat",
+        "source": "com.maya.app-main-45:/mipmap-hdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.maya.app-merged_res-43:/mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.maya.app-main-45:/mipmap-xxxhdpi/ic_launcher_foreground.png"
     },
     {
         "merged": "com.maya.app-merged_res-43:/mipmap-mdpi_ic_launcher_round.png.flat",
@@ -82,6 +102,10 @@
     {
         "merged": "com.maya.app-merged_res-43:/drawable-mdpi_src_assets_image_userprofile.jpg.flat",
         "source": "com.maya.app-main-45:/drawable-mdpi/src_assets_image_userprofile.jpg"
+    },
+    {
+        "merged": "com.maya.app-merged_res-43:/mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.maya.app-main-45:/mipmap-xxhdpi/ic_launcher_foreground.png"
     },
     {
         "merged": "com.maya.app-merged_res-43:/drawable_rn_edit_text_material.xml.flat",

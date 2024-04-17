@@ -19,11 +19,13 @@ const Filter = props => {
       <View>
         <Text>{e.title}</Text>
         <View>
-          <MultipleChekbox
-            options={e.propsItem.options}
-            value={props.value[e.key]}
-            onChange={d => onValueChange(e.key, d)}
-          />
+          {e.type == 'checkBox' && (
+            <MultipleChekbox
+              options={e.propsItem.options}
+              value={props.value[e.key]}
+              onChange={d => onValueChange(e.key, d)}
+            />
+          )}
         </View>
       </View>
     );

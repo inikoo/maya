@@ -3902,6 +3902,7 @@ layout support_simple_spinner_dropdown_item
 layout surface_view
 layout texture_view
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
 raw firebase_common_keep
