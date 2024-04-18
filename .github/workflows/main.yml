@@ -43,4 +43,4 @@ jobs:
           name: app
           path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 3
-           if-no-files-found: error
+          if-no-files-found: error
