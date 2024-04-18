@@ -41,6 +41,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app
-          path: android/app/build/outputs/apk/release/app-release.apk
+          path: ./android/app/build/outputs/apk/release/app-release.apk
           retention-days: 3
           if-no-files-found: error
