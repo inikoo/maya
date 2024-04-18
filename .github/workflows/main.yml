@@ -7,6 +7,9 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: ./root
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -41,6 +44,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app
-          path: ./android/app/build/outputs/apk/release/app-release.apk
+          path: root/android/app/build/outputs/apk/release/app-release.apk
           retention-days: 3
           if-no-files-found: error
