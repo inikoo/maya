@@ -2,8 +2,7 @@ name: "Build Android app"
 
 on:
   push:
-    branches:
-      - arya
+    branches: [arya]
 
 jobs:
   build:
