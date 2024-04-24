@@ -19,10 +19,10 @@ const LocationPallet = (props) => {
   const warehouse = useSelector(state => state.warehouseReducer);
   const location = props.route.params.location
 
-  const Item = ({item, index}) => {
+  const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
     return (
-      <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('Pallet',{pallet : item})}>
-        <View style={styles.row}>
+      <TouchableOpacity style={styles.container} onPress={() => listModeBulk ? onLongPress(record) :  navigation.navigate('Pallet',{pallet : record})} onLongPress={()=>onLongPress(record)}>
+        <View style={{...styles.row, backgroundColor: !bulkValue.includes(record.id) ? 'white' : COLORS.grey7 }}>
           <Avatar
             size={40}
             icon={{name: 'pallet', type: 'FontAwesome6'}}
@@ -31,10 +31,10 @@ const LocationPallet = (props) => {
           <View style={styles.row}>
             <View>
               <View style={styles.row}>
-                <Text style={styles.title}>{item.reference}</Text>
+                <Text style={styles.title}>{record.reference}</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.description}>{item.state_label}</Text>
+                <Text style={styles.description}>{record.state_label}</Text>
               </View>
             </View>
           </View>

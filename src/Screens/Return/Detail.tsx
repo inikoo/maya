@@ -53,12 +53,12 @@ const DeliveryDetail = props => {
     setLoading(false);
   };
 
-  const Item = ({item, index}) => {
+  const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
     return (
       <TouchableOpacity
         style={styles.containerItem}
-        onPress={() => navigation.navigate('Pallet', {pallet: item})}>
-        <View style={styles.row}>
+        onPress={() => listModeBulk ? onLongPress(record) : navigation.navigate('Pallet', {pallet: record})} onLongPress={()=>onLongPress(record)}>
+        <View style={{...styles.row,backgroundColor: !bulkValue.includes(record.id) ? 'white' : COLORS.grey7}}>
           <Avatar
             size={40}
             icon={{name: 'pallet', type: 'FontAwesome6'}}
@@ -70,10 +70,10 @@ const DeliveryDetail = props => {
           <View style={styles.row}>
             <View style={styles.text}>
               <View style={styles.row}>
-                <Text style={styles.title}>{item.reference}</Text>
+                <Text style={styles.title}>{record.reference}</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.description}>{item.state_label}</Text>
+                <Text style={styles.description}>{record.state_label}</Text>
               </View>
             </View>
           </View>

@@ -30,7 +30,16 @@ const Pallet = props => {
           warehouse.id,
           oraganisation.active_organisation.active_authorised_fulfilments.id,
         ]}
-        renderItem={(data)=><PalletCard data={data.item} />}
+        renderItem={(record, { onLongPress, listModeBulk, bulkValue }) => (
+          <PalletCard
+              data={{
+                  record: record,
+                  onLongPress: onLongPress,
+                  listModeBulk: listModeBulk,
+                  bulkValue: bulkValue
+              }}
+          />
+      )}      
         title='Pallet'
         prefix='pallets'
         settingOptions={[

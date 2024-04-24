@@ -18,24 +18,29 @@ import {useNavigation} from '@react-navigation/native';
 import Empty from '~/Components/Empty';
 import {SpeedDial} from '@rneui/themed';
 import Filter from '~/Components/Filter';
-import { isObject, isArray } from "lodash"
+import { isObject, isArray, get } from "lodash"
 
+
+let timeoutId: any;
 export default function BaseList(props) {
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [moreLoading, setMoreLoading] = useState(false);
-  const [isListEnd, setIsListEnd] = useState(false);
-  const [search, setSearch] = useState('');
-  const [filterVisible, setFilterVisible] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
   const navigation = useNavigation();
-  const [open, setOpen] = useState(false);
+  const [openDial, setOpenDial] = useState(false);
   const [TotalData, setTotalData] = useState(0);
   const [sortValue, setSortValue] = useState([]);
   const [filterValue, setFilterValue] = useState({});
   const [refreshing, setRefreshing] = useState(false);
+  const [lastFetchId, setLastFetchId] = useState(0);
+  const [search, setSearch] = useState(null);
+  const [filterVisible, setFilterVisible] = useState(false)
+  const [isListEnd, setIsListEnd] = useState(false);
+  const [listModeBulk, setListModeBulk] = useState(false);
+  const [bulkValue, setBulkValue] = useState([]);
 
   const dialAction = [
     ...props.settingOptions.map(item => ({...item})),
@@ -48,8 +53,8 @@ export default function BaseList(props) {
   ].filter(item => {
     if (!props.scanner && item.key == 'scanner') return false;
     return true;
-  });
-  let timeoutId: any;
+  });  
+
 
 
   const setFilterToServer = () => {
@@ -61,11 +66,25 @@ export default function BaseList(props) {
    } 
     return filter;
   };
+
+  const fetchMoreData = (isLoadMore = false) => {
+    setLastFetchId((prevFetchId) => prevFetchId + 1);
+    let pageSend = page
+    if (!isLoadMore) {
+      setData([]);
+      setPage(1);
+      setLoading(true);
+    } else {
+      setLoadingMore(true)
+      setPage((prevPage) => prevPage + 1)
+      pageSend = page + 1
+    }
+    requestAPI(pageSend,isLoadMore)
+  };
   
 
-  const requestAPI = () => {
+  const requestAPI = (finalPage = 1, isLoadMore = false) => {
     const filter = setFilterToServer();
-    setMoreLoading(true); 
     Request(
       'get',
       props.urlKey,
@@ -80,35 +99,36 @@ export default function BaseList(props) {
       },
       props.args,
       onSuccess,
-      onFailed
+      onFailed,
+      { fetchId: lastFetchId, isLoadMore },
     );
   };
   
 
-  const onSuccess = (results: Object) => {           
-    setRefreshing(false);
-    if (results.data.length != 0 && page != 1 && Object.keys(filterValue).length < 0) {
-      setData(prevData => [...prevData, ...results.data]);
-    } else if (results.data.length != 0 && page == 1) {
-      setData([...results.data]);
-    } else if (Object.keys(filterValue).length > 0 ) {
-      setData([...results.data]);
-    }else {
-      if (!search) setIsListEnd(true);
+  const onSuccess = (response: object, { fetchId, isLoadMore }) => {
+    if (fetchId !== lastFetchId) return;
+    const nextState = get(response, 'data', []);
+    if (!isLoadMore) {
+      setData(nextState);
+    } else {
+      setData([...data, ...nextState]);
+      setLoadingMore(false)
     }
-    setTotalPage(results.meta.last_page);
+
+    if(response.meta.last_page == page) setIsListEnd(true)
+    setTotalData(response.meta.total);
     setLoading(false);
-    setMoreLoading(false);
-    setTotalData(results.meta.total);
-    if (page == totalPage) setIsListEnd(true);
+    setRefreshing(false);
   };
+
+
 
   const onFailed = (error: Object) => {
     console.log(error);
-    if (page == totalPage) setIsListEnd(true);
+    setIsListEnd(true);
     setLoading(false);
     setRefreshing(false);
-    setMoreLoading(false);
+    setLoadingMore(false);
     if (error?.response?.data?.message) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
@@ -119,33 +139,48 @@ export default function BaseList(props) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: 'Error',
-        textBody: 'failed from server',
+        textBody: error.message,
       });
     }
   };
 
-  const fetchMoreData = () => {
-    if (!isListEnd && !moreLoading) {
-      setMoreLoading(true);
-      setPage(page + 1);
-    }
-  };
 
   const renderFooter = () => {
     if (data.length > 0) {
       return (
         <View v-if="data.length > 0" style={styles.footerText}>
-          {moreLoading && <ActivityIndicator />}
+          {loadingMore && <ActivityIndicator />}
           {isListEnd && <Text>No more data at the moment</Text>}
         </View>
       );
     } else return;
   };
 
-  const renderEmpty = () => <Empty buttonOnPress={() => requestAPI()} />;
+  const renderEmpty = () => <Empty buttonOnPress={() => fetchMoreData()} />;
+ 
+  const onLongPress = (item) => {
+    let updatedValue = [...bulkValue];
+    
+    if (updatedValue.includes(item[props.key])) {
+        updatedValue = updatedValue.filter(key => key !== item[props.key]);
+    } else {
+        updatedValue.push(item[props.key]);
+    }
+    
+    setBulkValue(updatedValue);
+
+    if (updatedValue.length === 0) {
+        setListModeBulk(prev => false);
+    } else {
+        setListModeBulk(prev => true);
+    }
+};
+
+
 
   const renderItem = ({item}: {item: ItemData}) => {
-    return <Text>{item.name}</Text>;
+    if(props.renderItem) return props.renderItem(item, { onLongPress, listModeBulk, bulkValue })
+    return <Text key={item.key}>{item.name}</Text>;
   };
 
   const renderLoading = () => {
@@ -189,52 +224,15 @@ export default function BaseList(props) {
 
   const renderList = () => {
     return (
-      <View>
-        {props.showRecords && (
-          <ScrollView
-            horizontal={true}
-            contentContainerStyle={{
-              minWidth: '100%',
-              backgroundColor: COLORS.grey7,
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center', // Align items horizontally
-                padding: 10,
-                backgroundColor: COLORS.grey7,
-              }}>
-              <View style={styles.ContinerSort}>
-                <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
-                  Records : {TotalData}
-                </Text>
-              </View>
-              {props.sort.map((item, index) => {
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    style={styles.ContinerSort}
-                    onPress={() => setSortValueItem(item)}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
-                      {item.title} {renderIconSort(item)}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </ScrollView>
-        )}
-
         <FlatList
           data={data}
           keyExtractor={(item, index) => index.toString()} // Key extractor function
-          renderItem={props.renderItem ? props.renderItem : renderItem}
+          renderItem={renderItem}
           ListHeaderComponent={props.listHeaderComponent} // Corrected prop name
           ListFooterComponent={renderFooter}
           ListEmptyComponent={renderEmpty}
           onEndReachedThreshold={0.2}
-          onEndReached={fetchMoreData}
+          onEndReached={()=>fetchMoreData(true)}
           style={styles.list}
           refreshControl={
             <RefreshControl
@@ -243,7 +241,6 @@ export default function BaseList(props) {
             />
           }
         />
-      </View>
     );
   };
 
@@ -271,7 +268,7 @@ export default function BaseList(props) {
 
   const HeaderRight = () => {
     if (!activeSearch) {
-      return (
+      return  (
         <View style={{flexDirection: 'row', marginRight: 10}}>
           <TouchableOpacity onPress={() => setActiveSearch(true)}>
             <Icon
@@ -292,7 +289,7 @@ export default function BaseList(props) {
             />
           </TouchableOpacity>
         </View>
-      );
+      )
     }
     return null;
   };
@@ -302,15 +299,13 @@ export default function BaseList(props) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
       // Clear current data and reset page number
-      setData([]);
-      setPage(1);
-      requestAPI();
+      fetchMoreData();
     }, 500);
   };
 
   const goScanner = () => {
     navigation.navigate(`${props.title} Scanner`);
-    setOpen(false);
+    setOpenDial(false);
   };
 
   const onChangeFilter = (value) => {
@@ -326,28 +321,103 @@ export default function BaseList(props) {
 
   const onRefresh = () => {
     setRefreshing(true)
-    requestAPI();
+    setIsListEnd(false)
+    setSearch(null)
+    setSortValue([])
+    setFilterValue(null)
+    fetchMoreData();
   };
 
+  const renderFilter = () => {
+    return props.showRecords ? (
+      <ScrollView
+        horizontal={true}
+        contentContainerStyle={{
+          minWidth: '100%',
+          backgroundColor: COLORS.grey7,
+        }}>
+        {listModeBulk ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center', // Align items horizontally
+              padding: 10,
+              backgroundColor: COLORS.grey7,
+            }}>
+            <View style={styles.ContinerSort}>
+              <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
+                CHoosen: {bulkValue.length}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                ...styles.ContinerSort,
+                backgroundColor: MAINCOLORS.danger,
+              }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: '700',
+                  marginLeft: 8,
+                  color: 'white',
+                }}>
+                Delete
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center', // Align items horizontally
+              padding: 10,
+              backgroundColor: COLORS.grey7,
+            }}>
+            <View style={styles.ContinerSort}>
+              <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
+                Records: {props.totalData}
+              </Text>
+            </View>
+            {props.sort.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.ContinerSort}
+                  onPress={() => setSortValueItem(item)}>
+                  <Text
+                    style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
+                    {item.title} {renderIconSort(item)}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        )}
+      </ScrollView>
+    ) : null;
+  };
+  
+
   useEffect(() => { 
-    requestAPI();
+    fetchMoreData();
     props.navigation.setOptions({
       headerRight: HeaderRight,
       headerShown: !activeSearch,
     });
-  }, [page, activeSearch, search, sortValue, filterValue]);
+  }, [activeSearch, search, sortValue, filterValue]);
 
   return loading ? (
     renderLoading()
   ) : (
     <View style={styles.containerList}>
       {activeSearch && renderSearch()}
+      {data.length > 0 && renderFilter()}
       {renderList()}
       {props.settingButton && (
         <SpeedDial
-          isOpen={open}
-          onOpen={() => setOpen(!open)}
-          onClose={() => setOpen(!open)}>
+          isOpen={openDial}
+          onOpen={() => setOpenDial(!openDial)}
+          onClose={() => setOpenDial(!openDial)}>
           {dialAction.map((item, index) => (
             <SpeedDial.Action key={index} {...item} />
           ))}
@@ -383,6 +453,7 @@ BaseList.defaultProps = {
   settingButton: true,
   settingOptions: [],
   showRecords: true,
+  key: 'id',
   sort: [],
   filter: [],
 };

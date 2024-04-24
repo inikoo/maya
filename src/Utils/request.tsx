@@ -42,12 +42,12 @@ function onError(error : object, extra : object, onFailed : Function) {
 function Request(
 	method:String,
 	url_key:String,
-	headers = {},
-	data = {},
-	args = [],
-	onSuccess = () => {},
-	onFailed = () => {},
-	extra = undefined
+	headers:Object,
+	data:Object,
+	args:Array,
+	onSuccess:Function,
+	onFailed:Function,
+	extra: any
 ) {
 	if (typeof headers !== "object") {
 		throw "Invalid headers, headers must be an object";

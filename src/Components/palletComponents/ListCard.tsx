@@ -14,21 +14,22 @@ const PalletCard = props => {
 
   return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('Pallet',{pallet : props.data})}
-        style={styles.container}>
+        onPress={() => props.data.listModeBulk ? props.data.onLongPress(props.data.record) : navigation.navigate('Pallet',{pallet : props.data.record})}
+        onLongPress={()=>props.data.onLongPress(props.data.record)}
+        style={{...styles.container, backgroundColor: !props.data.bulkValue.includes(props.data.record.id) ? 'white' : COLORS.grey7}}>
         <View style={styles.row}>
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{props.data.reference}</Text>
+            <Text style={styles.title}>{props.data.record?.reference}</Text>
           </View>
           <View style={styles.iconContainer}>
             <View style={styles.row}>
               <Icon
-                {...props.data.state_icon.app}
+                {...props.data.record?.state_icon.app}
                 size={15}
                 style={{...styles.icon}}
               />
               <Icon
-                 {...props.data.status_icon.app}
+                 {...props.data.record?.status_icon.app}
                 size={15}
                 style={styles.icon}
               />

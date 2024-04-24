@@ -19,12 +19,12 @@ const Warehouse = (porps) => {
     dispatch(Action.CreateWarehouseProperties(data));
   };
 
-  const Item = ({item, index}) => {
+  const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
     return (
       <TouchableOpacity
-        style={styles.container}
-        onPress={() => setSelectedWarehouse(item)}>
-        <View style={styles.row}>
+        style={styles.container}  onLongPress={()=>onLongPress(record)}
+        onPress={() => listModeBulk ? onLongPress(record) : setSelectedWarehouse(record)}>
+        <View style={{...styles.row,backgroundColor: !bulkValue.includes(record.id) ? 'white' : COLORS.grey7}}>
           <Avatar
             size={40}
             icon={{name: 'warehouse', type: 'material-community-icons', color:MAINCOLORS.white}}
@@ -34,19 +34,19 @@ const Warehouse = (porps) => {
             <View style={styles.text}>
               <View style={styles.row}>
                 <Text style={styles.title}>
-                  {item.code} - {item.name}
+                  {record.code} - {record.name}
                 </Text>
               </View>
               <View style={styles.row}>
                 <Text style={styles.description}>
-                  Locations : {item.number_locations}
+                  Locations : {record.number_locations}
                 </Text>
                 <Text style={styles.description}>
-                  Warehouse Areas : {item.number_warehouse_areas}
+                  Warehouse Areas : {record.number_warehouse_areas}
                 </Text>
               </View>
             </View>
-            {warehouse.id == item.id && (
+            {warehouse.id == record.id && (
               <Icon
                 name="check-circle"
                 type="material-icons"

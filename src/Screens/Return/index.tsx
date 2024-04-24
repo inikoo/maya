@@ -16,11 +16,12 @@ const Returns = (props) => {
   const oraganisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
 
-  const Item = ({item}) => {
+  const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
     return (
       <TouchableOpacity 
-        onPress={() => navigation.navigate('Return',{return : item})}
-        style={styles.container}>
+        onPress={() => listModeBulk ? onLongPress(record) : navigation.navigate('Return',{return : record})}
+        onLongPress={()=>onLongPress(record)}
+        style={{...styles.container, backgroundColor: !bulkValue.includes(record.id) ? 'white' : COLORS.grey7 }}>
         <View>
           <View style={styles.row}>
           <Avatar
@@ -29,7 +30,7 @@ const Returns = (props) => {
             containerStyle={{ backgroundColor: MAINCOLORS.primary, marginRight: 13}}
           />
             <Text style={styles.title}>
-              {item.reference}
+              {record.reference}
             </Text>
           </View>
         </View>
