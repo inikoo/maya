@@ -18,14 +18,15 @@ const Locations = props => {
     setOpenDialog(!openDialog);
   };
 
-  const Item = ({item}) => {
+  const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('Location', {location: item})}
-        style={styles.container}>
+        onPress={() => listModeBulk ? onLongPress(record) : navigation.navigate('Location', {location: record})}
+        onLongPress={()=>onLongPress(record)}
+        style={{...styles.container, backgroundColor: !bulkValue.includes(record.id) ? 'white' : COLORS.grey7 }}>
         <View style={styles.row}>
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{item.code}</Text>
+            <Text style={styles.title}>{record.code}</Text>
           </View>
           <View style={styles.iconContainer}>
             <View style={styles.row}>
@@ -34,16 +35,16 @@ const Locations = props => {
                 type="font-awesome-5"
                 size={15}
                 style={{...styles.icon}}
-                color={IconColor(item.allow_stocks, item.has_stock_slots)}
+                color={IconColor(record.allow_stocks, record.has_stock_slots)}
               />
-              <Icon
+              <Icon 
                 name="hand-holding-water"
                 type="font-awesome-5"
                 size={15}
                 style={styles.icon}
                 color={IconColor(
-                  item.allow_dropshipping,
-                  item.has_dropshipping_slots,
+                  record.allow_dropshipping,
+                  record.has_dropshipping_slots,
                 )}
               />
               <Icon
@@ -51,7 +52,7 @@ const Locations = props => {
                 type="font-awesome-5"
                 size={15}
                 style={styles.icon}
-                color={IconColor(item.allow_fulfilment, item.has_fulfilment)}
+                color={IconColor(record.allow_fulfilment, record.has_fulfilment)}
               />
             </View>
           </View>
@@ -95,7 +96,6 @@ export default Locations;
 const styles = StyleSheet.create({
   container: {
     padding: 17,
-    backgroundColor: 'white',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {

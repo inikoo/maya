@@ -8,6 +8,7 @@ INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidMan
 MERGED from [com.facebook.react:flipper-integration:0.73.6] C:\Users\62852\.gradle\caches\transforms-3\abe0554ecf494ecad8556e5fc9e1e02d\transformed\jetified-flipper-integration-0.73.6-debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-async-storage_async-storage] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-community_art] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:react-native-community_checkbox] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\checkbox\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-43:12
 MERGED from [:react-native-firebase_app] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-30:12
 MERGED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:2:1-16:12
@@ -289,6 +290,8 @@ MERGED from [:react-native-async-storage_async-storage] C:\Users\62852\Project\m
 MERGED from [:react-native-async-storage_async-storage] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-community_art] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-community_art] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\art\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-community_checkbox] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\checkbox\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-community_checkbox] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-community\checkbox\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-firebase_app] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:6:5-44

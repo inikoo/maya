@@ -31,18 +31,18 @@ const Notifications = props => {
     else if(data.type == "Pallet")navigation.navigate('Pallet',{pallet : {id : data.id}})
   }
 
-  const Item = ({item}) => {
+  const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
     return (
-      <TouchableOpacity style={styles.container} onPress={()=>readNotification(item)}>
+      <TouchableOpacity style={styles.container} onPress={()=>readNotification(record)}>
         <View style={styles.row}>
           <Avatar
             size={40}
-            icon={item.read_at ? {name: 'envelope-open', type: 'font-awesome'} :  {name: 'envelope', type: 'font-awesome'}}
-            containerStyle={{backgroundColor: !item.read_at  ? MAINCOLORS.primary : COLORS.grey7 , marginRight : 10}}
+            icon={record.read_at ? {name: 'envelope-open', type: 'font-awesome'} :  {name: 'envelope', type: 'font-awesome'}}
+            containerStyle={{backgroundColor: !record.read_at  ? MAINCOLORS.primary : COLORS.grey7 , marginRight : 10}}
           />
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{item.data.title}</Text>
-            <Text style={styles.body}>{item.data.body}</Text>
+            <Text style={styles.title}>{record.data.title}</Text>
+            <Text style={styles.body}>{record.data.body}</Text>
           </View>
         </View>
       </TouchableOpacity>

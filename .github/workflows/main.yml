@@ -1,12 +1,16 @@
-name: Build and Release Android App
+name: "Build Android app"
 
 on:
   push:
     branches: [main]
 
+permissions:
+    contents: write
+    pull-requests: write
+
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -28,27 +32,31 @@ jobs:
 
       - name: Run npm Install
         run: |
+             npm i -g corepack
              npm install
 
       - name: Build application
-        run: cd android && ./gradlew clean && ./gradlew bundleRelease --warning-mode all
+        run: |
+             cd android
+             chmod +x gradlew
+             ./gradlew assembleRelease
 
       - name: Upload application
         uses: actions/upload-artifact@v2
         with:
-          name: app-release
-          path: ./build/outputs/apk/release/app-release.aab
+          name: app
+          path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 3
           if-no-files-found: error
 
   release:
     needs: build
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
       - name: Download APK artifact
         uses: actions/download-artifact@v2   
         with:
-          name: app-release
+          name: app
           path: android/app/build/outputs/apk/release/app-release.apk
 
       - name: Create Release
@@ -57,18 +65,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.0
-          release_name: Release 1.0.0
+          tag_name: v2.0.0
+          release_name: Release 2.0.0
           draft: false
           prerelease: false
-
-      - name: Upload APK to Release
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./app-release.apk
-          asset_name: app-release.apk
-          asset_content_type: application/vnd.android.package-archive
+        

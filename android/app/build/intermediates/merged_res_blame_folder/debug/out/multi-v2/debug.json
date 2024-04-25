@@ -3172,10 +3172,10 @@
                     "from": {
                         "startLines": "3",
                         "startColumns": "4",
-                        "startOffsets": "57",
+                        "startOffsets": "54",
                         "endLines": "6",
                         "endColumns": "12",
-                        "endOffsets": "237"
+                        "endOffsets": "231"
                     },
                     "to": {
                         "startLines": "2287",
@@ -6427,12 +6427,9 @@
                 {
                     "source": "C:\\Users\\62852\\Project\\maya2\\Maya\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "54",
-                        "endLines": "6",
-                        "endColumns": "12",
-                        "endOffsets": "231"
+                        "startLines": "-1",
+                        "startColumns": "-1",
+                        "startOffsets": "-1"
                     },
                     "to": {
                         "startLines": "2287",
@@ -6661,9 +6658,11 @@
                 {
                     "source": "C:\\Users\\62852\\Project\\maya2\\Maya\\android\\app\\src\\main\\res\\values\\strings.xml",
                     "from": {
-                        "startLines": "-1",
-                        "startColumns": "-1",
-                        "startOffsets": "-1"
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endColumns": "41",
+                        "endOffsets": "53"
                     },
                     "to": {
                         "startLines": "2039",

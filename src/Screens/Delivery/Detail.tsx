@@ -118,7 +118,16 @@ const DeliveryDetail = props => {
                 warehouse.id,
                 props.route.params.delivery.id,
               ]}
-              renderItem={data => <PalletCard data={data.item} />}
+              renderItem={(record, { onLongPress, listModeBulk, bulkValue }) => (
+                <PalletCard
+                    data={{
+                        record: record,
+                        onLongPress: onLongPress,
+                        listModeBulk: listModeBulk,
+                        bulkValue: bulkValue
+                    }}
+                />
+            )} 
               navigation={props.navigation}
               title="Delivery"
               scanner={false}
