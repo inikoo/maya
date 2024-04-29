@@ -375,7 +375,7 @@ export default function BaseList(props) {
             }}>
             <View style={styles.ContinerSort}>
               <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
-                Records: {props.totalData}
+                Records: {TotalData}
               </Text>
             </View>
             {props.sort.map((item, index) => {

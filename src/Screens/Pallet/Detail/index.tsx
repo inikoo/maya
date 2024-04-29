@@ -216,9 +216,7 @@ function PalletDetail(props) {
   ];
 
   const filterFeatures = filter => {
-    console.log(';',filter)
     const data = buttonFeatures.filter(item => {
-      console.log('sss',filter,item.key)
       return filter.includes(item.key);
     });
     setFinalFeatures(data);
@@ -289,7 +287,6 @@ function PalletDetail(props) {
           style={styles.speedDial}
           onPress={() => setOpen(!open)}>
           {finalFeatures.map((item, index) => {
-            console.log('jkfdhg',finalFeatures)
             return <SpeedDial.Action {...item} />;
           })}
         </SpeedDial>
