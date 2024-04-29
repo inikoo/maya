@@ -2,7 +2,7 @@ name: "Build Android app"
 
 on:
   push:
-    branches: [arya]
+    branches: [main]
 
 permissions:
     contents: write
