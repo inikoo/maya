@@ -1,12 +1,12 @@
-name: "Build Android app"
+name: Build Android app
 
 on:
   push:
     branches: [main]
 
 permissions:
-    contents: write
-    pull-requests: write
+  contents: write
+  pull-requests: write
 
 jobs:
   build:
@@ -32,16 +32,16 @@ jobs:
 
       - name: Run npm Install
         run: |
-             npm i -g corepack
-             npm install
-
+          npm i -g corepack
+          npm install
+          
       - name: Build application
         run: |
-             cd android
-             chmod +x gradlew
-             ./gradlew assembleRelease
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease
 
-      - name: Upload application
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v2
         with:
           name: app
@@ -51,7 +51,7 @@ jobs:
 
   release:
     needs: build
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Download APK artifact
         uses: actions/download-artifact@v2   
@@ -69,4 +69,13 @@ jobs:
           release_name: Release 0.0.1
           draft: false
           prerelease: false
-        
+
+      - name: Upload APK as release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk
+          asset_name: app-release-v0.0.1.apk
+          asset_content_type: application/vnd.android.package-archive
