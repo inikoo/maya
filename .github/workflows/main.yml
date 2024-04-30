@@ -1,58 +1,49 @@
-name: "Build Android app"
+name: Build and Release Android app
 
 on:
   push:
     branches: [main]
 
-permissions:
-    contents: write
-    pull-requests: write
-
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install Java
-        uses: actions/setup-java@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
         with:
           java-version: 17
-          distribution: adopt
-          cache: gradle
 
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
-
-      - name: Setup Node  
-        uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '14'
 
-      - name: Run npm Install
+      - name: Install dependencies
         run: |
-             npm i -g corepack
-             npm install
+          npm install -g corepack
+          npm install
+
       - name: Build application
         run: |
-             cd android
-             chmod +x gradlew
-             ./gradlew assembleRelease
-      - name: Upload application
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v2
         with:
           name: app
           path: android/app/build/outputs/apk/release/app-release.apk
-          retention-days: 3
-          if-no-files-found: error
 
   release:
     needs: build
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Download APK artifact
-        uses: actions/download-artifact@v2   
+        uses: actions/download-artifact@v2
         with:
           name: app
           path: android/app/build/outputs/apk/release/app-release.apk
@@ -63,17 +54,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v0.0.4
-          release_name: Release 0.0.4
+          tag_name: v0.0.5
+          release_name: Release 0.0.5
           draft: false
           prerelease: false
-
-      - name: Upload APK as release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk
-          asset_name: app-release-v0.0.4.apk
-          asset_content_type: application/vnd.android.package-archive
+          body: |
+            Describe your release here
+          asset_paths: ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk
