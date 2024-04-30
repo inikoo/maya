@@ -269,7 +269,7 @@ export default function BaseList(props) {
 
   const HeaderRight = () => {
     if (!activeSearch) {
-      return  (
+      return (
         <View style={{flexDirection: 'row', marginRight: 10}}>
           <TouchableOpacity onPress={() => setActiveSearch(true)}>
             <Icon
@@ -280,17 +280,19 @@ export default function BaseList(props) {
               style={{marginRight: 10}}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Icon
-              name="sort"
-              type="MaterialIcons"
-              size={25}
-              color={COLORS.grey8}
-              onPress={() => setFilterVisible(true)}
-            />
-          </TouchableOpacity>
+          {props.filter.length > 0 && (
+            <TouchableOpacity>
+              <Icon
+                name="sort"
+                type="MaterialIcons"
+                size={25}
+                color={COLORS.grey8}
+                onPress={() => setFilterVisible(true)}
+              />
+            </TouchableOpacity>
+          )}
         </View>
-      )
+      );
     }
     return null;
   };
