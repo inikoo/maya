@@ -19,6 +19,7 @@ function PalletDetail(props) {
   const [open, setOpen] = useState(false);
   const navigation = useNavigation();
   const [finalFeatures, setFinalFeatures] = useState([]);
+  const [finalBuutonFeatures, setfinalBuutonFeatures] = useState([]);
 
   const ChangeStatus = async (data: object) => {
     await Request(
@@ -155,7 +156,7 @@ function PalletDetail(props) {
       key: 'move_location',
       title: 'Move Location',
       onPress: () =>
-        navigation.navigate('Pallet Movement', {pallet: dataSelected}),
+        navigation.navigate('Pallet Movement', {pallet: props.route.params.pallet}),
     },
     {
       icon: {

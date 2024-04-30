@@ -21,6 +21,8 @@ export default function MovePallet(props) {
   const pallet = props.route.params.pallet
   const navigation = useNavigation()
 
+  console.log('ppp',props.route)
+
 
   const searchFromServer = (data: String) => {
     setLoading(true);
@@ -42,6 +44,7 @@ export default function MovePallet(props) {
   };
 
   const onFailed = (error: object) => {
+    console.log('err',error)
     setdataRes(null);
     setLoading(false);
     Toast.show({
@@ -57,11 +60,11 @@ export default function MovePallet(props) {
   };
 
   const onSearch = (value: string) => {
-    MoveToNewLocation(value)
+    if(value) MoveToNewLocation(value)
   };
 
-  const MoveToNewLocation = async (data: object) => {
-    await Request(
+  const MoveToNewLocation =  (data: object) => {
+    Request(
       'patch',
       'pallet-location',
       {},
@@ -74,19 +77,20 @@ export default function MovePallet(props) {
       ],
       onMoveSuccess,
       onMoveFailed,
+      {}
     );
   };
 
-  const onMoveSuccess = response => {
+  const onMoveSuccess = (response) => {
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
       textBody: 'Pallet already move to new Location',
     });
-    navigation.navigate('Pallet',{pallet : pallet})
+    navigation.navigate('Pallet',{pallet : {...pallet}})
   };
 
-  const onMoveFailed = response => {
+  const onMoveFailed = (response) => {
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Success',

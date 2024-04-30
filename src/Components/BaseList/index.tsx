@@ -331,12 +331,14 @@ export default function BaseList(props) {
 
   const renderFilter = () => {
     return props.showRecords ? (
-      <ScrollView
-        horizontal={true}
-        contentContainerStyle={{
+      <View
+      /*   horizontal={true} */
+  /*       contentContainerStyle={{
           minWidth: '100%',
+          height : 50,
           backgroundColor: COLORS.grey7,
-        }}>
+        }} */
+        >
         {listModeBulk ? (
           <View
             style={{
@@ -347,7 +349,7 @@ export default function BaseList(props) {
             }}>
             <View style={styles.ContinerSort}>
               <Text style={{fontSize: 14, fontWeight: '700', marginLeft: 8}}>
-                CHoosen: {bulkValue.length}
+                Choosen: {bulkValue.length}
               </Text>
             </View>
             <TouchableOpacity
@@ -370,7 +372,7 @@ export default function BaseList(props) {
           <View
             style={{
               flexDirection: 'row',
-              alignItems: 'center', // Align items horizontally
+              alignItems: 'center',
               padding: 10,
               backgroundColor: COLORS.grey7,
             }}>
@@ -394,7 +396,7 @@ export default function BaseList(props) {
             })}
           </View>
         )}
-      </ScrollView>
+      </View>
     ) : null;
   };
   
