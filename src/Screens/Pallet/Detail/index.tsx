@@ -49,7 +49,6 @@ function PalletDetail(props) {
   };
 
   const ChangeStatusFailed = response => {
-
     if(response?.response?.data?.message){
       Toast.show({
         type: ALERT_TYPE.DANGER,
@@ -249,16 +248,8 @@ function PalletDetail(props) {
   const setUpFeaturesPallet = (state,status) => {
     console.log(state,status)
     if(status == "receiving" ){
-      if (state == 'storing')
-        filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
-      if (state == 'recived')
-        filterFeatures(['recived', 'not_recived','damaged','lost' , 'stored_item']);
-      if (state == 'booking-in')
-        filterFeatures(['move_location', 'not_recived', 'stored_item']);
-      if (state == 'booked-in')
-        filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
-      if (state == 'picking')
-        filterFeatures(['picking', 'lost', 'damaged', 'stored_item']);
+      if (state == 'received')
+        filterFeatures(["move_location",'recived', 'not_recived', 'damaged','lost' , 'stored_item']);
       if (state == 'not-received')
         filterFeatures(['received']);
       if (state == 'damaged')
@@ -270,35 +261,15 @@ function PalletDetail(props) {
     }if(status == 'storing'){
       if (state == 'storing')
         filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
-      if (state == 'recived')
-        filterFeatures(['recived', 'not_recived', , 'stored_item']);
-      if (state == 'booking-in')
-        filterFeatures(['move_location', 'not_recived', 'stored_item']);
-      if (state == 'booked-in')
-        filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
-      if (state == 'picking')
-        filterFeatures(['picking', 'lost', 'damaged', 'stored_item']);
-      if (state == 'not-received')
-        filterFeatures(['received']);
       if (state == 'damaged')
         filterFeatures([]);
       if (state == 'lost')
         filterFeatures([]);
     }if(status == 'returning'){
-        if (state == 'storing')
-        filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
-        if (state == 'recived')
-          filterFeatures(['recived', 'not_recived', , 'stored_item']);
-        if (state == 'booking-in')
-          filterFeatures(['move_location', 'not_recived', 'stored_item']);
-        if (state == 'booked-in')
-          filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
         if (state == 'picking')
           filterFeatures(['picked', 'lost', 'damaged', 'stored_item']);
         if (state == 'picked')
           filterFeatures(['dispatched', 'lost', 'damaged', 'stored_item']);
-        if (state == 'not-received')
-          filterFeatures(['received']);
         if (state == 'damaged')
           filterFeatures([]);
         if (state == 'lost')

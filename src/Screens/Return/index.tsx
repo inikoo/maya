@@ -16,6 +16,8 @@ const Returns = (props) => {
   const oraganisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
 
+  console.log('pl',navigation)
+
   const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
     return (
       <TouchableOpacity 

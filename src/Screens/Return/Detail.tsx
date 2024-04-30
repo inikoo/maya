@@ -13,12 +13,14 @@ import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {Avatar, Text} from '@rneui/themed';
 import {defaultTo} from 'lodash';
 import BaseList from '~/Components/BaseList';
+import {useNavigation} from '@react-navigation/native';
 
 const DeliveryDetail = props => {
   const [loading, setLoading] = useState(true);
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
+  const navigation = useNavigation();
 
   const getDetail = () => {
     setLoading(true);
