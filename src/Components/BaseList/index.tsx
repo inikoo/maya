@@ -100,15 +100,16 @@ export default function BaseList(props) {
       props.args,
       onSuccess,
       onFailed,
-      { fetchId: lastFetchId, isLoadMore },
+      { fetchId: lastFetchId, isLoadMore, finalPage },
     );
   };
   
 
-  const onSuccess = (response: object, { fetchId, isLoadMore }) => {
+  const onSuccess = (response: object, { fetchId, isLoadMore, finalPage }) => {
     if (fetchId !== lastFetchId) return;
     const nextState = get(response, 'data', []);
     if (!isLoadMore) {
+      if(finalPage == response.meta.last_page) setIsListEnd(true)
       setData(nextState);
     } else {
       setData([...data, ...nextState]);
@@ -232,7 +233,7 @@ export default function BaseList(props) {
           ListFooterComponent={renderFooter}
           ListEmptyComponent={renderEmpty}
           onEndReachedThreshold={0.2}
-          onEndReached={()=>fetchMoreData(true)}
+          onEndReached={()=> isListEnd ? null : fetchMoreData(true)}
           style={styles.list}
           refreshControl={
             <RefreshControl

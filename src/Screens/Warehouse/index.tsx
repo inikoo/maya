@@ -62,7 +62,7 @@ const Warehouse = (porps) => {
   };
 
   return (
-    <View>
+    <>
       <BaseList
         urlKey="warehouse-index"
         args={[organisation.active_organisation.id]}
@@ -70,8 +70,9 @@ const Warehouse = (porps) => {
         navigation={porps.navigation}
         scanner={false}
         title='Warehouses'
+        showRecords={false}
       />
-    </View>
+    </>
   );
 };
 
