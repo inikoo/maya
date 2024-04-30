@@ -73,6 +73,9 @@ jobs:
             Maya from Aiku
           asset_paths: android/app/build/outputs/apk/release/app-release.apk
 
+      - name: Display structure of downloaded files
+        run: ls -R
+
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
@@ -83,3 +86,6 @@ jobs:
           asset_path: android/build/outputs/apk/release/app-release.apk
           asset_name: maya_release_v${{ github.run_number }}.apk
           asset_content_type: application/zip
+
+
+
