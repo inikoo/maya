@@ -100,8 +100,14 @@ function Request(
 				instance.cancel = c;
 			})
 		})
-			.then(response => onSuccess(response.data, extra))
-			.catch(error => onFailed(error));
+			.then(response => {
+				console.log(response)
+				onSuccess(response.data, extra)}
+			)
+			.catch(error => {
+				console.log(error)
+				onFailed(error)
+});
 	/* } */
 	return instance;
 }
