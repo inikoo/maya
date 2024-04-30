@@ -22,6 +22,7 @@ function PalletDetail(props) {
   const [finalBuutonFeatures, setfinalBuutonFeatures] = useState([]);
 
   const ChangeStatus = async (data: object) => {
+    console.log(data)
     await Request(
       'patch',
       'pallet-change-sattus-state',
@@ -42,12 +43,13 @@ function PalletDetail(props) {
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
-      textBody: 'Pallet already move to new Location',
+      textBody: 'Pallet already updated',
     });
     getDetail();
   };
 
   const ChangeStatusFailed = response => {
+
     if(response?.response?.data?.message){
       Toast.show({
         type: ALERT_TYPE.DANGER,
@@ -165,7 +167,7 @@ function PalletDetail(props) {
       },
       title: 'not received',
       key: 'not_recived',
-      onPress: ()=>ChangeStatus({ status : "not-received"}),
+      onPress: ()=>ChangeStatus({ state : "not-received"}),
     },
     {
       icon: {
@@ -174,7 +176,16 @@ function PalletDetail(props) {
       },
       title: 'recived',
       key: 'received',
-      onPress: ()=>ChangeStatus({ status : "received"}),
+      onPress: ()=>ChangeStatus({ state : "received"}),
+    },
+    {
+      icon: {
+        name: 'check',
+        type: 'font-awesome-5',
+      },
+      title: 'Storing',
+      key: 'storing',
+      onPress: ()=>ChangeStatus({ state : "storing"}),
     },
     {
       icon: {
@@ -184,7 +195,27 @@ function PalletDetail(props) {
       title: 'Picking',
       key: 'picking',
       buttonStyle:{backgroundColor: MAINCOLORS.success},
-      onPress: ()=>ChangeStatus({ status : "picking"}),
+      onPress: ()=>ChangeStatus({ state : "picking"}),
+    },
+    {
+      icon: {
+        name: 'check',
+        type: 'font-awesome-5',
+      },
+      title: 'Picked',
+      key: 'picked',
+      buttonStyle:{backgroundColor: MAINCOLORS.success},
+      onPress: ()=>ChangeStatus({ state : "picked"}),
+    },
+    {
+      icon: {
+        name: 'check',
+        type: 'font-awesome-5',
+      },
+      title: 'Dispatched',
+      key: 'dispatched',
+      buttonStyle:{backgroundColor: MAINCOLORS.success},
+      onPress: ()=>ChangeStatus({ state : "dispatched"}),
     },
     {
       icon: {
@@ -194,7 +225,7 @@ function PalletDetail(props) {
       title: 'Damaged',
       key: 'damaged',
       buttonStyle:{backgroundColor: MAINCOLORS.danger},
-      onPress: ()=>ChangeStatus({ status : "damaged"}),
+      onPress: ()=>ChangeStatus({ state : "damaged"}),
     },
     {
       icon: {
@@ -204,16 +235,8 @@ function PalletDetail(props) {
       title: 'Lost',
       key: 'lost',
       buttonStyle:{backgroundColor: MAINCOLORS.danger},
-      onPress: ()=>ChangeStatus({ status : "lost"}),
+      onPress: ()=>ChangeStatus({ state : "lost"}),
     },
-   /*  {
-      icon: {
-        name: 'box',
-        type: 'entypo',
-      },
-      title: 'Stored Items',
-      key: 'stored_item',
-    }, */
   ];
 
   const filterFeatures = filter => {
@@ -229,7 +252,7 @@ function PalletDetail(props) {
       if (state == 'storing')
         filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
       if (state == 'recived')
-        filterFeatures(['recived', 'not_recived', , 'stored_item']);
+        filterFeatures(['recived', 'not_recived','damaged','lost' , 'stored_item']);
       if (state == 'booking-in')
         filterFeatures(['move_location', 'not_recived', 'stored_item']);
       if (state == 'booked-in')
@@ -238,6 +261,10 @@ function PalletDetail(props) {
         filterFeatures(['picking', 'lost', 'damaged', 'stored_item']);
       if (state == 'not-received')
         filterFeatures(['received']);
+      if (state == 'damaged')
+        filterFeatures([]);
+      if (state == 'lost')
+        filterFeatures([]);
     }if(status == 'not-received'){
       filterFeatures(['received']);
     }if(status == 'storing'){
@@ -253,6 +280,10 @@ function PalletDetail(props) {
         filterFeatures(['picking', 'lost', 'damaged', 'stored_item']);
       if (state == 'not-received')
         filterFeatures(['received']);
+      if (state == 'damaged')
+        filterFeatures([]);
+      if (state == 'lost')
+        filterFeatures([]);
     }if(status == 'returning'){
         if (state == 'storing')
         filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
@@ -263,9 +294,15 @@ function PalletDetail(props) {
         if (state == 'booked-in')
           filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);
         if (state == 'picking')
-          filterFeatures(['picking', 'lost', 'damaged', 'stored_item']);
+          filterFeatures(['picked', 'lost', 'damaged', 'stored_item']);
+        if (state == 'picked')
+          filterFeatures(['dispatched', 'lost', 'damaged', 'stored_item']);
         if (state == 'not-received')
           filterFeatures(['received']);
+        if (state == 'damaged')
+          filterFeatures([]);
+        if (state == 'lost')
+          filterFeatures([]);
     }if(status == 'returned'){
         filterFeatures([]);
     }if(status == 'incident'){
