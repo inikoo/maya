@@ -101,11 +101,9 @@ function Request(
 			})
 		})
 			.then(response => {
-				console.log(response)
 				onSuccess(response.data, extra)}
 			)
 			.catch(error => {
-				console.log(error)
 				onFailed(error)
 });
 	/* } */
