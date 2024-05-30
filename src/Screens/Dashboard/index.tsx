@@ -177,6 +177,15 @@ export default function HomeScreen({navigation}) {
     );
   };
 
+  const onPressMenuStat = item => {
+    if(item.label == 'Location') navigation.navigate('Locations');
+    if(item.label == 'Stored Items') navigation.navigate('StoredItems');
+    if(item.label == 'Delivery') navigation.navigate('Deliveries');
+    if(item.label == 'Return') navigation.navigate('Returns');
+    if(item.label == 'Pallets') navigation.navigate('Pallets');
+  /*   navigation.navigate(item.label); */
+  };
+
   const renderStat = () => {
     return !loading ? (
       <View
@@ -187,7 +196,7 @@ export default function HomeScreen({navigation}) {
         {Object.entries(countData).map(([key, item]) => (
           <TouchableOpacity
             key={key}
-            /* onPress={() => onPressMenu(item)} */
+            onPress={() => onPressMenuStat(item)}
             style={{width: '50%', padding: 5}}>
             <Card
               containerStyle={{
@@ -239,7 +248,7 @@ export default function HomeScreen({navigation}) {
                 marginBottom: 20,
               }}>
               <Text style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}>
-                Hello {user.username}
+                Hello, {user.username}
               </Text>
               <View
                 style={{

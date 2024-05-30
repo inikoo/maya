@@ -15,7 +15,7 @@
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/checkbox": "^0.5.17",
     "@react-native-firebase/app": "^19.1.2",
-    "@react-native-firebase/messaging": "^19.1.2",
+    "@react-native-firebase/messaging": "^19.3.0",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/drawer": "^6.6.15",
     "@react-navigation/native": "^6.1.17",

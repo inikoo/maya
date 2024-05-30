@@ -15,7 +15,7 @@ const theme = createTheme({
     Text : {
       style : { 
         color : MAINCOLORS.black,
-        fontFamily: 'Nunito-Bold',
+        fontFamily: 'Inter-VariableFont_slnt,wght'
       }
     },
     ButtonGroup : {

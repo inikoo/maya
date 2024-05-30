@@ -63,16 +63,16 @@ const Organisation = (props: Object) => {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
         const data = await UpdateCredential(user.token);
         if (data.status === 'Success') {
           setProfileData({...data.data});
         }
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false)
+        setLoading(false);
       }
     };
 
@@ -86,7 +86,13 @@ const Organisation = (props: Object) => {
       ) : (
         <View>
           <FlatList
-            data={profileData?.organisations || []}
+            data={
+              profileData?.organisations
+                ? profileData?.organisations.filter(
+                    item => item.authorised_fulfilments.length != 0,
+                  )
+                : []
+            }
             renderItem={renderItem}
             keyExtractor={item => item.id}
             ListEmptyComponent={() => (
@@ -95,15 +101,15 @@ const Organisation = (props: Object) => {
               </View>
             )}
           />
-          {organisation.active_organisation?.id && (
-            <FAB
-              placement="right"
-              onPress={() => navigation.navigate('Fullfilment')}
-              color={MAINCOLORS.primary}>
-              <Icon name="arrow-right" type="feather" color="white" />
-            </FAB>
-          )}
         </View>
+      )}
+      {organisation.active_organisation?.id && (
+        <FAB
+          placement="right"
+          onPress={() => navigation.navigate('Fullfilment')}
+          color={MAINCOLORS.primary}>
+          <Icon name="arrow-right" type="feather" color="white" />
+        </FAB>
       )}
     </SafeAreaView>
   );
