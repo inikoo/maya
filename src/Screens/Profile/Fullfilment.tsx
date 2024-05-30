@@ -8,18 +8,20 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {Icon} from '@rneui/themed';
+import {Icon, FAB} from '@rneui/themed';
 import Action from '~/Store/Action';
 import Empty from '~/Components/Empty';
+import {MAINCOLORS} from '~/Utils/Colors';
+import { useNavigation } from '@react-navigation/native';
 
-const Organisation = props => {
-  const user = useSelector(state => state.userReducer);
+const Organisation = (props : Object) => {
   const organisation = useSelector(state => state.organisationReducer);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-  const renderItem = ({item}) => <Item data={item} />
+  const renderItem = ({item}) => <Item data={item} />;
 
-  const setOrganisation = data => {
+  const setOrganisation = (data : Object) => {
     dispatch(
       Action.CreateUserOrganisationProperties({
         organisations: organisation.organisations,
@@ -32,12 +34,11 @@ const Organisation = props => {
     dispatch(Action.CreateWarehouseProperties(data));
   };
 
-  const Item = data => {
+  const Item = (data : Object) => {
     return (
       <TouchableOpacity
         style={styles.itemContainer}
-        onPress={() => setOrganisation(data.data)}
-        >
+        onPress={() => setOrganisation(data.data)}>
         <View style={styles.itemContent}>
           <Text style={styles.label}>{data.data.code}</Text>
           {organisation.active_organisation.active_authorised_fulfilments?.id == data.data.id && (
@@ -53,7 +54,6 @@ const Organisation = props => {
     );
   };
 
-
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -66,6 +66,14 @@ const Organisation = props => {
           </View>
         )}
       />
+      {organisation.active_organisation.active_authorised_fulfilments?.id && (
+        <FAB
+          placement="right"
+          onPress={() => navigation.navigate('Warehouse')}
+          color={MAINCOLORS.primary}>
+          <Icon name="arrow-right" type="feather" color="white" />
+        </FAB>
+      )}
     </SafeAreaView>
   );
 };

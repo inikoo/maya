@@ -168,6 +168,7 @@ export default {
           name: 'Profile',
           component: Profile,
           option: {
+            headerShown: false,
             tabBarIcon: ({color}) => {
               return (
                 <Icon name="user" type="font-awesome" color={color} size={26} />

@@ -87,7 +87,7 @@ export async function UpdateCredential(token = "") {
       );
     });
 
-    await sendFirebaseToken(); // Send Firebase token after updating profile
+  /*   await sendFirebaseToken(); */ // Send Firebase token after updating profile
 
     return {
       status: 'Success',

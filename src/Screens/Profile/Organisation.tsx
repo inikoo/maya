@@ -5,36 +5,43 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { Icon, Text } from '@rneui/themed'; // Assuming the icon component is imported correctly
-import { UpdateCredential } from '~/Utils/auth';
+import {useSelector, useDispatch} from 'react-redux';
+import {Icon, Text, FAB} from '@rneui/themed';
 import Action from '~/Store/Action';
 import Empty from '~/Components/Empty';
+import {MAINCOLORS} from '~/Utils/Colors';
+import {useNavigation} from '@react-navigation/native';
+import {UpdateCredential} from '~/Utils';
 
-const Organisation = (props) => {
+const Organisation = (props: Object) => {
   const [profileData, setProfileData] = React.useState(null);
-  const user = useSelector((state) => state.userReducer);
-  const organisation = useSelector((state) => state.organisationReducer);
+  const [loading, setLoading] = React.useState(false);
+  const user = useSelector((state: Object) => state.userReducer);
+  const organisation = useSelector(
+    (state: Object) => state.organisationReducer,
+  );
+
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const renderItem = ({ item }) => <Item data={item} />;
+  const renderItem = ({item}) => <Item data={item} />;
 
-  const setOrganisation = (data) => {
+  const setOrganisation = data => {
     dispatch(
       Action.CreateUserOrganisationProperties({
         organisations: user.organisations,
         active_organisation: {
           ...data,
-          /*    active_authorised_fulfilments: data.authorised_fulfilments[0], */
           active_authorised_fulfilments: null,
         },
-      })
+      }),
     );
     dispatch(Action.CreateWarehouseProperties(data));
   };
 
-  const Item = (data) => {
+  const Item = (data: Object) => {
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -56,13 +63,16 @@ const Organisation = (props) => {
 
   React.useEffect(() => {
     const fetchData = async () => {
+      setLoading(true)
       try {
         const data = await UpdateCredential(user.token);
         if (data.status === 'Success') {
-          setProfileData({ ...data.data });
+          setProfileData({...data.data});
         }
+        setLoading(false)
       } catch (error) {
         console.error('Error fetching data:', error);
+        setLoading(false)
       }
     };
 
@@ -71,16 +81,30 @@ const Organisation = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-       data={profileData?.organisations || []}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={() => (
-          <View style={styles.emptyContainer}>
-            <Empty useButton={false} />
-          </View>
-        )}
-      />
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <View>
+          <FlatList
+            data={profileData?.organisations || []}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            ListEmptyComponent={() => (
+              <View style={styles.emptyContainer}>
+                <Empty useButton={false} />
+              </View>
+            )}
+          />
+          {organisation.active_organisation?.id && (
+            <FAB
+              placement="right"
+              onPress={() => navigation.navigate('Fullfilment')}
+              color={MAINCOLORS.primary}>
+              <Icon name="arrow-right" type="feather" color="white" />
+            </FAB>
+          )}
+        </View>
+      )}
     </SafeAreaView>
   );
 };

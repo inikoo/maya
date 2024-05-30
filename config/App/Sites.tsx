@@ -5,5 +5,5 @@ function sites() {
 }
 
 export default {
-	HAN: sites()
+	MAYA: sites()
 };

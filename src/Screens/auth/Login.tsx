@@ -39,6 +39,7 @@ const LoginScreen = () => {
   };
 
   const onLoginSuccess = async (res: {token: String}) => {
+    console.log(res)
     setLoading(false);
     const profile = await UpdateCredential(res.token);
     if (profile.status == 'Success') {

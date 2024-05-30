@@ -59,14 +59,13 @@ export default {
 
 
   warehouseReducer(state = {}, action: object) {
+    console.log('ss',action)
     switch (action.type) {
       case 'CreateWarehouse':
         state = {
          code : action.payload.code,
          id : action.payload.id,
-         name : action.payload.name,
-         number_location : action.payload.number_location,
-         number_warehouse_areas : action.payload.number_warehouse_areas,
+         label : action.payload.label,
          slug : action.payload.slug
         };
         WriteWarehouse(state);

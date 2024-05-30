@@ -16,7 +16,7 @@ import {get} from 'lodash';
 import Request from '~/Utils/request';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS } from '~/Utils/Colors';
+import { COLORS, MAINCOLORS } from '~/Utils/Colors';
 
 const EditProfile = props => {
   const [profileData, setProfileData] = useState(null);
@@ -34,7 +34,7 @@ const EditProfile = props => {
   const onSendToServer = async data => {
     await Request(
       'post',
-      'profile',
+      'update-profile',
       {['Content-Type']: 'multipart/form-data'},
       data,
       [],
@@ -126,7 +126,7 @@ const EditProfile = props => {
                 marginVertical: 6,
                 justifyContent: 'center',
                 paddingLeft: 8,
-                backgroundColor: COLORS.whiteGray
+              
               }}>
               <TextInput
                 onChangeText={formik.handleChange('email')}
@@ -147,17 +147,17 @@ const EditProfile = props => {
                 borderRadius: 4,
                 marginVertical: 6,
                 paddingLeft: 8,
-                backgroundColor: COLORS.whiteGray
+         
               }}>
               <TextInput
                 multiline
-                onChangeText={formik.handleChange('note')}
-                value={formik.values.note}
+                onChangeText={formik.handleChange('about ')}
+                value={formik.values.about}
                 editable={true}
                 numberOfLines={4}
               />
-              {formik.errors.note && (
-                <Text style={{color: 'red'}}>{formik.errors.note}</Text>
+              {formik.errors.about && (
+                <Text style={{color: 'red'}}>{formik.errors.about}</Text>
               )}
             </View>
           </View>
@@ -169,13 +169,13 @@ const EditProfile = props => {
             borderRadius: 6,
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: COLORS.primary, 
+            backgroundColor: MAINCOLORS.primary, 
             marginTop: 20, 
             borderWidth:1,
-            borderColor:COLORS.dark
+            borderColor:MAINCOLORS.black
           }}
           onPress={formik.handleSubmit}>
-          <Text>Save Change</Text>
+          <Text style={{ color : MAINCOLORS.white }}>Save Change</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -187,7 +187,7 @@ const EditProfile = props => {
             backgroundColor: 'white', // Add some style
             marginTop: 20, // Add some space between text input and button
             borderWidth : 1,
-            borderColor:COLORS.dark
+            borderColor:MAINCOLORS.black
           }}
           onPress={() => navigation.goBack()}>
           <Text>Cancel</Text>

@@ -98,19 +98,19 @@ export default function HomeScreen({navigation}) {
         'warehouse-count-data',
         {},
         {},
-        [organisation.active_organisation.id, warehouse.id],
+        [organisation.active_organisation.id,warehouse.id],
         onSuccessGetCount,
         onFailedGetCount,
       );
     }
   };
 
-  const onSuccessGetCount = response => {
+  const onSuccessGetCount = (response:Object) => {
     setCountData(response.data.stats);
     setLoading(false);
   };
 
-  const onFailedGetCount = error => {
+  const onFailedGetCount = (error:Object) => {
     setLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -143,11 +143,6 @@ export default function HomeScreen({navigation}) {
       );
     }
   };
-
-  useEffect(() => {
-    reqCountData();
-    getNotification();
-  }, [organisation, warehouse]);
 
   const onPressMenu = item => {
     navigation.navigate(item.key);
@@ -226,6 +221,11 @@ export default function HomeScreen({navigation}) {
     );
   };
 
+  useEffect(() => {
+    reqCountData();
+    getNotification();
+  }, [organisation, warehouse]);
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <ScrollView style={{padding: 10}}>
@@ -268,7 +268,7 @@ export default function HomeScreen({navigation}) {
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.navigate('Profile')}>
                   <ImageBackground
                     source={require('../../assets/image/user-profile.jpg')}
                     style={{width: 35, height: 35}}
@@ -279,7 +279,7 @@ export default function HomeScreen({navigation}) {
             </View>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate('Scan')}
+              onPress={() => navigation.navigate('Scan')}     
               style={{
                 flexDirection: 'row',
                 borderColor: '#C6C6C6',
