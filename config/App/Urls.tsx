@@ -16,15 +16,12 @@ export default {
 	'hr-retrive-working-places' : "/maya/org/{}/hr/workplaces/{}",
 	'hr-working-places-time-sheets' : "maya/org/{}/hr/workplaces/{}/clocking-machines",
 
-
 	//clocking machines
 	'hr-clocking-machines' : "maya/org/{}/hr/clocking-machines",
-
 
 	//warehouse
 	'warehouse-index' : 'maya/org/{}/warehouses',
 	'warehouse-count-data' : 'maya/org/{}/warehouses/{}',
-
 
 	//location
 	'locations-index' : 'maya/org/{}/warehouses/{}/locations',
@@ -34,25 +31,20 @@ export default {
 	//pallet
 	'pallet-index' : 'maya/org/{}/warehouses/{}/fulfilments/{}/pallets',
 	'pallet-show' : 'maya/org/{}/warehouses/{}/fulfilments/{}/pallets/{}',
-
 	'pallet-location' : 'maya/action/pallet/{}/location/{}',
-
 	'pallet-return' : 'maya/action/pallet/{}/return',
-
 	'pallet-change-sattus-state' : 'maya/action/pallet/{}',
-
 
 	//delivery
 	'delivery-index' : "maya/org/{}/warehouses/{}/pallet-deliveries",
 	'delivery-show' : "api/org/{}/warehouses/{}/pallet-deliveries/{}",
 	'delivery-pallet-index' : "api/org/{}/warehouses/{}/pallet-deliveries/{}/pallets",
 
-
 	//return
 	'return-index' : "api/org/{}/warehouses/{}/pallet-returns",
 	'return-show' : "api/org/{}/warehouses/{}/pallet-returns/{}",
 	'return-pallet-index' : "api/org/{}/warehouses/{}/pallet-returns/{}/pallets",
 
+	//global search
 	'global-search' : 'api/org/{}/warehouses/{}/scanners/{}'
-
 };

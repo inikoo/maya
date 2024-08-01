@@ -1,12 +1,24 @@
 import React, {useState} from 'react';
 import {SpeedDial} from '@rneui/themed';
-import {StyleSheet} from 'react-native';
 import SearchPage from './Search';
 import ScannerPage from './Scanner';
 import Request from '~/Utils/request';
 import {useSelector} from 'react-redux';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
-import {ActivityIndicator, View} from 'react-native';
+import {
+  TextInput,
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Icon, Avatar} from '@rneui/base';
+import LinearGradient from 'react-native-linear-gradient';
+import {MAINCOLORS} from '~/Utils/Colors';
+import Layout from '~/Components/Layout';
+import Header from '~/Components/Header';
 
 export default function GlobalSearch(props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -61,49 +73,108 @@ export default function GlobalSearch(props) {
     }
   };
 
-  return !loading ? (
-    <>
-      {selectedIndex == 0 ? (
-        <SearchPage searchFromServer={onSearch} data={dataRes} value={Search} />
-      ) : (
-        <ScannerPage searchFromServer={onSearch} data={dataRes} />
-      )}
-      <SpeedDial
-        isOpen={open}
-        onOpen={() => setOpen(!open)}
-        onClose={() => setOpen(!open)}>
-        <SpeedDial.Action
-          icon={{name: 'search'}}
-          title="Search"
-          onPress={() => onChangeMode(0)}
-        />
-        <SpeedDial.Action
-          icon={{name: 'qr-code-scanner'}}
-          title="Scanner"
-          onPress={() => onChangeMode(1)}
-        />
-      </SpeedDial>
-    </>
-  ) : (
-    <View style={{flex: 1, justifyContent: 'center'}}>
-      <ActivityIndicator size="large" />
-    </View>
+  return (
+    <Layout>
+      <View>
+        <Header title='Search & scan' />
+        <View style={styles.searchContainer}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              autoFocus={true}
+              placeholder="Search..."
+            />
+            <TouchableOpacity style={styles.searchIcon}>
+              <Icon name="search" size={24} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonScan}>
+            <TouchableOpacity style={styles.searchIcon}>
+              <Icon name="qr-code-scanner" type="material" size={24} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View>
+          <Text style={{...styles.title, fontSize: 18}}>Last Search</Text>
+          <View style={styles.cardContainer}>
+            <View style={styles.listContainer}>
+              <Text style={{...styles.title, fontSize: 16}}>Pal-1990</Text>
+              <LinearGradient
+                colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+                style={styles.avatarBackground}>
+                <Avatar
+                  size={40}
+                  icon={{name: 'pallet', type: 'font-awesome-5'}}
+                />
+              </LinearGradient>
+            </View>
+          </View>
+        </View>
+      </View>
+    </Layout>
   );
 }
 
 const styles = StyleSheet.create({
-  subHeader: {
-    backgroundColor: '#2089dc',
-    color: 'white',
-    textAlign: 'center',
-    paddingVertical: 5,
-    marginBottom: 10,
-  },
-  Button: {
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '81%',
+    marginTop: 20,
     marginBottom: 20,
     borderRadius: 10,
-    marginTop: 40,
-    marginRight: 20,
-    marginLeft: 20,
+    borderWidth: 1,
+    borderColor: 'gray',
+    backgroundColor: '#fff',
+  },
+  buttonScan: {
+    width: '15%',
+    marginTop: 20,
+    marginBottom: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    backgroundColor: '#fff',
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    paddingHorizontal: 10,
+  },
+  searchIcon: {
+    padding: 10,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    gap: 10,
+  },
+  cardContainer: {
+    marginTop: 15,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    width: '100%',
+    backgroundColor: '#FAFAFA',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 10,
+  },
+  listContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 0,
+    width: '100%',
+    height: 60,
+  },
+  avatarBackground: {
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
   },
 });

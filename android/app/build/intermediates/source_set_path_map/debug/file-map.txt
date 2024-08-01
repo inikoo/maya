@@ -20,7 +20,7 @@ com.maya.app-media-1.0.0-18 C:\Users\62852\.gradle\caches\transforms-3\5f23b5ca5
 com.maya.app-jetified-react-android-0.73.6-debug-19 C:\Users\62852\.gradle\caches\transforms-3\64cc0f09482b7eba658e985cab9ea8b8\transformed\jetified-react-android-0.73.6-debug\res
 com.maya.app-jetified-lifecycle-viewmodel-savedstate-2.5.1-20 C:\Users\62852\.gradle\caches\transforms-3\691f57c1d2adb421ee11bf6d92830b25\transformed\jetified-lifecycle-viewmodel-savedstate-2.5.1\res
 com.maya.app-jetified-tracing-1.1.0-21 C:\Users\62852\.gradle\caches\transforms-3\6e19e789a572732b6841803eb690c3f9\transformed\jetified-tracing-1.1.0\res
-com.maya.app-material-1.9.0-22 C:\Users\62852\.gradle\caches\transforms-3\6fa0a582f3bc1491de217eb03eca51c1\transformed\material-1.9.0\res
+com.maya.app-material-1.6.1-22 C:\Users\62852\.gradle\caches\transforms-3\6f16ec3d5e1799dd65f6ff82fbbb298e\transformed\material-1.6.1\res
 com.maya.app-drawerlayout-1.1.1-23 C:\Users\62852\.gradle\caches\transforms-3\76c9d414cdc151aa4092d87628f66796\transformed\drawerlayout-1.1.1\res
 com.maya.app-jetified-viewpager2-1.0.0-24 C:\Users\62852\.gradle\caches\transforms-3\7ae3427b5f898390cd4efd969a00b0f3\transformed\jetified-viewpager2-1.0.0\res
 com.maya.app-appcompat-1.6.1-25 C:\Users\62852\.gradle\caches\transforms-3\858dc591faff319c774fa62ec5f4cdb2\transformed\appcompat-1.6.1\res
@@ -53,7 +53,8 @@ com.maya.app-packaged_res-51 C:\Users\62852\Project\maya2\Maya\node_modules\reac
 com.maya.app-packaged_res-52 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-device-info\android\build\intermediates\packaged_res\debug
 com.maya.app-packaged_res-53 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-gesture-handler\android\build\intermediates\packaged_res\debug
 com.maya.app-packaged_res-54 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-get-random-values\android\build\intermediates\packaged_res\debug
-com.maya.app-packaged_res-55 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
-com.maya.app-packaged_res-56 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
-com.maya.app-packaged_res-57 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-svg\android\build\intermediates\packaged_res\debug
-com.maya.app-packaged_res-58 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-vector-icons\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-55 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-56 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-57 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-58 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-svg\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-59 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-vector-icons\android\build\intermediates\packaged_res\debug

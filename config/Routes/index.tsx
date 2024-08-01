@@ -6,8 +6,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import Action from '~/Store/Action';
 import {UpdateCredential, RemoveCredential} from '~/Utils/auth';
 import ListRoutes from './RouteList';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import CustomDrawer from '../../src/Components/CustomDrawer';
 
 const Stack = createNativeStackNavigator();
 /* const Drawer = createDrawerNavigator(); */

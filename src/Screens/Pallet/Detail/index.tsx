@@ -22,7 +22,6 @@ function PalletDetail(props) {
   const [finalBuutonFeatures, setfinalBuutonFeatures] = useState([]);
 
   const ChangeStatus = async (data: object) => {
-    console.log(data)
     await Request(
       'patch',
       'pallet-change-sattus-state',
@@ -247,7 +246,6 @@ function PalletDetail(props) {
   };
 
   const setUpFeaturesPallet = (state,status) => {
-    console.log(state,status)
     if(status == "receiving" ){
       if (state == 'storing')
         filterFeatures(['move_location', 'lost', 'damaged', 'stored_item']);

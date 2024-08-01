@@ -118,15 +118,15 @@ export async function getFirebaseToken() {
 
 export async function sendFirebaseToken() {
   try {
-    /* const token = await getFirebaseToken(); */
+  /*   const token = await getFirebaseToken(); */
 
     const response = await new Promise((resolve, reject) => {
       Request(
         'patch',
         'firebase-token',
-        {}, // Adjust if additional data needs to be sent
+        {},
         { firebase_token: token },
-        [], // Adjust if additional headers are needed
+        [],
         (response) => resolve(response),
         (error) => reject(error),
       );

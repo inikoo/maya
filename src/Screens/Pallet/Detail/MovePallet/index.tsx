@@ -21,7 +21,6 @@ export default function MovePallet(props) {
   const pallet = props.route.params.pallet
   const navigation = useNavigation()
 
-  console.log('ppp',props.route)
 
 
   const searchFromServer = (data: String) => {
@@ -44,7 +43,6 @@ export default function MovePallet(props) {
   };
 
   const onFailed = (error: object) => {
-    console.log('err',error)
     setdataRes(null);
     setLoading(false);
     Toast.show({

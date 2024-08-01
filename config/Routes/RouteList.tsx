@@ -23,12 +23,11 @@ import {
   DeliveryScanner,
   ReturnScanner,
   MovePallet,
-  Notification
+  Notification,
 } from '../../src/Screens';
 import {Icon} from '@rneui/base';
 import ScanButton from '~/Components/MainNavigatorButton';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
-import BorderIcon from '~/Components/BorderIcon';
+import {View, Text} from 'react-native';
 
 export default {
   loginRoutes: [
@@ -50,8 +49,19 @@ export default {
 
   routes: [
     {
+      name: 'Organisation',
+      component: Organisation,
+      option: {headerShown: false},
+    },
+    {
+      name: 'Fullfilment',
+      component: Fullfilment,
+      option: {headerShown: false},
+    },
+    {
       name: 'Warehouse',
       component: Warehouse,
+      option: {headerShown: false},
     },
     {
       name: 'Locations',
@@ -80,14 +90,7 @@ export default {
     {
       name: 'Profile Detail',
       component: ProfileDetail,
-    },
-    {
-      name: 'Organisation',
-      component: Organisation,
-    },
-    {
-      name: 'Fullfilment',
-      component: Fullfilment,
+      option: {headerShown: false},
     },
     {
       name: 'Location Scanner',
@@ -139,11 +142,19 @@ export default {
         {
           name: 'Home',
           component: Dashboard,
-          option: {
-            headerShown : false,
-            tabBarIcon: ({color}) => {
+          options: {
+            headerShown: false,
+            tabBarIcon: ({color = ''}) => {
               return (
-                <Icon name="home" type="foundation" color={color} size={26} />
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    top: 3,
+                  }}>
+                  <Icon name="home" type="foundation" color={color} size={25} />
+                  <Text style={{color: color, fontSize: 12}}>Home</Text>
+                </View>
               );
             },
           },
@@ -153,25 +164,44 @@ export default {
           component: GlobalScanner,
           renderLabel: () => null,
           labeled: false,
-          option: {
+          options: {
             tabBarLabel: '',
             headerShown: false,
-            tabBarIcon: ({color}) => (
-              <Icon name="qr-code-scanner" color={COLORS.dark} size={26} />
+            tabBarIcon: ({color = ''}) => (
+              <Icon name="qr-code-scanner" color="#ffffff" size={30} />
             ),
-            tabBarButton: props => (
-              <ScanButton children={props.children} onPress={props.onPress} />
-            ),
+            tabBarButton: (props: Object) => <ScanButton {...props} />,
           },
         },
         {
           name: 'Profile',
           component: Profile,
-          option: {
+          options: {
+            title: 'Settings',
+            headerTitleAlign: 'center', // Menambahkan properti ini untuk mengatur label header di tengah
+            headerTitleStyle: {
+              fontFamily: 'Inter',
+              fontStyle: 'normal',
+              fontWeight: '700',
+              fontSize: 24,
+            },
             headerShown: false,
-            tabBarIcon: ({color}) => {
+            tabBarIcon: ({color = ''}) => {
               return (
-                <Icon name="user" type="font-awesome" color={color} size={26} />
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    top: 3,
+                  }}>
+                  <Icon
+                    name="user"
+                    type="font-awesome"
+                    color={color}
+                    size={26}
+                  />
+                  <Text style={{color: color, fontSize: 12}}>Profile</Text>
+                </View>
               );
             },
           },

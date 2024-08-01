@@ -125,7 +125,6 @@ export default function BaseList(props) {
 
 
   const onFailed = (error: Object) => {
-    console.log(error);
     setIsListEnd(true);
     setLoading(false);
     setRefreshing(false);

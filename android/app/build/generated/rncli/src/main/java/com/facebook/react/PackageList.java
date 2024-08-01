@@ -37,6 +37,8 @@ import com.swmansion.rnscreens.RNScreensPackage;
 import com.horcrux.svg.SvgPackage;
 // react-native-vector-icons
 import com.oblador.vectoricons.VectorIconsPackage;
+// react-native-linear-gradient
+import com.BV.LinearGradient.LinearGradientPackage;
 
 public class PackageList {
   private Application application;
@@ -94,7 +96,8 @@ public class PackageList {
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
       new SvgPackage(),
-      new VectorIconsPackage()
+      new VectorIconsPackage(),
+      new LinearGradientPackage()
     ));
   }
 }

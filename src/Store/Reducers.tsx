@@ -59,7 +59,6 @@ export default {
 
 
   warehouseReducer(state = {}, action: object) {
-    console.log('ss',action)
     switch (action.type) {
       case 'CreateWarehouse':
         state = {

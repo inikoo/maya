@@ -7,7 +7,6 @@ export { default as Organisation } from './Profile/Organisation';
 export { default as Fullfilment } from './Profile/Fullfilment';
 export { default as Notification } from './Notifications';
 
-
 //warehouse
 export { default as Warehouse } from './Warehouse';
 
