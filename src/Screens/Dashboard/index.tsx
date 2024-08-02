@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  SafeAreaView,
-  ScrollView,
   ActivityIndicator,
   TouchableOpacity,
   StyleSheet,

@@ -1,7 +1,7 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:1:1-26:12
-MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:1:1-26:12
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:1:1-32:12
+MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:1:1-32:12
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:2:1-9:12
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:2:1-9:12
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:2:1-9:12
@@ -13,13 +13,15 @@ MERGED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya
 MERGED from [:react-native-firebase_app] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-30:12
 MERGED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:2:1-16:12
 MERGED from [:react-native-device-info] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-device-info\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:react-native-fs] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-fs\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-gesture-handler] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-gesture-handler\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-get-random-values] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-get-random-values\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-19:12
+MERGED from [:react-native-linear-gradient] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-safe-area-context] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-safe-area-context\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-screens] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-screens\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-svg] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-svg\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-vector-icons] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:react-native-linear-gradient] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [com.facebook.react:react-android:0.73.6] C:\Users\62852\.gradle\caches\transforms-3\64cc0f09482b7eba658e985cab9ea8b8\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:2:1-24:12
 MERGED from [com.facebook.fresco:flipper-fresco-plugin:3.1.3] C:\Users\62852\.gradle\caches\transforms-3\ea801a91f8c600a76b01cdcb340ea570\transformed\jetified-flipper-fresco-plugin-3.1.3\AndroidManifest.xml:8:1-13:12
 MERGED from [com.facebook.fresco:flipper:3.1.3] C:\Users\62852\.gradle\caches\transforms-3\bb2cd8121fb1b347166aed89ebbf8f35\transformed\jetified-flipper-3.1.3\AndroidManifest.xml:2:1-7:12
@@ -85,7 +87,7 @@ MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\62852\.gradle\caches\transfo
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\62852\.gradle\caches\transforms-3\01815581afc1998c7868acd647df806f\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:17:1-37:12
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\62852\.gradle\caches\transforms-3\0cbd8121edacb839bf00b4bdc9d6f1ba\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.tracing:tracing:1.1.0] C:\Users\62852\.gradle\caches\transforms-3\6e19e789a572732b6841803eb690c3f9\transformed\jetified-tracing-1.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.exifinterface:exifinterface:1.3.2] C:\Users\62852\.gradle\caches\transforms-3\b82c48fae3702f9739a8a59bfbb4ffc4\transformed\exifinterface-1.3.2\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.3] C:\Users\62852\.gradle\caches\transforms-3\a7255d694ef9252f2960caa122431f28\transformed\exifinterface-1.3.3\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\62852\.gradle\caches\transforms-3\4718b9d331825b2922e7b0bd7d35542d\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.autofill:autofill:1.1.0] C:\Users\62852\.gradle\caches\transforms-3\30a1a19d66f61105e90dc918c637b5d6\transformed\jetified-autofill-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\62852\.gradle\caches\transforms-3\68fab8eba76c76989b7ef22e1a4de12e\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
@@ -154,15 +156,41 @@ uses-permission#android.permission.VIBRATE
 ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:4:5-65
 	android:name
 		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:4:22-63
+uses-permission#android.permission.CAMERA
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:5:5-64
+MERGED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:7:5-65
+MERGED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:7:5-65
+	android:name
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:5:22-62
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:6:5-79
+	android:name
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:6:22-76
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:7:5-80
+	android:name
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:7:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:8:5-81
+MERGED from [:react-native-fs] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-fs\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-81
+MERGED from [:react-native-fs] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-fs\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-81
+	android:name
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:8:22-78
+uses-permission#android.permission.READ_MEDIA_IMAGES
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:9:5-75
+	android:name
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:9:22-73
 application
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:6:5-25:19
-MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:6:5-25:19
-MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:6:5-25:19
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:12:5-31:19
+MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:12:5-31:19
+MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:12:5-31:19
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:5:5-8:50
 MERGED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-41:19
 MERGED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-41:19
 MERGED from [:react-native-firebase_app] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:5-28:19
 MERGED from [:react-native-firebase_app] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:5-28:19
+MERGED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-17:19
+MERGED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-17:19
 MERGED from [com.facebook.react:react-android:0.73.6] C:\Users\62852\.gradle\caches\transforms-3\64cc0f09482b7eba658e985cab9ea8b8\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:18:5-22:19
 MERGED from [com.facebook.react:react-android:0.73.6] C:\Users\62852\.gradle\caches\transforms-3\64cc0f09482b7eba658e985cab9ea8b8\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:18:5-22:19
 MERGED from [com.google.android.material:material:1.6.1] C:\Users\62852\.gradle\caches\transforms-3\6f16ec3d5e1799dd65f6ff82fbbb298e\transformed\material-1.6.1\AndroidManifest.xml:24:5-20
@@ -234,53 +262,53 @@ MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\62852\.gradle\c
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.9.0] C:\Users\62852\.gradle\caches\transforms-3\131a14e650442bdc8d41eaaa9e5b4d34\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
 	android:label
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:8:7-39
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:8:7-39
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:14:7-39
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:14:7-39
 	tools:ignore
 		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:8:9-48
 	android:roundIcon
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:10:7-46
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:10:7-46
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:16:7-46
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:16:7-46
 	tools:targetApi
 		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:7:9-29
 	android:icon
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:9:7-41
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:9:7-41
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:15:7-41
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:15:7-41
 	android:allowBackup
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:11:7-34
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:11:7-34
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:17:7-34
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:17:7-34
 	android:theme
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:12:7-38
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:12:7-38
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:18:7-38
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:18:7-38
 	android:usesCleartextTraffic
 		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:6:9-44
 	android:name
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:7:7-38
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:7:7-38
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:13:7-38
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:13:7-38
 activity#com.maya.MainActivity
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:13:7-24:18
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:19:7-30:18
 	android:label
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:15:9-41
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:21:9-41
 	android:launchMode
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:17:9-40
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:23:9-40
 	android:windowSoftInputMode
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:18:9-51
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:24:9-51
 	android:exported
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:19:9-32
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:25:9-32
 	android:configChanges
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:16:9-118
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:22:9-118
 	android:name
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:14:9-37
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:20:9-37
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:20:9-23:25
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:26:9-29:25
 action#android.intent.action.MAIN
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:21:13-65
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:27:13-65
 	android:name
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:21:21-62
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:27:21-62
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:22:13-73
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:28:13-73
 	android:name
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:22:23-70
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:28:23-70
 uses-sdk
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml
@@ -301,10 +329,16 @@ MERGED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_module
 MERGED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-device-info] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-device-info\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-device-info] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-device-info\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-fs] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-fs\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-fs] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-fs\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-gesture-handler] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-gesture-handler\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-gesture-handler] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-gesture-handler\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-get-random-values] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-get-random-values\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-get-random-values] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-get-random-values\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-linear-gradient] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-linear-gradient] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-safe-area-context] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-safe-area-context\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-safe-area-context] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-safe-area-context\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-screens] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-screens\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
@@ -313,8 +347,6 @@ MERGED from [:react-native-svg] C:\Users\62852\Project\maya2\Maya\node_modules\r
 MERGED from [:react-native-svg] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-svg\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-vector-icons] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-vector-icons] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:react-native-linear-gradient] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:react-native-linear-gradient] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [com.facebook.react:react-android:0.73.6] C:\Users\62852\.gradle\caches\transforms-3\64cc0f09482b7eba658e985cab9ea8b8\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:10:5-44
 MERGED from [com.facebook.react:react-android:0.73.6] C:\Users\62852\.gradle\caches\transforms-3\64cc0f09482b7eba658e985cab9ea8b8\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:10:5-44
 MERGED from [com.facebook.fresco:flipper-fresco-plugin:3.1.3] C:\Users\62852\.gradle\caches\transforms-3\ea801a91f8c600a76b01cdcb340ea570\transformed\jetified-flipper-fresco-plugin-3.1.3\AndroidManifest.xml:11:5-44
@@ -445,8 +477,8 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\62852\.gradle\cach
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\62852\.gradle\caches\transforms-3\0cbd8121edacb839bf00b4bdc9d6f1ba\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.tracing:tracing:1.1.0] C:\Users\62852\.gradle\caches\transforms-3\6e19e789a572732b6841803eb690c3f9\transformed\jetified-tracing-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.tracing:tracing:1.1.0] C:\Users\62852\.gradle\caches\transforms-3\6e19e789a572732b6841803eb690c3f9\transformed\jetified-tracing-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.exifinterface:exifinterface:1.3.2] C:\Users\62852\.gradle\caches\transforms-3\b82c48fae3702f9739a8a59bfbb4ffc4\transformed\exifinterface-1.3.2\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.exifinterface:exifinterface:1.3.2] C:\Users\62852\.gradle\caches\transforms-3\b82c48fae3702f9739a8a59bfbb4ffc4\transformed\exifinterface-1.3.2\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.3] C:\Users\62852\.gradle\caches\transforms-3\a7255d694ef9252f2960caa122431f28\transformed\exifinterface-1.3.3\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.3] C:\Users\62852\.gradle\caches\transforms-3\a7255d694ef9252f2960caa122431f28\transformed\exifinterface-1.3.3\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\62852\.gradle\caches\transforms-3\4718b9d331825b2922e7b0bd7d35542d\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\62852\.gradle\caches\transforms-3\4718b9d331825b2922e7b0bd7d35542d\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.autofill:autofill:1.1.0] C:\Users\62852\.gradle\caches\transforms-3\30a1a19d66f61105e90dc918c637b5d6\transformed\jetified-autofill-1.1.0\AndroidManifest.xml:20:5-22:41
@@ -641,10 +673,6 @@ ADDED from [:react-native-firebase_app] C:\Users\62852\Project\maya2\Maya\node_m
 		ADDED from [:react-native-firebase_app] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:27:13-35
 	android:name
 		ADDED from [:react-native-firebase_app] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\app\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:24:13-88
-uses-permission#android.permission.CAMERA
-ADDED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:7:5-65
-	android:name
-		ADDED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:7:22-62
 uses-feature#android.hardware.camera
 ADDED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:9:5-11:36
 	android:required
@@ -657,6 +685,22 @@ ADDED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules
 		ADDED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:14:9-33
 	android:name
 		ADDED from [:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:13:9-57
+provider#com.imagepicker.ImagePickerProvider
+ADDED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-16:20
+	android:grantUriPermissions
+		ADDED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-47
+	android:authorities
+		ADDED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-71
+	android:exported
+		ADDED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
+	android:name
+		ADDED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-63
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-15:70
+	android:resource
+		ADDED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:17-67
+	android:name
+		ADDED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:17-67
 uses-permission#android.permission.SYSTEM_ALERT_WINDOW
 ADDED from [com.facebook.react:react-android:0.73.6] C:\Users\62852\.gradle\caches\transforms-3\64cc0f09482b7eba658e985cab9ea8b8\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:16:5-78
 	android:name

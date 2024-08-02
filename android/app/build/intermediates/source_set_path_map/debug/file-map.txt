@@ -53,8 +53,9 @@ com.maya.app-packaged_res-51 C:\Users\62852\Project\maya2\Maya\node_modules\reac
 com.maya.app-packaged_res-52 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-device-info\android\build\intermediates\packaged_res\debug
 com.maya.app-packaged_res-53 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-gesture-handler\android\build\intermediates\packaged_res\debug
 com.maya.app-packaged_res-54 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-get-random-values\android\build\intermediates\packaged_res\debug
-com.maya.app-packaged_res-55 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\packaged_res\debug
-com.maya.app-packaged_res-56 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
-com.maya.app-packaged_res-57 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
-com.maya.app-packaged_res-58 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-svg\android\build\intermediates\packaged_res\debug
-com.maya.app-packaged_res-59 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-vector-icons\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-55 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-56 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-57 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-58 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-59 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-svg\android\build\intermediates\packaged_res\debug
+com.maya.app-packaged_res-60 C:\Users\62852\Project\maya2\Maya\node_modules\react-native-vector-icons\android\build\intermediates\packaged_res\debug

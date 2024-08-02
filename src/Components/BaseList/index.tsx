@@ -316,11 +316,6 @@ export default function BaseList(props) {
   };
   
 
-  const onResetFilter = () => {
-    setFilterValue({})
-    setFilterVisible(false)
-  };
-
   const onRefresh = () => {
     setRefreshing(true)
     setIsListEnd(false)
@@ -427,7 +422,7 @@ export default function BaseList(props) {
           ))}
         </SpeedDial>
       )}
-      <BottomSheet modalProps={{}} isVisible={filterVisible}>
+     {/*  <BottomSheet modalProps={{}} isVisible={filterVisible}>
         <View style={{padding: 20, backgroundColor: '#ffff'}}>
           <Filter 
               bluprint={props.filter} 
@@ -441,7 +436,7 @@ export default function BaseList(props) {
             <Text style={{color: MAINCOLORS.danger}}>Close</Text>
           </TouchableOpacity>
         </View>
-      </BottomSheet>
+      </BottomSheet> */}
     </View>
   );
 }

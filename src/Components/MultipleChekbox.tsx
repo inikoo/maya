@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    gap : 5
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -63,7 +64,6 @@ const styles = StyleSheet.create({
     marginBottom: -10,
   },
   label: {
-    marginLeft: 8,
     fontSize: 14,
   },
 });

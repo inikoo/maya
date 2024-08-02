@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import BaseList from '~/Components/BaseList';
+import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Icon, Dialog} from '@rneui/themed';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
@@ -18,12 +18,21 @@ const Locations = props => {
     setOpenDialog(!openDialog);
   };
 
-  const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
+  const Item = (record, {onLongPress, listModeBulk, bulkValue}) => {
     return (
       <TouchableOpacity
-        onPress={() => listModeBulk ? onLongPress(record) : navigation.navigate('Location', {location: record})}
-        onLongPress={()=>onLongPress(record)}
-        style={{...styles.container, backgroundColor: !bulkValue.includes(record.id) ? 'white' : COLORS.grey7 }}>
+        onPress={() =>
+          listModeBulk
+            ? onLongPress(record)
+            : navigation.navigate('Location', {location: record})
+        }
+        onLongPress={() => onLongPress(record)}
+        style={{
+          ...styles.container,
+          backgroundColor: !bulkValue.includes(record.id)
+            ? 'white'
+            : COLORS.grey7,
+        }}>
         <View style={styles.row}>
           <View style={styles.textContainer}>
             <Text style={styles.title}>{record.code}</Text>
@@ -37,7 +46,7 @@ const Locations = props => {
                 style={{...styles.icon}}
                 color={IconColor(record.allow_stocks, record.has_stock_slots)}
               />
-              <Icon 
+              <Icon
                 name="hand-holding-water"
                 type="font-awesome-5"
                 size={15}
@@ -52,7 +61,10 @@ const Locations = props => {
                 type="font-awesome-5"
                 size={15}
                 style={styles.icon}
-                color={IconColor(record.allow_fulfilment, record.has_fulfilment)}
+                color={IconColor(
+                  record.allow_fulfilment,
+                  record.has_fulfilment,
+                )}
               />
             </View>
           </View>
@@ -64,29 +76,55 @@ const Locations = props => {
   return (
     <>
       <BaseList
+        title="Location"
         urlKey="locations-index"
         args={[organisation.active_organisation.id, warehouse.id]}
-        renderItem={Item}
-        navigation={props.navigation}
-        title="Location"
-        sort={[
+        filterSchema={[
+          {
+            title: 'State',
+            key: 'elements[state]',
+            type: 'checkBox',
+            propsItem: {
+              options: [
+                {
+                  label: 'in Process',
+                  value: 'in-process',
+                },
+                {
+                  label: 'Submitted',
+                  value: 'submitted',
+                },
+                {
+                  label: 'Confirmed',
+                  value: 'confirmed',
+                },
+                {
+                  label: 'Received',
+                  value: 'received',
+                },
+                {
+                  label: 'Not Received',
+                  value: 'not-received',
+                },
+                {
+                  label: 'Booking In',
+                  value: 'booking-in',
+                },
+                {
+                  label: 'Booked In',
+                  value: 'booked-in',
+                },
+              ],
+            },
+          },
+        ]}
+        sortSchema={[
           {
             title: 'Code',
             key: 'code',
           },
         ]}
-        settingOptions={[
-          {
-            icon: {name: 'info', type: 'antdesign'},
-            title: 'Info',
-            onPress: () => setDialog(),
-          },
-        ]}
       />
-      <Dialog isVisible={openDialog} onBackdropPress={setDialog}>
-        <Dialog.Title title="Info" />
-        <Information />
-      </Dialog>
     </>
   );
 };

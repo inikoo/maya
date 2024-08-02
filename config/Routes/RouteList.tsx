@@ -66,6 +66,7 @@ export default {
     {
       name: 'Locations',
       component: Locations,
+      option: {headerShown: false},
     },
     {
       name: 'Location',
