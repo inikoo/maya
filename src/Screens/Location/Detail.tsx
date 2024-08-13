@@ -1,31 +1,33 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
   ActivityIndicator,
   ScrollView,
+  TouchableOpacity
 } from 'react-native';
-import {Request, IconColor} from '~/Utils';
-import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
-import {Text, SpeedDial, Icon, Chip, Dialog} from '@rneui/themed';
-import {defaultTo, isNull} from 'lodash';
+import { Request, IconColor } from '~/Utils';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { Text, BottomSheet, Icon, Chip, Dialog, Divider, ListItem } from '@rneui/themed';
+import { defaultTo, isNull } from 'lodash';
 import dayjs from 'dayjs';
-import {MAINCOLORS} from '~/Utils/Colors';
-import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import { MAINCOLORS } from '~/Utils/Colors';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import DetailRow from '~/Components/DetailRow';
 import Barcode from 'react-native-barcode-builder';
 import Information from '~/Components/loactionComponents/Information';
+import Layout from '~/Components/Layout';
+import Header from '~/Components/Header';
 
-
-const Detail = props => {
+const Detail = (props) => {
   const [loading, setLoading] = useState(true);
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialogInfo, setOpenDialogInfo] = useState(false);
 
   const getDetail = () => {
     setLoading(true);
@@ -44,12 +46,12 @@ const Detail = props => {
     );
   };
 
-  const onSuccessGetDetail = response => {
+  const onSuccessGetDetail = (response) => {
     setDataSelected(response);
     setLoading(false);
   };
 
-  const onFailedGetDetail = error => {
+  const onFailedGetDetail = (error) => {
     setLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -58,192 +60,252 @@ const Detail = props => {
     });
   };
 
-  const renderContent = () => {
-    return (
-      <View style={styles.containerContent}>
-        <View style={styles.barcodeContainer}>
-          <Barcode value={`loc-${dataSelected.slug}`} width={1} height={70} />
-          <Text style={styles.barcodeText}>{`loc-${dataSelected.slug}`}</Text>
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow title="Code" text={defaultTo(dataSelected.code, '-')} />
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow
-            title="Status"
-            text={() => {
-              return (
-                <Chip
-                  title={defaultTo(dataSelected.status, '-')}
-                  color={
-                    dataSelected?.status == 'operational'
-                      ? MAINCOLORS.success
-                      : MAINCOLORS.danger
-                  }
-                  buttonStyle={{padding: 1, marginHorizontal: 2}}
-                  titleStyle={{fontSize: 14}}
-                />
-              );
-            }}
-          />
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow
-            title="Created At"
-            text={dayjs(dataSelected.created_at).format('DD-MM-YYYY')}
-          />
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow
-            title="Updated At"
-            text={dayjs(dataSelected.updated_at).format('DD-MM-YYYY')}
-          />
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow
-            title="Audited At"
-            text={
-              dataSelected.audited_at && !isNull(dataSelected.audited_at)
-                ? dayjs(dataSelected.audited_at).format('DD/MM/YY')
-                : '-'
-            }
-          />
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow title="Stock Value" text={dataSelected.stock_value} />
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow
-            title="Max Volume"
-            text={defaultTo(dataSelected.max_volume, '-')}
-          />
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow
-            title="Max Weight"
-            text={defaultTo(dataSelected.max_weight, '-')}
-          />
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow
-            title="Tags"
-            text={() => {
-              return dataSelected.tags.map((tag, index) => (
-                <Chip
-                  key={index}
-                  title={tag}
-                  color={`#${Math.floor(Math.random() * 16777215).toString(
-                    16,
-                  )}`}
-                  buttonStyle={{padding: 1, marginHorizontal: 2}}
-                  titleStyle={{fontSize: 12}}
-                />
-              ));
-            }}
-          />
-        </View>
-
-        <View style={styles.rowDetail}>
-          <DetailRow
-            title="Location status"
-            text={() => (
-              <View style={styles.iconContainer}>
-                <View style={styles.row}>
-                  <Icon
-                    name="box"
-                    type="font-awesome-5"
-                    size={15}
-                    style={{...styles.icon}}
-                    color={IconColor(
-                      dataSelected.allow_stocks,
-                      dataSelected.has_stock_slots,
-                    )}
-                  />
-                  <Icon
-                    name="hand-holding-water"
-                    type="font-awesome-5"
-                    size={15}
-                    style={styles.icon}
-                    color={IconColor(
-                      dataSelected.allow_dropshipping,
-                      dataSelected.has_dropshipping_slots,
-                    )}
-                  />
-                  <Icon
-                    name="pallet"
-                    type="font-awesome-5"
-                    size={15}
-                    style={styles.icon}
-                    color={IconColor(
-                      dataSelected.allow_fulfilment,
-                      dataSelected.has_fulfilment,
-                    )}
-                  />
-                </View>
-              </View>
-            )}
-          />
-        </View>
-      </View>
-    );
-  };
+  const buttonFeatures = [
+    {
+      icon: {
+        name: 'info',
+        type: 'material-icons',
+      },
+      key: 'info',
+      containerStyle: { borderBottomWidth: 1 },
+      title: 'Information',
+      onPress: () => {
+        setOpenDialogInfo(true);
+        setOpen(false);
+      },
+    },
+    {
+      icon: {
+        name: 'pallet',
+        type: 'font-awesome-5',
+      },
+      key: 'pallet',
+      title: 'Pallet in location',
+      onPress: () => {
+        navigation.navigate('Location Pallet', { location: dataSelected });
+        setOpen(false);
+      },
+    },
+  ];
 
   const setDialog = () => {
-    setOpenDialog(!openDialog);
+    setOpenDialogInfo(!openDialogInfo);
   };
 
   useEffect(() => {
     getDetail();
   }, []);
 
-  return !loading ? (
-    <View style={styles.container}>
-      <ScrollView>{renderContent()}</ScrollView>
-      <SpeedDial
-        isOpen={open}
-        onOpen={() => setOpen(!open)}
-        onClose={() => setOpen(!open)}
-        style={styles.speedDial} // Added style prop
-        onPress={() => setOpen(!open)}>
-        <SpeedDial.Action
-          icon = {{name: 'info', type: 'antdesign'}}
-          title = 'Info'
-          onPress = {() => setDialog()}
-        />
-        <SpeedDial.Action
-          icon={{name: 'pallet'}}
-          title="Pallet"
-          onPress={() =>
-            navigation.navigate('Location Pallet', {location: dataSelected})
-          }
-        />
-      </SpeedDial>
-      <Dialog isVisible={openDialog} onBackdropPress={setDialog}>
+  return (
+    <Layout>
+      <Header
+        title={props.route.params.location.code}
+        useLeftIcon={true}
+        rightIcon={
+          <TouchableOpacity onPress={() => setOpen(true)}>
+            <Icon name="menu" type="entypo" />
+          </TouchableOpacity>
+        }
+      />
+      <Divider />
+      <View style={styles.container}>
+        {!loading ? (
+          <View>
+            <ScrollView><RenderContent dataSelected={dataSelected} /></ScrollView>
+          </View>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+            }}>
+            <ActivityIndicator size="large" />
+          </View>
+        )}
+      </View>
+
+      <BottomSheet modalProps={{}} isVisible={open}>
+        <View style={styles.wrapper}>
+          <Header
+            title="Setting"
+            rightIcon={
+              <TouchableOpacity
+                onPress={() => setOpen(false)}
+                style={{ marginRight: 20 }}>
+                <Icon
+                  color={MAINCOLORS.danger}
+                  name="closecircle"
+                  type="antdesign"
+                  size={20}
+                />
+              </TouchableOpacity>
+            }
+          />
+          <Divider />
+          <View style={{ marginVertical: 15 }}>
+            {buttonFeatures.map((l, i) => (
+              <ListItem
+                key={i}
+                containerStyle={{ ...l.containerStyle }}
+                onPress={l.onPress}>
+                <Icon {...l.icon} size={18} />
+                <ListItem.Content>
+                  <ListItem.Title>{l.title}</ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+          </View>
+        </View>
+      </BottomSheet>
+
+      <Dialog isVisible={openDialogInfo} onBackdropPress={setDialog}>
         <Dialog.Title title="Info" />
         <Information />
       </Dialog>
-    </View>
-  ) : (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-      }}>
-      <ActivityIndicator size="large" />
-    </View>
+    </Layout>
   );
 };
 
-export default Detail;
+
+export const RenderContent = ({ dataSelected = {} }) => {
+  return (
+    <View style={styles.containerContent}>
+      <View style={styles.barcodeContainer}>
+        <Barcode value={`${dataSelected.slug}`} width={1} height={70} />
+        <Text style={styles.barcodeText}>{`${dataSelected.slug}`}</Text>
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow title="Code" text={defaultTo(dataSelected.code, '-')} />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Status"
+          text={() => (
+            <Chip
+              title={defaultTo(dataSelected.status, '-')}
+              color={
+                dataSelected?.status == 'operational'
+                  ? MAINCOLORS.success
+                  : MAINCOLORS.danger
+              }
+              buttonStyle={{ padding: 1, marginHorizontal: 2 }}
+              titleStyle={{ fontSize: 14 }}
+            />
+          )}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Created At"
+          text={dayjs(dataSelected.created_at).format('DD-MM-YYYY')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Updated At"
+          text={dayjs(dataSelected.updated_at).format('DD-MM-YYYY')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Audited At"
+          text={
+            dataSelected.audited_at && !isNull(dataSelected.audited_at)
+              ? dayjs(dataSelected.audited_at).format('DD/MM/YY')
+              : '-'
+          }
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow title="Stock Value" text={dataSelected.stock_value} />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Max Volume"
+          text={defaultTo(dataSelected.max_volume, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Max Weight"
+          text={defaultTo(dataSelected.max_weight, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Tags"
+          text={() => (
+            <View style={styles.chipContainer}>
+              {dataSelected.tags.map((tag, index) => (
+                <Chip
+                  key={index}
+                  title={tag}
+                  color={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
+                  buttonStyle={styles.chip}
+                  titleStyle={{ fontSize: 12 }}
+                />
+              ))}
+            </View>
+          )}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Location status"
+          text={() => (
+            <View style={styles.iconContainer}>
+              <View style={styles.row}>
+                <Icon
+                  name="box"
+                  type="font-awesome-5"
+                  size={15}
+                  style={styles.icon}
+                  color={IconColor(
+                    dataSelected.allow_stocks,
+                    dataSelected.has_stock_slots,
+                  )}
+                />
+                <Icon
+                  name="hand-holding-water"
+                  type="font-awesome-5"
+                  size={15}
+                  style={styles.icon}
+                  color={IconColor(
+                    dataSelected.allow_dropshipping,
+                    dataSelected.has_dropshipping_slots,
+                  )}
+                />
+                <Icon
+                  name="pallet"
+                  type="font-awesome-5"
+                  size={15}
+                  style={styles.icon}
+                  color={IconColor(
+                    dataSelected.allow_fulfilment,
+                    dataSelected.has_fulfilment,
+                  )}
+                />
+              </View>
+            </View>
+          )}
+        />
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF', // Set background color to white
   },
+  wrapper: {
+    backgroundColor: '#ffffff',
+    padding: 15,
+  },
   containerContent: {
     flex: 1,
-    padding: 20,
+    padding: 15,
   },
   rowDetail: {
     borderBottomWidth: 1,
@@ -285,3 +347,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
 });
+
+
+
+export default Detail;

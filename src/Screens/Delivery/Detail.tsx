@@ -1,28 +1,68 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  View,
-  SafeAreaView,
-  ActivityIndicator,
   StyleSheet,
-  TouchableOpacity,
+  View,
+  ActivityIndicator,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
+import {Request, IconColor} from '~/Utils';
 import {useSelector} from 'react-redux';
-import {Request} from '~/Utils';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
-import {Avatar, Text, Chip} from '@rneui/themed';
-import {defaultTo, get} from 'lodash';
-import BaseList from '~/Components/BaseList';
 import {useNavigation} from '@react-navigation/native';
+import {
+  Text,
+  BottomSheet,
+  Icon,
+  Chip,
+  Dialog,
+  Divider,
+  ListItem,
+} from '@rneui/themed';
+import {defaultTo, isNull} from 'lodash';
+import dayjs from 'dayjs';
+import {MAINCOLORS} from '~/Utils/Colors';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import DetailRow from '~/Components/DetailRow';
-import PalletCard from '~/Components/palletComponents/ListCard';
+import Barcode from 'react-native-barcode-builder';
+import Information from '~/Components/loactionComponents/Information';
+import Layout from '~/Components/Layout';
+import Header from '~/Components/Header';
 
 const DeliveryDetail = props => {
   const [loading, setLoading] = useState(true);
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
+  const [open, setOpen] = useState(false);
   const navigation = useNavigation();
+
+  const buttonFeatures = [
+/*     {
+      icon: {
+        name: 'info',
+        type: 'material-icons',
+      },
+      key: 'info',
+      containerStyle: { borderBottomWidth: 1 },
+      title: 'Information',
+      onPress: () => {
+        setOpenDialogInfo(true);
+        setOpen(false);
+      },
+    }, */
+    {
+      icon: {
+        name: 'truck',
+        type: 'font-awesome-5',
+      },
+      key: 'pallet',
+      title: 'Pallet in Delivery',
+      onPress: () => {
+        navigation.navigate('Delivery Pallet', { delivery: dataSelected });
+        setOpen(false);
+      },
+    },
+  ];
 
   const getDetail = () => {
     setLoading(true);
@@ -50,131 +90,181 @@ const DeliveryDetail = props => {
     setLoading(false);
   };
 
-  const headerCard = () => {
-    return (
-      <View
-        style={{
-          backgroundColor: MAINCOLORS.warning,
-          padding: 20,
-          borderRadius: 10,
-        }}>
-        <View style={styles.header}>
-          <Avatar
-            size={35}
-            icon={{
-              name: 'truck',
-              type: 'font-awesome',
-              color: MAINCOLORS.white,
-            }}
-            containerStyle={styles.avatarContainer}
-          />
-          <Text style={styles.reference}>{dataSelected.reference}</Text>
-        </View>
-        <View style={styles.detailsContainer}>
-          <DetailRow
-            title="Customer Name"
-            text={defaultTo(dataSelected.customer_name, '-')}
-          />
-          <DetailRow
-            title="State"
-            text={() => {
-              return (
-                <Chip
-                  title={dataSelected.state}
-                  color={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
-                  buttonStyle={{padding: 1, marginHorizontal: 2}}
-                  titleStyle={{fontSize: 12}}
-                />
-              );
-            }}
-          />
-        </View>
-        <View style={styles.detailsContainer}>
-          <DetailRow
-            title="Total Pallet"
-            text={defaultTo(dataSelected.number_pallets, 0)}
-          />
-        </View>
-      </View>
-    );
-  };
-
   useEffect(() => {
     getDetail();
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size="large" color={MAINCOLORS.primary} />
-      ) : (
-        <View style={styles.contentContainer}>
-          {headerCard()}
-          <ScrollView>
-            <BaseList
-              urlKey="delivery-pallet-index"
-              args={[
-                organisation.active_organisation.id,
-                warehouse.id,
-                props.route.params.delivery.id,
-              ]}
-              renderItem={(record, { onLongPress, listModeBulk, bulkValue }) => (
-                <PalletCard
-                    data={{
-                        record: record,
-                        onLongPress: onLongPress,
-                        listModeBulk: listModeBulk,
-                        bulkValue: bulkValue
-                    }}
+    <Layout>
+      <Header
+        title={props.route.params.delivery.reference}
+        useLeftIcon={true}
+        rightIcon={
+          <TouchableOpacity onPress={() => setOpen(true)}>
+            <Icon name="menu" type="entypo" />
+          </TouchableOpacity>
+        }
+      />
+      <Divider />
+      <View style={styles.container}>
+        {!loading ? (
+          <View>
+            <ScrollView>
+              <RenderContent dataSelected={dataSelected} />
+            </ScrollView>
+          </View>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+            }}>
+            <ActivityIndicator size="large" />
+          </View>
+        )}
+      </View>
+      <BottomSheet modalProps={{}} isVisible={open}>
+        <View style={styles.wrapper}>
+          <Header
+            title="Setting"
+            rightIcon={
+              <TouchableOpacity
+                onPress={() => setOpen(false)}
+                style={{ marginRight: 20 }}>
+                <Icon
+                  color={MAINCOLORS.danger}
+                  name="closecircle"
+                  type="antdesign"
+                  size={20}
                 />
-            )} 
-              navigation={props.navigation}
-              title="Delivery"
-              scanner={false}
-              settingButton={false}
-              showRecords={false}
-            />
-          </ScrollView>
+              </TouchableOpacity>
+            }
+          />
+          <Divider />
+          <View style={{ marginVertical: 15 }}>
+            {buttonFeatures.map((l, i) => (
+              <ListItem
+                key={i}
+                containerStyle={{ ...l.containerStyle }}
+                onPress={l.onPress}>
+                <Icon {...l.icon} size={18} />
+                <ListItem.Content>
+                  <ListItem.Title>{l.title}</ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+          </View>
         </View>
-      )}
-    </SafeAreaView>
+      </BottomSheet>
+    </Layout>
+  );
+};
+
+export const RenderContent = ({dataSelected = {}}) => {
+  return (
+    <View style={styles.containerContent}>
+      <View style={styles.barcodeContainer}>
+        <Barcode value={`${dataSelected.reference}`} width={1} height={70} />
+        <Text style={styles.barcodeText}>{`${dataSelected.reference}`}</Text>
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Reference"
+          text={defaultTo(dataSelected.reference, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Number Boxes"
+          text={defaultTo(dataSelected.number_boxes, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Number Oversizes"
+          text={defaultTo(dataSelected.number_oversizes, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Number Pallets"
+          text={defaultTo(dataSelected.number_pallets, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Number Physical Goods"
+          text={defaultTo(dataSelected.number_physical_goods, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="State"
+          text={defaultTo(dataSelected.state_label, '-')}
+        />
+      </View>
+
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Created At"
+          text={dayjs(dataSelected.created_at).format('DD-MM-YYYY')}
+        />
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: MAINCOLORS.background,
-    justifyContent: 'center',
+    backgroundColor: '#FFFFFF', // Set background color to white
   },
-  contentContainer: {
+  wrapper: {
+    backgroundColor: '#ffffff',
+    padding: 15,
+  },
+  containerContent: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    borderRadius: 20,
-    marginTop: 10,
+    padding: 15,
   },
-  header: {
+  rowDetail: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#CCCCCC', // Light gray border color
+    paddingVertical: 15,
+  },
+  barcodeContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  barcodeText: {
+    fontWeight: 'bold',
+    marginTop: 5,
+    fontSize: 16,
+  },
+  chipContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 5,
+  },
+  chip: {
+    marginVertical: 2,
+    marginHorizontal: 2,
+  },
+  speedDial: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  iconContainer: {
+    alignItems: 'flex-end',
+  },
+  icon: {
+    marginHorizontal: 5,
+  },
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
-  },
-  avatarContainer: {
-    backgroundColor: MAINCOLORS.primary,
-    marginRight: 13,
-    marginLeft: 5,
-  },
-  reference: {
-    fontWeight: '500',
-    fontSize: 20,
-  },
-  detailsContainer: {
-    marginLeft: 5,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '500',
-    marginBottom: 6,
+    marginVertical: 5,
   },
 });
 

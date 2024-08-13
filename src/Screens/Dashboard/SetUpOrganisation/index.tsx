@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
-import {View, Image} from 'react-native';
+import {View, Image, Text} from 'react-native';
 
-import {Text, Button} from '@rneui/base';
+import {Button} from '@rneui/base';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import LoginSVG from '../../../assets/image/20943993.jpg';
 import {useNavigation} from '@react-navigation/native';
+import Layout from '~/Components/Layout';
 
 export default function SetUpOrganisation() {
   const navigation = useNavigation();
   return (
-    <View>
+    <Layout>
     <View style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ alignItems: 'center' }}>
         <Image
@@ -27,7 +28,7 @@ export default function SetUpOrganisation() {
             fontFamily: 'Roboto-Medium',
             fontSize: 24,
             fontWeight: 'bold',
-            color: '#333',
+       
             marginBottom: 20,
             textAlign: 'center',
           }}
@@ -40,7 +41,7 @@ export default function SetUpOrganisation() {
             fontFamily: 'Roboto-Regular',
             fontSize: 14,
             fontWeight: '400',
-            color: '#666',
+      
             marginBottom: 20,
             textAlign: 'center',
             paddingHorizontal: 20,
@@ -60,6 +61,6 @@ export default function SetUpOrganisation() {
         />
       </View>
     </View>
-  </View>
+  </Layout>
   );
 }

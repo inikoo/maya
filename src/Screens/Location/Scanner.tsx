@@ -1,20 +1,17 @@
-import React from 'react';
+import React  from 'react';
+import { StyleSheet } from 'react-native';
+import Layout from '~/Components/Layout';
+import Header from '~/Components/Header';
 import BaseScanner from '~/Components/BaseScanner';
-import {useSelector} from 'react-redux';
-import { MAINCOLORS } from '~/Utils/Colors';
 
-export default function LocationScanner() {
-  const organisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
+export default function ScannerPage() {
 
   return (
-    <BaseScanner
-      title="Location"
-      scannerKey='location'
-      prefix='loc'
-      showMarker={true}
-      markerStyle={{ borderColor : MAINCOLORS.primary }}
-      args={[organisation.active_organisation.id, warehouse.id]}
-    />
+    <Layout>
+      <Header title="Scanner Location" useLeftIcon={true} />
+      <BaseScanner prefix={'Location'} />
+    </Layout>
   );
 }
+
+const styles = StyleSheet.create({});

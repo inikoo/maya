@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
+import React, {useState,useRef} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
-import BaseList from '~/Components/BaseList';
+import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Avatar} from '@rneui/themed';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import { Request } from '~/Utils';
 
+
 const Notifications = props => {
   const navigation = useNavigation();
+  const _list = useRef(null);
   const [openDialog, setOpenDialog] = useState(false);
 
 
@@ -19,19 +21,20 @@ const Notifications = props => {
       {},
       {},
       [data.id],
-      ()=>NavigationPush(data.data),
-      ()=>NavigationPush(data.data),
+      NavigationPush,
+      NavigationPush,
     );
   }
 
 
   const NavigationPush=(data)=>{
+    if(_list) _list.current.refreshList()
     if(data.type == "PalletDelivery")navigation.navigate('Delivery',{delivery : {id : data.id}})
     else if(data.type == "PalletReturn")navigation.navigate('Return',{return : {id : data.id}})
     else if(data.type == "Pallet")navigation.navigate('Pallet',{pallet : {id : data.id}})
   }
 
-  const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
+  const Item = (record) => {
     return (
       <TouchableOpacity style={styles.container} onPress={()=>readNotification(record)}>
         <View style={styles.row}>
@@ -41,8 +44,8 @@ const Notifications = props => {
             containerStyle={{backgroundColor: !record.read_at  ? MAINCOLORS.primary : COLORS.grey7 , marginRight : 10}}
           />
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{record.data.title}</Text>
-            <Text style={styles.body}>{record.data.body}</Text>
+            <Text style={styles.title}>{record.title}</Text>
+            <Text style={styles.body}>{record.body}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -52,11 +55,13 @@ const Notifications = props => {
   return (
     <>
       <BaseList
-        urlKey="notification"
-        renderItem={Item}
-        navigation={props.navigation}
-        title="Notification"
-        settingButton={false}
+       title="Notification"
+       itemKey='slug'
+       urlKey="notification"
+       enableSwipe={false}
+       itemList={Item}
+       useScan={false}
+       ref={_list}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, ReactNode} from 'react';
+import React, { useEffect, useState, useRef, ReactNode, forwardRef, useImperativeHandle } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,40 +6,49 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
-  FlatList,
   Text,
   SafeAreaView
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import { useNavigation } from '@react-navigation/native';
+import { COLORS, MAINCOLORS } from '~/Utils/Colors';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
-import {Icon, Avatar, Card, Divider, BottomSheet } from '@rneui/base';
-import {Request} from '~/Utils';
-import {isObject, isArray, get} from 'lodash';
+import { Icon, Avatar, Card, Divider } from '@rneui/base';
+import { Request } from '~/Utils';
+import { isObject, isArray, get } from 'lodash';
+import Empty from '~/Components/Empty';
 import Filter from '~/Components/Filter';
-import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import LinearGradient from 'react-native-linear-gradient';
+import { FlatList } from 'react-native';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 type Props = {
-    title: ReactNode;
-    urlKey: string; // Use 'string' for standard JavaScript string type
-    args: any[]; // Array of any type
-    filterSchema: any[]; // Array of any type
-    sortSchema : any[];
-    prefix : string
-    params : Object
-  };
-  
+  title: ReactNode;
+  urlKey: string;
+  args: any[];
+  filterSchema: any[];
+  sortSchema: string;
+  prefix: string;
+  params: Object;
+  itemKey: string;
+  leftOpenValue: Number;
+  rightOpenValue: Number;
+  enableSwipe: boolean;
+  itemList: ReactNode | Function;
+  useScan: Boolean;
+  screenNavigation: String;
+};
+
 let timeoutId: any;
-export function BaseList(props: Props) {
+const BaseList = forwardRef((props: Props, ref) => {
   const navigation = useNavigation();
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [TotalData, setTotalData] = useState(0);
-  const [sortValue, setSortValue] = useState([]);
+  const [sortValue, setSortValue] = useState(props.sortSchema ? `-${props.sortSchema}` : null);
   const [filterValue, setFilterValue] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [lastFetchId, setLastFetchId] = useState(0);
@@ -48,6 +57,12 @@ export function BaseList(props: Props) {
   const [isListEnd, setIsListEnd] = useState(false);
   const [listModeBulk, setListModeBulk] = useState(false);
   const [bulkValue, setBulkValue] = useState([]);
+
+  useImperativeHandle(ref, () => ({
+    refreshList: () => {
+      onRefresh();
+    },
+  }));
 
   const fetchMoreData = (isLoadMore = false) => {
     setLastFetchId(prevFetchId => prevFetchId + 1);
@@ -64,14 +79,13 @@ export function BaseList(props: Props) {
     requestAPI(pageSend, isLoadMore);
   };
 
-
   const setFilterToServer = () => {
-    let filter = {...filterValue}; 
+    let filter = { ...filterValue };
     for (const key in filter) {
       if (isObject(filter[key]) || isArray(filter[key])) {
         filter[key] = filter[key].toString();
       }
-   } 
+    }
     return filter;
   };
 
@@ -86,17 +100,17 @@ export function BaseList(props: Props) {
         [props.prefix ? `${props.prefix}Page` : 'page']: page,
         ...props.params,
         ['filter[global]']: search,
-   /*      sort: sortValue, */
-        ...filter
+        ...(sortValue ? { sort: sortValue } : {}),
+        ...filter,
       },
       props.args,
       onSuccess,
       onFailed,
-      {fetchId: lastFetchId, isLoadMore, finalPage},
+      { fetchId: lastFetchId, isLoadMore, finalPage },
     );
   };
 
-  const onSuccess = (response: object, {fetchId, isLoadMore, finalPage}) => {
+  const onSuccess = (response: object, { fetchId, isLoadMore, finalPage }) => {
     if (fetchId !== lastFetchId) return;
     const nextState = get(response, 'data', []);
     if (!isLoadMore) {
@@ -133,34 +147,91 @@ export function BaseList(props: Props) {
     }
   };
 
-  const renderItem = ({item}: {item: ItemData}) => {
+  const renderItem = ({ item }: { item: ItemData }) => {
+    if (!props.itemList) {
+      return (
+        <View style={{ backgroundColor: '#ffffff' }}>
+          <TouchableOpacity>
+            <Card containerStyle={styles.cardStat}>
+              <Text style={styles.labelStat}>{item[props.itemKey]}</Text>
+            </Card>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return props.itemList(item);
+    }
+  };
+
+  const renderHiddenItem = ({ item }: { item: ItemData }) => {
     return (
-      <TouchableOpacity>
-        <Card containerStyle={styles.cardStat}>
-          <Text style={styles.labelStat}>{item.code}</Text>
-        </Card>
-      </TouchableOpacity>
+      <View style={styles.hiddenItemContainer}>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleDelete(item.id)}
+        >
+          <Icon name='trash' type='font-awesome-5' color='#ffffff' />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => handleEdit(item.id)}
+        >
+          <Icon name='edit' type='font-awesome-5' color='#ffffff' />
+        </TouchableOpacity>
+      </View>
     );
   };
+
+  const handleDelete = (id: string) => {
+    setData(data.filter(item => item.id !== id));
+  };
+
+  const handleEdit = (id: string) => {
+    console.log(`Edit item with id: ${id}`);
+  };
+
+  const renderEmpty = () => (
+    <Empty buttonOnPress={() => fetchMoreData()} />
+  );
 
   const renderList = () => {
-    return (
-      <FlatList
-        data={data}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderItem}
-        ListFooterComponent={renderFooter}
-        /* ListEmptyComponent={renderEmpty} */
-        onEndReachedThreshold={0.2}
-        onEndReached={() => (isListEnd ? null : fetchMoreData(true))}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
-    );
+    if (props.enableSwipe) {
+      return (
+        <SwipeListView
+          data={data}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+          renderHiddenItem={renderHiddenItem}
+          leftOpenValue={props.leftOpenValue}
+          rightOpenValue={props.rightOpenValue}
+          ListFooterComponent={renderFooter}
+          ListEmptyComponent={renderEmpty}
+          onEndReachedThreshold={0.2}
+          onEndReached={() => (isListEnd ? null : fetchMoreData(true))}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        />
+      );
+    } else {
+      return (
+        <FlatList
+          data={data}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+          ListFooterComponent={renderFooter}
+          ListEmptyComponent={renderEmpty}
+          onEndReachedThreshold={0.2}
+          onEndReached={() => (isListEnd ? null : fetchMoreData(true))}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        />
+      );
+    }
   };
 
-  const onSearch = (value : String) => {
+  const onSearch = (value: string) => {
     setSearch(value);
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
@@ -171,17 +242,24 @@ export function BaseList(props: Props) {
   const renderSearch = () => {
     return (
       <View style={styles.searchContainer}>
-        <View style={styles.inputContainer}>
-          <TextInput style={styles.input} placeholder="Search..." value={search} onChangeText={(e)=>onSearch(e)} />
+        <View style={{ ...styles.inputContainer, width: !props.useScan ? '100%' : '81%' }}>
+          <TextInput
+            style={styles.input}
+            placeholder="Search..."
+            value={search}
+            onChangeText={e => onSearch(e)}
+          />
           <TouchableOpacity style={styles.searchIcon}>
             <Icon name="search" size={24} />
           </TouchableOpacity>
         </View>
-        <View style={styles.buttonScan}>
-          <TouchableOpacity style={styles.searchIcon}>
-            <Icon name="qr-code-scanner" type="material" size={24} />
-          </TouchableOpacity>
-        </View>
+        {props.useScan && (
+          <View style={styles.buttonScan}>
+            <TouchableOpacity style={styles.searchIcon} onPress={scanPress}>
+              <Icon name="qr-code-scanner" type="material" size={24} />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   };
@@ -189,7 +267,7 @@ export function BaseList(props: Props) {
   const renderFooter = () => {
     if (data.length > 0) {
       return (
-        <View v-if="data.length > 0" style={styles.footerContainer}>
+        <View style={styles.footerContainer}>
           {loadingMore && <ActivityIndicator color={MAINCOLORS.primary} />}
           {isListEnd && <Text>No more data at the moment</Text>}
         </View>
@@ -201,90 +279,99 @@ export function BaseList(props: Props) {
     setRefreshing(true);
     setIsListEnd(false);
     setSearch(null);
-    setSortValue([]);
+    setSortValue(`-${props.sortSchema}`);
     fetchMoreData();
   };
 
   const filterButton = () => {
-    return (
-        <TouchableOpacity   onPress={() => setFilterVisible(true)}>
-             <Icon name='filter' type='feather' color='black' />
+    if (props.filterSchema.length > 0) {
+      return (
+        <TouchableOpacity onPress={() => setFilterVisible(true)}>
+          <Icon name='filter' type='feather' color='black' />
         </TouchableOpacity>
-       
-    )
-  }
+      );
+    }
+  };
 
   const onChangeFilter = (value) => {
-    setFilterValue(prev => ({ ...prev, ...value }));
-    setFilterVisible(false)
+    if (value) {
+      setFilterValue(prev => ({ ...prev, ...value }));
+    } else setFilterValue(prev => ({}));
+
+    setFilterVisible(false);
   };
 
   const renderLoading = () => {
     return (
-      <SafeAreaView style={{ flex : 1, justifyContent : 'center', alignItems : 'center'}}>
+      <SafeAreaView style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={MAINCOLORS.primary} />
       </SafeAreaView>
     );
   };
 
+  const onSort = () => {
+    if (sortValue.includes('-')) setSortValue(props.sortSchema);
+    else setSortValue(`-${props.sortSchema}`);
+  };
+
+  const scanPress = () => {
+    if (props.screenNavigation) navigation.navigate(props.screenNavigation);
+  };
 
   useEffect(() => {
     fetchMoreData();
-  }, []);
+  }, [sortValue, filterValue]);
 
   return (
     <Layout>
       <View>
-        <Header title={props.title} rightIcon={filterButton()}/>
-        {/* search */}
+        <Header title={props.title} rightIcon={filterButton()} />
         {renderSearch()}
-
-        {/* record & sort */}
         <View style={styles.recordsWrapper}>
           <LinearGradient
-            colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+            colors={[MAINCOLORS.primary, '#ff6f00']}
             style={styles.recordsContainer}>
             <Text style={styles.recordsText}>Records : {TotalData}</Text>
           </LinearGradient>
-          <TouchableOpacity style={[styles.avatarBackground ]}>
-            <Avatar
-              size={30}
-              containerStyle={styles.sortInactive}
-              icon={{
-                name: 'sort-alpha-down',
-                type: 'font-awesome-5',
-                color : 'black'
-              }}
-            />
-          </TouchableOpacity>
+          {props.sortSchema && (
+            <TouchableOpacity onPress={onSort} style={styles.avatarBackground}>
+              <Avatar
+                size={30}
+                containerStyle={styles.sortInactive}
+                icon={{
+                  name: !sortValue.includes('-') ? 'sort-alpha-down' : 'sort-alpha-up-alt',
+                  type: 'font-awesome-5',
+                  color: 'black'
+                }}
+              />
+            </TouchableOpacity>
+          )}
         </View>
-
-        <Divider style={{marginTop : 20, marginBottom : 10}}/>
-
-        {/*  render List */}
+        <Divider style={styles.divider} />
         <View style={styles.listWraper}>
-            {loading ?  renderLoading() : renderList()}
+          {loading ? renderLoading() : renderList()}
         </View>
-
-          <Filter 
-              bluprint={props.filterSchema} 
-              onChangeFilter={onChangeFilter}
-              value={filterValue}
-              isVisible={filterVisible}
-              onClose={()=>setFilterVisible(false)}
-            />
-      
+        <Filter
+          bluprint={props.filterSchema}
+          onChangeFilter={onChangeFilter}
+          value={filterValue}
+          isVisible={filterVisible}
+          onClose={() => setFilterVisible(false)}
+        />
       </View>
     </Layout>
   );
-}
+});
 
 BaseList.defaultProps = {
   title: '',
   urlKey: '',
   args: [],
-  filterSchema : [],
-  sortSchema : []
+  filterSchema: [],
+  enableSwipe: false,
+  leftOpenValue: 50,
+  rightOpenValue: -60,
+  useScan: true
 };
 
 const styles = StyleSheet.create({
@@ -324,7 +411,7 @@ const styles = StyleSheet.create({
   },
   cardStat: {
     borderRadius: 10,
-    paddingTop: 10,
+    paddingVertical: 20,
     marginTop: 10,
     marginRight: 0,
     marginLeft: 0,
@@ -339,6 +426,8 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     marginVertical: 10,
+    display: 'flex',
+    justifyContent: 'center'
   },
   recordsWrapper: {
     flexDirection: 'row',
@@ -371,6 +460,38 @@ const styles = StyleSheet.create({
   avatar: {
     borderWidth: 1,
     borderColor: 'gray',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  hiddenItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FAFAFA',
+    paddingTop: 15,
+    borderRadius: 10,
+    marginVertical: 5,
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+  },
+  editButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+  },
+  hiddenItemText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
+  divider: {
+    marginTop: 20,
+    marginBottom: 10,
   },
 });
 

@@ -58,7 +58,6 @@ const LoginScreen = () => {
     response: {data: {[key: string]: string[]}};
   }) => {
     setLoading(false);
-    console.log(res)
     if(res?.response?.data?.errors){
       for (let error in res.response.data.errors) {
         formik.setErrors({

@@ -28,7 +28,6 @@ export default function BaseList(props) {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
-  const [totalPage, setTotalPage] = useState(0);
   const navigation = useNavigation();
   const [openDial, setOpenDial] = useState(false);
   const [TotalData, setTotalData] = useState(0);

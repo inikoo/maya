@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 import {useSelector} from 'react-redux';
-import BaseList from '~/Components/BaseList';
+import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Icon,Dialog} from '@rneui/themed';
 import {MAINCOLORS,COLORS } from '~/Utils/Colors';
@@ -23,33 +21,19 @@ const Pallet = props => {
   return (
     <>
       <BaseList
+        title='Pallets'
+        itemKey='reference'
+        prefix='pallets'
         urlKey="pallet-index"
-        navigation={props.navigation}
+        sortSchema='reference'
+        screenNavigation={'Pallet Scanner'}
+        enableSwipe={true}
         args={[
           oraganisation.active_organisation.id,
           warehouse.id,
           oraganisation.active_organisation.active_authorised_fulfilments.id,
         ]}
-        renderItem={(record, { onLongPress, listModeBulk, bulkValue }) => (
-          <PalletCard
-              data={{
-                  record: record,
-                  onLongPress: onLongPress,
-                  listModeBulk: listModeBulk,
-                  bulkValue: bulkValue
-              }}
-          />
-      )}      
-        title='Pallet'
-        prefix='pallets'
-        settingOptions={[
-          {
-            icon: {name: 'info', type: 'antdesign'},
-            title: 'Info',
-            onPress: () => setDialog(),
-          },
-        ]}
-        filter={[
+        filterSchema={[
           {
             title : 'Status',
             key : 'pallets_elements[status]',
@@ -85,6 +69,13 @@ const Pallet = props => {
           }
         
         ]}
+        itemList={(record) => (
+          <PalletCard
+              data={{
+                  record: record,
+              }}
+          />
+      )} 
       />
       <Dialog isVisible={openDialog} onBackdropPress={setDialog}>
       <Dialog.Title title="Info" />

@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Action from '~/Store/Action';
 import {UpdateCredential, RemoveCredential} from '~/Utils/auth';
 import ListRoutes from './RouteList';
+import DrawerNav from './Drawer'
 
 const Stack = createNativeStackNavigator();
 /* const Drawer = createDrawerNavigator(); */
@@ -91,6 +92,13 @@ function Routes() {
         ))
       ) : (
         <>
+         {/*  <Stack.Screen
+              key='drawer'
+              name='Drawer'
+          >
+              {props => <DrawerNav {...props} />}
+          </Stack.Screen> */}
+
           {ListRoutes.BottomNavigatorRoutes.map((item, index) => (
             <Stack.Screen
               key={item.name}

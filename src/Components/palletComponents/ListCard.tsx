@@ -1,22 +1,18 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Icon} from '@rneui/themed';
-import {COLORS } from '~/Utils/Colors';
+import {COLORS} from '~/Utils/Colors';
 
 const PalletCard = props => {
   const navigation = useNavigation();
 
   return (
+    <View style={{...styles.container, backgroundColor: 'white'}}>
       <TouchableOpacity
-        onPress={() => props.data.listModeBulk ? props.data.onLongPress(props.data.record) : navigation.navigate('Pallet',{pallet : props.data.record})}
-        onLongPress={()=>props.data.onLongPress(props.data.record)}
-        style={{...styles.container, backgroundColor: !props.data.bulkValue.includes(props.data.record.id) ? 'white' : COLORS.grey7}}>
+        onPress={() => navigation.navigate('Pallet',{pallet : props.data.record})}
+      /*   onLongPress={()=>props.data.onLongPress(props.data.record)} */
+      >
         <View style={styles.row}>
           <View style={styles.textContainer}>
             <Text style={styles.title}>{props.data.record?.reference}</Text>
@@ -29,7 +25,7 @@ const PalletCard = props => {
                 style={{...styles.icon}}
               />
               <Icon
-                 {...props.data.record?.status_icon.app}
+                {...props.data.record?.status_icon.app}
                 size={15}
                 style={styles.icon}
               />
@@ -37,6 +33,7 @@ const PalletCard = props => {
           </View>
         </View>
       </TouchableOpacity>
+    </View>
   );
 };
 
@@ -55,7 +52,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
     elevation: 7,
-    margin: 5,
+    marginVertical: 5,
     borderWidth: 1,
     borderColor: COLORS.grey6,
   },

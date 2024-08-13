@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { View, Image } from 'react-native';
 import { Text, Button } from '@rneui/base';
-import { COLORS, MAINCOLORS } from '~/Utils/Colors';
+import { MAINCOLORS } from '~/Utils/Colors';
 import LoginSVG from '../../../assets/image/20945971.jpg';
 import { useNavigation } from '@react-navigation/native';
+import Layout from '~/Components/Layout';
 
 export default function SetUpFullfilment() {
   const navigation = useNavigation();
   return (
-    <View>
+    <Layout>
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <View style={{ alignItems: 'center' }}>
           <Image
@@ -59,6 +60,6 @@ export default function SetUpFullfilment() {
           />
         </View>
       </View>
-    </View>
+    </Layout>
   );
 }

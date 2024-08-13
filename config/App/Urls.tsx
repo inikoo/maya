@@ -9,7 +9,7 @@ export default {
 
 	//Notification
 	'notification' : 'maya/profile/notifications',
-	'notification-read' : 'maya/profile/notifications/{}',
+	'notification-read' : 'maya/action/notification/{}',
 
 	//working places
 	'hr-working-places' : "maya/org/{}/hr/workplaces",
@@ -26,25 +26,27 @@ export default {
 	//location
 	'locations-index' : 'maya/org/{}/warehouses/{}/locations',
 	'locations-show' : 'maya/org/{}/warehouses/{}/locations/{}',
+	'locations-show-by-code' : 'maya/org/{}/warehouses/{}/locations/{}/code',
 	'location-pallet-index' : 'maya/org/{}/warehouses/{}/fulfilments/{}/locations/{}/pallets',
 
 	//pallet
 	'pallet-index' : 'maya/org/{}/warehouses/{}/fulfilments/{}/pallets',
 	'pallet-show' : 'maya/org/{}/warehouses/{}/fulfilments/{}/pallets/{}',
-	'pallet-location' : 'maya/action/pallet/{}/location/{}',
+	'pallet-location' : 'maya/action/location/{}/pallet/{}',
 	'pallet-return' : 'maya/action/pallet/{}/return',
-	'pallet-change-sattus-state' : 'maya/action/pallet/{}',
+	'pallet-change-status-state' : 'maya/action/pallet/{}',
 
 	//delivery
 	'delivery-index' : "maya/org/{}/warehouses/{}/pallet-deliveries",
-	'delivery-show' : "api/org/{}/warehouses/{}/pallet-deliveries/{}",
-	'delivery-pallet-index' : "api/org/{}/warehouses/{}/pallet-deliveries/{}/pallets",
+	'delivery-show' : "maya/org/{}/warehouses/{}/pallet-deliveries/{}",
+	'delivery-pallet-index' : "maya/org/{}/warehouses/{}/pallet-deliveries/{}/pallets",
 
 	//return
-	'return-index' : "api/org/{}/warehouses/{}/pallet-returns",
-	'return-show' : "api/org/{}/warehouses/{}/pallet-returns/{}",
-	'return-pallet-index' : "api/org/{}/warehouses/{}/pallet-returns/{}/pallets",
+	'return-index' : "maya/org/{}/warehouses/{}/pallet-returns",
+	'return-show' : "maya/org/{}/warehouses/{}/pallet-returns/{}",
+	'return-pallet-index' : "maya/org/{}/warehouses/{}/pallet-returns/{}/pallets",
 
 	//global search
-	'global-search' : 'api/org/{}/warehouses/{}/scanners/{}'
+	'global-search' : 'maya/org/{}/warehouses/{}/scanners',
+	'global-search-scanner' : 'maya/org/{}/warehouses/{}/scanners/{}'
 };

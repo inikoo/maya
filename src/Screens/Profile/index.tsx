@@ -102,6 +102,22 @@ const Profile = () => {
               </View>
             </TouchableOpacity>
           )}
+          {/*  <TouchableOpacity
+              style={styles.touchableItem}
+              onPress={() => navigation.navigate('Warehouse')}>
+              <View style={[styles.listItem, styles.lastItem]}>
+                <LinearGradient
+                  colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+                  style={styles.avatarBackground}>
+                  <Avatar
+                    size={24}
+                    containerStyle={styles.avatar}
+                    icon={{name: 'warehouse', type: 'font-awesome-5'}}
+                  />
+                </LinearGradient>
+                <Text style={styles.itemLabel}>Permissions</Text>
+              </View>
+            </TouchableOpacity> */}
         </View>
 
         <Text style={{...styles.label, marginTop: 20}}>Support & about</Text>

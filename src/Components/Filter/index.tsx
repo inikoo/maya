@@ -79,7 +79,7 @@ const Filter = (props: Props) => {
             <Button
               title="Reset"
               type="secondary"
-              onPress={() => props.onChangeFilter({})}
+              onPress={() => props.onChangeFilter(null)}
             />
           </View>
           <View style={{width: '50%'}}>

@@ -1,21 +1,17 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
+import React  from 'react';
+import { StyleSheet } from 'react-native';
+import Layout from '~/Components/Layout';
+import Header from '~/Components/Header';
 import BaseScanner from '~/Components/BaseScanner';
-import {useSelector} from 'react-redux';
-import {MAINCOLORS} from '~/Utils/Colors';
 
-export default function PalletScanner() {
-  const organisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
+export default function ScannerPage() {
 
   return (
-    <BaseScanner
-      title="Pallet"
-      scannerKey="pallet"
-      showMarker={true}
-      markerStyle={{borderColor: MAINCOLORS.primary}}
-      prefix="pal"
-      args={[organisation.active_organisation.id, warehouse.id]}
-    />
+    <Layout>
+      <Header title="Scanner Pallet" useLeftIcon={true} />
+      <BaseScanner prefix={'Pallet'} />
+    </Layout>
   );
 }
+
+const styles = StyleSheet.create({});

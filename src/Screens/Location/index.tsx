@@ -3,10 +3,9 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
-import {Text, Icon, Dialog} from '@rneui/themed';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {Text, Icon } from '@rneui/themed';
+import  {COLORS } from '~/Utils/Colors';
 import {IconColor} from '~/Utils';
-import Information from '~/Components/loactionComponents/Information';
 
 const Locations = props => {
   const navigation = useNavigation();
@@ -18,26 +17,21 @@ const Locations = props => {
     setOpenDialog(!openDialog);
   };
 
-  const Item = (record, {onLongPress, listModeBulk, bulkValue}) => {
+  const Item = (record) => {
     return (
       <TouchableOpacity
-        onPress={() =>
-          listModeBulk
-            ? onLongPress(record)
-            : navigation.navigate('Location', {location: record})
-        }
-        onLongPress={() => onLongPress(record)}
+      onPress={() =>
+          navigation.navigate('Location', {location: record})
+      }
         style={{
           ...styles.container,
-          backgroundColor: !bulkValue.includes(record.id)
-            ? 'white'
-            : COLORS.grey7,
+          backgroundColor: 'white'
         }}>
         <View style={styles.row}>
           <View style={styles.textContainer}>
             <Text style={styles.title}>{record.code}</Text>
           </View>
-          <View style={styles.iconContainer}>
+         {/*  <View style={styles.iconContainer}>
             <View style={styles.row}>
               <Icon
                 name="box"
@@ -67,7 +61,7 @@ const Locations = props => {
                 )}
               />
             </View>
-          </View>
+          </View> */}
         </View>
       </TouchableOpacity>
     );
@@ -77,53 +71,13 @@ const Locations = props => {
     <>
       <BaseList
         title="Location"
+        itemKey='code'
         urlKey="locations-index"
         args={[organisation.active_organisation.id, warehouse.id]}
-        filterSchema={[
-          {
-            title: 'State',
-            key: 'elements[state]',
-            type: 'checkBox',
-            propsItem: {
-              options: [
-                {
-                  label: 'in Process',
-                  value: 'in-process',
-                },
-                {
-                  label: 'Submitted',
-                  value: 'submitted',
-                },
-                {
-                  label: 'Confirmed',
-                  value: 'confirmed',
-                },
-                {
-                  label: 'Received',
-                  value: 'received',
-                },
-                {
-                  label: 'Not Received',
-                  value: 'not-received',
-                },
-                {
-                  label: 'Booking In',
-                  value: 'booking-in',
-                },
-                {
-                  label: 'Booked In',
-                  value: 'booked-in',
-                },
-              ],
-            },
-          },
-        ]}
-        sortSchema={[
-          {
-            title: 'Code',
-            key: 'code',
-          },
-        ]}
+        enableSwipe={false}
+        sortSchema='code'
+        itemList={Item}
+        screenNavigation={'Location Scanner'}
       />
     </>
   );
@@ -133,7 +87,7 @@ export default Locations;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 17,
+    padding: 10,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {

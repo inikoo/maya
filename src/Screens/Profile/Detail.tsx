@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -7,33 +7,30 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import { Text, Icon } from '@rneui/base';
-import { UpdateCredential } from '~/Utils';
-import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
-import { get } from 'lodash';
+import {Text, Icon} from '@rneui/base';
+import {UpdateCredential} from '~/Utils';
+import {useFormik} from 'formik';
+import {useSelector} from 'react-redux';
+import {get} from 'lodash';
 import Request from '~/Utils/request';
-import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
-import { useNavigation } from '@react-navigation/native';
-import { MAINCOLORS } from '~/Utils/Colors';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import {useNavigation} from '@react-navigation/native';
+import {MAINCOLORS} from '~/Utils/Colors';
 import Header from '~/Components/Header';
 import Layout from '~/Components/Layout';
 import LinearGradient from 'react-native-linear-gradient';
-import {
-  launchCamera,
-  launchImageLibrary,
-  ImagePickerResponse,
-  Asset,
-} from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import Button from '~/Components/Button';
 
 const EditProfile = () => {
   const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [profileImage, setProfileImage] = useState(null); // State to store the profile image
   const [imageError, setImageError] = useState(''); // State to store image validation error
-  const user = useSelector((state) => state.userReducer);
+  const user = useSelector(state => state.userReducer);
   const navigation = useNavigation();
 
-  const validationForm = (data) => {
+  const validationForm = data => {
     const finalData = {};
     for (const v in data) {
       if (data[v] !== profileData[v]) finalData[v] = data[v];
@@ -52,7 +49,7 @@ const EditProfile = () => {
     }
   };
 
-  const onSendToServer = async (data) => {
+  const onSendToServer = async data => {
     try {
       // Convert image to Blob
       const blob = await convertImageToBlob(profileImage.uri);
@@ -67,19 +64,19 @@ const EditProfile = () => {
       });
 
       // Append other data
-      Object.keys(data).forEach((key) => {
+      Object.keys(data).forEach(key => {
         formData.append(key, data[key]);
       });
 
-
+      setLoading(true);
       await Request(
         'post',
         'update-profile',
-        { ['Content-Type']: 'multipart/form-data' },
+        {['Content-Type']: 'multipart/form-data'},
         formData,
         [],
         onSuccess,
-        onFailed
+        onFailed,
       );
     } catch (error) {
       console.error('Error sending to server:', error);
@@ -87,7 +84,7 @@ const EditProfile = () => {
     }
   };
 
-  const convertImageToBlob = async (uri) => {
+  const convertImageToBlob = async uri => {
     try {
       const response = await fetch(uri);
       const blob = await response.blob();
@@ -98,7 +95,8 @@ const EditProfile = () => {
     }
   };
 
-  const onSuccess = (res) => {
+  const onSuccess = res => {
+    setLoading(false);
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'SUCCESS',
@@ -109,7 +107,8 @@ const EditProfile = () => {
     // navigation.goBack();
   };
 
-  const onFailed = (res) => {
+  const onFailed = res => {
+    setLoading(false);
     console.error('Failed to update:', res);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -127,7 +126,7 @@ const EditProfile = () => {
     onSubmit: validationForm,
   });
 
-  const handleImagePickerResponse = (response) => {
+  const handleImagePickerResponse = response => {
     if (response.didCancel) {
       console.log('User cancelled image picker');
     } else if (response.errorMessage) {
@@ -153,10 +152,10 @@ const EditProfile = () => {
               {
                 mediaType: 'photo',
                 includeBase64: false,
-                maxHeight: 200,
-                maxWidth: 200,
+                maxHeight: 500,
+                maxWidth: 500,
               },
-              handleImagePickerResponse
+              handleImagePickerResponse,
             );
           },
         },
@@ -170,7 +169,7 @@ const EditProfile = () => {
                 maxHeight: 200,
                 maxWidth: 200,
               },
-              handleImagePickerResponse
+              handleImagePickerResponse,
             );
           },
         },
@@ -179,7 +178,7 @@ const EditProfile = () => {
           style: 'cancel',
         },
       ],
-      { cancelable: true }
+      {cancelable: true},
     );
   };
 
@@ -187,11 +186,11 @@ const EditProfile = () => {
     const fetchData = async () => {
       try {
         const data = await UpdateCredential(user.token);
-      
+
         if (data.status === 'Success') {
-          data.data.organisations.map((item) => (item.title = item.label));
-          setProfileData({ ...data.data });
-          setProfileImage({uri : data.data.image.original});
+          data.data.organisations.map(item => (item.title = item.label));
+          setProfileData({...data.data});
+          setProfileImage({uri: data.data.image.original});
           formik.setValues({
             username: get(data, ['data', 'username'], ''),
             email: get(data, ['data', 'email'], ''),
@@ -221,15 +220,14 @@ const EditProfile = () => {
               <Image
                 source={
                   profileImage
-                    ? { uri: profileImage.uri }
+                    ? {uri: profileImage.uri}
                     : require('../../assets/image/profile.png')
                 }
                 style={styles.image}
               />
               <LinearGradient
                 colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
-                style={styles.cameraIconContainer}
-              >
+                style={styles.cameraIconContainer}>
                 <Icon
                   name="camera"
                   type="font-awesome"
@@ -293,12 +291,21 @@ const EditProfile = () => {
           </View>
         </View>
 
-        <TouchableOpacity
+        {/*  <TouchableOpacity
           style={styles.saveButton}
           onPress={formik.handleSubmit}
         >
+          
           <Text style={styles.saveButtonText}>Save Changes</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <View style={styles.saveButton}>
+          <Button
+            type="primary"
+            title="Save Changes"
+            onPress={formik.handleSubmit}
+            loading={loading}
+          />
+        </View>
       </View>
     </Layout>
   );
@@ -379,8 +386,8 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     color: MAINCOLORS.white,
-    fontFamily : 'Inter',
-    fontSize : 18,
-    fontWeight : '700'
+    fontFamily: 'Inter',
+    fontSize: 18,
+    fontWeight: '700',
   },
 });

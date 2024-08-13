@@ -1,29 +1,28 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   ActivityIndicator,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import {v4 as uuidv4} from 'uuid';
-import {Avatar, Divider, Card, Icon, Text, Badge} from '@rneui/themed';
-import {MAINCOLORS} from '~/Utils/Colors';
-import {useSelector} from 'react-redux';
-import SetUpOrganisation from './SetUpOrganisation';
-import SetUpFullfilment from './SetUpFullfilment';
-import {Request} from '~/Utils';
-import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
-import {get} from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+import { Avatar, Divider, Card, Icon, Text, Badge } from '@rneui/themed';
+import { MAINCOLORS } from '~/Utils/Colors';
+import { useSelector } from 'react-redux';
+import { Request } from '~/Utils';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
+import { get } from 'lodash';
 import LinearGradient from 'react-native-linear-gradient';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
+import { useFocusEffect } from '@react-navigation/native';
 
 type Item = {
   label: String;
   key: String;
 };
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
   const warehouse = useSelector(state => state.warehouseReducer);
   const organisation = useSelector(state => state.organisationReducer);
   const user = useSelector(state => state.userReducer);
@@ -32,16 +31,6 @@ export default function HomeScreen({navigation}) {
   const [notification, setNotification] = useState([]);
 
   const Bluprint = [
-    /* {
-      id: uuidv4(),
-      title: 'Warehouse',
-      key: 'Warehouse',
-      icon: {
-        name: 'warehouse',
-        type: 'material-icons',
-        shadowPos: {top: 6, left: 23},
-      },
-    }, */
     {
       id: uuidv4(),
       title: 'Deliveries',
@@ -49,7 +38,7 @@ export default function HomeScreen({navigation}) {
       icon: {
         name: 'truck',
         type: 'font-awesome',
-        shadowPos: {top: 0, left: 10},
+        shadowPos: { top: 0, left: 10 },
       },
     },
     {
@@ -59,7 +48,7 @@ export default function HomeScreen({navigation}) {
       icon: {
         name: 'trolley',
         type: 'material-icons',
-        shadowPos: {top: 0, left: 10},
+        shadowPos: { top: 0, left: 10 },
       },
     },
     {
@@ -69,7 +58,7 @@ export default function HomeScreen({navigation}) {
       icon: {
         name: 'location-pin',
         type: 'material-icons',
-        shadowPos: {top: 0, left: 15},
+        shadowPos: { top: 0, left: 15 },
       },
     },
     {
@@ -79,7 +68,7 @@ export default function HomeScreen({navigation}) {
       icon: {
         name: 'pallet',
         type: 'material-icons',
-        shadowPos: {top: 0, left: 10},
+        shadowPos: { top: 0, left: 10 },
       },
     },
     {
@@ -89,7 +78,7 @@ export default function HomeScreen({navigation}) {
       icon: {
         name: 'box',
         type: 'entypo',
-        shadowPos: {top: 0, left: 24},
+        shadowPos: { top: 0, left: 24 },
       },
     },
   ];
@@ -130,7 +119,7 @@ export default function HomeScreen({navigation}) {
         'get',
         'notification',
         {},
-        {[`notifications_filter[filter]`]: 'unread'},
+        { [`notifications_filter[filter]`]: 'unread' },
         [],
         res => setNotification(res.data),
         res => {
@@ -159,13 +148,13 @@ export default function HomeScreen({navigation}) {
           <TouchableOpacity key={item.id} onPress={() => onPressMenu(item)}>
             <View style={styles.menuItem}>
               <LinearGradient
-                colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+                colors={[MAINCOLORS.primary, '#ff6f00']}
                 style={styles.avatarBackground}>
                 <Avatar
                   size={50}
-                  icon={{name: item.icon.name, type: item.icon.type}}
+                  icon={{ name: item.icon.name, type: item.icon.type }}
                   containerStyle={styles.avatar}
-                  iconStyle={{fontSize: 30}}
+                  iconStyle={{ fontSize: 30 }}
                 />
               </LinearGradient>
               <Text style={styles.menuText}>{item.title}</Text>
@@ -176,20 +165,11 @@ export default function HomeScreen({navigation}) {
     );
   };
 
-  /*   const onPressMenuStat = (item : Item) => {
-    if(item.label == 'Location') navigation.navigate('Locations');
-    if(item.label == 'Stored Items') navigation.navigate('StoredItems');
-    if(item.label == 'Delivery') navigation.navigate('Deliveries');
-    if(item.label == 'Return') navigation.navigate('Returns');
-    if(item.label == 'Pallets') navigation.navigate('Pallets');
-  }; */
-
   const renderStat = () => {
     return !loading ? (
-      <View
-        style={{...styles.menuContainer, justifyContent: 'flex-start', gap: 5}}>
+      <View style={{ ...styles.menuContainer, justifyContent: 'flex-start', gap: 5 }}>
         {Object.entries(countData).map(([key, item]) => (
-          <TouchableOpacity key={key} style={{width: '48%', padding: 5}}>
+          <TouchableOpacity key={key} style={{ width: '48%', padding: 5 }}>
             <Card containerStyle={styles.cardStat}>
               <Text style={styles.labelStat}>{item.label}</Text>
               <View style={styles.itemContainer}>
@@ -199,7 +179,7 @@ export default function HomeScreen({navigation}) {
                   size={15}
                   color={MAINCOLORS.danger}
                 />
-                <Text style={{fontSize: 12, color: '#444'}}>
+                <Text style={{ fontSize: 12, color: '#444' }}>
                   Total: {item.count}
                 </Text>
               </View>
@@ -208,51 +188,52 @@ export default function HomeScreen({navigation}) {
         ))}
       </View>
     ) : (
-      <ActivityIndicator size="large" />
+      <ActivityIndicator size="large" color={MAINCOLORS.primary}/>
     );
   };
 
-  useEffect(() => {
-    reqCountData();
-    getNotification();
-  }, [organisation, warehouse]);
+  useFocusEffect(
+    useCallback(() => {
+      if (!organisation.active_organisation) {
+        navigation.navigate('Select Organisation');
+      } else if (!organisation.active_organisation?.active_authorised_fulfilments) {
+        navigation.navigate('Select fullfilment');
+      } else {
+        reqCountData();
+        getNotification();
+      }
+    }, [organisation, warehouse]),
+  );
 
   return (
     <Layout>
-      {Object.keys(organisation).length != 0 &&
-      organisation.active_organisation.active_authorised_fulfilments ? (
-        <View>
-          <Header
-            title={`Hello, ${user.username}`}
-            useRightIcon={true}
-            rightIcon={
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Notification')}>
-                <View>
-                  <Icon
-                    name="notifications-outline"
-                    type="ionicon"
-                    style={styles.notification}
-                  />
-                  <Badge
-                    status="primary"
-                    value={notification.length}
-                    containerStyle={{position: 'absolute', top: 0, left: 18}}
-                  />
-                </View>
-              </TouchableOpacity>
-            }
-          />
+      <View>
+        <Header
+          title={`Hello, ${user.username}`}
+          useRightIcon={true}
+          rightIcon={
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Notification')}>
+              <View>
+                <Icon
+                  name="notifications-outline"
+                  type="ionicon"
+                  style={styles.notification}
+                />
+                <Badge
+                  status="primary"
+                  value={notification.length}
+                  containerStyle={{ position: 'absolute', top: 0, left: 18 }}
+                />
+              </View>
+            </TouchableOpacity>
+          }
+        />
 
-          <View style={{alignItems: 'center'}}>{renderStat()}</View>
-          <Divider style={{marginVertical: 20}} />
-          <View style={{alignItems: 'center'}}>{renderMenu()}</View>
-        </View>
-      ) : Object.keys(organisation).length == 0 ? (
-        <SetUpOrganisation />
-      ) : (
-        <SetUpFullfilment />
-      )}
+        <View style={{ alignItems: 'center' }}>{renderStat()}</View>
+        <Divider style={{ marginVertical: 20 }} />
+        <View style={{ alignItems: 'center' }}>{renderMenu()}</View>
+      </View>
     </Layout>
   );
 }
@@ -279,15 +260,15 @@ const styles = StyleSheet.create({
   menuItem: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 80, // Set a fixed width to ensure consistent alignment
+    width: 80,
     marginVertical: 10,
   },
   avatarBackground: {
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 60, // Adjust width to center the content
-    height: 60, // Adjust height to center the content
+    width: 60,
+    height: 60,
   },
   avatar: {
     borderWidth: 0,
@@ -295,8 +276,8 @@ const styles = StyleSheet.create({
   menuText: {
     paddingVertical: 5,
     fontSize: 12,
-    textAlign: 'center', // Center-align the text
-    fontWeight: '600', // Optional: bold text for better visibility
+    textAlign: 'center',
+    fontWeight: '600',
   },
   cardStat: {
     borderRadius: 10,

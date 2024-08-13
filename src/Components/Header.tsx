@@ -21,6 +21,7 @@ export const LeftIcon = () => {
       onPress={() => navigation.goBack()}
       accessible={true}
       accessibilityLabel="Go back"
+      style={{ marginRight : 15}}
     >
       <Icon name="left" type="antdesign" size={25} />
     </TouchableOpacity>
