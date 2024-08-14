@@ -29,7 +29,7 @@ const Dashboard: React.FC<Props> = props => {
   return (
     <Layout>
       <Header
-        title="Dashboard"
+        title="Production"
         useLeftIcon={true}
         leftIcon={
           <TouchableOpacity
@@ -52,7 +52,7 @@ const Dashboard: React.FC<Props> = props => {
       />
 
       <View>
-        <Text>Main Dashboard</Text>
+        <Text>Dashboard Production</Text>
       </View>
     </Layout>
   );

@@ -48,3 +48,7 @@ export { default as ReturnScanner } from './Fullfilment/Return/Scanner';
 //global Scanners
 export { default as GlobalSearch } from './GlobalScanner';
 export { default as GlobalScanner } from './GlobalScanner/Scanner';
+
+// Production 
+export { default as ProductionNavigation } from './Production/Navigator';
+export { default as DashboardProduction } from './Production/Dashboard';

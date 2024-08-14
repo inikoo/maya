@@ -19,6 +19,7 @@ export default {
           permissions: action.payload.permissions,
           group: action.payload.group,
           organisations: action.payload.organisations,
+          image : action.payload.image,
         };
         WriteCredential(state);
         break;

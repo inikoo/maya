@@ -15,7 +15,7 @@ type props = {
     params: string;
   };
   extraData: {
-    components: Array;
+    components: Array<any>;
   };
 };
 
@@ -27,7 +27,7 @@ function BottomMenu(porps: props) {
     <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarStyle: {...style.tab, ...style.shadow},
+      /*   tabBarStyle: {...style.tab, ...style.shadow}, */
       }}>
       {porps.extraData.components.map((item: Item, index: Number) => (
         <Tab.Screen

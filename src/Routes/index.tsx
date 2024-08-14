@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Action from '~/Store/Action';
 import {UpdateCredential, RemoveCredential} from '~/Utils/auth';
 import {loginRoutes, routes, drawerRoutes} from './RouteList';
-import DrawerNavigation from './Drawer';
+import DrawerNavigation from '~/Components/Drawer';
 
 const Stack = createNativeStackNavigator();
 
@@ -89,7 +89,7 @@ function Routes() {
             <Stack.Screen
               key={item.name}
               name={item.name}
-              options={{...item.options}}>
+              options={item.options}>
               {props => <DrawerNavigation {...props} extraData={{...item}} />}
             </Stack.Screen>
           ))}

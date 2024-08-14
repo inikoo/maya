@@ -1,7 +1,7 @@
-import { DashboardFullfilment, GlobalSearch, Profile } from '~/Screens';
+import { DashboardFullfilment, GlobalSearch, StoredItemsReturns, PalletReturns } from '~/Screens';
 import {Icon} from '@rneui/base';
-import ScanButton from '~/Components/MainNavigatorButton';
 import {View, Text} from 'react-native';
+import React from 'react';
 
 const navigation = [
     {
@@ -32,18 +32,7 @@ const navigation = [
           options: {
             tabBarLabel: '',
             headerShown: false,
-            tabBarIcon: () => (
-              <Icon name="qr-code-scanner" color="#ffffff" size={30} />
-            ),
-            tabBarButton: (props) => <ScanButton {...props} />,
-          },
-        },
-        {
-          name: 'Profile',
-          component: Profile,
-          options: {
-            headerShown: false,
-            tabBarIcon: ({color}) => (
+            tabBarIcon:({color}) => (
               <View
                 style={{
                   alignItems: 'center',
@@ -51,14 +40,65 @@ const navigation = [
                   top: 3,
                 }}>
                 <Icon
-                  name="user"
+                  name="search"
                   type="font-awesome"
                   color={color}
                   size={26}
                 />
-                <Text style={{color: color, fontSize: 12}}>Profile</Text>
+                <Text style={{color: color, fontSize: 12}}>Search</Text>
               </View>
             ),
+          },
+        },
+      ],
+    },
+    {
+      name: 'Returns',
+      options: {headerShown: false},
+      components: [
+        {
+          name: 'Pallet Retruns',
+          component: PalletReturns,
+          options: {
+            headerShown: false,
+            tabBarIcon: ({color = ''}) => {
+              return (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    top: 3,
+                  }}>
+                  <Icon name="pallet" type="font-awesome-5" color={color} size={25} />
+                  <Text style={{color: color, fontSize: 12}}>Pallet</Text>
+                </View>
+              );
+            },
+          },
+        },
+        {
+          name: 'Stored Items Returns',
+          component: StoredItemsReturns,
+          options: {
+            headerShown: false,
+            tabBarIcon: ({color = ''}) => {
+              return (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    top: 3,
+                  }}>
+                  <Icon
+                    name="box"
+                    type="entypo"
+                    color={color}
+                    size={26}
+                  />
+                  <Text style={{color: color, fontSize: 12}}>Stored Items</Text>
+                </View>
+              );
+            },
           },
         },
       ],

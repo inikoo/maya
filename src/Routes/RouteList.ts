@@ -41,6 +41,9 @@ import {
   // return pallet
   ReturnDetail,
   ReturnScanner,
+
+  //Production
+  ProductionNavigation,
 } from '~/Screens';
 
 const loginRoutes = [
@@ -192,12 +195,17 @@ const drawerRoutes = [
       {
         name: 'Dashboard',
         component: Dashboard,
-        options: {headerShown: true},
+        options: {headerShown: false},
       },
       {
-        name: 'fullfilment',
+        name: 'Fullfilment',
         component: FullfilmentNavigation,
-        options: {headerShown: true},
+        options: {headerShown: false},
+      },
+      {
+        name: 'Production',
+        component: ProductionNavigation,
+        options: {headerShown: false},
       },
     ],
   },
