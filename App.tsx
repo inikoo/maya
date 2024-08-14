@@ -2,13 +2,14 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {Provider} from 'react-redux';
 import {Store} from './src/Store';
-import Routes from './config/Routes';
+import Routes from './src/Routes';
 import {AlertNotificationRoot} from 'react-native-alert-notification';
 import {AutocompleteDropdownContextProvider} from 'react-native-autocomplete-dropdown';
 import 'react-native-get-random-values';
 import { COLORS, MAINCOLORS } from '~/Utils/Colors';
 import {ThemeProvider} from '@rneui/themed';
 import {theme} from '~/Components/Theme';
+import './gesture-handler';
 /* import messaging from '@react-native-firebase/messaging'; */
 
 const MyTheme = {

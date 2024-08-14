@@ -25,18 +25,8 @@ const theme = createTheme({
       selectedTextStyle : {
         color : COLORS.grey8
       },
- /*      containerStyle : {
-        borderRadius: 5,
-        borderTopWidth: 1,
-        borderLeftWidth : 1,
-        borderBottomWidth : 1,
-        borderRightWidth : 1,
-        borderColor: ,
-      }, */
       buttonContainerStyle : {
         borderRadius: 5,
-       /*  borderRightWidth: 1, */
-      /*   borderColor: MAINCOLORS.black, */
       }
     },
     Avatar : {

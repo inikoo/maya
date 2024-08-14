@@ -8,11 +8,12 @@ module.exports = {
         alias: {
           '~/Components': './src/Components',
           '~/Screens': './src/Screens',
-          '~/Utils' : './src/Utils',
-          '~/Store' : './src/Store',
-          '~/asset' : './src/asset'
+          '~/Utils': './src/Utils',
+          '~/Store': './src/Store',
+          '~/asset': './src/asset',
         },
-      }
+      },
     ],
-  ]
+    'react-native-reanimated/plugin',
+  ],
 };

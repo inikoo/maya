@@ -18,6 +18,7 @@ MERGED from [:react-native-gesture-handler] C:\Users\62852\Project\maya2\Maya\no
 MERGED from [:react-native-get-random-values] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-get-random-values\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-19:12
 MERGED from [:react-native-linear-gradient] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:react-native-reanimated] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-reanimated\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-safe-area-context] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-safe-area-context\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-screens] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-screens\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-svg] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-svg\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
@@ -339,6 +340,8 @@ MERGED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_
 MERGED from [:react-native-image-picker] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-linear-gradient] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-linear-gradient] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-reanimated] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-reanimated\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-reanimated] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-reanimated\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-safe-area-context] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-safe-area-context\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-safe-area-context] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-safe-area-context\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-screens] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-screens\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
