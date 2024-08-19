@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   FlatList,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Icon, Text, FAB} from '@rneui/themed';
@@ -17,7 +16,8 @@ import Header from '~/Components/Header';
 
 const Organisation = (props: Object) => {
   const organisation = useSelector(state => state.organisationReducer);
-  const [loading, setLoading] = React.useState(false);
+  const user = useSelector(state => state.userReducer);
+  const [data, setData] = useState([]);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -47,14 +47,14 @@ const Organisation = (props: Object) => {
               ...styles.label,
               fontWeight:
                 organisation.active_organisation.active_authorised_fulfilments
-                  ?.id == data.data.id
+                  ?.slug == data.data.slug
                   ? '700'
                   : '500',
             }}>
             {data.data.code}
           </Text>
-          {organisation.active_organisation.active_authorised_fulfilments?.id ==
-            data.data.id && (
+          {organisation.active_organisation.active_authorised_fulfilments?.slug ==
+            data.data.slug && (
             <Icon
               name="check-circle"
               type="material-icons"
@@ -67,29 +67,28 @@ const Organisation = (props: Object) => {
     );
   };
 
+  useEffect(()=>{
+    let setDataList = organisation.active_organisation.authorised_fulfilments
+    const shop =  organisation.active_organisation.authorised_shops.filter((item)=> item.state == 'open')
+    setDataList = [...setDataList,...shop]
+    setData(setDataList)
+  },[])
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.scrollViewContent}>
         <Header title='Fullfilments' />
-        {loading ? (
-          <ActivityIndicator
-            size="large"
-            color={MAINCOLORS.primary}
-            style={{alignItems: 'center', flex: 1}}
-          />
-        ) : (
           <FlatList
-            data={organisation.active_organisation.authorised_fulfilments || []}
+            data={data || []}
             renderItem={renderItem}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.slug}
             ListEmptyComponent={() => (
               <View style={styles.emptyContainer}>
                 <Empty useButton={false} />
               </View>
             )}
           />
-        )}
-        {organisation.active_organisation.active_authorised_fulfilments?.id && (
+        {organisation.active_organisation.active_authorised_fulfilments?.slug && (
           <FAB
             placement="right"
             onPress={() => navigation.navigate('Warehouse')}

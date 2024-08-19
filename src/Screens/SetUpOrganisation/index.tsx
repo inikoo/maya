@@ -3,7 +3,7 @@ import {View, Image, Text} from 'react-native';
 
 import {Button} from '@rneui/base';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
-import LoginSVG from '../../assets/image/20943993.jpg';
+import LoginSVG from 'assets/image/20943993.jpg';
 import {useNavigation} from '@react-navigation/native';
 import Layout from '~/Components/Layout';
 

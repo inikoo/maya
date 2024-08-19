@@ -71,7 +71,7 @@ export const CustomDrawer = props => {
             source={
               user.image
                 ? { uri: user.image.original }
-                : require('../assets/image/profile.png')
+                : require('assets/image/profile.png')
             }
             style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}
           />

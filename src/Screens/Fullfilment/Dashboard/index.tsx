@@ -22,7 +22,7 @@ import {
   faPallet,
   faSignOut,
   faBox,
-} from '../../../assets/fa/pro-regular-svg-icons';
+} from 'assets/fa/pro-regular-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 library.add(faInventory, faTruckCouch, faPallet, faSignOut, faBox);

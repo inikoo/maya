@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import Action from '~/Store/Action';
+import {checkPermissionNested, checkPermission} from '~/Utils';
 import {UpdateCredential, RemoveCredential} from '~/Utils/auth';
 import {loginRoutes, routes, drawerRoutes} from './RouteList';
 import DrawerNavigation from '~/Components/Drawer';
@@ -14,6 +15,23 @@ function Routes() {
   const [userStorage, setUserStorage] = useState(null);
   const dispatch = useDispatch();
   const user = useSelector(state => state.userReducer);
+  const organisationRedux = useSelector(state => state.organisationReducer,)?.active_organisation;
+  const warehouseRedux = useSelector(state => state.warehouseReducer);
+  const [drawerRoutesList, setDrawerRoutes] = useState(
+    checkPermissionNested(
+      drawerRoutes({
+        organisation: organisationRedux,
+        warehouse: warehouseRedux,
+      }),
+      user.permissions,
+    ),
+  );
+  const [screenRoutes, setScreenRoutes] = useState(
+    checkPermission(
+      routes({organisation: organisationRedux, warehouse: warehouseRedux}),
+      user.permissions,
+    ),
+  );
 
   const checkUser = async () => {
     try {
@@ -58,9 +76,27 @@ function Routes() {
     }
   };
 
+  // Update routes whenever user, organisationRedux, or warehouseRedux changes
   useEffect(() => {
     checkUser();
-  }, [user]);
+    if (user && organisationRedux && warehouseRedux) {
+      setDrawerRoutes(
+        checkPermissionNested(
+          drawerRoutes({
+            organisation: organisationRedux,
+            warehouse: warehouseRedux,
+          }),
+          user.permissions,
+        ),
+      );
+      setScreenRoutes(
+        checkPermission(
+          routes({organisation: organisationRedux, warehouse: warehouseRedux}),
+          user.permissions,
+        ),
+      );
+    }
+  }, [user, organisationRedux, warehouseRedux]);
 
   if (isLoading) {
     return null;
@@ -85,7 +121,7 @@ function Routes() {
         ))
       ) : (
         <>
-          {drawerRoutes.map((item, index) => (
+          {drawerRoutesList.map((item, index) => (
             <Stack.Screen
               key={item.name}
               name={item.name}
@@ -93,8 +129,7 @@ function Routes() {
               {props => <DrawerNavigation {...props} extraData={{...item}} />}
             </Stack.Screen>
           ))}
-
-          {routes.map((item, index) => (
+          {screenRoutes.map((item, index) => (
             <Stack.Screen
               key={item.name}
               name={item.name}

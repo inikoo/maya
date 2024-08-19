@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Image } from 'react-native';
 import { Text, Button } from '@rneui/base';
 import { MAINCOLORS } from '~/Utils/Colors';
-import LoginSVG from '../../assets/image/20945971.jpg';
+import LoginSVG from 'assets/image/20945971.jpg';
 import { useNavigation } from '@react-navigation/native';
 import Layout from '~/Components/Layout';
 

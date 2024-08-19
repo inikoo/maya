@@ -17,7 +17,7 @@ export { default as Warehouse } from './Warehouse';
 export { default as DashboardFullfilment } from './Fullfilment/Dashboard';
 export { default as FullfilmentNavigation } from './Fullfilment/Navigator';
 
-//locations
+//locations fullfilment
 export { default as Locations } from './Fullfilment/Location';
 export { default as Location } from './Fullfilment/Location/Detail';
 export { default as LocationPallet } from './Fullfilment/Location/Pallet';
@@ -52,3 +52,21 @@ export { default as GlobalScanner } from './GlobalScanner/Scanner';
 // Production 
 export { default as ProductionNavigation } from './Production/Navigator';
 export { default as DashboardProduction } from './Production/Dashboard';
+
+
+// Inventory
+export { default as InventoryDashboard } from './Inventory/Dashboard';
+export { default as InventoryNavigation } from './Inventory/Navigator';
+export { default as SKU } from './Inventory/Sku';
+export { default as SKUFamily } from './Inventory/SkuFamily';
+
+
+//Dispatching
+export { default as  DispatchingDashboard } from './Dispatching/Dashboard';
+
+
+//Locations
+export { default as  LocationsDashboard } from './Locations/Dashboard';
+
+//Procurement
+export { default as  ProcurementDashboard } from './Procurement/Dashboard';

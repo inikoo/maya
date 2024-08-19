@@ -12,6 +12,7 @@ module.exports = {
           '~/Store': './src/Store',
           '~/asset': './src/asset',
         },
+        "extensions": [".js", ".jsx", ".es", ".es6", ".mjs", ".svg",".jpg",".png",".ts",".ts"],
       },
     ],
     'react-native-reanimated/plugin',
