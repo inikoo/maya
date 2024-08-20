@@ -16,13 +16,8 @@ const Returns = (props) => {
   const oraganisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
 
-<<<<<<< HEAD:src/Screens/Return/index.tsx
-  console.log('pl',navigation)
 
-  const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
-=======
   const Item = (record) => {
->>>>>>> origin/arya:src/Screens/Fullfilment/Return/PalletReturns.tsx
     return (
       <TouchableOpacity 
         style={{...styles.container, backgroundColor:  'white' }}>
