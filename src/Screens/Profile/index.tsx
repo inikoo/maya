@@ -2,17 +2,14 @@ import React from 'react';
 import {
   View,
   TouchableOpacity,
-  ScrollView,
   StyleSheet,
   Text,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {RemoveCredential} from '~/Utils/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import Action from '~/Store/Action';
 import {MAINCOLORS} from '~/Utils/Colors';
-import LinearGradient from 'react-native-linear-gradient';
 import {Avatar} from '@rneui/themed';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
@@ -20,7 +17,6 @@ import Header from '~/Components/Header';
 const Profile = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.userReducer);
   const organisation = useSelector(state => state.organisationReducer);
 
   const logOut = () => {
@@ -31,22 +27,21 @@ const Profile = () => {
   return (
     <Layout>
       <View>
-        <Header title="Setting App" />
+        <Header title="Setting App"  useLeftIcon={true} type='center'/>
         <Text style={styles.label}>Account</Text>
         <View style={styles.card}>
           <TouchableOpacity
             style={styles.touchableItem}
             onPress={() => navigation.navigate('Profile Detail')}>
             <View style={styles.listItem}>
-              <LinearGradient
-                colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+              <View
                 style={styles.avatarBackground}>
                 <Avatar
                   containerStyle={styles.avatar}
                   size={24}
                   icon={{name: 'edit', type: 'material-icons'}}
                 />
-              </LinearGradient>
+              </View>
               <Text style={styles.itemLabel}>Edit Profile</Text>
             </View>
           </TouchableOpacity>
@@ -54,15 +49,14 @@ const Profile = () => {
             style={styles.touchableItem}
             onPress={() => navigation.navigate('Organisation')}>
             <View style={styles.listItem}>
-              <LinearGradient
-                colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+              <View
                 style={styles.avatarBackground}>
                 <Avatar
                   size={24}
                   containerStyle={styles.avatar}
                   icon={{name: 'group', type: 'material-icons'}}
                 />
-              </LinearGradient>
+              </View>
               <Text style={styles.itemLabel}>Organisations</Text>
             </View>
           </TouchableOpacity>
@@ -71,15 +65,14 @@ const Profile = () => {
               style={styles.touchableItem}
               onPress={() => navigation.navigate('Fullfilment')}>
               <View style={styles.listItem}>
-                <LinearGradient
-                  colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+                <View
                   style={styles.avatarBackground}>
                   <Avatar
                     size={24}
                     containerStyle={styles.avatar}
                     icon={{name: 'list', type: 'material-icons'}}
                   />
-                </LinearGradient>
+                </View>
                 <Text style={styles.itemLabel}>Fulfilments</Text>
               </View>
             </TouchableOpacity>
@@ -89,15 +82,14 @@ const Profile = () => {
               style={styles.touchableItem}
               onPress={() => navigation.navigate('Warehouse')}>
               <View style={[styles.listItem, styles.lastItem]}>
-                <LinearGradient
-                  colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+                <View
                   style={styles.avatarBackground}>
                   <Avatar
                     size={24}
                     containerStyle={styles.avatar}
                     icon={{name: 'warehouse', type: 'font-awesome-5'}}
                   />
-                </LinearGradient>
+                </View>
                 <Text style={styles.itemLabel}>Warehouse</Text>
               </View>
             </TouchableOpacity>
@@ -106,7 +98,7 @@ const Profile = () => {
               style={styles.touchableItem}
               onPress={() => navigation.navigate('Warehouse')}>
               <View style={[styles.listItem, styles.lastItem]}>
-                <LinearGradient
+                <View
                   colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
                   style={styles.avatarBackground}>
                   <Avatar
@@ -114,7 +106,7 @@ const Profile = () => {
                     containerStyle={styles.avatar}
                     icon={{name: 'warehouse', type: 'font-awesome-5'}}
                   />
-                </LinearGradient>
+                </View>
                 <Text style={styles.itemLabel}>Permissions</Text>
               </View>
             </TouchableOpacity> */}
@@ -124,29 +116,28 @@ const Profile = () => {
         <View style={styles.card}>
           <TouchableOpacity style={styles.touchableItem}>
             <View style={styles.listItem}>
-              <LinearGradient
-                colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+              <View
                 style={styles.avatarBackground}>
                 <Avatar
                   size={24}
                   containerStyle={styles.avatar}
                   icon={{name: 'flag', type: 'font-awesome-5'}}
                 />
-              </LinearGradient>
+              </View>
               <Text style={styles.itemLabel}>Report a problem</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.touchableItem} onPress={logOut}>
             <View style={styles.listItem}>
-              <LinearGradient
-                colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+              <View
+               
                 style={styles.avatarBackground}>
                 <Avatar
                   size={24}
                   containerStyle={styles.avatar}
                   icon={{name: 'logout', type: 'material-community'}}
                 />
-              </LinearGradient>
+              </View>
 
               <Text style={styles.itemLabel}>Logout</Text>
             </View>
@@ -207,6 +198,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,
+    backgroundColor : MAINCOLORS.primary
   },
   avatar: {
     borderWidth: 0,

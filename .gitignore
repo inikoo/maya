@@ -32,13 +32,17 @@ local.properties
 *.hprof
 .cxx/
 #*.keystore
-#!debug.keystore
+!debug.keystore
 
 # node.js
 #
 node_modules/
 npm-debug.log
 yarn-error.log
+
+fa
+
+src/assets/fa/
 
 # fastlane
 #

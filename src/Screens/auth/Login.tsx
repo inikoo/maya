@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Text, Button} from '@rneui/base';
-import LoginSVG from '../../assets/image/20945391.jpg';
+import LoginSVG from 'assets/image/20945391.jpg';
 import {useFormik} from 'formik';
 import Request from '~/Utils/request';
 import {UpdateCredential} from '~/Utils/auth';

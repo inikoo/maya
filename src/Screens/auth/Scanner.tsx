@@ -8,7 +8,6 @@ import Request from '~/Utils/request';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {MAINCOLORS} from '~/Utils/Colors';
 import Empty from '~/Components/Empty';
-import Layout from '~/Components/Layout';
 
 export default function LoginScanner() {
   const [scanned, setScanned] = useState(false);

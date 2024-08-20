@@ -221,7 +221,7 @@ const EditProfile = () => {
                 source={
                   profileImage
                     ? {uri: profileImage.uri}
-                    : require('../../assets/image/profile.png')
+                    : require('assets/image/profile.png')
                 }
                 style={styles.image}
               />

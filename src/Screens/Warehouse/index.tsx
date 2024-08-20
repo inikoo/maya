@@ -69,7 +69,7 @@ const Warehouse = (porps: Object) => {
         {warehouse?.id && (
           <FAB
             placement="right"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('Main')}
             color={MAINCOLORS.primary}>
             <Icon name="arrow-right" type="feather" color="white" />
           </FAB>

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
   ViewContent: {
     flexGrow: 1,
-    paddingVertical: 20,
+    paddingVertical: 5,
     paddingHorizontal: 16,
   },
 });

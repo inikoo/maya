@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, ReactNode, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, useState, ReactNode, forwardRef, useImperativeHandle } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,7 +10,7 @@ import {
   SafeAreaView
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS, MAINCOLORS } from '~/Utils/Colors';
+import { MAINCOLORS } from '~/Utils/Colors';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
 import { Icon, Avatar, Card, Divider } from '@rneui/base';
