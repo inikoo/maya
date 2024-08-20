@@ -19,6 +19,7 @@ export default {
           permissions: action.payload.permissions,
           group: action.payload.group,
           organisations: action.payload.organisations,
+          image : action.payload.image,
         };
         WriteCredential(state);
         break;
@@ -64,9 +65,7 @@ export default {
         state = {
          code : action.payload.code,
          id : action.payload.id,
-         name : action.payload.name,
-         number_location : action.payload.number_location,
-         number_warehouse_areas : action.payload.number_warehouse_areas,
+         label : action.payload.label,
          slug : action.payload.slug
         };
         WriteWarehouse(state);

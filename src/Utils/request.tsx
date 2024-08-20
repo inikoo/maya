@@ -88,14 +88,14 @@ function Request(
 
 
 /* 	if (validate.isArray(data)) {
-		RNFetchBlob.fetch(method, Sites.HAN.API + api, headers, data)
+		RNFetchBlob.fetch(method, Sites.MAYA.API + api, headers, data)
 			.then(response => onSuccess(response.json(), extra))
 			.catch(error => onError(error, extra, onFailed));
 	} else { */
 		for (let header in headers) {
 			axios.defaults.headers.common[header] = headers[header];
 		}
-		axios[method](Sites.HAN.API + api, data, {
+		axios[method](Sites.MAYA.API + api, data, {
 			cancelToken: new CancelToken(function executor(c) {
 				instance.cancel = c;
 			})

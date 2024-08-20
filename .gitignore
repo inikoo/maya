@@ -31,10 +31,15 @@ local.properties
 *.iml
 *.hprof
 .cxx/
+<<<<<<< HEAD
 *.keystore
 !debug.keystore
 
 assets/fa
+=======
+#*.keystore
+!debug.keystore
+>>>>>>> origin/arya
 
 # node.js
 #
@@ -42,7 +47,10 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/arya
 fa
 
 src/assets/fa/

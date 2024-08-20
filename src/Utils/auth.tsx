@@ -42,8 +42,6 @@ export async function WriteWarehouse(data: object) {
 }
 
 
-
-
 export async function RefershToken(token = "") {
   try {
     const token = await new Promise((resolve, reject) => {
@@ -87,7 +85,7 @@ export async function UpdateCredential(token = "") {
       );
     });
 
-    await sendFirebaseToken(); // Send Firebase token after updating profile
+   /*  await sendFirebaseToken(); */
 
     return {
       status: 'Success',
@@ -111,24 +109,24 @@ export async function getFirebaseToken() {
     throw {
       status: 'error',
       data: null,
-      message: error,
+      message: error.message || 'Failed to get Firebase token',
     };
   }
 }
 
 export async function sendFirebaseToken() {
   try {
-    const token = await getFirebaseToken();
+  /*   const token = await getFirebaseToken(); */
 
     const response = await new Promise((resolve, reject) => {
       Request(
         'patch',
         'firebase-token',
-        {}, // Assuming you need to send some data here
+        {},
         { firebase_token: token },
         [],
-        token => {resolve(token),console.log(token)},
-        error => reject(error),
+        (response) => resolve(response),
+        (error) => reject(error),
       );
     });
 
@@ -138,10 +136,10 @@ export async function sendFirebaseToken() {
     };
 
   } catch (error) {
-    throw {
+    return {
       status: 'error',
       data: null,
-      message: error,
+      message: error.message || 'Failed to send Firebase token',
     };
   }
 }

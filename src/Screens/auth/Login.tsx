@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Text, Button} from '@rneui/base';
-import LoginSVG from '../../assets/image/20945391.jpg';
+import LoginSVG from 'assets/image/20945391.jpg';
 import {useFormik} from 'formik';
 import Request from '~/Utils/request';
 import {UpdateCredential} from '~/Utils/auth';
@@ -58,7 +58,6 @@ const LoginScreen = () => {
     response: {data: {[key: string]: string[]}};
   }) => {
     setLoading(false);
-    console.log(res)
     if(res?.response?.data?.errors){
       for (let error in res.response.data.errors) {
         formik.setErrors({

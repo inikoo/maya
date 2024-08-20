@@ -1,27 +1,22 @@
 import React from 'react';
 import {
   View,
-  TouchableHighlight,
-  ScrollView,
-  Image,
-  FlatList,
+  TouchableOpacity,
   StyleSheet,
   Text,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Warehouse from '../../assets/image/warehouse.jpeg';
 import {useNavigation} from '@react-navigation/native';
 import {RemoveCredential} from '~/Utils/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import Action from '~/Store/Action';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
-import {v4 as uuidv4} from 'uuid';
-import {Icon} from '@rneui/themed';
+import {MAINCOLORS} from '~/Utils/Colors';
+import {Avatar} from '@rneui/themed';
+import Layout from '~/Components/Layout';
+import Header from '~/Components/Header';
 
-const Profile = props => {
+const Profile = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.userReducer);
   const organisation = useSelector(state => state.organisationReducer);
 
   const logOut = () => {
@@ -29,75 +24,127 @@ const Profile = props => {
     dispatch(Action.DestroyUserSessionProperties());
   };
 
-  const DATA = [
-    {
-      id: uuidv4(),
-      title: 'Organisation',
-      onPress: () => navigation.navigate('Organisation'),
-    },
-    {
-      id: uuidv4(),
-      title: 'Fullfilment',
-      onPress: () => navigation.navigate('Fullfilment'),
-    },
-    {
-      id: uuidv4(),
-      title: 'Warehouse',
-      onPress: () => navigation.navigate('Warehouse'),
-    },
-    {
-      id: uuidv4(),
-      title: 'Detail Profile',
-      onPress: () => navigation.navigate('Profile Detail'),
-    },
-    {
-      id: uuidv4(),
-      title: 'Logout',
-      onPress: logOut, // Remove the parentheses here
-    },
-  ].filter(item => {
-    if (Object.keys(organisation).length != 0) return true;
-    else if (item.title == 'Fullfilment') return false;
-    else return true;
-  });
-
-  const renderItem = ({item}) => (
-    <Item title={item.title} onPress={item.onPress} />
-  );
-
-  const Item = ({title, onPress}) => (
-    <TouchableHighlight
-      underlayColor={MAINCOLORS.primary}
-      style={styles.itemContainer}
-      onPress={onPress}>
-      <View style={styles.itemContent}>
-        <Text style={title != 'Logout' ? styles.title : styles.logoutTitle}>
-          {title}
-        </Text>
-        <Icon
-          name="keyboard-arrow-right"
-          type="material-icons"
-          size={18}
-          color="#000"
-        />
-      </View>
-    </TouchableHighlight>
-  );
-
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.profileContainer}>
-          <Image source={Warehouse} style={styles.profileImage} />
-          <Text style={styles.profileText}>{user.username}</Text>
+    <Layout>
+      <View>
+        <Header title="Setting App"  useLeftIcon={true} type='center'/>
+        <Text style={styles.label}>Account</Text>
+        <View style={styles.card}>
+          <TouchableOpacity
+            style={styles.touchableItem}
+            onPress={() => navigation.navigate('Profile Detail')}>
+            <View style={styles.listItem}>
+              <View
+                style={styles.avatarBackground}>
+                <Avatar
+                  containerStyle={styles.avatar}
+                  size={24}
+                  icon={{name: 'edit', type: 'material-icons'}}
+                />
+              </View>
+              <Text style={styles.itemLabel}>Edit Profile</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.touchableItem}
+            onPress={() => navigation.navigate('Organisation')}>
+            <View style={styles.listItem}>
+              <View
+                style={styles.avatarBackground}>
+                <Avatar
+                  size={24}
+                  containerStyle={styles.avatar}
+                  icon={{name: 'group', type: 'material-icons'}}
+                />
+              </View>
+              <Text style={styles.itemLabel}>Organisations</Text>
+            </View>
+          </TouchableOpacity>
+          {Object.keys(organisation).length != 0 && (
+            <TouchableOpacity
+              style={styles.touchableItem}
+              onPress={() => navigation.navigate('Fullfilment')}>
+              <View style={styles.listItem}>
+                <View
+                  style={styles.avatarBackground}>
+                  <Avatar
+                    size={24}
+                    containerStyle={styles.avatar}
+                    icon={{name: 'list', type: 'material-icons'}}
+                  />
+                </View>
+                <Text style={styles.itemLabel}>Fulfilments</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          {Object.keys(organisation).length != 0 && (
+            <TouchableOpacity
+              style={styles.touchableItem}
+              onPress={() => navigation.navigate('Warehouse')}>
+              <View style={[styles.listItem, styles.lastItem]}>
+                <View
+                  style={styles.avatarBackground}>
+                  <Avatar
+                    size={24}
+                    containerStyle={styles.avatar}
+                    icon={{name: 'warehouse', type: 'font-awesome-5'}}
+                  />
+                </View>
+                <Text style={styles.itemLabel}>Warehouse</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          {/*  <TouchableOpacity
+              style={styles.touchableItem}
+              onPress={() => navigation.navigate('Warehouse')}>
+              <View style={[styles.listItem, styles.lastItem]}>
+                <View
+                  colors={[MAINCOLORS.primary, '#ff6f00']} // Customize gradient colors
+                  style={styles.avatarBackground}>
+                  <Avatar
+                    size={24}
+                    containerStyle={styles.avatar}
+                    icon={{name: 'warehouse', type: 'font-awesome-5'}}
+                  />
+                </View>
+                <Text style={styles.itemLabel}>Permissions</Text>
+              </View>
+            </TouchableOpacity> */}
         </View>
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={item => item.id.toString()}
-        />
-      </ScrollView>
-    </SafeAreaView>
+
+        <Text style={{...styles.label, marginTop: 20}}>Support & about</Text>
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.touchableItem}>
+            <View style={styles.listItem}>
+              <View
+                style={styles.avatarBackground}>
+                <Avatar
+                  size={24}
+                  containerStyle={styles.avatar}
+                  icon={{name: 'flag', type: 'font-awesome-5'}}
+                />
+              </View>
+              <Text style={styles.itemLabel}>Report a problem</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.touchableItem} onPress={logOut}>
+            <View style={styles.listItem}>
+              <View
+               
+                style={styles.avatarBackground}>
+                <Avatar
+                  size={24}
+                  containerStyle={styles.avatar}
+                  icon={{name: 'logout', type: 'material-community'}}
+                />
+              </View>
+
+              <Text style={styles.itemLabel}>Logout</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Layout>
   );
 };
 
@@ -105,55 +152,56 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  title: {
+    fontFamily: 'Inter',
+    fontSize: 28,
+    fontWeight: '700',
+    marginBottom: 15,
+  },
   scrollViewContent: {
     flexGrow: 1,
     paddingVertical: 20,
     paddingHorizontal: 16,
   },
-  profileContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  profileImage: {
-    height: 120,
-    width: 120,
-    borderRadius: 60,
-    borderWidth: 2,
-    borderColor: COLORS.black,
-  },
-  profileText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 10,
-    color: COLORS.black,
-    textShadowColor: MAINCOLORS.primary, 
-    textShadowOffset: { width: 1, height: 1 }, 
-    textShadowRadius: 4,
-  },
-  itemContainer: {
-    backgroundColor: COLORS.grey8,
+  label: {
+    fontFamily: 'Inter',
+    fontStyle: 'normal',
+    fontWeight: '700',
+    fontSize: 16,
     marginBottom: 10,
+  },
+  card: {
+    width: '100%',
+    borderRadius: 15,
+    backgroundColor: '#FAFAFA',
+    padding: 10,
+  },
+  touchableItem: {
     borderRadius: 10,
-    elevation: 3,
-    borderWidth:1,
-    borderColor:COLORS.grey7
+    marginVertical: 5,
   },
-  itemContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  listItem: {
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 20,
+    flexDirection: 'row',
+    padding: 10,
+    gap: 15,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: COLORS.dark,
+  itemLabel: {
+    fontFamily: 'Inter',
+    fontWeight: '600',
+    fontSize: 16,
+    marginLeft: 10,
+    color: '#000',
   },
-  logoutTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FF0000',
+  avatarBackground: {
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+    backgroundColor : MAINCOLORS.primary
+  },
+  avatar: {
+    borderWidth: 0,
   },
 });
 

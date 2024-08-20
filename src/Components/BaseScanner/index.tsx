@@ -2,37 +2,55 @@ import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
-  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {Text} from '@rneui/base';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
-import {PrefixScanner, Request} from '~/Utils';
+import {Request} from '~/Utils';
+import Empty from '~/Components/Empty';
+import {MAINCOLORS} from '~/Utils/Colors';
+import {useSelector} from 'react-redux';
 
-export default function BaseScanner(p) {
-  const [scanned, setScanned] = useState(true);
+type Props = {
+  prefix : string
+}
+
+export default function BaseScanner(props : Props) {
+  const organisation = useSelector(state => state.organisationReducer);
+  const warehouse = useSelector(state => state.warehouseReducer);
+  const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-  const handleBarCodeScanned = (data: String) => {
+   const handleBarCodeScanned = (data: String) => {
     setLoading(true);
     Request(
       'get',
-      p.urlKey,
-      p.params,
+      'global-search-scanner',
       {},
-      [...p.args, data],
+      props.prefix ? { type : props.prefix } : {},
+      [organisation.active_organisation.id, warehouse.id, data],
       onSuccess,
       onFailed,
     );
   };
 
-  const onSuccess = async res => {
+  const onSuccess = async (response) => {
     setScanned(false);
     setLoading(false);
-    navigation.navigate(p.title, {[p.scannerKey]: res.data.model});
+    switch (response.data.model_type) {
+      case 'Location':
+        return  navigation.navigate( 'Location', { location : response.data.model});
+      case 'Pallet':
+        return navigation.navigate( 'Pallet', { pallet : response.data.model});
+      case 'PalletDelivery':
+        return navigation.navigate( 'Delivery', { delivery : response.data.model});
+      case 'PalletReturn':
+        return navigation.navigate( 'Return', { return : response.data.model});
+      default:
+        return null
+    }
   };
 
   const onFailed = res => {
@@ -45,51 +63,45 @@ export default function BaseScanner(p) {
     });
   };
 
-  const onSuccessScanner = async e => {
-    if (PrefixScanner(p.prefix, e.data)) handleBarCodeScanned(e.data);
-    else {
-      setScanned(false);
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: 'Error',
-        textBody: `you only can scan ${p.title} here`,
-      });
-    }
+  const onSuccessScanner = async (result : Object) => {
+    setScanned(false);
+    handleBarCodeScanned(result.data)
   };
 
-  return !loading ? (
+  return (
     <View style={styles.container}>
-      {scanned ? (
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+          }}>
+          <ActivityIndicator size={'large'} color={MAINCOLORS.primary} />
+        </View>
+      ) : scanned ? (
         <View style={styles.qrCodeScanner}>
-          <QRCodeScanner {...p} onRead={onSuccessScanner} />
+          <QRCodeScanner 
+             showMarker={true}
+             markerStyle={{
+                 borderColor : MAINCOLORS.primary
+             }}
+            onRead={onSuccessScanner} />
         </View>
       ) : (
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={() => setScanned(true)}>
-          <Text style={styles.tryAgainText}>Scan Once More</Text>
-        </TouchableOpacity>
+        <View>
+          <Empty
+            buttonOnPress={() => setScanned(true)}
+            title=""
+            subtitle=""
+            button={{size: 'lg', text: 'Start Scan', color: 'primary'}}
+          />
+        </View>
       )}
-    </View>
-  ) : (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-      }}>
-      <ActivityIndicator size={'large'} />
     </View>
   );
 }
 
-BaseScanner.defaultProps = {
-  urlKey: 'global-search',
-  args: [],
-  params: {},
-  title: '',
-  scannerKey: '',
-  prefix: '',
-};
+BaseScanner.defaultProps = {};
 
 const styles = StyleSheet.create({
   container: {
@@ -99,41 +111,5 @@ const styles = StyleSheet.create({
   },
   qrCodeScanner: {
     flex: 1,
-  },
-  buttonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  tryAgainText: {
-    marginTop: 50,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  logo: {
-    maxHeight: 100,
-    width: 100,
-    marginRight: 10,
-  },
-  loginContinueTxt: {
-    fontSize: 21,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  topContentContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loginDescription: {
-    fontSize: 12,
-    textAlign: 'center',
-    fontWeight: 'bold',
   },
 });

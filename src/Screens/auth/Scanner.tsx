@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {Text, View, StyleSheet, ActivityIndicator} from 'react-native';
 import {useDispatch} from 'react-redux';
 import Action from '~/Store/Action';
 import {UpdateCredential} from '~/Utils/auth';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Request from '~/Utils/request';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
-import { MAINCOLORS } from '~/Utils/Colors';
+import {MAINCOLORS} from '~/Utils/Colors';
+import Empty from '~/Components/Empty';
 
 export default function LoginScanner() {
-  const [scanned, setScanned] = useState(true);
+  const [scanned, setScanned] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleBarCodeScanned = async ({data}) => {
+    setLoading(true);
     try {
       Request(
         'post',
@@ -24,6 +27,8 @@ export default function LoginScanner() {
         onLoginFailed,
       );
     } catch (error) {
+      setLoading(false);
+      setScanned(false);
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: 'Error',
@@ -50,6 +55,7 @@ export default function LoginScanner() {
 
   const onLoginFailed = res => {
     setScanned(false);
+    setLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -63,13 +69,21 @@ export default function LoginScanner() {
 
   return (
     <View style={styles.container}>
-      {scanned ? (
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+          }}>
+          <ActivityIndicator size={'large'} color={MAINCOLORS.primary} />
+        </View>
+      ) : scanned ? (
         <View style={styles.qrCodeScanner}>
           <QRCodeScanner
             onRead={onSuccess}
             showMarker={true}
             markerStyle={{
-                borderColor : MAINCOLORS.primary
+              borderColor: MAINCOLORS.primary,
             }}
             bottomContent={
               <View style={styles.topContentContainer}>
@@ -83,51 +97,34 @@ export default function LoginScanner() {
           />
         </View>
       ) : (
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={() => setScanned(true)}>
-          {/*  <Icon source="qrcode-scan" size={200} /> */}
-          <Text style={styles.tryAgainText}>Scan Once More</Text>
-        </TouchableOpacity>
+        <View>
+          <Empty
+            buttonOnPress={() => setScanned(true)}
+            title="Login By Scan"
+            subtitle="You can see the barcode in Aiku"
+            button={{size: 'lg', text: 'Start Scan', color: 'primary'}}
+          />
+        </View>
       )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  qrCodeScanner: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  qrCodeScanner: {
-    flex: 1,
-  },
-  buttonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  tryAgainText: {
-    marginTop: 50,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
-  },
-  logo: {
-    maxHeight: 100,
-    width: 100,
-    marginRight: 10, // Add margin for separation
-  },
-  loginContinueTxt: {
-    fontSize: 21,
-    textAlign: 'center',
-    fontWeight: 'bold',
   },
   topContentContainer: {
     flex: 1,

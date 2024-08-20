@@ -28,7 +28,6 @@ export default function BaseList(props) {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
-  const [totalPage, setTotalPage] = useState(0);
   const navigation = useNavigation();
   const [openDial, setOpenDial] = useState(false);
   const [TotalData, setTotalData] = useState(0);
@@ -125,7 +124,6 @@ export default function BaseList(props) {
 
 
   const onFailed = (error: Object) => {
-    console.log(error);
     setIsListEnd(true);
     setLoading(false);
     setRefreshing(false);
@@ -315,11 +313,6 @@ export default function BaseList(props) {
   };
   
 
-  const onResetFilter = () => {
-    setFilterValue({})
-    setFilterVisible(false)
-  };
-
   const onRefresh = () => {
     setRefreshing(true)
     setIsListEnd(false)
@@ -426,7 +419,7 @@ export default function BaseList(props) {
           ))}
         </SpeedDial>
       )}
-      <BottomSheet modalProps={{}} isVisible={filterVisible}>
+     {/*  <BottomSheet modalProps={{}} isVisible={filterVisible}>
         <View style={{padding: 20, backgroundColor: '#ffff'}}>
           <Filter 
               bluprint={props.filter} 
@@ -440,7 +433,7 @@ export default function BaseList(props) {
             <Text style={{color: MAINCOLORS.danger}}>Close</Text>
           </TouchableOpacity>
         </View>
-      </BottomSheet>
+      </BottomSheet> */}
     </View>
   );
 }

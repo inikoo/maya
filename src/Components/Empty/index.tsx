@@ -1,13 +1,32 @@
 import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
-import {Icon, Text, Button} from '@rneui/themed';
+import {View, StyleSheet, Image, Text} from 'react-native';
+import {Icon, Button} from '@rneui/themed';
 import {COLORS} from '~/Utils/Colors';
 import {noop} from 'lodash';
 
-const Empty = props => {
+type Props = {
+  title: String,
+  useButton: Boolean,
+  subtitle: String,
+  icon: {
+    name: string,
+    type: String,
+    size: Number,
+    color: String,
+  },
+  useImage : Boolean
+  button: {
+    size: Number,
+    text: String,
+    color: String,
+  },
+  buttonOnPress: noop,
+}
+
+const Empty = (props : Props) => {
   return (
     <View style={styles.container}>
-      {props.useImage ? (
+      {!props.useImage ? (
         <Icon
           name={props.icon.name}
           type={props.icon.type}
@@ -45,8 +64,8 @@ const Empty = props => {
 Empty.defaultProps = {
   title: 'Empty',
   useButton: true,
+  useImage : true,
   subtitle: 'you dont have any data in here',
-  useIcon: false,
   icon: {
     name: 'inbox',
     type: 'antdesign',
