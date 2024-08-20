@@ -1,7 +1,8 @@
 import { DashboardProduction, GlobalSearch } from '~/Screens';
-import {Icon} from '@rneui/base';
-import {View, Text} from 'react-native';
-import React from 'react';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {faSearch, faChartNetwork, } from 'assets/fa/pro-regular-svg-icons';
+
+library.add(faChartNetwork);
 
 const navigation = [
     {
@@ -13,41 +14,17 @@ const navigation = [
           component: DashboardProduction,
           options: {
             headerShown: false,
-            tabBarIcon: ({color}) => (
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  top: 3,
-                }}>
-                <Icon name="home" type="foundation" color={color} size={25} />
-                <Text style={{color: color, fontSize: 12}}>Home</Text>
-              </View>
-            ),
+            tabBarIcon: faChartNetwork,
+            tabBarLabel : 'Dasboard'
           },
         },
         {
-          name: 'Scan',
+          name: 'Search',
           component: GlobalSearch,
           options: {
-            tabBarLabel: '',
             headerShown: false,
-            tabBarIcon:({color}) => (
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  top: 3,
-                }}>
-                <Icon
-                  name="search"
-                  type="font-awesome"
-                  color={color}
-                  size={26}
-                />
-                <Text style={{color: color, fontSize: 12}}>Search</Text>
-              </View>
-            ),
+            tabBarIcon: faSearch,
+            tabBarLabel : 'Search'
           },
         },
       ],

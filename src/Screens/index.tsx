@@ -3,8 +3,8 @@ export { default as LoginScanner } from './auth/Scanner';
 
 export { default as Profile } from './Profile';
 export { default as ProfileDetail } from './Profile/Detail';
-export { default as Organisation } from './Profile/Organisation';
-export { default as Fullfilment } from './Profile/Fullfilment';
+export { default as Organisation } from './SetUpOrganisation/Organisation';
+export { default as Fullfilment } from './SetUpFullfilment/Fullfilment';
 export { default as SelectOrganisation } from './SetUpOrganisation';
 export { default as SelectFullfilment } from './SetUpFullfilment';
 export { default as Notification } from './Notifications';
@@ -19,7 +19,7 @@ export { default as FullfilmentNavigation } from './Fullfilment/Navigator';
 
 //locations fullfilment
 export { default as Locations } from './Fullfilment/Location';
-export { default as Location } from './Fullfilment/Location/Detail';
+export { default as LocationInFulfilment } from './Fullfilment/Location/Detail';
 export { default as LocationPallet } from './Fullfilment/Location/Pallet';
 export { default as LocationScanner } from './Fullfilment/Location/Scanner';
 
@@ -67,6 +67,15 @@ export { default as  DispatchingDashboard } from './Dispatching/Dashboard';
 
 //Locations
 export { default as  LocationsDashboard } from './Locations/Dashboard';
+export { default as  LocationsNavigation } from './Locations/Navigator';
+export { default as  Area } from './Locations/Area';
+export { default as  WarehouseInLocation } from './Locations/Warehouse';
+export { default as  Location } from './Locations/Location';
 
 //Procurement
 export { default as  ProcurementDashboard } from './Procurement/Dashboard';
+export { default as  ProcurementNavigation } from './Procurement/Navigator';
+export { default as  Agents } from './Procurement/Agents';
+export { default as  Patners } from './Procurement/Patners';
+export { default as  PurchasedOrder } from './Procurement/PurchasedOrder';
+export { default as  Suppliers } from './Procurement/Suppliers';

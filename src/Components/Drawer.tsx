@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, {ReactNode} from 'react';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -6,11 +6,16 @@ import {
 } from '@react-navigation/drawer';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {MAINCOLORS} from '~/Utils/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {RemoveCredential} from '~/Utils/auth';
 import Action from '~/Store/Action';
+
+import {faCog, faSignOut} from 'assets/fa/pro-regular-svg-icons';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+
+library.add(faCog, faSignOut);
 
 type Item = {
   name: String;
@@ -51,7 +56,7 @@ export default function DrawerNavigation(props: props) {
   );
 }
 
-export const CustomDrawer = props => {
+export const CustomDrawer = (props = null) => {
   const user = useSelector(state => state.userReducer);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -70,7 +75,7 @@ export const CustomDrawer = props => {
           <Image
             source={
               user.image
-                ? { uri: user.image.original }
+                ? {uri: user.image.original}
                 : require('assets/image/profile.png')
             }
             style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}
@@ -87,7 +92,8 @@ export const CustomDrawer = props => {
           onPress={() => navigation.navigate('Settings')}
           style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Ionicons name="settings-outline" size={22} />
+            <FontAwesomeIcon icon={faCog} size={22} />
+
             <Text
               style={{
                 fontSize: 15,
@@ -98,9 +104,11 @@ export const CustomDrawer = props => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => logOut()} style={{paddingVertical: 15}}>
+        <TouchableOpacity
+          onPress={() => logOut()}
+          style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Ionicons name="exit-outline" size={22} />
+            <FontAwesomeIcon icon={faSignOut} size={22} />
             <Text
               style={{
                 fontSize: 15,

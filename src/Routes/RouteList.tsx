@@ -23,7 +23,7 @@ import {
 
   //fullfilment location
   Locations,
-  Location,
+  LocationInFulfilment,
   LocationPallet,
   LocationScanner,
 
@@ -55,9 +55,11 @@ import {
 
   //Locations
   LocationsDashboard,
+  LocationsNavigation,
 
   //Procurement
   ProcurementDashboard,
+  ProcurementNavigation
 } from '~/Screens';
 
 import { Icon } from '@rneui/themed';
@@ -151,7 +153,7 @@ const routes = ({ organisation = null, warehouse = null }) => [
   },
   {
     name: 'Location',
-    component: Location,
+    component: LocationInFulfilment,
     options: { headerShown: false },
   },
   {
@@ -314,7 +316,7 @@ const drawerRoutes = ({organisation = null, warehouse = null}) => [
       },
       {
         name: 'Locations',
-        component: LocationsDashboard,
+        component: LocationsNavigation,
         options: {
           headerShown: false,
           drawerLabel: ({ focused }) => (
@@ -360,7 +362,7 @@ const drawerRoutes = ({organisation = null, warehouse = null}) => [
                   color: focused ? MAINCOLORS.primary  : '#000', // Set active color here
                 }}
               >
-                Dispatching
+                Fullfilment
               </Text>
             </View>
           ),
@@ -372,7 +374,7 @@ const drawerRoutes = ({organisation = null, warehouse = null}) => [
       },
       {
         name: 'Procurement',
-        component: ProcurementDashboard,
+        component: ProcurementNavigation,
         options: {
           headerShown: false,
           drawerLabel: ({ focused }) => (
@@ -389,7 +391,7 @@ const drawerRoutes = ({organisation = null, warehouse = null}) => [
                   color: focused ? MAINCOLORS.primary  : '#000', // Set active color here
                 }}
               >
-                Dispatching
+                Procurement
               </Text>
             </View>
           ),

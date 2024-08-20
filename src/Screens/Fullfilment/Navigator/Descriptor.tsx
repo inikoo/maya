@@ -1,7 +1,8 @@
-import { DashboardFullfilment, GlobalSearch, StoredItemsReturns, PalletReturns } from '~/Screens';
-import {Icon} from '@rneui/base';
-import {View, Text} from 'react-native';
-import React from 'react';
+import { DashboardFullfilment, GlobalSearch, Deliveries, Locations, Pallets, StoredItems, StoredItemsReturns } from '~/Screens';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {faChartNetwork, faSearch, faInventory, faPallet, faTruckCouch, faSignOut, faBox } from 'assets/fa/pro-regular-svg-icons';
+
+library.add(faChartNetwork, faSearch, faInventory, faPallet, faTruckCouch, faSignOut, faBox );
 
 const navigation = [
     {
@@ -13,96 +14,67 @@ const navigation = [
           component: DashboardFullfilment,
           options: {
             headerShown: false,
-            tabBarIcon: ({color}) => (
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  top: 3,
-                }}>
-                <Icon name="home" type="foundation" color={color} size={25} />
-                <Text style={{color: color, fontSize: 12}}>Home</Text>
-              </View>
-            ),
+            tabBarIcon: faChartNetwork,
+            tabBarLabel : 'Dasboard'
           },
         },
         {
-          name: 'Scan',
+          name: 'Search',
           component: GlobalSearch,
           options: {
-            tabBarLabel: '',
+            tabBarLabel: 'Search',
             headerShown: false,
-            tabBarIcon:({color}) => (
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  top: 3,
-                }}>
-                <Icon
-                  name="search"
-                  type="font-awesome"
-                  color={color}
-                  size={26}
-                />
-                <Text style={{color: color, fontSize: 12}}>Search</Text>
-              </View>
-            ),
+            tabBarIcon: faSearch,
+          },
+        },
+        {
+          name: 'Locations',
+          component: Locations,
+          options: {
+            tabBarLabel: 'Location',
+            headerShown: false,
+            tabBarIcon: faInventory,
+          },
+        },
+        {
+          name: 'Pallets',
+          component: Pallets,
+          options: {
+            tabBarLabel: 'Pallet',
+            headerShown: false,
+            tabBarIcon: faPallet,
+          },
+        },
+        {
+          name: 'Deliveries',
+          component: Deliveries,
+          options: {
+            tabBarLabel: 'Deliveries',
+            headerShown: false,
+            tabBarIcon: faTruckCouch,
+          },
+        },
+        {
+          name: 'Returns',
+          component: Deliveries,
+          options: {
+            tabBarLabel: 'return',
+            headerShown: false,
+            tabBarIcon: faSignOut,
+          },
+        },
+        {
+          name: 'Stored Items',
+          component: StoredItems,
+          options: {
+            tabBarLabel: 'Item',
+            headerShown: false,
+            tabBarIcon: faBox,
           },
         },
       ],
     },
-    {
-      name: 'Returns',
-      options: {headerShown: false},
-      components: [
-        {
-          name: 'Pallet Retruns',
-          component: PalletReturns,
-          options: {
-            headerShown: false,
-            tabBarIcon: ({color = ''}) => {
-              return (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    top: 3,
-                  }}>
-                  <Icon name="pallet" type="font-awesome-5" color={color} size={25} />
-                  <Text style={{color: color, fontSize: 12}}>Pallet</Text>
-                </View>
-              );
-            },
-          },
-        },
-        {
-          name: 'Stored Items Returns',
-          component: StoredItemsReturns,
-          options: {
-            headerShown: false,
-            tabBarIcon: ({color = ''}) => {
-              return (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    top: 3,
-                  }}>
-                  <Icon
-                    name="box"
-                    type="entypo"
-                    color={color}
-                    size={26}
-                  />
-                  <Text style={{color: color, fontSize: 12}}>Stored Items</Text>
-                </View>
-              );
-            },
-          },
-        },
-      ],
-    },
+  
   ]
 
 export { navigation };

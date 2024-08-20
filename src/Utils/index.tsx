@@ -46,7 +46,6 @@ const checkPermissionNested = (data : Array, permissions : Array) => {
       components: item.components.filter(component => {
         if (component.permissions) {
           return component.permissions.some(p => {
-            console.log(p)
             return permissions.includes(p);
           });
         }

@@ -18,19 +18,13 @@ function Routes() {
   const organisationRedux = useSelector(state => state.organisationReducer,)?.active_organisation;
   const warehouseRedux = useSelector(state => state.warehouseReducer);
   const [drawerRoutesList, setDrawerRoutes] = useState(
-    checkPermissionNested(
       drawerRoutes({
         organisation: organisationRedux,
         warehouse: warehouseRedux,
-      }),
-      user.permissions,
-    ),
-  );
+      })
+    )
   const [screenRoutes, setScreenRoutes] = useState(
-    checkPermission(
-      routes({organisation: organisationRedux, warehouse: warehouseRedux}),
-      user.permissions,
-    ),
+      routes({organisation: organisationRedux, warehouse: warehouseRedux})
   );
 
   const checkUser = async () => {

@@ -1,12 +1,14 @@
 import {InventoryDashboard, GlobalSearch, SKU, SKUFamily} from '~/Screens';
-import {Icon} from '@rneui/base';
-import {View, Text} from 'react-native';
-import React from 'react';
 import {library} from '@fortawesome/fontawesome-svg-core';
-import {faBoxes, faBox} from 'assets/fa/pro-regular-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
-library.add(faBox, faBoxes);
+import {
+  faBoxes,
+  faBox,
+  faChartNetwork,
+  faSearch,
+} from 'assets/fa/pro-regular-svg-icons';
+
+library.add(faBox, faBoxes, faChartNetwork, faSearch);
 
 const navigation = [
   {
@@ -18,75 +20,35 @@ const navigation = [
         component: InventoryDashboard,
         options: {
           headerShown: false,
-          tabBarIcon: ({color}) => (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                top: 3,
-              }}>
-              <Icon name="home" type="foundation" color={color} size={25} />
-              <Text style={{color: color, fontSize: 12}}>Home</Text>
-            </View>
-          ),
+          tabBarIcon: faChartNetwork,
+          tabBarLabel: 'Dasboard',
         },
       },
       {
-        name: 'Scan',
+        name: 'Search',
         component: GlobalSearch,
         options: {
-          tabBarLabel: '',
+          tabBarLabel: 'Search',
           headerShown: false,
-          tabBarIcon: ({color}) => (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                top: 3,
-              }}>
-              <Icon name="search" type="font-awesome" color={color} size={26} />
-              <Text style={{color: color, fontSize: 12}}>Search</Text>
-            </View>
-          ),
+          tabBarIcon: faSearch,
         },
       },
       {
         name: 'Sku Family',
         component: SKUFamily,
         options: {
-          tabBarLabel: '',
+          tabBarLabel: 'SKU Family',
           headerShown: false,
-          tabBarIcon: ({color}) => (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                top: 3,
-              }}>
-              <FontAwesomeIcon icon={faBoxes} color={color} size={26} />
-              <Text style={{color: color, fontSize: 12}}>SKU Family</Text>
-            </View>
-          ),
+          tabBarIcon: faBoxes,
         },
       },
       {
         name: 'Sku',
         component: SKU,
         options: {
-          tabBarLabel: '',
+          tabBarLabel: 'SKU',
           headerShown: false,
-          tabBarIcon: ({color}) => (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                top: 3,
-              }}>
-              <FontAwesomeIcon icon={faBox} color={color} size={26} />
-
-              <Text style={{color: color, fontSize: 12}}>SKU</Text>
-            </View>
-          ),
+          tabBarIcon: faBox,
         },
       },
     ],

@@ -14,7 +14,6 @@ const Dashboard: React.FC<Props> = props => {
   const warehouse = useSelector(state => state.warehouseReducer);
   const organisation = useSelector(state => state.organisationReducer);
 
-  console.log('ddd',props)
 
   useFocusEffect(
     useCallback(() => {
