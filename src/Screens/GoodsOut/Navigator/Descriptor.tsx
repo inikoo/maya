@@ -1,4 +1,4 @@
-import {InventoryDashboard, GlobalSearch, Pallets, StoredItems, OrgStock} from '~/Screens';
+import {GoodsOutDashboard, Pallets, StoredItems, PalletReturns, DeliveryNotes} from '~/Screens';
 import {library} from '@fortawesome/fontawesome-svg-core';
 
 import {
@@ -6,19 +6,22 @@ import {
   faBox,
   faChartNetwork,
   faSearch,
-  faBoxes
+  faBoxes,
+  faTruck,
+  faTruckCouch,
+  faSignOut
 } from 'assets/fa/pro-regular-svg-icons';
 
-library.add(faBox, faPallet, faChartNetwork, faSearch, faBoxes);
+library.add(faBox, faPallet, faChartNetwork, faSearch, faBoxes, faTruck, faTruckCouch, faSignOut);
 
 const navigation = [
   {
-    name: 'DashboardInventory',
+    name: 'Dashboard Goods In',
     options: {headerShown: false},
     components: [
       {
         name: 'Home',
-        component: InventoryDashboard,
+        component: GoodsOutDashboard,
         options: {
           headerShown: false,
           tabBarIcon: faChartNetwork,
@@ -35,32 +38,24 @@ const navigation = [
         },
       }, */
       {
-        name: 'Org Stock',
-        component: OrgStock,
+        name: 'Deliveries Note',
+        component: DeliveryNotes,
         options: {
-          tabBarLabel: 'Org Stock',
+          tabBarLabel: 'Deliveries Note',
           headerShown: false,
-          tabBarIcon: faBoxes,
+          tabBarIcon: faTruck,
         },
       },
       {
-        name: 'Pallet',
-        component: Pallets,
+        name: 'Fullfilment Return',
+        component: PalletReturns,
         options: {
-          tabBarLabel: 'Pallets',
+          tabBarLabel: 'Return',
           headerShown: false,
-          tabBarIcon: faPallet,
+          tabBarIcon:  faSignOut,
         },
       },
-      {
-        name: 'Stored Item',
-        component: StoredItems,
-        options: {
-          tabBarLabel: 'Stored Item',
-          headerShown: false,
-          tabBarIcon: faBox,
-        },
-      },
+      
     ],
   },
 ];

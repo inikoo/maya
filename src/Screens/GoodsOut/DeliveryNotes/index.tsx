@@ -14,6 +14,7 @@ const Dashboard: React.FC<Props> = props => {
   const warehouse = useSelector(state => state.warehouseReducer);
   const organisation = useSelector(state => state.organisationReducer);
 
+
   useFocusEffect(
     useCallback(() => {
       if (!organisation.active_organisation) {
@@ -29,7 +30,7 @@ const Dashboard: React.FC<Props> = props => {
   return (
     <Layout>
       <Header
-        title="Production"
+        title="Delivery Notes"
         useLeftIcon={true}
         leftIcon={
           <TouchableOpacity
@@ -52,7 +53,10 @@ const Dashboard: React.FC<Props> = props => {
       />
 
       <View>
-        <Text>Dashboard Production</Text>
+        <TouchableOpacity onPress={()=>props.navigation.navigate('Scan')}>
+        <Text>Dashboard Delivery Notes</Text>
+        </TouchableOpacity>
+       
       </View>
     </Layout>
   );

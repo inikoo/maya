@@ -18,9 +18,6 @@ import {
   Profile,
   ProfileDetail,
 
-  //fullfilment
-  FullfilmentNavigation,
-
   //fullfilment location
   Locations,
   LocationInFulfilment,
@@ -43,28 +40,22 @@ import {
   ReturnDetail,
   ReturnScanner,
 
-  //Production
-  ProductionNavigation,
-
   //Inventory
-  InventoryDashboard,
   InventoryNavigation,
 
-  //Dispatching
-  DispatchingDashboard,
-
   //Locations
-  LocationsDashboard,
   LocationsNavigation,
 
-  //Procurement
-  ProcurementDashboard,
-  ProcurementNavigation
+  //GoodsIn
+  GoodsInNavigation,
+
+  //GoodsOut
+  GoodsOutNavigation,
 } from '~/Screens';
 
-import { Icon } from '@rneui/themed';
-import { View, Text } from 'react-native'
-import { MAINCOLORS } from '~/Utils/Colors';
+import {Icon} from '@rneui/themed';
+import {View, Text} from 'react-native';
+import {MAINCOLORS} from '~/Utils/Colors';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
   faInventory,
@@ -72,11 +63,22 @@ import {
   faConveyorBeltAlt,
   faHandHoldingBox,
   faBoxUsd,
-  faChartLineDown
+  faChartLineDown,
+  faArrowToBottom,
+  faArrowFromLeft,
 } from 'assets/fa/pro-regular-svg-icons';
-import {FontAwesomeIcon, } from '@fortawesome/react-native-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
-library.add(faInventory, faPalletAlt, faConveyorBeltAlt, faHandHoldingBox, faBoxUsd, faChartLineDown);
+library.add(
+  faInventory,
+  faPalletAlt,
+  faConveyorBeltAlt,
+  faHandHoldingBox,
+  faBoxUsd,
+  faChartLineDown,
+  faArrowFromLeft,
+  faArrowToBottom,
+);
 
 const loginRoutes = [
   {
@@ -95,132 +97,132 @@ const loginRoutes = [
   },
 ];
 
-const routes = ({ organisation = null, warehouse = null }) => [
+const routes = ({organisation = null, warehouse = null}) => [
   //initial
   {
     name: 'Organisation',
     component: Organisation,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Fullfilment',
     component: Fullfilment,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Warehouse',
     component: Warehouse,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Scanner Global',
     component: GlobalScanner,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Select Organisation',
     component: SelectOrganisation,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Select fullfilment',
     component: SelectFullfilment,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Notification',
     component: Notification,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
 
   //profile
   {
     name: 'Settings',
     component: Profile,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Profile Detail',
     component: ProfileDetail,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
 
   //fullfilment locations
   {
     name: 'Locations',
     component: Locations,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Location',
     component: LocationInFulfilment,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Location Pallet',
     component: LocationPallet,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Location Scanner',
     component: LocationScanner,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
 
   //fullfillment pallet
   {
     name: 'Pallets',
     component: Pallets,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Pallet',
     component: Pallet,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Pallet Scanner',
     component: PalletScanner,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Change Location Pallet Scanner',
     component: ChangeLocationPalletByScanner,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
 
   //fullfilment deliveries
   {
     name: 'Deliveries',
     component: Deliveries,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Delivery',
     component: DeliveryDetail,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
   {
     name: 'Delivery Scanner',
     component: DeliveryScanner,
-    options: { headerShown: false }, // Added options here for consistency
+    options: {headerShown: false}, // Added options here for consistency
   },
   {
     name: 'Delivery Pallet',
     component: DeliveryPallet,
-    options: { headerShown: false },
+    options: {headerShown: false},
   },
 
   //return pallet
   {
     name: 'Return',
     component: ReturnDetail,
-    options: { headerShown: false }, // Added options here for consistency
+    options: {headerShown: false}, // Added options here for consistency
   },
   {
     name: 'Return Scanner',
     component: ReturnScanner,
-    options: { headerShown: false }, // Added options here for consistency
+    options: {headerShown: false}, // Added options here for consistency
   },
 ];
 
@@ -236,20 +238,19 @@ const drawerRoutes = ({organisation = null, warehouse = null}) => [
         component: Dashboard,
         options: {
           headerShown: false,
-          drawerLabel: ({ focused }) => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-               <FontAwesomeIcon
-                      icon={faChartLineDown}
-                      size={20}
-                      color={focused ? MAINCOLORS.primary : '#000'}
-                    />
+          drawerLabel: ({focused}) => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <FontAwesomeIcon
+                icon={faChartLineDown}
+                size={20}
+                color={focused ? MAINCOLORS.primary : '#000'}
+              />
               <Text
                 style={{
                   marginLeft: 8,
                   fontSize: 16,
-                  color: focused ? MAINCOLORS.primary  : '#000', // Set active color here
-                }}
-              >
+                  color: focused ? MAINCOLORS.primary : '#000', // Set active color here
+                }}>
                 Dashboard
               </Text>
             </View>
@@ -261,20 +262,19 @@ const drawerRoutes = ({organisation = null, warehouse = null}) => [
         component: InventoryNavigation,
         options: {
           headerShown: false,
-          drawerLabel: ({ focused }) => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-               <FontAwesomeIcon
-                      icon={faPalletAlt}
-                      size={20}
-                      color={focused ? MAINCOLORS.primary : '#000'}
-                    />
+          drawerLabel: ({focused}) => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <FontAwesomeIcon
+                icon={faPalletAlt}
+                size={20}
+                color={focused ? MAINCOLORS.primary : '#000'}
+              />
               <Text
                 style={{
                   marginLeft: 8,
                   fontSize: 16,
-                  color: focused ? MAINCOLORS.primary  : '#000', // Set active color here
-                }}
-              >
+                  color: focused ? MAINCOLORS.primary : '#000', // Set active color here
+                }}>
                 Inventory
               </Text>
             </View>
@@ -282,36 +282,7 @@ const drawerRoutes = ({organisation = null, warehouse = null}) => [
         },
         permissions: [
           `inventory.${organisation?.id}.view`,
-          `inventory.${organisation?.id}`,
-        ],
-      },
-      {
-        name: 'Dispatching',
-        component: DispatchingDashboard,
-        options: {
-          headerShown: false,
-          drawerLabel: ({ focused }) => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-               <FontAwesomeIcon
-                      icon={faConveyorBeltAlt}
-                      size={20}
-                      color={focused ? MAINCOLORS.primary : '#000'}
-                    />
-              <Text
-                style={{
-                  marginLeft: 8,
-                  fontSize: 16,
-                  color: focused ? MAINCOLORS.primary  : '#000', // Set active color here
-                }}
-              >
-                Dispatching
-              </Text>
-            </View>
-          ),
-        },
-        permissions: [
-          `dispatching.${warehouse?.id}.view`,
-          `dispatching.${warehouse?.id}`,
+          `stocks.${warehouse?.id}.view`,
         ],
       },
       {
@@ -319,20 +290,19 @@ const drawerRoutes = ({organisation = null, warehouse = null}) => [
         component: LocationsNavigation,
         options: {
           headerShown: false,
-          drawerLabel: ({ focused }) => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-               <FontAwesomeIcon
-                      icon={faInventory}
-                      size={20}
-                      color={focused ? MAINCOLORS.primary : '#000'}
-                    />
+          drawerLabel: ({focused}) => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <FontAwesomeIcon
+                icon={faInventory}
+                size={20}
+                color={focused ? MAINCOLORS.primary : '#000'}
+              />
               <Text
                 style={{
                   marginLeft: 8,
                   fontSize: 16,
-                  color: focused ? MAINCOLORS.primary  : '#000', // Set active color here
-                }}
-              >
+                  color: focused ? MAINCOLORS.primary : '#000', // Set active color here
+                }}>
                 Locations
               </Text>
             </View>
@@ -344,65 +314,67 @@ const drawerRoutes = ({organisation = null, warehouse = null}) => [
         ],
       },
       {
-        name: 'Fulfilment',
-        component: FullfilmentNavigation,
+        name: 'Goods In',
+        component: GoodsInNavigation,
         options: {
           headerShown: false,
-          drawerLabel: ({ focused }) => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-               <FontAwesomeIcon
-                      icon={faHandHoldingBox}
-                      size={20}
-                      color={focused ? MAINCOLORS.primary : '#000'}
-                    />
+          drawerLabel: ({focused}) => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <FontAwesomeIcon
+                icon={faArrowToBottom}
+                size={20}
+                color={focused ? MAINCOLORS.primary : '#000'}
+              />
               <Text
                 style={{
                   marginLeft: 8,
                   fontSize: 16,
-                  color: focused ? MAINCOLORS.primary  : '#000', // Set active color here
-                }}
-              >
-                Fullfilment
+                  color: focused ? MAINCOLORS.primary : '#000', // Set active color here
+                }}>
+                Goods In
               </Text>
             </View>
           ),
         },
         permissions: [
+          `incoming.${warehouse?.id}.view`,
+          `incoming.${warehouse?.id}`,
           `fulfilment.${warehouse?.id}.view`,
           `fulfilment.${warehouse?.id}`,
         ],
       },
       {
-        name: 'Procurement',
-        component: ProcurementNavigation,
+        name: 'Goods Out',
+        component: GoodsOutNavigation,
         options: {
           headerShown: false,
-          drawerLabel: ({ focused }) => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-               <FontAwesomeIcon
-                      icon={faBoxUsd}
-                      size={20}
-                      color={focused ? MAINCOLORS.primary : '#000'}
-                    />
+          drawerLabel: ({focused}) => (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <FontAwesomeIcon
+                icon={faArrowFromLeft}
+                size={20}
+                color={focused ? MAINCOLORS.primary : '#000'}
+              />
               <Text
                 style={{
                   marginLeft: 8,
                   fontSize: 16,
-                  color: focused ? MAINCOLORS.primary  : '#000', // Set active color here
-                }}
-              >
-                Procurement
+                  color: focused ? MAINCOLORS.primary : '#000', // Set active color here
+                }}>
+                Goods Out
               </Text>
             </View>
           ),
         },
         permissions: [
-          `procurement.${organisation?.id}.view`,
-          `procurement.${organisation?.id}`,
+          `dispatching.${warehouse?.id}.view`,
+          `dispatching.${warehouse?.id}`,
+          `fulfilment.${warehouse?.id}.view`,
+          `fulfilment.${warehouse?.id}`,
         ],
       },
     ],
   },
 ];
 
-export { loginRoutes, routes, drawerRoutes };
+export {loginRoutes, routes, drawerRoutes};

@@ -1,11 +1,11 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {navigation} from '~/Screens/Procurement/Navigator/Descriptor';
+import {navigation} from '~/Screens/GoodsOut/Navigator/Descriptor';
 import BottomNavigation from '~/Components/BottomNavigator';
 
 const Stack = createNativeStackNavigator();
 
-function RoutesProcurement() {
+function RoutesFullfilment() {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -26,4 +26,4 @@ function RoutesProcurement() {
   );
 }
 
-export default RoutesProcurement;
+export default RoutesFullfilment;
