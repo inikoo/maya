@@ -18,10 +18,10 @@ export { default as DashboardFullfilment } from './Fullfilment/Dashboard';
 export { default as FullfilmentNavigation } from './Fullfilment/Navigator';
 
 //locations fullfilment
-export { default as Locations } from './Fullfilment/Location';
-export { default as LocationInFulfilment } from './Fullfilment/Location/Detail';
-export { default as LocationPallet } from './Fullfilment/Location/Pallet';
-export { default as LocationScanner } from './Fullfilment/Location/Scanner';
+export { default as Locations } from './Locations/Location';
+export { default as LocationInFulfilment } from './Locations/Location/Detail';
+export { default as LocationPallet } from './Locations/Location/Pallet';
+export { default as LocationScanner } from './Locations/Location/Scanner';
 
 //global Scanners
 export { default as GlobalSearch } from './GlobalScanner';
@@ -48,7 +48,6 @@ export { default as StoredItems } from './Inventory/StoredItems';
 export { default as  LocationsDashboard } from './Locations/Dashboard';
 export { default as  LocationsNavigation } from './Locations/Navigator';
 export { default as  Area } from './Locations/Area';
-export { default as  WarehouseInLocation } from './Locations/Warehouse';
 export { default as  Location } from './Locations/Location';
 
 //Goods In

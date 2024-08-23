@@ -44,7 +44,7 @@ const navigation = [
         },
       },
       {
-        name: 'Pallet',
+        name: 'Pallets',
         component: Pallets,
         options: {
           tabBarLabel: 'Pallets',

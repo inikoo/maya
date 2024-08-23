@@ -38,6 +38,8 @@ type Props = {
   itemList: ReactNode | Function;
   useScan: Boolean;
   screenNavigation: String;
+  headerProps : any;
+  height : Number
 };
 
 let timeoutId: any;
@@ -325,7 +327,7 @@ const BaseList = forwardRef((props: Props, ref) => {
   return (
     <Layout>
       <View>
-        <Header title={props.title} rightIcon={filterButton()} />
+        <Header title={props.title} rightIcon={filterButton()} {...props.headerProps} />
         {renderSearch()}
         <View style={styles.recordsWrapper}>
           <LinearGradient
@@ -348,7 +350,7 @@ const BaseList = forwardRef((props: Props, ref) => {
           )}
         </View>
         <Divider style={styles.divider} />
-        <View style={styles.listWraper}>
+        <View style={{height : props.height}}>
           {loading ? renderLoading() : renderList()}
         </View>
         <Filter
@@ -371,7 +373,8 @@ BaseList.defaultProps = {
   enableSwipe: false,
   leftOpenValue: 50,
   rightOpenValue: -60,
-  useScan: true
+  useScan: true,
+  height : 520
 };
 
 const styles = StyleSheet.create({

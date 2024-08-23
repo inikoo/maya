@@ -10,7 +10,7 @@ import {
   Organisation,
   Fullfilment,
   Warehouse,
-  GlobalScanner,
+  GlobalSearch,
   SelectOrganisation,
   SelectFullfilment,
 
@@ -116,7 +116,7 @@ const routes = ({organisation = null, warehouse = null}) => [
   },
   {
     name: 'Scanner Global',
-    component: GlobalScanner,
+    component: GlobalSearch,
     options: {headerShown: false},
   },
   {
@@ -282,7 +282,9 @@ const drawerRoutes = ({organisation = null, warehouse = null}) => [
         },
         permissions: [
           `inventory.${organisation?.id}.view`,
+          `inventory.${organisation?.id}`,
           `stocks.${warehouse?.id}.view`,
+          `stocks.${warehouse?.id}`
         ],
       },
       {

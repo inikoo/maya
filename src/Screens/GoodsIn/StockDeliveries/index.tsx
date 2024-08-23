@@ -1,79 +1,87 @@
-import React,{useCallback, } from 'react';
-import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
-import Header from '~/Components/Header';
-import Layout from '~/Components/Layout'
-import { Icon } from '@rneui/base';
-import {useFocusEffect} from '@react-navigation/native';
-
-import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
+import BaseList from '~/Components/BaseList/IndexV2';
+import {useNavigation} from '@react-navigation/native';
+import {Text, Icon } from '@rneui/themed';
+import  {COLORS } from '~/Utils/Colors';
+import {IconColor} from '~/Utils';
 
-
-const Dashboard: React.FC<Props> = props => {
+const StockDeliveries = props => {
   const navigation = useNavigation();
-  const warehouse = useSelector(state => state.warehouseReducer);
   const organisation = useSelector(state => state.organisationReducer);
+  const warehouse = useSelector(state => state.warehouseReducer);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const setDialog = () => {
+    setOpenDialog(!openDialog);
+  };
 
 
-  useFocusEffect(
-    useCallback(() => {
-      if (!organisation.active_organisation) {
-        navigation.navigate('Select Organisation');
-      } else if (
-        !organisation.active_organisation?.active_authorised_fulfilments
-      ) {
-        navigation.navigate('Select fullfilment');
-      } 
-    }, [organisation, warehouse]),
-  );
 
   return (
-    <Layout>
-      <Header
+    <>
+      <BaseList
+        headerProps={{
+          useLeftIcon: true,
+          leftIcon: (
+            <TouchableOpacity
+              style={styles.leftIconContainer}
+              onPress={() => props.navigation.toggleDrawer()}>
+              <Icon name="bars" type="font-awesome-5" color="black" size={20} />
+            </TouchableOpacity>
+          ),
+        }}
         title="Stock Deliveries"
-        useLeftIcon={true}
-        leftIcon={
-          <TouchableOpacity
-            style={styles.leftIconContainer}
-            onPress={() => props.navigation.toggleDrawer()}>
-            <Icon name="bars" type="font-awesome-5" color="black" size={20} />
-          </TouchableOpacity>
-        }
-        rightIcon={
-          <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-            <View>
-              <Icon
-                name="notifications-outline"
-                type="ionicon"
-                style={styles.notification}
-              />
-            </View>
-          </TouchableOpacity>
-        }
+        itemKey='code'
+        urlKey='stock-deliveries-index'
+        args={[organisation.active_organisation.id, warehouse.id]}
+        enableSwipe={false}
+        sortSchema='code'
+        screenNavigation={'Location Scanner'}
       />
-
-      <View>
-        <TouchableOpacity onPress={()=>props.navigation.navigate('Scan')}>
-        <Text>Dashboard Stock Deliveries</Text>
-        </TouchableOpacity>
-       
-      </View>
-    </Layout>
+    </>
   );
 };
 
+export default StockDeliveries;
+
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 15,
+    padding: 10,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+    margin: 5,
+    borderWidth: 1,
+    borderColor: COLORS.grey6,
+  },
+  title: {
+    fontSize: 18,
+    fontFamily: 'TitilliumWeb-SemiBold',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  textContainer: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  iconContainer: {
+    alignItems: 'flex-end',
+  },
+  icon: {
+    marginHorizontal: 5,
   },
   leftIconContainer: {
     marginRight: 18,
   },
-  notification: {
-    width: 35,
-    height: 35,
-    padding: 5,
-  },
 });
-
-export default Dashboard;

@@ -7,6 +7,7 @@ import {Icon,Dialog} from '@rneui/themed';
 import {MAINCOLORS,COLORS } from '~/Utils/Colors';
 import Information from '~/Components/palletComponents/Information';
 import PalletCard from '~/Components/palletComponents/ListCard';
+import { TouchableOpacity } from 'react-native';
 
 const Pallet = props => {
   const navigation = useNavigation();
@@ -28,6 +29,16 @@ const Pallet = props => {
         sortSchema='reference'
         screenNavigation={'Pallet Scanner'}
         enableSwipe={true}
+        headerProps={{
+          useLeftIcon: true,
+          leftIcon: (
+            <TouchableOpacity
+              style={styles.leftIconContainer}
+              onPress={() => props.navigation.toggleDrawer()}>
+              <Icon name="bars" type="font-awesome-5" color="black" size={20} />
+            </TouchableOpacity>
+          ),
+        }}
         args={[
           oraganisation.active_organisation.id,
           warehouse.id,
@@ -87,4 +98,16 @@ const Pallet = props => {
 
 export default Pallet;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 15,
+  },
+  leftIconContainer: {
+    marginRight: 18,
+  },
+  notification: {
+    width: 35,
+    height: 35,
+    padding: 5,
+  },
+});

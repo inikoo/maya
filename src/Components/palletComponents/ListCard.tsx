@@ -6,6 +6,7 @@ import {COLORS} from '~/Utils/Colors';
 
 const PalletCard = props => {
   const navigation = useNavigation();
+  console.log(navigation)
 
   return (
     <View style={{...styles.container, backgroundColor: 'white'}}>

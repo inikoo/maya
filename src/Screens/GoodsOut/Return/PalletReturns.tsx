@@ -8,7 +8,7 @@ import {
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
-import {Avatar, Text} from '@rneui/themed'; // Import Icon from your icon library
+import {Avatar, Text, Icon} from '@rneui/themed'; // Import Icon from your icon library
 import { COLORS, MAINCOLORS } from '~/Utils/Colors';
 
 const Returns = (props) => {
@@ -39,6 +39,16 @@ const Returns = (props) => {
 
   return (
       <BaseList
+      headerProps={{
+        useLeftIcon: true,
+        leftIcon: (
+          <TouchableOpacity
+            style={styles.leftIconContainer}
+            onPress={() => props.navigation.toggleDrawer()}>
+            <Icon name="bars" type="font-awesome-5" color="black" size={20} />
+          </TouchableOpacity>
+        ),
+      }}
         title='Pallet Returns'
         itemKey='reference'
         urlKey=	'return-index' 
@@ -123,5 +133,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  leftIconContainer: {
+    marginRight: 18,
   },
 });

@@ -1,19 +1,18 @@
-import React,{useCallback, } from 'react';
+import React, {useCallback} from 'react';
 import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
 import Header from '~/Components/Header';
-import Layout from '~/Components/Layout'
-import { Icon } from '@rneui/base';
+import Layout from '~/Components/Layout';
+import {Icon} from '@rneui/base';
 import {useFocusEffect} from '@react-navigation/native';
+import BaseList from '~/Components/BaseList/IndexV2';
 
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-
 
 const Dashboard: React.FC<Props> = props => {
   const navigation = useNavigation();
   const warehouse = useSelector(state => state.warehouseReducer);
   const organisation = useSelector(state => state.organisationReducer);
-
 
   useFocusEffect(
     useCallback(() => {
@@ -23,42 +22,34 @@ const Dashboard: React.FC<Props> = props => {
         !organisation.active_organisation?.active_authorised_fulfilments
       ) {
         navigation.navigate('Select fullfilment');
-      } 
+      }
     }, [organisation, warehouse]),
   );
 
   return (
-    <Layout>
-      <Header
-        title="Org Stock"
-        useLeftIcon={true}
-        leftIcon={
+    <BaseList
+      headerProps={{
+        useLeftIcon: true,
+        leftIcon: (
           <TouchableOpacity
             style={styles.leftIconContainer}
             onPress={() => props.navigation.toggleDrawer()}>
             <Icon name="bars" type="font-awesome-5" color="black" size={20} />
           </TouchableOpacity>
-        }
-        rightIcon={
-          <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-            <View>
-              <Icon
-                name="notifications-outline"
-                type="ionicon"
-                style={styles.notification}
-              />
-            </View>
-          </TouchableOpacity>
-        }
-      />
-
-      <View>
-        <TouchableOpacity onPress={()=>props.navigation.navigate('Scan')}>
-        <Text>Dashboard Org Stock</Text>
-        </TouchableOpacity>
-       
-      </View>
-    </Layout>
+        ),
+      }}
+      title="Organisation Stock"
+      itemKey="name"
+      urlKey="org-stock-index"
+      args={[organisation.active_organisation.id, warehouse.id]}
+      params={{
+        ['filter[state]'] : ["active","discontinuing"]
+      }}
+      enableSwipe={false}
+      height={520}
+      sortSchema="code"
+      screenNavigation={'Location Scanner'}
+    />
   );
 };
 

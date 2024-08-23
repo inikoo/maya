@@ -54,6 +54,7 @@ export default function LoginScanner() {
   };
 
   const onLoginFailed = res => {
+    console.log(res)
     setScanned(false);
     setLoading(false);
     Toast.show({

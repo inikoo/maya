@@ -15,8 +15,7 @@ const Delivery = props => {
     return (
       <View style={{...styles.container, backgroundColor: 'white'}}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Delivery', {delivery: record})}
-        >
+          onPress={() => navigation.navigate('Delivery', {delivery: record})}>
           <View style={styles.row}>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{record.reference}</Text>
@@ -38,11 +37,30 @@ const Delivery = props => {
 
   return (
     <BaseList
+      headerProps={{
+        useLeftIcon: true,
+        leftIcon: (
+          <TouchableOpacity
+            style={styles.leftIconContainer}
+            onPress={() => props.navigation.toggleDrawer()}>
+            <Icon name="bars" type="font-awesome-5" color="black" size={20} />
+          </TouchableOpacity>
+        ),
+      }}
       title="Deliveries"
       itemKey="reference"
       urlKey="delivery-index"
       args={[oraganisation.active_organisation.id, warehouse.id]}
       itemList={Item}
+      params={{
+        ['filter[state]']: [
+          'confirmed',
+          'not-recived',
+          'booked-in',
+          'received',
+          'booking-in',
+        ],
+      }}
       sortSchema="reference"
       filterSchema={[
         {
@@ -51,14 +69,6 @@ const Delivery = props => {
           type: 'checkBox',
           propsItem: {
             options: [
-              {
-                label: 'in Process',
-                value: 'in-process',
-              },
-              {
-                label: 'Submitted',
-                value: 'submitted',
-              },
               {
                 label: 'Confirmed',
                 value: 'confirmed',
@@ -124,5 +134,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginHorizontal: 5,
+  },
+  leftIconContainer: {
+    marginRight: 18,
   },
 });

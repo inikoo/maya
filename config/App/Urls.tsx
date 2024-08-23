@@ -11,17 +11,28 @@ export default {
 	'notification' : 'maya/profile/notifications',
 	'notification-read' : 'maya/action/notification/{}',
 
-	//working places
-	'hr-working-places' : "maya/org/{}/hr/workplaces",
-	'hr-retrive-working-places' : "/maya/org/{}/hr/workplaces/{}",
-	'hr-working-places-time-sheets' : "maya/org/{}/hr/workplaces/{}/clocking-machines",
 
-	//clocking machines
-	'hr-clocking-machines' : "maya/org/{}/hr/clocking-machines",
+	//Org Stock
+	'org-stock-index' : 'maya/org/{}/warehouses/{}/inventory/stocks',
+	'org-stock-show' : 'maya/org/{}/warehouses/{}/inventory/stocks/{}',
+
+	//pallet
+	'pallet-index' : 'maya/org/{}/warehouses/{}/inventory/pallets',
+	'pallet-show' : 'maya/org/1/warehouses/1/inventory/pallets/204',
+	'pallet-location' : 'maya/action/location/{}/pallet/{}',
+	'pallet-return' : 'maya/action/pallet/{}/return',
+	'pallet-change-status-state' : 'maya/action/pallet/{}',
+
+	'stock-deliveries-index' : 'maya/org/{}/warehouses/{}/incoming/stock-deliveries',
+	'stock-deliveries-show' : 'maya/org/{}/warehouses/{}/incoming/stock-deliveries/{}',
+
+	//stored Items
+	'stored-item-index' : 'maya/org/{}/warehouses/{}/fulfilments/{}/pallets/{}/stored-items',
+	'stored-item-show' : 'maya/action/pallet/{}/stored-item/{}',
 
 	//warehouse
-	'warehouse-index' : 'maya/org/{}/warehouses',
-	'warehouse-count-data' : 'maya/org/{}/warehouses/{}',
+	'warehouse-area-index' : 'maya/org/{}/warehouses/{}/areas',
+	'warehouse-area-show' : 'maya/org/{}/warehouses/{}/areas/{}',
 
 	//location
 	'locations-index' : 'maya/org/{}/warehouses/{}/locations',
@@ -29,21 +40,17 @@ export default {
 	'locations-show-by-code' : 'maya/org/{}/warehouses/{}/locations/{}/code',
 	'location-pallet-index' : 'maya/org/{}/warehouses/{}/fulfilments/{}/locations/{}/pallets',
 
-	//pallet
-	'pallet-index' : 'maya/org/{}/warehouses/{}/fulfilments/{}/pallets',
-	'pallet-show' : 'maya/org/{}/warehouses/{}/fulfilments/{}/pallets/{}',
-	'pallet-location' : 'maya/action/location/{}/pallet/{}',
-	'pallet-return' : 'maya/action/pallet/{}/return',
-	'pallet-change-status-state' : 'maya/action/pallet/{}',
-
 	//delivery
-	'delivery-index' : "maya/org/{}/warehouses/{}/pallet-deliveries",
-	'delivery-show' : "maya/org/{}/warehouses/{}/pallet-deliveries/{}",
+	'delivery-index' : "maya/org/{}/warehouses/{}/incoming/fulfilment-deliveries",
+	'delivery-show' : "maya/org/{}/warehouses/{}/incoming/fulfilment-deliveries/{}",
 	'delivery-pallet-index' : "maya/org/{}/warehouses/{}/pallet-deliveries/{}/pallets",
 
+	'delivery-notes-index' : 'maya/org/1/warehouses/1/dispatching/delivery-notes',
+	'delivery-notes-show' : 'maya/org/{}/warehouses/{}/dispatching/delivery-notes/{}',
+
 	//return
-	'return-index' : "maya/org/{}/warehouses/{}/pallet-returns",
-	'return-show' : "maya/org/{}/warehouses/{}/pallet-returns/{}",
+	'return-index' : "maya/org/{}/warehouses/{}/dispatching/returns",
+	'return-show' : "maya/org/{}/warehouses/{}/dispatching/returns/{}",
 	'return-pallet-index' : "maya/org/{}/warehouses/{}/pallet-returns/{}/pallets",
 
 	//global search

@@ -1,4 +1,4 @@
-import { GlobalSearch, WarehouseInLocation, Area, Location } from '~/Screens';
+import { GlobalSearch, LocationsDashboard, Area, Location } from '~/Screens';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faChartNetwork, faSearch, faWarehouseAlt, faMapSigns, faInventory } from 'assets/fa/pro-regular-svg-icons';
 
@@ -10,12 +10,12 @@ const navigation = [
       options: { headerShown: false },
       components: [
         {
-          name: 'Warehouses',
-          component: WarehouseInLocation,
+          name: 'Home',
+          component: LocationsDashboard,
           options: {
             headerShown: false,
-            tabBarIcon: faWarehouseAlt,
-            tabBarLabel : 'Warehouses'
+            tabBarIcon: faChartNetwork,
+            tabBarLabel: 'Dasboard',
           },
         },
         {
