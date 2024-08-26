@@ -22,6 +22,9 @@ export default {
 	'pallet-location' : 'maya/action/location/{}/pallet/{}',
 	'pallet-return' : 'maya/action/pallet/{}/return',
 	'pallet-change-status-state' : 'maya/action/pallet/{}',
+	'set-pallet-rental' : 'maya/action/pallet/{}/set-rental',
+	'set-pallet-not-reiceved' : 'maya/action/pallet/{}/not-received',
+	'set-pallet-undo' : 'maya/action/pallet/{}/undo-not-received',
 
 	'stock-deliveries-index' : 'maya/org/{}/warehouses/{}/incoming/stock-deliveries',
 	'stock-deliveries-show' : 'maya/org/{}/warehouses/{}/incoming/stock-deliveries/{}',
@@ -37,7 +40,7 @@ export default {
 	//location
 	'locations-index' : 'maya/org/{}/warehouses/{}/locations',
 	'locations-show' : 'maya/org/{}/warehouses/{}/locations/{}',
-	'locations-show-by-code' : 'maya/org/{}/warehouses/{}/locations/{}/code',
+	'locations-show-by-code' : 'maya/org/{}/warehouses/{}/locations/code/{}',
 	'location-pallet-index' : 'maya/org/{}/warehouses/{}/fulfilments/{}/locations/{}/pallets',
 
 	//delivery
@@ -47,7 +50,7 @@ export default {
 	'delivery-status-recived' : "maya/action/pallet-delivery/{}/received",
 	'delivery-status-not-recived' : "",
 	'delivery-status-booking-in' : "maya/action/pallet-delivery/{}/start-booking",
-	'delivery-status-booked-in' : "",
+	'delivery-status-booked-in' : "maya/action/pallet-delivery/{}/booked-in",
 
 
 	'delivery-notes-index' : 'maya/org/1/warehouses/1/dispatching/delivery-notes',

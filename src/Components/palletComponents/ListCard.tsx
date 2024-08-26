@@ -58,7 +58,11 @@ const PalletCard = props => {
           <View style={styles.textContainer}>
             <Text style={styles.title}>{props.data.record?.reference}</Text>
             <Text style={styles.description}>
-              Code : {props.data.record?.location_code || ' -'}
+              Location : {props.data.record?.location_code || ' -'}
+            </Text>
+
+            <Text style={styles.description}>
+              Rentals : {props.data.record?.rental_name || ' -'}
             </Text>
 
           </View>
@@ -123,5 +127,6 @@ const styles = StyleSheet.create({
   description : {
     fontSize : 12,
     color: COLORS.grey6,
+    marginVertical : 3
   }
 });

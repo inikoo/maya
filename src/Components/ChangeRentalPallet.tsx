@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {Request} from '~/Utils';
 import {useSelector} from 'react-redux';
-import {Text, Divider, Icon, Dialog} from '@rneui/themed';
+import {Text, Divider, Dialog} from '@rneui/themed';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
-import {useNavigation} from '@react-navigation/native';
 import Button from '~/Components/Button';
 import {Dropdown} from 'react-native-element-dropdown';
 
@@ -19,13 +18,16 @@ type Props = {
   visible: Boolean;
   onClose: Function;
   pallet: Object;
+  bulk: boolean;
+  onSuccess: Function;
+  onFailed: Function;
+  value: any;
 };
 
 function ChangeRentals(props: Props) {
-  const navigation = useNavigation();
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(props.bulk ? null : props.value);
   const [options, setOptions] = useState([]);
   const [errorLocationCode, setErrorLocationCode] = useState('');
 
@@ -63,32 +65,52 @@ function ChangeRentals(props: Props) {
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
-      textBody: error.response.data.message || 'failed to get Options rentals',
+      textBody: error.response.data.message || 'Failed to get rental options',
     });
   };
 
-  /*   const OnRentalChange = () => {
+  const onRentalChange = () => {
     Request(
-        'get',
-        'rentals-index',
-        {},
-        {},
-        [
-          organisation.active_organisation.id,
-          organisation.active_organisation.active_authorised_fulfilments.id,
-        ],
-        onSuccessGetOptions,
-        onFailedGetOptions,
-      );
-  } */
+      'patch',
+      'set-pallet-rental',
+      {},
+      {rental_id: value},
+      [props.pallet],
+      onSuccessChangeRental,
+      onFailedChangeRental,
+    );
+  };
+
+  const onSuccessChangeRental = response => {
+    props.onSuccess();
+    onCancel();
+    Toast.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: 'Success',
+      textBody: 'Rental changed successfully',
+    });
+  };
+
+  const onFailedChangeRental = error => {
+    props.onFailed();
+    console.log(error);
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message || 'Failed to change rental',
+    });
+  };
 
   const onCancel = () => {
+    setValue(props.bulk ? null : props.value);
+    setErrorLocationCode('');
     props.onClose();
   };
 
   useEffect(() => {
-    getOptions();
-  }, []);
+    setValue(props.bulk ? null : props.value);
+    getOptions()
+  }, [props.pallet]);
 
   return (
     <Dialog isVisible={props.visible}>
@@ -121,7 +143,7 @@ function ChangeRentals(props: Props) {
         <Divider style={{marginTop: 20}} />
         <View style={styles.dialogButtonContainer}>
           <Button type="secondary" title="Cancel" onPress={onCancel} />
-          <Button type="primary" title="Submit" onPress={() => null} />
+          <Button type="primary" title="Submit" onPress={onRentalChange} />
         </View>
       </View>
     </Dialog>
@@ -132,6 +154,9 @@ ChangeRentals.defaultProps = {
   title: 'Change Rentals',
   visible: false,
   onClose: () => null,
+  onSuccess: () => null,
+  onFailed: () => null,
+  value: null,
 };
 
 const styles = StyleSheet.create({
@@ -142,40 +167,11 @@ const styles = StyleSheet.create({
     gap: 10,
     marginTop: 20,
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 5,
-    marginBottom: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    backgroundColor: '#fff',
-  },
-  buttonScan: {
-    width: '15%',
-    marginTop: 5,
-    marginBottom: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    backgroundColor: '#fff',
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    paddingHorizontal: 10,
-  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
     gap: 3,
-  },
-  searchIcon: {
-    paddingVertical: 8,
-    paddingHorizontal: 5,
   },
   textLabel: {
     fontWeight: '500',
@@ -186,7 +182,6 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     marginVertical: 10,
     width: '100%',
-
     backgroundColor: 'white',
     borderRadius: 12,
     padding: 12,
@@ -197,7 +192,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 2,
   },
   icon: {

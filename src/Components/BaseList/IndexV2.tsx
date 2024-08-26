@@ -72,9 +72,8 @@ const BaseList = forwardRef((props: Props, ref) => {
   const [bulkMenuVisible, setBulkMenuVisible] = useState(false);
 
   useImperativeHandle(ref, () => ({
-    refreshList: () => {
-      onRefresh();
-    },
+    refreshList: () => {onRefresh()},
+    bulkValue : bulkValue
   }));
 
   const fetchMoreData = (isLoadMore = false) => {
@@ -566,7 +565,7 @@ const styles = StyleSheet.create({
   },
   sortInactive: {
     backgroundColor: '#FAFAFA',
-    borderColor: '#ACCB98',
+    borderColor: 'white',
   },
   avatarBackground: {
     borderRadius: 10,

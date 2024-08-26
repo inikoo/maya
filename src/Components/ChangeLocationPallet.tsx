@@ -13,7 +13,9 @@ type Props = {
     visible : Boolean,
     onClose : Function,
     pallet: Object
-    bulkMode : boolean
+    bulk : boolean
+    onSuccess : Function,
+    onFailed : Function
   };
 
 function ChangeLocation(props : Props) {
@@ -56,6 +58,8 @@ function ChangeLocation(props : Props) {
   };
 
   const ChangeLocationSuccess = response => {
+    props.onSuccess()
+    onCancel()
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
@@ -64,6 +68,7 @@ function ChangeLocation(props : Props) {
   };
 
   const ChangeLocationFailed = error => {
+    props.onFailed()
     console.log('errorMove', error);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -72,9 +77,6 @@ function ChangeLocation(props : Props) {
     });
   };
 
-  const closeDialog = () => {
-    props.onClose()
-  };
 
   const onCancel = () => {
     props.onClose()
@@ -127,7 +129,9 @@ ChangeLocation.defaultProps = {
     title: 'Change Location',
     visible : false,
     onClose : ()=>null,
-    bulkMode : false
+    bulkMode : false,
+    onFailed : () => null,
+    onSuccess : () => null
   };
 
 const styles = StyleSheet.create({
