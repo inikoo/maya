@@ -1,34 +1,78 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Icon} from '@rneui/themed';
-import {COLORS} from '~/Utils/Colors';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {
+  faSeedling,
+  faShare,
+  faSpellCheck,
+  faCheck,
+  faTimes,
+  faCheckDouble,
+  faSignOutAlt,
+  faFragile,
+  faGhost,
+  faWarehouseAlt,
+  faSadCry,
+  faArrowAltFromLeft,
+  faPallet,
+  faBox,
+  faSortSizeUp
+} from 'assets/fa/pro-light-svg-icons';
+import {findColorFromAiku} from '~/Utils';
+
+library.add(
+  faSeedling,
+  faShare,
+  faSpellCheck,
+  faCheck,
+  faTimes,
+  faCheckDouble,
+  faSignOutAlt,
+  faFragile,
+  faGhost,
+  faWarehouseAlt,
+  faSadCry,
+  faArrowAltFromLeft,
+  faPallet,
+  faBox,
+  faSortSizeUp
+);
 
 const PalletCard = props => {
+  console.log(props)
   const navigation = useNavigation();
-  console.log(navigation)
 
   return (
-    <View style={{...styles.container, backgroundColor: 'white'}}>
+    <View style={{...styles.container,  backgroundColor: props.data.bulkValue.includes(props.data.record.id) ? MAINCOLORS.primary : 'white'}}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Pallet',{pallet : props.data.record})}
-      /*   onLongPress={()=>props.data.onLongPress(props.data.record)} */
+        onPress={() =>
+          navigation.navigate('Pallet', {pallet: props.data.record})
+        }
+        onLongPress={()=>props.data.onLongPress(props.data.record)}
       >
         <View style={styles.row}>
           <View style={styles.textContainer}>
             <Text style={styles.title}>{props.data.record?.reference}</Text>
+            <Text style={styles.description}>
+              Code : {props.data.record?.location_code || ' -'}
+            </Text>
+
           </View>
           <View style={styles.iconContainer}>
             <View style={styles.row}>
-              <Icon
-                {...props.data.record?.state_icon.app}
+              <FontAwesomeIcon
+                icon={props.data.record?.type_icon.icon}
                 size={15}
-                style={{...styles.icon}}
+                color={findColorFromAiku(props.data.record?.type_icon.color)}
               />
-              <Icon
-                {...props.data.record?.status_icon.app}
+              <FontAwesomeIcon
+                icon={props.data.record?.status_icon.icon}
                 size={15}
-                style={styles.icon}
+                color={findColorFromAiku(props.data.record?.status_icon.color)}
               />
             </View>
           </View>
@@ -43,7 +87,6 @@ export default PalletCard;
 const styles = StyleSheet.create({
   container: {
     padding: 17,
-    backgroundColor: 'white',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -65,6 +108,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
+    gap:10
   },
   textContainer: {
     flex: 1,
@@ -76,4 +120,8 @@ const styles = StyleSheet.create({
   icon: {
     marginHorizontal: 5,
   },
+  description : {
+    fontSize : 12,
+    color: COLORS.grey6,
+  }
 });

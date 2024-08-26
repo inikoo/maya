@@ -3,8 +3,24 @@ import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
-import {Icon, Text} from '@rneui/themed'; // Import Icon from your icon library
+import {Icon, Text} from '@rneui/themed';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {findColorFromAiku} from '~/Utils';
+import dayjs from 'dayjs';
+import {defaultTo} from 'lodash';
+
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {
+  faSeedling,
+  faShare,
+  faCheck,
+  faTimes,
+  faCheckDouble,
+  faSpellCheck,
+} from 'assets/fa/pro-light-svg-icons';
+
+library.add(faSeedling, faShare, faSpellCheck, faCheck, faTimes, faCheckDouble);
 
 const Delivery = props => {
   const navigation = useNavigation();
@@ -19,13 +35,25 @@ const Delivery = props => {
           <View style={styles.row}>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{record.reference}</Text>
+              <View style={{marginTop: 5, flexDirection: 'row'}}>
+                <Text style={{...styles.description, marginRight : 3}}>
+                  Pallet : {record.number_pallets}  |  
+                </Text>
+                
+                <Text style={styles.description}>
+                  Estimate Date :{'  '}
+                  { record.estimated_delivery_date ? 
+                    dayjs(record.estimated_delivery_date).format('DD-MM-YYYY') : '-'
+                  }
+                </Text>
+              </View>
             </View>
             <View style={styles.iconContainer}>
               <View style={styles.row}>
-                <Icon
-                  {...record.state_icon.app}
-                  size={15}
-                  style={{...styles.icon}}
+                <FontAwesomeIcon
+                  icon={record.state_icon.icon}
+                  size={20}
+                  color={findColorFromAiku(record.state_icon.color)}
                 />
               </View>
             </View>
@@ -137,5 +165,9 @@ const styles = StyleSheet.create({
   },
   leftIconContainer: {
     marginRight: 18,
+  },
+  description: {
+    fontSize: 12,
+    color: COLORS.grey6,
   },
 });

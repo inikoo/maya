@@ -43,7 +43,12 @@ export default {
 	//delivery
 	'delivery-index' : "maya/org/{}/warehouses/{}/incoming/fulfilment-deliveries",
 	'delivery-show' : "maya/org/{}/warehouses/{}/incoming/fulfilment-deliveries/{}",
-	'delivery-pallet-index' : "maya/org/{}/warehouses/{}/pallet-deliveries/{}/pallets",
+	'delivery-pallet-index' : "maya/org/{}/warehouses/{}/incoming/fulfilment-deliveries/{}/pallets",
+	'delivery-status-recived' : "maya/action/pallet-delivery/{}/received",
+	'delivery-status-not-recived' : "",
+	'delivery-status-booking-in' : "maya/action/pallet-delivery/{}/start-booking",
+	'delivery-status-booked-in' : "",
+
 
 	'delivery-notes-index' : 'maya/org/1/warehouses/1/dispatching/delivery-notes',
 	'delivery-notes-show' : 'maya/org/{}/warehouses/{}/dispatching/delivery-notes/{}',
@@ -55,5 +60,8 @@ export default {
 
 	//global search
 	'global-search' : 'maya/org/{}/warehouses/{}/scanners',
-	'global-search-scanner' : 'maya/org/{}/warehouses/{}/scanners/{}'
+	'global-search-scanner' : 'maya/org/{}/warehouses/{}/scanners/{}',
+
+
+	'rentals-index' : 'maya/org/{}/fulfilment/{}/rentals'
 };

@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import {Request, IconColor} from '~/Utils';
 import {useSelector} from 'react-redux';
@@ -13,20 +14,32 @@ import {
   Text,
   BottomSheet,
   Icon,
-  Chip,
-  Dialog,
   Divider,
   ListItem,
 } from '@rneui/themed';
 import {defaultTo, isNull} from 'lodash';
 import dayjs from 'dayjs';
 import {MAINCOLORS} from '~/Utils/Colors';
+import {findColorFromAiku} from '~/Utils';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import DetailRow from '~/Components/DetailRow';
 import Barcode from 'react-native-barcode-builder';
-import Information from '~/Components/loactionComponents/Information';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
+import AbsoluteButton from '~/Components/absoluteButton';
+
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {
+  faSeedling,
+  faShare,
+  faCheck,
+  faTimes,
+  faCheckDouble,
+  faSpellCheck,
+} from 'assets/fa/pro-light-svg-icons';
+
+library.add(faSeedling, faShare, faSpellCheck, faCheck, faTimes, faCheckDouble);
 
 const DeliveryDetail = props => {
   const [loading, setLoading] = useState(true);
@@ -35,21 +48,10 @@ const DeliveryDetail = props => {
   const [dataSelected, setDataSelected] = useState(null);
   const [open, setOpen] = useState(false);
   const navigation = useNavigation();
+  const [loadingPrimary, setLoadingPrimary] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const buttonFeatures = [
-/*     {
-      icon: {
-        name: 'info',
-        type: 'material-icons',
-      },
-      key: 'info',
-      containerStyle: { borderBottomWidth: 1 },
-      title: 'Information',
-      onPress: () => {
-        setOpenDialogInfo(true);
-        setOpen(false);
-      },
-    }, */
     {
       icon: {
         name: 'truck',
@@ -58,7 +60,7 @@ const DeliveryDetail = props => {
       key: 'pallet',
       title: 'Pallet in Delivery',
       onPress: () => {
-        navigation.navigate('Delivery Pallet', { delivery: dataSelected });
+        navigation.navigate('Delivery Pallet', {delivery: dataSelected});
         setOpen(false);
       },
     },
@@ -88,6 +90,39 @@ const DeliveryDetail = props => {
 
   const onFailedGetDetail = error => {
     setLoading(false);
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message || 'failed to get data',
+    });
+  };
+
+  const changeStatus = ({url = ''}) => {
+    setLoadingPrimary(true);
+    Request(
+      'patch',
+      url,
+      {},
+      {},
+      [props.route.params.delivery.id],
+      onSuccessChangeStatus,
+      onFailedChangeStatus,
+    );
+  };
+
+  const onSuccessChangeStatus = res => {
+    getDetail()
+    setLoadingPrimary(false);
+  };
+
+  const onFailedChangeStatus = error => {
+    console.log(error);
+    setLoadingPrimary(false);
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message || 'failed to change status',
+    });
   };
 
   useEffect(() => {
@@ -109,9 +144,122 @@ const DeliveryDetail = props => {
       <View style={styles.container}>
         {!loading ? (
           <View>
-            <ScrollView>
+            <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={() => getDetail()}
+                />
+              }>
               <RenderContent dataSelected={dataSelected} />
             </ScrollView>
+            {dataSelected?.state == 'confirmed' && (
+              <View>
+                <AbsoluteButton
+                  loading={loadingPrimary}
+                  onPress={() => changeStatus({url: 'delivery-status-recived'})}
+                  postion={{
+                    bottom: -65,
+                    left: 260,
+                  }}
+                  content={
+                    <View>
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        size={30}
+                        color={'white'}
+                      />
+                      <Text style={{color: 'white', fontSize: 10}}>
+                        Recived
+                      </Text>
+                    </View>
+                  }
+                />
+                <AbsoluteButton
+                  onPress={() =>
+                    changeStatus({url: 'delivery-status-not-recived'})
+                  }
+                  postion={{
+                    bottom: 20,
+                    left: 20,
+                  }}
+                  constainerStyle={{
+                    backgroundColor: MAINCOLORS.danger,
+                    height: 80,
+                    width: 80,
+                    borderRadius: 35,
+                  }}
+                  content={
+                    <View>
+                      <FontAwesomeIcon
+                        style={{marginLeft: 10}}
+                        icon={faTimes}
+                        size={30}
+                        color={'white'}
+                      />
+                      <Text style={{color: 'white', fontSize: 10}}>
+                        Not Recived
+                      </Text>
+                    </View>
+                  }
+                />
+              </View>
+            )}
+
+            {dataSelected?.state == 'received' && (
+              <View>
+                <AbsoluteButton
+                  onPress={() =>
+                    changeStatus({url: 'delivery-status-booking-in'})
+                  }
+                  loading={loadingPrimary}
+                  loading={loadingPrimary}
+                  postion={{
+                    bottom: -65,
+                    left: 260,
+                  }}
+                  content={
+                    <View>
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        size={30}
+                        color={'white'}
+                      />
+                      <Text style={{color: 'white', fontSize: 10}}>
+                        Booking in
+                      </Text>
+                    </View>
+                  }
+                />
+              </View>
+            )}
+
+            {dataSelected?.state == 'booking-in' && (
+              <View>
+                <AbsoluteButton
+                  onPress={() =>
+                    changeStatus({url: 'delivery-status-booked-in'})
+                  }
+                  loading={loadingPrimary}
+                  postion={{
+                    bottom: -65,
+                    left: 260,
+                  }}
+                  content={
+                    <View>
+                      <FontAwesomeIcon
+                        icon={faCheckDouble}
+                        size={30}
+                        color={'white'}
+                      />
+                      <Text style={{color: 'white', fontSize: 10}}>
+                        Booked in
+                      </Text>
+                    </View>
+                  }
+                />
+              </View>
+            )}
           </View>
         ) : (
           <View
@@ -119,18 +267,18 @@ const DeliveryDetail = props => {
               flex: 1,
               justifyContent: 'center',
             }}>
-            <ActivityIndicator size="large" />
+            <ActivityIndicator size="large" color={MAINCOLORS.primary} />
           </View>
         )}
       </View>
       <BottomSheet modalProps={{}} isVisible={open}>
         <View style={styles.wrapper}>
           <Header
-            title="Setting"
+            title="Menu"
             rightIcon={
               <TouchableOpacity
                 onPress={() => setOpen(false)}
-                style={{ marginRight: 20 }}>
+                style={{marginRight: 15}}>
                 <Icon
                   color={MAINCOLORS.danger}
                   name="closecircle"
@@ -141,11 +289,11 @@ const DeliveryDetail = props => {
             }
           />
           <Divider />
-          <View style={{ marginVertical: 15 }}>
+          <View style={{marginVertical: 15}}>
             {buttonFeatures.map((l, i) => (
               <ListItem
                 key={i}
-                containerStyle={{ ...l.containerStyle }}
+                containerStyle={{...l.containerStyle}}
                 onPress={l.onPress}>
                 <Icon {...l.icon} size={18} />
                 <ListItem.Content>
@@ -200,10 +348,26 @@ export const RenderContent = ({dataSelected = {}}) => {
       <View style={styles.rowDetail}>
         <DetailRow
           title="State"
-          text={defaultTo(dataSelected.state_label, '-')}
+          text={
+            <View
+              style={{
+                ...styles.stateContainer,
+                backgroundColor: findColorFromAiku(
+                  dataSelected?.state_icon?.color,
+                ),
+              }}>
+              <FontAwesomeIcon
+                icon={dataSelected?.state_icon?.icon}
+                color="white"
+                size={12}
+              />
+              <Text style={{fontSize: 12, color: 'white'}}>
+                {defaultTo(dataSelected.state_label, '-')}
+              </Text>
+            </View>
+          }
         />
       </View>
-
       <View style={styles.rowDetail}>
         <DetailRow
           title="Created At"
@@ -265,6 +429,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
+  },
+  stateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    gap: 5,
+    paddingVertical: 2,
   },
 });
 

@@ -74,6 +74,31 @@ const checkPermission = (data,permissions) =>{
 }
 
 
+const findColorFromAiku = (data) => {
+  switch (data) {
+    case 'lime':
+      return 'rgb(132, 204, 22)';
+    case 'purple':
+      return "rgb(168 85 247)";
+    case 'indigo':
+        return MAINCOLORS.primary;
+    case 'emerald':
+      return "rgb(16 185 129)";
+    case 'slate':
+      return "rgb(100 116 139)";
+    case 'red':
+        return "red";
+    case 'gray':
+      return "gray";
+    case 'green':
+      return "green";
+    default:
+      return MAINCOLORS.primary;
+  }
+}
+
+
+
 export {
   WriteCredential,
   UpdateCredential,
@@ -84,5 +109,6 @@ export {
   IconColor,
   getWarehouse,
   checkPermissionNested,
-  checkPermission
+  checkPermission,
+  findColorFromAiku
 };

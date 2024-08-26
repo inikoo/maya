@@ -6,18 +6,18 @@ const DetailRow = ({title, text, titleStyle, textStyle}) => {
   return (
     <View style={styles.row}>
       <Text style={{...styles.title, ...titleStyle}}>
-        {typeof title === 'function' ? title() : title} :
+        {title} :
       </Text>
       <Text style={{...styles.text, ...textStyle}}>
-        {typeof text === 'function' ? text() : text}
+        {text}
       </Text>
     </View>
   );
 };
 
 DetailRow.defaultProps = {
-  title: '-',
-  text: '-',
+  title: <Text>-</Text>,
+  text: <Text>-</Text>,
   titleStyle: {},
   textStyle: {},
 };

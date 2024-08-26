@@ -1,4 +1,10 @@
-import React, { useEffect, useState, ReactNode, forwardRef, useImperativeHandle } from 'react';
+import React, {
+  useEffect,
+  useState,
+  ReactNode,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,21 +13,21 @@ import {
   TextInput,
   ActivityIndicator,
   Text,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { MAINCOLORS } from '~/Utils/Colors';
+import {useNavigation} from '@react-navigation/native';
+import {MAINCOLORS} from '~/Utils/Colors';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
-import { Icon, Avatar, Card, Divider } from '@rneui/base';
-import { Request } from '~/Utils';
-import { isObject, isArray, get } from 'lodash';
+import {Icon, Avatar, Card, Divider, BottomSheet} from '@rneui/themed';
+import {Request} from '~/Utils';
+import {isObject, isArray, get} from 'lodash';
 import Empty from '~/Components/Empty';
 import Filter from '~/Components/Filter';
-import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import LinearGradient from 'react-native-linear-gradient';
-import { FlatList } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import {FlatList} from 'react-native';
+import {SwipeListView} from 'react-native-swipe-list-view';
 
 type Props = {
   title: ReactNode;
@@ -38,8 +44,10 @@ type Props = {
   itemList: ReactNode | Function;
   useScan: Boolean;
   screenNavigation: String;
-  headerProps : any;
-  height : Number
+  headerProps: any;
+  height: Number;
+  hiddenItem: ReactNode;
+  bulkMenu : ReactNode
 };
 
 let timeoutId: any;
@@ -50,7 +58,9 @@ const BaseList = forwardRef((props: Props, ref) => {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [TotalData, setTotalData] = useState(0);
-  const [sortValue, setSortValue] = useState(props.sortSchema ? `-${props.sortSchema}` : null);
+  const [sortValue, setSortValue] = useState(
+    props.sortSchema ? `-${props.sortSchema}` : null,
+  );
   const [filterValue, setFilterValue] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [lastFetchId, setLastFetchId] = useState(0);
@@ -59,6 +69,7 @@ const BaseList = forwardRef((props: Props, ref) => {
   const [isListEnd, setIsListEnd] = useState(false);
   const [listModeBulk, setListModeBulk] = useState(false);
   const [bulkValue, setBulkValue] = useState([]);
+  const [bulkMenuVisible, setBulkMenuVisible] = useState(false);
 
   useImperativeHandle(ref, () => ({
     refreshList: () => {
@@ -82,7 +93,7 @@ const BaseList = forwardRef((props: Props, ref) => {
   };
 
   const setFilterToServer = () => {
-    let filter = { ...filterValue };
+    let filter = {...filterValue};
     for (const key in filter) {
       if (isObject(filter[key]) || isArray(filter[key])) {
         filter[key] = filter[key].toString();
@@ -102,17 +113,17 @@ const BaseList = forwardRef((props: Props, ref) => {
         [props.prefix ? `${props.prefix}Page` : 'page']: page,
         ...props.params,
         ['filter[global]']: search,
-        ...(sortValue ? { sort: sortValue } : {}),
+        ...(sortValue ? {sort: sortValue} : {}),
         ...filter,
       },
       props.args,
       onSuccess,
       onFailed,
-      { fetchId: lastFetchId, isLoadMore, finalPage },
+      {fetchId: lastFetchId, isLoadMore, finalPage},
     );
   };
 
-  const onSuccess = (response: object, { fetchId, isLoadMore, finalPage }) => {
+  const onSuccess = (response: object, {fetchId, isLoadMore, finalPage}) => {
     if (fetchId !== lastFetchId) return;
     const nextState = get(response, 'data', []);
     if (!isLoadMore) {
@@ -149,39 +160,62 @@ const BaseList = forwardRef((props: Props, ref) => {
     }
   };
 
-  const renderItem = ({ item }: { item: ItemData }) => {
+  const onLongPress = item => {
+    let updatedValue = [...bulkValue];
+
+    if (updatedValue.includes(item[props.itemKey])) {
+      updatedValue = updatedValue.filter(key => key !== item[props.itemKey]);
+    } else {
+      updatedValue.push(item[props.itemKey]);
+    }
+
+    setBulkValue(updatedValue);
+
+    if (updatedValue.length === 0) {
+      setListModeBulk(prev => false);
+    } else {
+      setListModeBulk(prev => true);
+    }
+  };
+
+  const renderItem = ({item}: {item: ItemData}) => {
     if (!props.itemList) {
       return (
-        <View style={{ backgroundColor: '#ffffff' }}>
-          <TouchableOpacity>
-            <Card containerStyle={styles.cardStat}>
+        <View style={{backgroundColor: '#ffffff'}}>
+          <TouchableOpacity onLongPress={() => onLongPress(item)}>
+            <Card
+              containerStyle={
+                bulkValue.includes(item[props.itemKey])
+                  ? styles.cardStatBulk
+                  : styles.cardStat
+              }>
               <Text style={styles.labelStat}>{item[props.itemKey]}</Text>
             </Card>
           </TouchableOpacity>
         </View>
       );
     } else {
-      return props.itemList(item);
+      return props.itemList(item, {onLongPress, listModeBulk, bulkValue});
     }
   };
 
-  const renderHiddenItem = ({ item }: { item: ItemData }) => {
-    return (
-      <View style={styles.hiddenItemContainer}>
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={() => handleDelete(item.id)}
-        >
-          <Icon name='trash' type='font-awesome-5' color='#ffffff' />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.editButton}
-          onPress={() => handleEdit(item.id)}
-        >
-          <Icon name='edit' type='font-awesome-5' color='#ffffff' />
-        </TouchableOpacity>
-      </View>
-    );
+  const renderHiddenItem = ({item}: {item: ItemData}) => {
+    if (props.hiddenItem) return props.hiddenItem(item);
+    else
+      return (
+        <View style={styles.hiddenItemContainer}>
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => handleDelete(item.id)}>
+            <Icon name="trash" type="font-awesome-5" color="#ffffff" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() => handleEdit(item.id)}>
+            <Icon name="edit" type="font-awesome-5" color="#ffffff" />
+          </TouchableOpacity>
+        </View>
+      );
   };
 
   const handleDelete = (id: string) => {
@@ -192,12 +226,10 @@ const BaseList = forwardRef((props: Props, ref) => {
     console.log(`Edit item with id: ${id}`);
   };
 
-  const renderEmpty = () => (
-    <Empty buttonOnPress={() => fetchMoreData()} />
-  );
+  const renderEmpty = () => <Empty buttonOnPress={() => fetchMoreData()} />;
 
   const renderList = () => {
-    if (props.enableSwipe) {
+    if (props.enableSwipe && !listModeBulk) {
       return (
         <SwipeListView
           data={data}
@@ -244,7 +276,11 @@ const BaseList = forwardRef((props: Props, ref) => {
   const renderSearch = () => {
     return (
       <View style={styles.searchContainer}>
-        <View style={{ ...styles.inputContainer, width: !props.useScan ? '100%' : '81%' }}>
+        <View
+          style={{
+            ...styles.inputContainer,
+            width: !props.useScan ? '100%' : '81%',
+          }}>
           <TextInput
             style={styles.input}
             placeholder="Search..."
@@ -283,21 +319,32 @@ const BaseList = forwardRef((props: Props, ref) => {
     setSearch(null);
     setSortValue(`-${props.sortSchema}`);
     fetchMoreData();
+    setListModeBulk(false);
+    setBulkValue([]);
   };
 
   const filterButton = () => {
     if (props.filterSchema.length > 0) {
       return (
         <TouchableOpacity onPress={() => setFilterVisible(true)}>
-          <Icon name='filter' type='feather' color='black' />
+          <Icon name="filter" type="feather" color="black" />
         </TouchableOpacity>
       );
     }
   };
 
-  const onChangeFilter = (value) => {
+  const BulkMenuButton = () => {
+    return (
+      <TouchableOpacity onPress={()=>setBulkMenuVisible(true)}>
+        <Icon name="bars" type="font-awesome" color="black" />
+      </TouchableOpacity>
+    );
+  };
+
+
+  const onChangeFilter = value => {
     if (value) {
-      setFilterValue(prev => ({ ...prev, ...value }));
+      setFilterValue(prev => ({...prev, ...value}));
     } else setFilterValue(prev => ({}));
 
     setFilterVisible(false);
@@ -320,6 +367,14 @@ const BaseList = forwardRef((props: Props, ref) => {
     if (props.screenNavigation) navigation.navigate(props.screenNavigation);
   };
 
+  const bulkMenu  = () => {
+    if(props.bulkMenu){
+      return props.bulkMenu(bulkValue)
+    }else {
+      return <Empty useButton={false} title={""} subtitle={''} />
+    }
+  }
+
   useEffect(() => {
     fetchMoreData();
   }, [sortValue, filterValue]);
@@ -327,30 +382,43 @@ const BaseList = forwardRef((props: Props, ref) => {
   return (
     <Layout>
       <View>
-        <Header title={props.title} rightIcon={filterButton()} {...props.headerProps} />
+        <Header
+          title={props.title}
+          rightIcon={listModeBulk ? BulkMenuButton() : filterButton()}
+          {...props.headerProps}
+        />
         {renderSearch()}
         <View style={styles.recordsWrapper}>
-          <LinearGradient
-            colors={[MAINCOLORS.primary, '#ff6f00']}
-            style={styles.recordsContainer}>
-            <Text style={styles.recordsText}>Records : {TotalData}</Text>
-          </LinearGradient>
+          {listModeBulk ? (
+            <View style={styles.recordsContainer}>
+              <Text style={styles.recordsText}>
+                Selected : {bulkValue.length}/{TotalData}
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.recordsContainer}>
+              <Text style={styles.recordsText}>Records : {TotalData}</Text>
+            </View>
+          )}
+
           {props.sortSchema && (
             <TouchableOpacity onPress={onSort} style={styles.avatarBackground}>
               <Avatar
                 size={30}
                 containerStyle={styles.sortInactive}
                 icon={{
-                  name: !sortValue.includes('-') ? 'sort-alpha-down' : 'sort-alpha-up-alt',
+                  name: !sortValue.includes('-')
+                    ? 'sort-alpha-down'
+                    : 'sort-alpha-up-alt',
                   type: 'font-awesome-5',
-                  color: 'black'
+                  color: 'black',
                 }}
               />
             </TouchableOpacity>
           )}
         </View>
         <Divider style={styles.divider} />
-        <View style={{height : props.height}}>
+        <View style={{height: props.height}}>
           {loading ? renderLoading() : renderList()}
         </View>
         <Filter
@@ -361,6 +429,32 @@ const BaseList = forwardRef((props: Props, ref) => {
           onClose={() => setFilterVisible(false)}
         />
       </View>
+
+      <BottomSheet isVisible={bulkMenuVisible}>
+        <View style={{ backgroundColor : '#ffffff'}}>
+          <Header
+            title={
+              <View style={styles.headerSheetContainer}>
+                <Text style={styles.title}>Bulk Actions</Text>
+              </View>
+            }
+            rightIcon={
+              <TouchableOpacity
+                onPress={()=>setBulkMenuVisible(false)}
+                style={{marginRight: 20}}>
+                <Icon
+                  color={MAINCOLORS.danger}
+                  name="closecircle"
+                  type="antdesign"
+                  size={20}
+                />
+              </TouchableOpacity>
+            }
+          />
+          <Divider />
+          {bulkMenu()}
+        </View>
+      </BottomSheet>
     </Layout>
   );
 });
@@ -374,7 +468,7 @@ BaseList.defaultProps = {
   leftOpenValue: 50,
   rightOpenValue: -60,
   useScan: true,
-  height : 520
+  height: 520,
 };
 
 const styles = StyleSheet.create({
@@ -389,6 +483,12 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     backgroundColor: '#fff',
   },
+  title: {
+    fontFamily: 'Inter',
+    fontSize: 20,
+    fontWeight: '700',
+    marginLeft: 10,
+  },
   buttonScan: {
     width: '15%',
     marginTop: 20,
@@ -396,6 +496,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: 'gray',
+    backgroundColor: '#fff',
+  },
+  headerSheetContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     backgroundColor: '#fff',
   },
   input: {
@@ -420,6 +528,14 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     backgroundColor: '#FAFAFA',
   },
+  cardStatBulk: {
+    borderRadius: 10,
+    paddingVertical: 20,
+    marginTop: 10,
+    marginRight: 0,
+    marginLeft: 0,
+    backgroundColor: 'red',
+  },
   labelStat: {
     fontSize: 14,
     fontWeight: '700',
@@ -430,7 +546,7 @@ const styles = StyleSheet.create({
   footerContainer: {
     marginVertical: 10,
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   recordsWrapper: {
     flexDirection: 'row',
@@ -441,6 +557,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 10,
+    backgroundColor: MAINCOLORS.primary,
   },
   recordsText: {
     fontSize: 14,
@@ -467,7 +584,7 @@ const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   hiddenItemContainer: {
     flexDirection: 'row',
