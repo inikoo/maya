@@ -1,4 +1,4 @@
-import { WriteCredential, WriteOrganisation, WriteWarehouse } from '../Utils/auth';
+import { WriteCredential,RemoveCredential, WriteOrganisation, WriteWarehouse } from '../Utils/auth';
 
 export default {
   userReducer(state = {}, action: object) {
@@ -40,6 +40,7 @@ export default {
           group: null,
           organisations: null,
         };
+        RemoveCredential()
         break;
     }
     return state;

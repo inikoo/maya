@@ -7,6 +7,7 @@ import {checkPermissionNested, checkPermission} from '~/Utils';
 import {UpdateCredential, RemoveCredential} from '~/Utils/auth';
 import {loginRoutes, routes, drawerRoutes} from './RouteList';
 import DrawerNavigation from '~/Components/Drawer';
+import {isNull} from 'lodash'
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ function Routes() {
   const user = useSelector(state => state.userReducer);
   const organisationRedux = useSelector(state => state.organisationReducer,)?.active_organisation;
   const warehouseRedux = useSelector(state => state.warehouseReducer);
+  const [loginRouteList, setLoginRoutesList] = useState(loginRoutes);
   const [drawerRoutesList, setDrawerRoutes] = useState(
       drawerRoutes({
         organisation: organisationRedux,
@@ -34,10 +36,12 @@ function Routes() {
       const warehouse = await AsyncStorage.getItem('@warehouse:Key');
 
       if (!storedUser) {
+       
         setUserStorage(null);
       } else {
         const data = JSON.parse(storedUser);
         const profile = await UpdateCredential(data.token);
+        
 
         if (profile.status === 'Success' && data.token) {
           if (!user.token) {
@@ -56,14 +60,12 @@ function Routes() {
           setUserStorage(data);
         } else {
           setUserStorage(null);
-          RemoveCredential();
           dispatch(Action.DestroyUserSessionProperties());
         }
       }
     } catch (error) {
       console.error('Error fetching credentials from AsyncStorage:', error);
       setUserStorage(null);
-      RemoveCredential();
       dispatch(Action.DestroyUserSessionProperties());
     } finally {
       setIsLoading(false);
@@ -72,6 +74,7 @@ function Routes() {
 
   // Update routes whenever user, organisationRedux, or warehouseRedux changes
   useEffect(() => {
+    setIsLoading(true)
     checkUser();
     if (user && organisationRedux && warehouseRedux) {
       setDrawerRoutes(
@@ -97,15 +100,9 @@ function Routes() {
   }
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}>
-      {!userStorage ? (
-        loginRoutes.map((item, index) => (
+    <Stack.Navigator>
+      {!userStorage  ?  (
+        loginRouteList.map((item, index) => (
           <Stack.Screen
             key={index}
             name={item.name}

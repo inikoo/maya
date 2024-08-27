@@ -39,6 +39,8 @@ import {
   // return pallet
   ReturnDetail,
   ReturnScanner,
+  PalletReturns,
+  StoredItemsReturns,
 
   //Inventory
   InventoryNavigation,
@@ -205,7 +207,7 @@ const routes = ({organisation = null, warehouse = null}) => [
   {
     name: 'Delivery Scanner',
     component: DeliveryScanner,
-    options: {headerShown: false}, // Added options here for consistency
+    options: {headerShown: false}, 
   },
   {
     name: 'Delivery Pallet',
@@ -217,12 +219,22 @@ const routes = ({organisation = null, warehouse = null}) => [
   {
     name: 'Return',
     component: ReturnDetail,
-    options: {headerShown: false}, // Added options here for consistency
+    options: {headerShown: false}, 
+  },
+  {
+    name: 'Return Pallet',
+    component: PalletReturns,
+    options: {headerShown: false}, 
+  },
+  {
+    name: 'Return Stored Items',
+    component: StoredItemsReturns,
+    options: {headerShown: false}, 
   },
   {
     name: 'Return Scanner',
     component: ReturnScanner,
-    options: {headerShown: false}, // Added options here for consistency
+    options: {headerShown: false}, 
   },
 ];
 

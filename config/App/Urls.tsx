@@ -26,6 +26,11 @@ export default {
 	'set-pallet-not-reiceved' : 'maya/action/pallet/{}/not-received',
 	'set-pallet-undo' : 'maya/action/pallet/{}/undo-not-received',
 
+
+	'set-pallet-pallet-and-stored-item-pick' : 'maya/action/pallet-return-item/{}/pick',
+	'set-pallet-pallet-and-stored-item-undo' : 'maya/action/pallet-return-item/{}/undo-pick',
+	'set-pallet-pallet-and-stored-item-not-picked' : 'maya/action/pallet-return-item/{}/not-picked',
+
 	'stock-deliveries-index' : 'maya/org/{}/warehouses/{}/incoming/stock-deliveries',
 	'stock-deliveries-show' : 'maya/org/{}/warehouses/{}/incoming/stock-deliveries/{}',
 
@@ -52,14 +57,18 @@ export default {
 	'delivery-status-booking-in' : "maya/action/pallet-delivery/{}/start-booking",
 	'delivery-status-booked-in' : "maya/action/pallet-delivery/{}/booked-in",
 
-
 	'delivery-notes-index' : 'maya/org/1/warehouses/1/dispatching/delivery-notes',
 	'delivery-notes-show' : 'maya/org/{}/warehouses/{}/dispatching/delivery-notes/{}',
 
 	//return
-	'return-index' : "maya/org/{}/warehouses/{}/dispatching/returns",
-	'return-show' : "maya/org/{}/warehouses/{}/dispatching/returns/{}",
-	'return-pallet-index' : "maya/org/{}/warehouses/{}/pallet-returns/{}/pallets",
+	'return-index' : "maya/org/1/warehouses/1/dispatching/fulfilment-returns",
+	'return-show' : "maya/org/{}/warehouses/{}/dispatching/fulfilment-returns/{}",
+	'return-pallet-index' : "maya/org/{}/warehouses/{}/dispatching/fulfilment-returns/{}/pallets",
+	'return-stored-items-index' : "maya/org/{}/warehouses/{}/dispatching/fulfilment-returns/{}/stored-items",
+	'return-status-confirmed' : 'maya/action/pallet-return/{}/confirm',
+	'retrun-status-picking' : 'maya/action/pallet-return/{}/start-picking',
+	'return-status-picked' : 'maya/action/pallet-return/{}/picked',
+	'retrun-status-dispatch' : 'maya/action/pallet-return/{}/dispatch',
 
 	//global search
 	'global-search' : 'maya/org/{}/warehouses/{}/scanners',

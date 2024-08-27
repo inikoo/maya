@@ -1,4 +1,4 @@
-import {GoodsOutDashboard, Pallets, StoredItems, PalletReturns, DeliveryNotes} from '~/Screens';
+import {GoodsOutDashboard, Pallets, StoredItems, Returns, DeliveryNotes} from '~/Screens';
 import {library} from '@fortawesome/fontawesome-svg-core';
 
 import {
@@ -28,15 +28,6 @@ const navigation = [
           tabBarLabel: 'Dasboard',
         },
       },
-     /*  {
-        name: 'Search',
-        component: GlobalSearch,
-        options: {
-          tabBarLabel: 'Search',
-          headerShown: false,
-          tabBarIcon: faSearch,
-        },
-      }, */
       {
         name: 'Deliveries Note',
         component: DeliveryNotes,
@@ -48,7 +39,7 @@ const navigation = [
       },
       {
         name: 'Fullfilment Return',
-        component: PalletReturns,
+        component: Returns,
         options: {
           tabBarLabel: 'Return',
           headerShown: false,

@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   StyleSheet,
   View,
@@ -17,7 +18,7 @@ import {
   Divider,
   ListItem,
 } from '@rneui/themed';
-import {defaultTo, isNull} from 'lodash';
+import {defaultTo} from 'lodash';
 import dayjs from 'dayjs';
 import {MAINCOLORS} from '~/Utils/Colors';
 import {findColorFromAiku} from '~/Utils';
@@ -111,7 +112,7 @@ const DeliveryDetail = props => {
   };
 
   const onSuccessChangeStatus = res => {
-    getDetail()
+    getDetail();
     setLoadingPrimary(false);
   };
 
@@ -125,9 +126,11 @@ const DeliveryDetail = props => {
     });
   };
 
-  useEffect(() => {
-    getDetail();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getDetail();
+    }, [props.route.params.delivery.id])
+  );
 
   return (
     <Layout>
@@ -153,7 +156,7 @@ const DeliveryDetail = props => {
               }>
               <RenderContent dataSelected={dataSelected} />
             </ScrollView>
-            {dataSelected?.state == 'confirmed' && (
+            {dataSelected?.state === 'confirmed' && (
               <View>
                 <AbsoluteButton
                   loading={loadingPrimary}
@@ -170,7 +173,7 @@ const DeliveryDetail = props => {
                         color={'white'}
                       />
                       <Text style={{color: 'white', fontSize: 10}}>
-                        Recived
+                        Received
                       </Text>
                     </View>
                   }
@@ -198,7 +201,7 @@ const DeliveryDetail = props => {
                         color={'white'}
                       />
                       <Text style={{color: 'white', fontSize: 10}}>
-                        Not Recived
+                        Not Received
                       </Text>
                     </View>
                   }
@@ -206,13 +209,12 @@ const DeliveryDetail = props => {
               </View>
             )}
 
-            {dataSelected?.state == 'received' && (
+            {dataSelected?.state === 'received' && (
               <View>
                 <AbsoluteButton
                   onPress={() =>
                     changeStatus({url: 'delivery-status-booking-in'})
                   }
-                  loading={loadingPrimary}
                   loading={loadingPrimary}
                   postion={{
                     bottom: -65,
@@ -234,7 +236,7 @@ const DeliveryDetail = props => {
               </View>
             )}
 
-            {dataSelected?.state == 'booking-in' && (
+            {dataSelected?.state === 'booking-in' && (
               <View>
                 <AbsoluteButton
                   onPress={() =>

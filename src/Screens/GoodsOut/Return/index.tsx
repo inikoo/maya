@@ -19,10 +19,19 @@ import {
   faCheckDouble,
   faSpellCheck,
   faPallet,
-  faNarwhal
+  faNarwhal,
 } from 'assets/fa/pro-light-svg-icons';
 
-library.add(faSeedling, faShare, faSpellCheck, faCheck, faTimes, faCheckDouble, faPallet, faNarwhal);
+library.add(
+  faSeedling,
+  faShare,
+  faSpellCheck,
+  faCheck,
+  faTimes,
+  faCheckDouble,
+  faPallet,
+  faNarwhal,
+);
 
 const Returns = props => {
   const navigation = useNavigation();
@@ -30,16 +39,15 @@ const Returns = props => {
   const warehouse = useSelector(state => state.warehouseReducer);
 
   const Item = record => {
-    console.log(record)
     return (
       <View style={{...styles.container, backgroundColor: 'white'}}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Delivery', {delivery: record})}>
+          onPress={() => navigation.navigate('Return', {return: record})}>
           <View style={styles.row}>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{record.reference}</Text>
-              <View style={{marginTop: 5, marginHorizontal : 2}}>
-                <Text style={{...styles.description, marginRight : 3}}>
+              <View style={{marginTop: 5, marginHorizontal: 2}}>
+                <Text style={{...styles.description, marginRight: 3}}>
                   Customer Reference : {record.customer_reference || '-'}
                 </Text>
               </View>
@@ -84,6 +92,23 @@ const Returns = props => {
       sortSchema="reference"
       screenNavigation={'Pallet Scanner'}
       filterSchema={[
+        {
+          title: 'type',
+          key: 'elements[type]',
+          type: 'checkBox',
+          propsItem: {
+            options: [
+              {
+                label: 'Pallet',
+                value: 'pallet',
+              },
+              {
+                label: 'Stored Items',
+                value: 'stored_item',
+              },
+            ],
+          },
+        },
         {
           title: 'State',
           key: 'elements[state]',
@@ -145,7 +170,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
-    gap : 10
+    gap: 10,
   },
   textContainer: {
     flex: 1,

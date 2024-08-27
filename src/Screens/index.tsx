@@ -69,7 +69,8 @@ export { default as GoodsOutNavigation } from './GoodsOut/Navigator';
 export { default as DeliveryNotes } from './GoodsOut/DeliveryNotes';
 
 //return
-export { default as PalletReturns } from './GoodsOut/Return';
-export { default as StoredItemsReturns } from './GoodsOut/Return/StoredItemsReturns';
+export { default as Returns } from './GoodsOut/Return';
+export { default as StoredItemsReturns } from './GoodsOut/Return/StoredItems';
+export { default as PalletReturns } from './GoodsOut/Return/Pallet';
 export { default as ReturnDetail } from './GoodsOut/Return/Detail';
 export { default as ReturnScanner } from './GoodsOut/Return/Scanner';

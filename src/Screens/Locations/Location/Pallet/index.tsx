@@ -5,7 +5,7 @@ import {
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
-import PalletCard from '~/Components/palletComponents/ListCard';
+import PalletCard from '~/Components/palletComponents/ListCardDelivery';
 
 const LocationPallet = props => {
   const navigation = useNavigation();

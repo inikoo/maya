@@ -10,13 +10,14 @@ import {
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native'; // Import useNavigation
 import BaseList from '~/Components/BaseList/IndexV2';
-import PalletCard from '~/Components/palletComponents/ListCard';
+import PalletCard from '~/Components/palletComponents/ListCardDelivery';
 import ChangeLocation from '~/Components/ChangeLocationPallet';
 import {Request} from '~/Utils';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import AbsoluteButton from '~/Components/absoluteButton';
-import {Icon, ListItem} from '@rneui/themed';
+import {ListItem} from '@rneui/themed';
 import ChangeRentals from '~/Components/ChangeRentalPallet';
+import { MAINCOLORS } from '~/Utils/Colors';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
@@ -50,14 +51,13 @@ library.add(
 
 const DeliveryPallet = props => {
   const navigation = useNavigation(); // Get the navigation object
-  const organisation = useSelector(
-    state => state.organisationReducer.active_organisation,
-  );
+  const organisation = useSelector( state => state.organisationReducer.active_organisation,);
   const warehouse = useSelector(state => state.warehouseReducer);
   const delivery = props.route.params?.delivery; // Use optional chaining to safely access delivery
   const [openLocation, setOpenLocation] = useState(false);
   const [openRentals, setOpenRentals] = useState(false);
   const [selectedPallet, setSelectedPallet] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
   const [bulkMode, setBlukMode] = useState(false);
   const _baseList = useRef(null);
 
@@ -132,19 +132,15 @@ const DeliveryPallet = props => {
   };
 
   const onSuccessUndo = res => {
-    console.log('ss',res)
     if (_baseList.current) _baseList.current.refreshList();
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
       textBody: 'success change status',
     });
-    console.log(res);
-
   };
 
   const onFailedUndo = error => {
-    console.log(error);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -240,6 +236,7 @@ const DeliveryPallet = props => {
   };
 
   const changeStatusDelivery = ({url = ''}) => {
+    setLoadingButton(true)
     Request(
       'patch',
       url,
@@ -252,11 +249,13 @@ const DeliveryPallet = props => {
   };
 
   const onSuccessChangeStatusDelivery = res => {
-    console.log(res);
+    setLoadingButton(false)
+    navigation.navigate('Delivery',{delivery : delivery})
+    if (_baseList.current) _baseList.current.refreshList();
   };
 
   const onFailedChangeStatusDelivery = error => {
-    console.log(error);
+    setLoadingButton(false)
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -269,6 +268,9 @@ const DeliveryPallet = props => {
       {delivery && (
         <BaseList
           ref={_baseList}
+          headerProps={{
+            useLeftIcon: true
+          }}
           urlKey="delivery-pallet-index"
           prefix="pallets"
           hiddenItem={renderHiddenItem}
@@ -300,36 +302,15 @@ const DeliveryPallet = props => {
       {delivery?.state == 'confirmed' && (
         <View>
           <AbsoluteButton
+            loading = {loadingButton}
             onPress={() =>
               changeStatusDelivery({url: 'delivery-status-recived'})
             }
             content={
-              <TouchableOpacity>
+              <View>
                 <FontAwesomeIcon icon={faCheck} size={30} color={'white'} />
                 <Text style={{color: 'white', fontSize: 10}}>Recived</Text>
-              </TouchableOpacity>
-            }
-          />
-          <AbsoluteButton
-            onPress={() =>
-              changeStatusDelivery({url: 'delivery-status-not-recived'})
-            }
-            constainerStyle={{
-              backgroundColor: MAINCOLORS.danger,
-              height: 80,
-              width: 80,
-              borderRadius: 35,
-            }}
-            content={
-              <TouchableOpacity>
-                <FontAwesomeIcon
-                  style={{marginLeft: 5}}
-                  icon={faTimes}
-                  size={28}
-                  color={'white'}
-                />
-                <Text style={{color: 'white', fontSize: 10}}>Not Recived</Text>
-              </TouchableOpacity>
+              </View>
             }
           />
         </View>
@@ -338,14 +319,15 @@ const DeliveryPallet = props => {
       {delivery?.state == 'received' && (
         <View>
           <AbsoluteButton
+            loading = {loadingButton}
             onPress={() =>
               changeStatusDelivery({url: 'delivery-status-booking-in'})
             }
             content={
-              <TouchableOpacity>
+              <View>
                 <FontAwesomeIcon  style={{ marginLeft : 5}} icon={faCheck} size={28} color={'white'} />
                 <Text style={{color: 'white', fontSize: 10}}>Booking in</Text>
-              </TouchableOpacity>
+              </View>
             }
           />
         </View>
@@ -354,11 +336,12 @@ const DeliveryPallet = props => {
       {delivery?.state == 'booking-in' && (
         <View>
           <AbsoluteButton
+            loading = {loadingButton}
             onPress={() =>
               changeStatusDelivery({url: 'delivery-status-booked-in'})
             }
             content={
-              <TouchableOpacity>
+              <View>
                 <FontAwesomeIcon
                   style={{ marginLeft : 5}}
                   icon={faCheckDouble}
@@ -366,7 +349,7 @@ const DeliveryPallet = props => {
                   color={'white'}
                 />
                 <Text style={{color: 'white', fontSize: 10}}>Booked in</Text>
-              </TouchableOpacity>
+              </View>
             }
           />
         </View>

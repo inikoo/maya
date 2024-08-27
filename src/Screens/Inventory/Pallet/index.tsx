@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Icon,Dialog} from '@rneui/themed';
 import {MAINCOLORS,COLORS } from '~/Utils/Colors';
 import Information from '~/Components/palletComponents/Information';
-import PalletCard from '~/Components/palletComponents/ListCard';
+import PalletCard from '~/Components/palletComponents/ListCardDelivery';
 import { TouchableOpacity } from 'react-native';
 
 const Pallet = props => {

@@ -43,15 +43,14 @@ library.add(
 );
 
 const PalletCard = props => {
-  console.log(props)
   const navigation = useNavigation();
 
   return (
     <View style={{...styles.container,  backgroundColor: props.data.bulkValue.includes(props.data.record.id) ? MAINCOLORS.primary : 'white'}}>
       <TouchableOpacity
-        onPress={() =>
+      /*   onPress={() =>
           navigation.navigate('Pallet', {pallet: props.data.record})
-        }
+        } */
         onLongPress={()=>props.data.onLongPress(props.data.record)}
       >
         <View style={styles.row}>
@@ -62,7 +61,7 @@ const PalletCard = props => {
             </Text>
 
             <Text style={styles.description}>
-              Rentals : {props.data.record?.rental_name || ' -'}
+              Customer reference : {props.data.record?.customer_reference || ' -'}
             </Text>
 
           </View>
@@ -74,9 +73,9 @@ const PalletCard = props => {
                 color={findColorFromAiku(props.data.record?.type_icon.color)}
               />
               <FontAwesomeIcon
-                icon={props.data.record?.status_icon.icon}
+                icon={props.data.record?.state_icon.icon}
                 size={15}
-                color={findColorFromAiku(props.data.record?.status_icon.color)}
+                color={findColorFromAiku(props.data.record?.state_icon.color)}
               />
             </View>
           </View>

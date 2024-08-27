@@ -1,24 +1,63 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useCallback} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
-  View,
-  SafeAreaView,
-  ActivityIndicator,
   StyleSheet,
-  TouchableOpacity,
+  View,
+  ActivityIndicator,
   ScrollView,
+  TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
+import {Request, IconColor} from '~/Utils';
 import {useSelector} from 'react-redux';
-import {Request} from '~/Utils';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
-import {Avatar, Text} from '@rneui/themed';
-import {defaultTo} from 'lodash';
-import BaseList from '~/Components/BaseList';
+import {useNavigation} from '@react-navigation/native';
+import {Text, BottomSheet, Icon, Divider, ListItem} from '@rneui/themed';
+import {defaultTo, isNull} from 'lodash';
+import dayjs from 'dayjs';
+import {MAINCOLORS} from '~/Utils/Colors';
+import {findColorFromAiku} from '~/Utils';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import DetailRow from '~/Components/DetailRow';
+import Barcode from 'react-native-barcode-builder';
+import Layout from '~/Components/Layout';
+import Header from '~/Components/Header';
+import AbsoluteButton from '~/Components/absoluteButton';
 
-const DeliveryDetail = props => {
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {
+  faSeedling,
+  faShare,
+  faCheck,
+  faTimes,
+  faCheckDouble,
+  faSpellCheck,
+  faPallet,
+  faNarwhal,
+  faTruck,
+} from 'assets/fa/pro-light-svg-icons';
+
+library.add(
+  faSeedling,
+  faShare,
+  faSpellCheck,
+  faCheck,
+  faTimes,
+  faCheckDouble,
+  faTruck,
+  faPallet,
+  faNarwhal,
+);
+
+const RetrunDetail = props => {
   const [loading, setLoading] = useState(true);
   const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [dataSelected, setDataSelected] = useState(null);
+  const [open, setOpen] = useState(false);
+  const navigation = useNavigation();
+  const [loadingPrimary, setLoadingPrimary] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const getDetail = () => {
     setLoading(true);
@@ -42,178 +81,362 @@ const DeliveryDetail = props => {
     setLoading(false);
   };
 
-  const DetailRow = ({title, text}) => (
-    <View style={styles.descriptionRow}>
-      <Text style={styles.descriptionTitle}>{title}</Text>
-      <Text style={styles.descriptionText}>{text}</Text>
-    </View>
-  );
-
   const onFailedGetDetail = error => {
     setLoading(false);
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message || 'failed to get data',
+    });
   };
 
-  const Item = (record,{onLongPress , listModeBulk, bulkValue}) => {
-    return (
-      <TouchableOpacity
-        style={styles.containerItem}
-        onPress={() => listModeBulk ? onLongPress(record) : navigation.navigate('Pallet', {pallet: record})} onLongPress={()=>onLongPress(record)}>
-        <View style={{...styles.row,backgroundColor: !bulkValue.includes(record.id) ? 'white' : COLORS.grey7}}>
-          <Avatar
-            size={40}
-            icon={{name: 'pallet', type: 'FontAwesome6'}}
-            containerStyle={{
-              backgroundColor: MAINCOLORS.primary,
-              marginRight: 13,
-            }}
-          />
-          <View style={styles.row}>
-            <View style={styles.text}>
-              <View style={styles.row}>
-                <Text style={styles.title}>{record.reference}</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.description}>{record.state_label}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
+  const changeStatus = ({url = ''}) => {
+    setLoadingPrimary(true);
+    Request(
+      'patch',
+      url,
+      {},
+      {},
+      [props.route.params.return.id],
+      onSuccessChangeStatus,
+      onFailedChangeStatus,
     );
   };
 
-  useEffect(() => {
+  const onSuccessChangeStatus = res => {
     getDetail();
-  }, []);
+    setLoadingPrimary(false);
+  };
+
+  const onFailedChangeStatus = error => {
+    console.log(error);
+    setLoadingPrimary(false);
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message || 'failed to change status',
+    });
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (props.route.params.return) getDetail();
+      else navigation.goBack();
+    }, [props.route.params.return.id])
+  );
 
   return (
-    <SafeAreaView style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size="large" color={MAINCOLORS.primary} />
-      ) : (
-        <View style={styles.contentContainer}>
-          <View
-            style={{
-              backgroundColor: MAINCOLORS.warning,
-              padding: 20,
-              borderRadius: 10,
-            }}>
-            <View style={styles.header}>
-              <Avatar
-                size={40}
-                icon={{
-                  name: 'truck',
-                  type: 'font-awesome',
-                  color: MAINCOLORS.white,
-                }}
-                containerStyle={styles.avatarContainer}
-              />
-              <Text style={styles.reference}>{dataSelected.reference}</Text>
-            </View>
-            <View style={styles.detailsContainer}>
-              <DetailRow
-                title="Customer Name:"
-                text={defaultTo(dataSelected.customer_name, '-')}
-              />
-              <DetailRow
-                title="State:"
-                text={defaultTo(dataSelected.state, '-')}
-              />
-            </View>
+    <Layout>
+      <Header
+        title={props.route.params.return.reference}
+        useLeftIcon={true}
+        rightIcon={
+          <TouchableOpacity onPress={() => setOpen(true)}>
+            <Icon name="menu" type="entypo" />
+          </TouchableOpacity>
+        }
+      />
+
+      <Divider />
+
+      {!loading ? (
+        <>
+          <View style={styles.container}>
+            {!loading ? (
+              <View>
+                <ScrollView
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={() => getDetail()}
+                    />
+                  }>
+                  <RenderContent dataSelected={dataSelected} />
+                </ScrollView>
+
+                {dataSelected?.state == 'confirmed' && (
+                  <View>
+                    <AbsoluteButton
+                      loading={loadingPrimary}
+                      onPress={() =>
+                        changeStatus({url: 'retrun-status-picking'})
+                      }
+                      postion={{
+                        bottom: -65,
+                        left: 260,
+                      }}
+                      content={
+                        <View>
+                          <FontAwesomeIcon
+                            icon={faTruck}
+                            size={30}
+                            color={'white'}
+                          />
+                          <Text style={{color: 'white', fontSize: 10}}>
+                            Picking
+                          </Text>
+                        </View>
+                      }
+                    />
+                  </View>
+                )}
+
+                {dataSelected?.state == 'picking' && (
+                  <View>
+                    <AbsoluteButton
+                      loading={loadingPrimary}
+                      onPress={() =>
+                        changeStatus({url: 'return-status-picked'})
+                      }
+                      postion={{
+                        bottom: -65,
+                        left: 260,
+                      }}
+                      content={
+                        <View>
+                          <FontAwesomeIcon
+                            icon={faCheck}
+                            size={30}
+                            color={'white'}
+                          />
+                          <Text style={{color: 'white', fontSize: 10}}>
+                            Picked
+                          </Text>
+                        </View>
+                      }
+                    />
+                  </View>
+                )}
+                {dataSelected?.state == 'picked' && (
+                  <View>
+                    <AbsoluteButton
+                      loading={loadingPrimary}
+                      onPress={() =>
+                        changeStatus({url: 'retrun-status-dispatch'})
+                      }
+                      postion={{
+                        bottom: -65,
+                        left: 260,
+                      }}
+                      content={
+                        <View>
+                          <FontAwesomeIcon
+                            icon={faCheckDouble}
+                            size={30}
+                            color={'white'}
+                          />
+                          <Text style={{color: 'white', fontSize: 10}}>
+                            Dispatched
+                          </Text>
+                        </View>
+                      }
+                    />
+                  </View>
+                )}
+              </View>
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                }}>
+                <ActivityIndicator size="large" color={MAINCOLORS.primary} />
+              </View>
+            )}
           </View>
 
-          <ScrollView>
-          <BaseList
-            urlKey="return-pallet-index"
-            args={[
-              organisation.active_organisation.id,
-              warehouse.id,
-              props.route.params.return.id,
-            ]}
-            renderItem={Item}
-            navigation={props.navigation}
-            title="Delivery"
-            scanner={false}
-            settingButton={false}
-            showRecords={false}
-          />
-          </ScrollView>
-
-          
+          <BottomSheet modalProps={{}} isVisible={open}>
+            <View style={styles.wrapper}>
+              <Header
+                title="Menu"
+                rightIcon={
+                  <TouchableOpacity
+                    onPress={() => setOpen(false)}
+                    style={{marginRight: 15}}>
+                    <Icon
+                      color={MAINCOLORS.danger}
+                      name="closecircle"
+                      type="antdesign"
+                      size={20}
+                    />
+                  </TouchableOpacity>
+                }
+              />
+              <Divider />
+              <View style={{marginVertical: 15}}>
+                {dataSelected.type == 'pallet' ? (
+                  <ListItem
+                    onPress={() =>
+                      navigation.navigate('Return Pallet', {
+                        return: dataSelected,
+                      })
+                    }>
+                    <FontAwesomeIcon icon={faPallet} size={18} />
+                    <ListItem.Content>
+                      <ListItem.Title>Pallet in Retrun</ListItem.Title>
+                    </ListItem.Content>
+                  </ListItem>
+                ) : (
+                  <ListItem
+                    onPress={() =>
+                      navigation.navigate('Return Stored Items', {
+                        return: dataSelected,
+                      })
+                    }>
+                    <FontAwesomeIcon icon={faNarwhal} size={18} />
+                    <ListItem.Content>
+                      <ListItem.Title>Stored Items in Retrun</ListItem.Title>
+                    </ListItem.Content>
+                  </ListItem>
+                )}
+              </View>
+            </View>
+          </BottomSheet>
+        </>
+      ) : (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignContent: 'center',
+            display: 'flex',
+          }}>
+          <ActivityIndicator size={'large'} color={MAINCOLORS.primary} />
         </View>
       )}
-    </SafeAreaView>
+    </Layout>
+  );
+};
+
+export const RenderContent = ({dataSelected = {}}) => {
+  return (
+    <View style={styles.containerContent}>
+      <View style={styles.barcodeContainer}>
+        <Barcode value={`${dataSelected?.reference}`} width={1} height={70} />
+        <Text style={styles.barcodeText}>{`${dataSelected?.reference}`}</Text>
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Reference"
+          text={defaultTo(dataSelected?.reference, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Number Boxes"
+          text={defaultTo(dataSelected?.number_boxes, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Number Oversizes"
+          text={defaultTo(dataSelected?.number_oversizes, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Number Pallets"
+          text={defaultTo(dataSelected?.number_pallets, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Number Physical Goods"
+          text={defaultTo(dataSelected?.number_physical_goods, '-')}
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="State"
+          text={
+            <View
+              style={{
+                ...styles.stateContainer,
+                backgroundColor: findColorFromAiku(
+                  dataSelected?.state_icon?.color,
+                ),
+              }}>
+              <FontAwesomeIcon
+                icon={dataSelected?.state_icon?.icon}
+                color="white"
+                size={12}
+              />
+              <Text style={{fontSize: 12, color: 'white'}}>
+                {defaultTo(dataSelected.state_label, '-')}
+              </Text>
+            </View>
+          }
+        />
+      </View>
+      <View style={styles.rowDetail}>
+        <DetailRow
+          title="Created At"
+          text={dayjs(dataSelected.created_at).format('DD-MM-YYYY')}
+        />
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: MAINCOLORS.background,
-    /*     paddingHorizontal: 20,
-    paddingVertical: 20 */
+    backgroundColor: '#FFFFFF', // Set background color to white
   },
-  contentContainer: {
+  wrapper: {
+    backgroundColor: '#ffffff',
+    padding: 15,
+  },
+  containerContent: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    borderRadius: 20,
-    marginTop: 10,
+    padding: 15,
   },
-  header: {
-    flexDirection: 'row',
+  rowDetail: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#CCCCCC', // Light gray border color
+    paddingVertical: 15,
+  },
+  barcodeContainer: {
     alignItems: 'center',
-    marginBottom: 5,
+    marginBottom: 20,
   },
-  avatarContainer: {
-    backgroundColor: MAINCOLORS.primary,
-    marginRight: 13,
-  },
-  reference: {
-    fontWeight: '500',
-    fontSize: 20,
-  },
-  detailsContainer: {
-    marginLeft: 10,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '500',
-    marginBottom: 6,
-  },
-  descriptionRow: {
-    flexDirection: 'row',
-    marginBottom: 5,
-  },
-  descriptionTitle: {
+  barcodeText: {
     fontWeight: 'bold',
-    marginRight: 10,
+    marginTop: 5,
+    fontSize: 16,
   },
-  containerItem: {
-    padding: 10,
-    backgroundColor: 'white',
+  chipContainer: {
     flexDirection: 'row',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-    alignItems: 'center',
-    marginBottom: 4,
-    borderWidth: 1,
-    borderColor: COLORS.grey6,
+    flexWrap: 'wrap',
+    marginTop: 5,
+  },
+  chip: {
+    marginVertical: 2,
+    marginHorizontal: 2,
+  },
+  speedDial: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  iconContainer: {
+    alignItems: 'flex-end',
+  },
+  icon: {
+    marginHorizontal: 5,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 5,
   },
-  list: {
-    margin: 5,
+  stateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    gap: 5,
+    paddingVertical: 2,
   },
 });
 
-export default DeliveryDetail;
+export default RetrunDetail;
