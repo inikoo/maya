@@ -266,23 +266,21 @@ const RetrunDetail = props => {
               <View style={{marginVertical: 15}}>
                 {dataSelected.type == 'pallet' ? (
                   <ListItem
-                    onPress={() =>
-                      navigation.navigate('Return Pallet', {
-                        return: dataSelected,
-                      })
-                    }>
+                    onPress={() =>{
+                      navigation.navigate('Return Pallet', {return: dataSelected})
+                      setOpen(false)
+                    }}>
                     <FontAwesomeIcon icon={faPallet} size={18} />
                     <ListItem.Content>
-                      <ListItem.Title>Pallet in Retrun</ListItem.Title>
+                      <ListItem.Title>Pallet in Return</ListItem.Title>
                     </ListItem.Content>
                   </ListItem>
                 ) : (
                   <ListItem
-                    onPress={() =>
-                      navigation.navigate('Return Stored Items', {
-                        return: dataSelected,
-                      })
-                    }>
+                    onPress={() =>{
+                      navigation.navigate('Return Stored Items', {return: dataSelected})
+                      setOpen(false)
+                    }}>
                     <FontAwesomeIcon icon={faNarwhal} size={18} />
                     <ListItem.Content>
                       <ListItem.Title>Stored Items in Retrun</ListItem.Title>

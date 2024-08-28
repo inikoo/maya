@@ -75,7 +75,7 @@ const Delivery = props => {
           </TouchableOpacity>
         ),
       }}
-      title="Deliveries"
+      title="Fullfilmennt Deliveries"
       itemKey="reference"
       urlKey="delivery-index"
       args={[oraganisation.active_organisation.id, warehouse.id]}

@@ -63,7 +63,7 @@ export const CustomDrawer = (props = null) => {
 
   const logOut = async () => {
     try {
-     /*  await RemoveCredential();  */
+      await RemoveCredential(); 
       dispatch(Action.DestroyUserSessionProperties());
     } catch (error) {
       console.error('Error during logout:', error);

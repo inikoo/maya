@@ -9,6 +9,7 @@ import PalletCard from '~/Components/palletComponents/ListCardReturn';
 import {Request, IconColor} from '~/Utils';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import AbsoluteButton from '~/Components/absoluteButton';
+import SetChangeStatusNotPicked from '~/Components/SetChangeStatusPalletNotPicked';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -22,7 +23,7 @@ import {
   faPallet,
   faNarwhal,
   faTruck,
-  faUndoAlt
+  faUndoAlt,
 } from 'assets/fa/pro-light-svg-icons';
 
 library.add(
@@ -35,7 +36,7 @@ library.add(
   faTruck,
   faPallet,
   faNarwhal,
-  faUndoAlt
+  faUndoAlt,
 );
 
 const PalletinReturns = props => {
@@ -43,9 +44,56 @@ const PalletinReturns = props => {
   const oraganisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const returnData = props.route.params.return;
-  const _baseList = useRef(null)
+  const _baseList = useRef(null);
   const [loadingPrimary, setLoadingPrimary] = useState(false);
+  const [openNotPickedDialog, setOpenNotPickedDialog] = useState(false);
+  const [selectedPallet, setSelectedPallet] = useState(null);
 
+  const onPickedPallet = (pallet: any) => {
+    Request(
+      'patch',
+      'set-pallet-pallet-and-stored-item-pick',
+      {},
+      {},
+      [pallet.id],
+      onSuccessChangeStatePallet,
+      onFailedChangeStatePallet,
+    );
+  };
+
+  const onUndoPickedPallet = (pallet: any) => {
+    Request(
+      'patch',
+      'set-pallet-pallet-and-stored-item-undo',
+      {},
+      {},
+      [pallet.id],
+      onSuccessChangeStatePallet,
+      onFailedChangeStatePallet,
+    );
+  };
+
+  const onNotPickedPallet = (pallet: any) => {
+    setSelectedPallet(pallet.id);
+    setOpenNotPickedDialog(true);
+  };
+
+  const onSuccessChangeStatePallet = (res: any) => {
+    if (_baseList.current) _baseList.current.refreshList();
+    Toast.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: 'Success',
+      textBody: 'success change status',
+    });
+  };
+
+  const onFailedChangeStatePallet = (error: any) => {
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message || 'failed to change status',
+    });
+  };
 
   const changeStatus = ({url = ''}) => {
     setLoadingPrimary(true);
@@ -60,12 +108,13 @@ const PalletinReturns = props => {
     );
   };
 
-  const onSuccessChangeStatus = res => {
-    if(_baseList.current) _baseList.current.refreshList()
+  const onSuccessChangeStatus = (res: any) => {
+    if (_baseList.current) _baseList.current.refreshList();
     setLoadingPrimary(false);
+    navigation.navigate('Return', {return: returnData});
   };
 
-  const onFailedChangeStatus = error => {
+  const onFailedChangeStatus = (error: any) => {
     setLoadingPrimary(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -74,24 +123,38 @@ const PalletinReturns = props => {
     });
   };
 
-  const renderHiddenItem = item => {
+  const renderHiddenItem = (item: any) => {
     return (
       <View style={styles.hiddenItemContainer}>
-        <View style={{flexDirection: 'row', gap: 5}}>
-          <TouchableOpacity
-            style={styles.dangerButton}>
-            <FontAwesomeIcon icon={faTimes} size={20} color="#fff" />
-          </TouchableOpacity>
-          <TouchableOpacity
-           
-            style={styles.editButton}>
-            <FontAwesomeIcon icon={faCheck} size={20} color="#fff" />
-          </TouchableOpacity>
-        </View>
+        {item.state == 'picking' && (
+          <View style={{flexDirection: 'row', gap: 5}}>
+            <TouchableOpacity
+              onPress={() => onNotPickedPallet(item)}
+              style={styles.dangerButton}>
+              <FontAwesomeIcon icon={faTimes} size={20} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => onPickedPallet(item)}
+              style={styles.editButton}>
+              <FontAwesomeIcon icon={faCheck} size={20} color="#fff" />
+            </TouchableOpacity>
+          </View>
+        )}
+        {item.state == 'picked' && (
+          <View style={{flexDirection: 'row', gap: 5}}>
+            <TouchableOpacity
+              onPress={() => onUndoPickedPallet(item)}
+              style={{
+                ...styles.editButton,
+                backgroundColor: MAINCOLORS.primary,
+              }}>
+              <FontAwesomeIcon icon={faUndoAlt} size={20} color="#fff" />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   };
-
 
   useEffect(() => {
     if (!returnData) navigation.goBack();
@@ -180,6 +243,14 @@ const PalletinReturns = props => {
           />
         </View>
       )}
+      <SetChangeStatusNotPicked
+        pallet={selectedPallet}
+        visible={openNotPickedDialog}
+        onSuccess={()=>{
+          if (_baseList.current) _baseList.current.refreshList();
+        }}
+        onClose={() => setOpenNotPickedDialog(false)}
+      />
     </>
   );
 };

@@ -36,7 +36,6 @@ function Routes() {
       const warehouse = await AsyncStorage.getItem('@warehouse:Key');
 
       if (!storedUser) {
-       
         setUserStorage(null);
       } else {
         const data = JSON.parse(storedUser);
@@ -60,13 +59,23 @@ function Routes() {
           setUserStorage(data);
         } else {
           setUserStorage(null);
-          dispatch(Action.DestroyUserSessionProperties());
+          try {
+            await RemoveCredential(); 
+            dispatch(Action.DestroyUserSessionProperties());
+          } catch (error) {
+            console.error('Error during logout:', error);
+          }
         }
       }
     } catch (error) {
       console.error('Error fetching credentials from AsyncStorage:', error);
       setUserStorage(null);
-      dispatch(Action.DestroyUserSessionProperties());
+      try {
+        await RemoveCredential(); 
+        dispatch(Action.DestroyUserSessionProperties());
+      } catch (error) {
+        console.error('Error during logout:', error);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -74,8 +83,6 @@ function Routes() {
 
   // Update routes whenever user, organisationRedux, or warehouseRedux changes
   useEffect(() => {
-    setIsLoading(true)
-    checkUser();
     if (user && organisationRedux && warehouseRedux) {
       setDrawerRoutes(
         checkPermissionNested(
@@ -93,7 +100,12 @@ function Routes() {
         ),
       );
     }
-  }, [user, organisationRedux, warehouseRedux]);
+  }, [organisationRedux,warehouseRedux]);
+
+  useEffect(() => {
+    setIsLoading(true)
+    checkUser();
+  }, [user]);
 
   if (isLoading) {
     return null;

@@ -40,7 +40,6 @@ export default {
           group: null,
           organisations: null,
         };
-        RemoveCredential()
         break;
     }
     return state;

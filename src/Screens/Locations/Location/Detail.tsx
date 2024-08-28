@@ -180,7 +180,7 @@ export const RenderContent = ({ dataSelected = {} }) => {
       <View style={styles.rowDetail}>
         <DetailRow
           title="Status"
-          text={() => (
+          text={(
             <Chip
               title={defaultTo(dataSelected.status, '-')}
               color={
@@ -252,7 +252,7 @@ export const RenderContent = ({ dataSelected = {} }) => {
       <View style={styles.rowDetail}>
         <DetailRow
           title="Location status"
-          text={() => (
+          text={(
             <View style={styles.iconContainer}>
               <View style={styles.row}>
                 <Icon

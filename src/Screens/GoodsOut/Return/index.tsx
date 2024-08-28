@@ -6,8 +6,6 @@ import {useNavigation} from '@react-navigation/native';
 import {Icon, Text} from '@rneui/themed';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {findColorFromAiku} from '~/Utils';
-import dayjs from 'dayjs';
-import {defaultTo} from 'lodash';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -84,13 +82,16 @@ const Returns = props => {
           </TouchableOpacity>
         ),
       }}
-      title="Pallet Returns"
+      title="Fullfilment Returns"
       itemKey="reference"
       urlKey="return-index"
       args={[oraganisation.active_organisation.id, warehouse.id]}
       itemList={Item}
       sortSchema="reference"
       screenNavigation={'Pallet Scanner'}
+      params={{
+        ['elements[state]'] : ["confirmed","picking","picked","dispatched"]
+      }}
       filterSchema={[
         {
           title: 'type',
