@@ -54,6 +54,7 @@ function OrgStockDetail(props) {
   const [openStockControls, setOpenStockControls] = useState(false);
   const [openStockCheck, setOpenStockCheck] = useState(false);
   const [openMoveStock, setOpenMoveStock] = useState(false);
+  const [selectedLocationStock, setSelectedLocationStock] = useState(null);
 
   const buttonFeatures = [
     {
@@ -152,40 +153,6 @@ function OrgStockDetail(props) {
     });
   };
 
-  const locationsDummy = [
-    {
-      reference: '1A1',
-      stock: 200,
-    },
-    {
-      reference: '1A2',
-      stock: 400,
-    },
-    {
-      reference: '1A3',
-      stock: 400,
-    },
-    {
-      reference: '1A4',
-      stock: 400,
-    },
-    {
-      reference: '1A5',
-      stock: 400,
-    },
-    {
-      reference: '1A6',
-      stock: 400,
-    },
-    {
-      reference: '1A7',
-      stock: 400,
-    },
-    {
-      reference: '1A8',
-      stock: 400,
-    },
-  ];
 
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
@@ -238,16 +205,19 @@ function OrgStockDetail(props) {
             </Text>
             <ScrollView style={styles.locationsScroll}>
               <View style={styles.rowContainer}>
-                {locationsDummy.map((item, index) => (
+                {dataSelected.locations.map((item, index) => (
                   <TouchableOpacity
-                    onPress={() => setOpenStockControls(true)}
+                    onPress={() => {
+                      setOpenStockControls(true),
+                      setSelectedLocationStock(item)
+                    }}
                     key={index}
                     style={[
                       styles.itemContainer,
                       {backgroundColor: getRandomColor()},
                     ]}>
                     <Text style={styles.itemText}>
-                      {item.reference} ( {item.stock} )
+                      {item.location.code} ( {item.quantity} )
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -334,14 +304,17 @@ function OrgStockDetail(props) {
         <AssociateLocation
           visible={openAssociateLocation}
           onClose={() => setOpenAssociateLocation(false)}
+          data={selectedLocationStock}
         />
         <StockCheck 
             visible={openStockCheck}
             onClose={() => setOpenStockCheck(false)}
+            data={selectedLocationStock}
         />
         <MoveStock 
            visible={openMoveStock}
            onClose={() => setOpenMoveStock(false)}
+           data={selectedLocationStock}
         />
 
         <Dialog isVisible={openStockControls}>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect } from 'react';
 import {View, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import {Dialog, Text, Divider, Icon} from '@rneui/themed';
 import Button from '~/Components/Button';
@@ -9,15 +9,22 @@ type Props = {
   onClose: Function;
   onSuccess: Function;
   onFailed: Function;
+  data : Object
 };
 
 function StockCheck(props: Props) {
-  const [locationCode, setLocationCode] = useState('');
-  const [errorLocationCode, setErrorLocationCode] = useState('');
+  const [value, setValue] = useState(String(props?.data?.quantity));
+  const [location, setLocation] = useState('');
+  const [errorvalue, setErrorvalue] = useState('');
 
   const onCancel = () => {
     props.onClose();
   };
+
+useEffect(()=>{
+    setValue(String(props?.data?.quantity))
+},[props.visible])
+
 
   return (
     <Dialog isVisible={props.visible}>
@@ -31,13 +38,13 @@ function StockCheck(props: Props) {
             <TextInput
               style={styles.input}
               placeholder="Enter Code"
-              value={locationCode}
-              onChangeText={setLocationCode}
+              value={value}
+              onChangeText={setValue}
               keyboardType="numeric"
             />
           </View>
         </View>
-        <Text style={styles.errorText}>{errorLocationCode}</Text>
+        <Text style={styles.errorText}>{errorvalue}</Text>
         </View>
         <View>
         <Text style={styles.textLabel}>Location Code : </Text>
@@ -46,8 +53,8 @@ function StockCheck(props: Props) {
             <TextInput
               style={styles.input}
               placeholder="Code"
-              value={locationCode}
-         
+              value={location}
+              onChangeText={setLocation}
             />
           </View>
           <View style={styles.buttonScan}>
@@ -58,7 +65,7 @@ function StockCheck(props: Props) {
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={{color: 'red', fontSize: 12}}>{errorLocationCode}</Text>
+        <Text style={{color: 'red', fontSize: 12}}>{errorvalue}</Text>
 
         </View>
        

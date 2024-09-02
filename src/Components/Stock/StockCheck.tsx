@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, TextInput} from 'react-native';
-import {Dialog, Text, Divider} from '@rneui/themed';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, TextInput } from 'react-native';
+import { Dialog, Text, Divider } from '@rneui/themed';
 import Button from '~/Components/Button';
 
 type Props = {
@@ -9,15 +9,20 @@ type Props = {
   onClose: Function;
   onSuccess: Function;
   onFailed: Function;
+  data: Object;
 };
 
 function StockCheck(props: Props) {
-  const [locationCode, setLocationCode] = useState('');
-  const [errorLocationCode, setErrorLocationCode] = useState('');
+  const [Value, setValue] = useState(String(props?.data?.quantity));
+  const [errorValue, setErrorValue] = useState('');
 
   const onCancel = () => {
     props.onClose();
   };
+
+  useEffect(() => {
+    setValue(String(props?.data?.quantity));
+  }, [props.visible]);
 
   return (
     <Dialog isVisible={props.visible}>
@@ -30,14 +35,14 @@ function StockCheck(props: Props) {
             <TextInput
               style={styles.input}
               placeholder="Enter Code"
-              value={locationCode}
-              onChangeText={setLocationCode}
+              value={Value}
+              onChangeText={(text) => setValue(text)}
               keyboardType="numeric"
             />
           </View>
         </View>
-        <Text style={styles.errorText}>{errorLocationCode}</Text>
-        <Divider style={{marginTop: 20}} />
+        <Text style={styles.errorText}>{errorValue}</Text>
+        <Divider style={{ marginTop: 20 }} />
         <View style={styles.dialogButtonContainer}>
           <Button type="secondary" title="Cancel" onPress={onCancel} />
           <Button type="primary" title="Submit" />

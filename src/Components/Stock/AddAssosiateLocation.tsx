@@ -12,71 +12,15 @@ type Props = {
     title: ReactNode;
     visible : Boolean,
     onClose : Function,
-    pallet: Object
-    bulk : boolean
     onSuccess : Function,
     onFailed : Function
+    data : Object
   };
 
 function AssociateLocation(props : Props) {
   const navigation = useNavigation();
-  const organisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
   const [locationCode, setLocationCode] = useState(null);
   const [errorLocationCode, setErrorLocationCode] = useState('');
-
-  const getLocationCode = async () => {
-  /*   await Request(
-      'get',
-      'locations-show-by-code',
-      {},
-      {},
-      [organisation.active_organisation.id, warehouse.id, locationCode],
-      LocationCodeSuccess,
-      LocationCodeFailed,
-    ); */
-  };
-
-  const LocationCodeSuccess = async response => {
-    await Request(
-      'patch',
-      'pallet-location',
-      {},
-      {},
-      [response.id, props.pallet],
-      ChangeLocationSuccess,
-      ChangeLocationFailed,
-    );
-  };
-
-  const LocationCodeFailed = response => {
-    if (response.response.status == 404) {
-      setErrorLocationCode('cannot find location');
-    } else {
-      setErrorLocationCode(response?.response?.data?.message || 'Server error');
-    }
-  };
-
-  const ChangeLocationSuccess = response => {
-    props.onSuccess()
-    onCancel()
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: 'Success',
-      textBody: 'Pallet location updated',
-    });
-  };
-
-  const ChangeLocationFailed = error => {
-    props.onFailed()
-    console.log('errorMove', error);
-    Toast.show({
-      type: ALERT_TYPE.DANGER,
-      title: 'Error',
-      textBody: error.response.data.message,
-    });
-  };
-
 
   const onCancel = () => {
     props.onClose()
@@ -105,11 +49,8 @@ function AssociateLocation(props : Props) {
           <View style={styles.buttonScan}>
             <TouchableOpacity
               style={styles.searchIcon}
-              onPress={() =>
-                navigation.navigate('Change Location Pallet Scanner', {
-                  pallet: props.pallet,
-                })
-              }>
+              onPress={() => navigation.navigate('Change Location Pallet Scanner', {pallet: props.pallet})}
+            >
               <Icon name="qr-code-scanner" type="material" size={24} />
             </TouchableOpacity>
           </View>
@@ -118,7 +59,7 @@ function AssociateLocation(props : Props) {
         <Divider style={{marginTop: 20}} />
         <View style={styles.dialogButtonContainer}>
           <Button type="secondary" title="Cancel" onPress={onCancel} />
-          <Button type="primary" title="Submit" onPress={getLocationCode} />
+          <Button type="primary" title="Submit"  />
         </View>
       </View>
     </Dialog>
