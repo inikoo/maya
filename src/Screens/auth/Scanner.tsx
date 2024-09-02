@@ -100,6 +100,7 @@ export default function LoginScanner() {
       ) : (
         <View>
           <Empty
+            imageurl={require('../../assets/image/Scanner.png')}
             buttonOnPress={() => setScanned(true)}
             title="Login By Scan"
             subtitle="You can see the barcode in Aiku"

@@ -54,6 +54,7 @@ import {
   //GoodsOut
   GoodsOutNavigation,
   OrgStock,
+  GlobalScanner,
 } from '~/Screens';
 
 import {Icon} from '@rneui/themed';
@@ -120,6 +121,11 @@ const routes = ({organisation = null, warehouse = null}) => [
   {
     name: 'Scanner Global',
     component: GlobalSearch,
+    options: {headerShown: false},
+  },
+  {
+    name: 'Scanner',
+    component: GlobalScanner,
     options: {headerShown: false},
   },
   {

@@ -107,7 +107,7 @@ export default function GlobalSearch(props) {
           <View style={styles.buttonScan}>
             <TouchableOpacity
               style={styles.searchIcon}
-              onPress={() => navigation.navigate('Scanner Global')}>
+              onPress={() => navigation.navigate('Scanner')}>
               <Icon name="qr-code-scanner" type="material" size={24} />
             </TouchableOpacity>
           </View>

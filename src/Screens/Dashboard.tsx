@@ -28,6 +28,7 @@ const Dashboard: React.FC<Props> = props => {
 
   return (
     <Layout>
+      <>
       <Header
         title="Dashboard"
         useLeftIcon={true}
@@ -43,6 +44,7 @@ const Dashboard: React.FC<Props> = props => {
       <View>
         <Text>Main Dashboard</Text>
       </View>
+      </>
     </Layout>
   );
 };

@@ -110,13 +110,16 @@ const DeliveryPallet = props => {
   };
 
   const setNotRecived = pallet => {
-    Alert.alert('', 'Are you sure to set pallet not recieved ?', [
+    Alert.alert('Confrim not Recived', 'Are you sure to set pallet not recieved ?', [
       {
         text: 'No',
         onPress: () => console.log('Cancel Pressed'),
+        style: "cancel"
       },
       {text: 'Yes', onPress: () => sendNotReciveToServer(pallet)},
-    ]);
+    ],
+    { cancelable: true }
+  );
   };
 
   const sendUndoToServer = pallet => {
