@@ -94,6 +94,7 @@ export default function ScannerPage(props) {
 
   return (
     <Layout>
+      <View style={{ flex : 1}}>
       <Header title="Scan Location" useLeftIcon={true} />
       <View style={styles.container}>
       {loading ? (
@@ -123,6 +124,7 @@ export default function ScannerPage(props) {
           />
         </View>
       )}
+    </View>
     </View>
     </Layout>
   );

@@ -1,4 +1,4 @@
-import {InventoryDashboard, GlobalSearch, Pallets, StoredItems, OrgStock} from '~/Screens';
+import {InventoryDashboard, GlobalSearch, Pallets, StoredItems, OrgStocks} from '~/Screens';
 import {library} from '@fortawesome/fontawesome-svg-core';
 
 import {
@@ -35,10 +35,10 @@ const navigation = [
         },
       }, */
       {
-        name: 'Org Stock',
-        component: OrgStock,
+        name: 'Org Stocks',
+        component: OrgStocks,
         options: {
-          tabBarLabel: 'Org Stock',
+          tabBarLabel: 'Org Stocks',
           headerShown: false,
           tabBarIcon: faBoxes,
         },

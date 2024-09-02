@@ -140,6 +140,7 @@ const BaseList = forwardRef((props: Props, ref) => {
   };
 
   const onFailed = (error: Object) => {
+    console.log(error)
     setIsListEnd(true);
     setLoading(false);
     setRefreshing(false);

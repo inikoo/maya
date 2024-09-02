@@ -50,7 +50,7 @@ const DeliveryDetail = props => {
   const [open, setOpen] = useState(false);
   const navigation = useNavigation();
   const [loadingPrimary, setLoadingPrimary] = useState(false);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const buttonFeatures = [
     {

@@ -1,30 +1,27 @@
 import React, {useCallback} from 'react';
 import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
-import Header from '~/Components/Header';
-import Layout from '~/Components/Layout';
 import {Icon} from '@rneui/base';
-import {useFocusEffect} from '@react-navigation/native';
 import BaseList from '~/Components/BaseList/IndexV2';
-
+import {Card} from '@rneui/themed';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 
-const Dashboard: React.FC<Props> = props => {
+const OrgStocks: React.FC<Props> = props => {
   const navigation = useNavigation();
   const warehouse = useSelector(state => state.warehouseReducer);
   const organisation = useSelector(state => state.organisationReducer);
 
-  useFocusEffect(
-    useCallback(() => {
-      if (!organisation.active_organisation) {
-        navigation.navigate('Select Organisation');
-      } else if (
-        !organisation.active_organisation?.active_authorised_fulfilments
-      ) {
-        navigation.navigate('Select fullfilment');
-      }
-    }, [organisation, warehouse]),
-  );
+  const renderItem = (item, {onLongPress, listModeBulk, bulkValue}) => {
+    return (
+      <View style={{backgroundColor: '#ffffff'}}>
+        <TouchableOpacity onPress={()=>navigation.navigate('Org Stock', {orgStock : item})}>
+          <Card containerStyle={styles.cardStat}>
+            <Text style={styles.labelStat}>{item.name}</Text>
+          </Card>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <BaseList
@@ -42,8 +39,9 @@ const Dashboard: React.FC<Props> = props => {
       itemKey="name"
       urlKey="org-stock-index"
       args={[organisation.active_organisation.id, warehouse.id]}
+      itemList={renderItem}
       params={{
-        ['filter[state]'] : ["active","discontinuing"]
+        ['filter[state]']: ['active', 'discontinuing'],
       }}
       enableSwipe={false}
       height={520}
@@ -65,6 +63,18 @@ const styles = StyleSheet.create({
     height: 35,
     padding: 5,
   },
+  cardStat: {
+    borderRadius: 10,
+    paddingVertical: 20,
+    marginTop: 10,
+    marginRight: 0,
+    marginLeft: 0,
+    backgroundColor: '#FAFAFA',
+  },
+  labelStat: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
 });
 
-export default Dashboard;
+export default OrgStocks;

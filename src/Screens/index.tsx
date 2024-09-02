@@ -33,7 +33,8 @@ export { default as InventoryDashboard } from './Inventory/Dashboard';
 export { default as InventoryNavigation } from './Inventory/Navigator';
 
 //orgStock
-export { default as OrgStock } from './Inventory/OrgStock';
+export { default as OrgStocks } from './Inventory/OrgStock';
+export { default as OrgStock } from './Inventory/OrgStock/Detail';
 
 //palet
 export { default as Pallets } from './Inventory/Pallet';

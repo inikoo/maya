@@ -127,185 +127,176 @@ const RetrunDetail = props => {
 
   return (
     <Layout>
-      <Header
-        title={props.route.params.return.reference}
-        useLeftIcon={true}
-        rightIcon={
-          <TouchableOpacity onPress={() => setOpen(true)}>
-            <Icon name="menu" type="entypo" />
-          </TouchableOpacity>
-        }
-      />
+      <View style={{flex: 1}}>
+        <Header
+          title={props.route.params.return.reference}
+          useLeftIcon={true}
+          rightIcon={
+            <TouchableOpacity onPress={() => setOpen(true)}>
+              <Icon name="menu" type="entypo" />
+            </TouchableOpacity>
+          }
+        />
+        <Divider />
 
-      <Divider />
-
-      {!loading ? (
-        <>
+        {!loading ? (
           <View style={styles.container}>
-            {!loading ? (
+            <ScrollView
+              contentContainerStyle={styles.scrollContainer} // Added style for scroll container
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={() => getDetail()}
+                />
+              }>
+              <RenderContent dataSelected={dataSelected} />
+            </ScrollView>
+
+            {dataSelected?.state == 'confirmed' && (
               <View>
-                <ScrollView
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={refreshing}
-                      onRefresh={() => getDetail()}
-                    />
-                  }>
-                  <RenderContent dataSelected={dataSelected} />
-                </ScrollView>
-
-                {dataSelected?.state == 'confirmed' && (
-                  <View>
-                    <AbsoluteButton
-                      loading={loadingPrimary}
-                      onPress={() =>
-                        changeStatus({url: 'retrun-status-picking'})
-                      }
-                      postion={{
-                        bottom: -65,
-                        left: 260,
-                      }}
-                      content={
-                        <View>
-                          <FontAwesomeIcon
-                            icon={faTruck}
-                            size={30}
-                            color={'white'}
-                          />
-                          <Text style={{color: 'white', fontSize: 10}}>
-                            Picking
-                          </Text>
-                        </View>
-                      }
-                    />
-                  </View>
-                )}
-
-                {dataSelected?.state == 'picking' && (
-                  <View>
-                    <AbsoluteButton
-                      loading={loadingPrimary}
-                      onPress={() =>
-                        changeStatus({url: 'return-status-picked'})
-                      }
-                      postion={{
-                        bottom: -65,
-                        left: 260,
-                      }}
-                      content={
-                        <View>
-                          <FontAwesomeIcon
-                            icon={faCheck}
-                            size={30}
-                            color={'white'}
-                          />
-                          <Text style={{color: 'white', fontSize: 10}}>
-                            Picked
-                          </Text>
-                        </View>
-                      }
-                    />
-                  </View>
-                )}
-                {dataSelected?.state == 'picked' && (
-                  <View>
-                    <AbsoluteButton
-                      loading={loadingPrimary}
-                      onPress={() =>
-                        changeStatus({url: 'retrun-status-dispatch'})
-                      }
-                      postion={{
-                        bottom: -65,
-                        left: 260,
-                      }}
-                      content={
-                        <View>
-                          <FontAwesomeIcon
-                            icon={faCheckDouble}
-                            size={30}
-                            color={'white'}
-                          />
-                          <Text style={{color: 'white', fontSize: 10}}>
-                            Dispatched
-                          </Text>
-                        </View>
-                      }
-                    />
-                  </View>
-                )}
+                <AbsoluteButton
+                  loading={loadingPrimary}
+                  onPress={() =>
+                    changeStatus({url: 'retrun-status-picking'})
+                  }
+                  postion={{
+                    bottom: -30,
+                    left: 260,
+                  }}
+                  content={
+                    <View>
+                      <FontAwesomeIcon
+                        icon={faTruck}
+                        size={30}
+                        color={'white'}
+                      />
+                      <Text style={{color: 'white', fontSize: 10}}>
+                        Picking
+                      </Text>
+                    </View>
+                  }
+                />
               </View>
-            ) : (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                }}>
-                <ActivityIndicator size="large" color={MAINCOLORS.primary} />
+            )}
+
+            {dataSelected?.state == 'picking' && (
+              <View>
+                <AbsoluteButton
+                  loading={loadingPrimary}
+                  onPress={() =>
+                    changeStatus({url: 'return-status-picked'})
+                  }
+                  postion={{
+                    bottom: -30,
+                    left: 260,
+                  }}
+                  content={
+                    <View>
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        size={30}
+                        color={'white'}
+                      />
+                      <Text style={{color: 'white', fontSize: 10}}>
+                        Picked
+                      </Text>
+                    </View>
+                  }
+                />
+              </View>
+            )}
+            {dataSelected?.state == 'picked' && (
+              <View>
+                <AbsoluteButton
+                  loading={loadingPrimary}
+                  onPress={() =>
+                    changeStatus({url: 'retrun-status-dispatch'})
+                  }
+                  postion={{
+                    bottom: -30,
+                    left: 260,
+                  }}
+                  content={
+                    <View>
+                      <FontAwesomeIcon
+                        icon={faCheckDouble}
+                        size={30}
+                        color={'white'}
+                      />
+                      <Text style={{color: 'white', fontSize: 10}}>
+                        Dispatched
+                      </Text>
+                    </View>
+                  }
+                />
               </View>
             )}
           </View>
-
-          <BottomSheet modalProps={{}} isVisible={open}>
-            <View style={styles.wrapper}>
-              <Header
-                title="Menu"
-                rightIcon={
-                  <TouchableOpacity
-                    onPress={() => setOpen(false)}
-                    style={{marginRight: 15}}>
-                    <Icon
-                      color={MAINCOLORS.danger}
-                      name="closecircle"
-                      type="antdesign"
-                      size={20}
-                    />
-                  </TouchableOpacity>
-                }
-              />
-              <Divider />
-              <View style={{marginVertical: 15}}>
-                {dataSelected.type == 'pallet' ? (
-                  <ListItem
-                    onPress={() =>{
-                      navigation.navigate('Return Pallet', {return: dataSelected})
-                      setOpen(false)
-                    }}>
-                    <FontAwesomeIcon icon={faPallet} size={18} />
-                    <ListItem.Content>
-                      <ListItem.Title>Pallet in Return</ListItem.Title>
-                    </ListItem.Content>
-                  </ListItem>
-                ) : (
-                  <ListItem
-                    onPress={() =>{
-                      navigation.navigate('Return Stored Items', {return: dataSelected})
-                      setOpen(false)
-                    }}>
-                    <FontAwesomeIcon icon={faNarwhal} size={18} />
-                    <ListItem.Content>
-                      <ListItem.Title>Stored Items in Retrun</ListItem.Title>
-                    </ListItem.Content>
-                  </ListItem>
-                )}
-              </View>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <ActivityIndicator size={'large'} color={MAINCOLORS.primary} />
+          </View>
+        )}
+        <BottomSheet modalProps={{}} isVisible={open}>
+          <View style={styles.wrapper}>
+            <Header
+              title="Menu"
+              rightIcon={
+                <TouchableOpacity
+                  onPress={() => setOpen(false)}
+                  style={{marginRight: 15}}>
+                  <Icon
+                    color={MAINCOLORS.danger}
+                    name="closecircle"
+                    type="antdesign"
+                    size={20}
+                  />
+                </TouchableOpacity>
+              }
+            />
+            <Divider />
+            <View style={{marginVertical: 15}}>
+              {dataSelected?.type == 'pallet' ? (
+                <ListItem
+                  onPress={() => {
+                    navigation.navigate('Return Pallet', {
+                      return: dataSelected,
+                    });
+                    setOpen(false);
+                  }}>
+                  <FontAwesomeIcon icon={faPallet} size={18} />
+                  <ListItem.Content>
+                    <ListItem.Title>Pallet in Return</ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              ) : (
+                <ListItem
+                  onPress={() => {
+                    navigation.navigate('Return Stored Items', {
+                      return: dataSelected,
+                    });
+                    setOpen(false);
+                  }}>
+                  <FontAwesomeIcon icon={faNarwhal} size={18} />
+                  <ListItem.Content>
+                    <ListItem.Title>Stored Items in Retrun</ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              )}
             </View>
-          </BottomSheet>
-        </>
-      ) : (
-        <View
-          style={{
-            justifyContent: 'center',
-            alignContent: 'center',
-            display: 'flex',
-          }}>
-          <ActivityIndicator size={'large'} color={MAINCOLORS.primary} />
-        </View>
-      )}
+          </View>
+        </BottomSheet>
+      </View>
     </Layout>
   );
 };
 
-export const RenderContent = ({dataSelected = {}}) => {
+const RenderContent = ({dataSelected = {}}) => {
   return (
     <View style={styles.containerContent}>
       <View style={styles.barcodeContainer}>
@@ -378,11 +369,15 @@ export const RenderContent = ({dataSelected = {}}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF', // Set background color to white
+    backgroundColor: '#FFFFFF',
+    paddingBottom: 65, // Adjust the padding to ensure buttons are visible
   },
   wrapper: {
     backgroundColor: '#ffffff',
     padding: 15,
+  },
+  scrollContainer: {
+    flex: 1,
   },
   containerContent: {
     flex: 1,
@@ -390,7 +385,7 @@ const styles = StyleSheet.create({
   },
   rowDetail: {
     borderBottomWidth: 1,
-    borderBottomColor: '#CCCCCC', // Light gray border color
+    borderBottomColor: '#CCCCCC',
     paddingVertical: 15,
   },
   barcodeContainer: {

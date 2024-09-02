@@ -18,7 +18,7 @@ export default {
 
 	//pallet
 	'pallet-index' : 'maya/org/{}/warehouses/{}/inventory/pallets',
-	'pallet-show' : 'maya/org/1/warehouses/1/inventory/pallets/204',
+	'pallet-show' : 'maya/org/{}/warehouses/{}/inventory/pallets/{}',
 	'pallet-location' : 'maya/action/location/{}/pallet/{}',
 	'pallet-return' : 'maya/action/pallet/{}/return',
 	'pallet-change-status-state' : 'maya/action/pallet/{}',

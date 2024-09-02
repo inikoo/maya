@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   ScrollView,
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
-  TextInput,
+  RefreshControl,
 } from 'react-native';
-import {Request} from '~/Utils';
+import {findColorFromAiku, Request} from '~/Utils';
 import {useSelector} from 'react-redux';
 import {
   Text,
@@ -15,9 +15,8 @@ import {
   Icon,
   BottomSheet,
   ListItem,
-  Dialog,
-  CheckBox,
 } from '@rneui/themed';
+import {useFocusEffect} from '@react-navigation/native';
 import {defaultTo} from 'lodash';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import DetailRow from '~/Components/DetailRow';
@@ -26,7 +25,38 @@ import {useNavigation} from '@react-navigation/native';
 import {MAINCOLORS} from '~/Utils/Colors';
 import Header from '~/Components/Header';
 import Layout from '~/Components/Layout';
-import Button from '~/Components/Button';
+import ChangeLocation from '~/Components/ChangeLocationPallet';
+import ChangeStatusPallet from '~/Components/ChangeStatusPallet';
+
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {
+  faInventory,
+  faTruckCouch,
+  faPallet,
+  faSignOut,
+  faBox,
+  faTimes,
+  faBetamax,
+  faUndoAlt,
+  faShare,
+  faSpellCheck,
+  faGhost,
+} from 'assets/fa/pro-regular-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+
+library.add(
+  faInventory,
+  faTruckCouch,
+  faPallet,
+  faSignOut,
+  faBox,
+  faTimes,
+  faBetamax,
+  faUndoAlt,
+  faSpellCheck,
+  faShare,
+  faGhost,
+);
 
 function PalletDetail(props) {
   const navigation = useNavigation();
@@ -35,104 +65,36 @@ function PalletDetail(props) {
   const [dataSelected, setDataSelected] = useState(null);
   const [loading, setLoading] = useState(true);
   const [openDialogStatus, setOpenDialogStatus] = useState(false);
-  const [openDialogLocation, setOpenDialogLocation] = useState(false);
   const [open, setOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(null);
-  const [locationCode, setLocationCode] = useState(null);
-  const [errorLocationCode, setErrorLocationCode] = useState("");
-
-  const ChangeStatus = async () => {
-    await Request(
-      'patch',
-      'pallet-change-status-state',
-      {},
-      {state: selectedStatus},
-      [dataSelected.id],
-      ChangeStatusSuccess,
-      ChangeStatusFailed,
-    );
-  };
-
-  const ChangeStatusSuccess = response => {
-    setOpenDialogStatus(false);
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: 'Success',
-      textBody: 'Pallet status updated',
-    });
-    getDetail();
-  };
-
-  const ChangeStatusFailed = response => {
-    const message = response?.response?.data?.message || 'Server error';
-    Toast.show({
-      type: ALERT_TYPE.DANGER,
-      title: 'Failed',
-      textBody: message,
-    });
-  };
-
-
-  const getLocationCode = async () => {
-    await Request(
-      'get',
-      'locations-show-by-code',
-      {},
-      {},
-      [   
-       organisation.active_organisation.id,
-       warehouse.id,
-       locationCode
-      ],
-      LocationCodeSuccess,
-      LocationCodeFailed,
-    );
-  };
-
-  const LocationCodeSuccess = async (response) => {
-    await Request(
-      'patch',
-      'pallet-location',
-      {},
-      {},
-      [
-       response.id, 
-       dataSelected.id
-       
-      ],
-      ChangeLocationSuccess,
-      ChangeLocationFailed,
-    );
-  };
-
-  const LocationCodeFailed = response => {
-    if(response.response.status == 404){
-      setErrorLocationCode('cannot find location')
-    }else {
-      setErrorLocationCode(response?.response?.data?.message || 'Server error')
-    }
-  };
-
-  const ChangeLocationSuccess = response =>{
-    setOpenDialogLocation(false)
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: 'Success',
-      textBody: 'Pallet location updated',
-    });
-    getDetail();
-  }
-
-  const ChangeLocationFailed = error =>{
-    console.log('errorMove',error)
-    Toast.show({
-      type: ALERT_TYPE.DANGER,
-      title: 'Error',
-      textBody: error.response.data.message,
-    });
-  }
-
-  
+  const [openLocation, setOpenLocation] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const buttonFeatures = [
+    {
+      icon: {
+        name: 'location-pin',
+        type: 'material-icons',
+      },
+      key: 'move_location',
+      containerStyle: {borderBottomWidth: 1},
+      title: 'Move Location',
+      onPress: () => {
+        setOpenLocation(true);
+        setOpen(false);
+      },
+    },
+    {
+      icon: {
+        name: 'edit',
+        type: 'material-icons',
+      },
+      key: 'change_status',
+      title: 'Change Status',
+      onPress: () => {
+        setOpenDialogStatus(true);
+        setOpen(false);
+      },
+    },
+  ];
 
   const getDetail = () => {
     setLoading(true);
@@ -155,12 +117,12 @@ function PalletDetail(props) {
   const onSuccessGetDetail = response => {
     setDataSelected(response.data);
     setLoading(false);
-    setSelectedStatus(response.data.status);
-    setLocationCode(response.data.location?.resource?.code);
+    setRefreshing(false);
   };
 
   const onFailedGetDetail = error => {
     setLoading(false);
+    setRefreshing(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -170,7 +132,6 @@ function PalletDetail(props) {
 
   const renderContent = () => {
     if (!dataSelected) return null;
-
     return (
       <View style={styles.containerContent}>
         <View style={styles.barcodeContainer}>
@@ -204,7 +165,12 @@ function PalletDetail(props) {
         <View style={styles.rowDetail}>
           <DetailRow
             title="Status"
-            text={defaultTo(dataSelected.status, '-')}
+            text={(
+              <View style={{ flexDirection : 'row' , gap : 4, backgroundColor : findColorFromAiku(dataSelected.status_icon.color), paddingHorizontal : 10, borderRadius : 30, paddingVertical : 3}}>
+                <FontAwesomeIcon color='#ffff' size={12} icon={dataSelected.status_icon.icon} />
+                <Text style={{ color : '#ffff', fontSize : 12 }}>{dataSelected.status}</Text>
+              </View>
+            )}
           />
         </View>
         <View style={styles.rowDetail}>
@@ -217,171 +183,96 @@ function PalletDetail(props) {
     );
   };
 
-  const buttonFeatures = [
-    {
-      icon: {
-        name: 'location-pin',
-        type: 'material-icons',
-      },
-      key: 'move_location',
-      containerStyle: {borderBottomWidth: 1},
-      title: 'Move Location',
-      onPress: () => {
-        setOpenDialogLocation(true);
-        setOpen(false);
-      },
-    },
-    {
-      icon: {
-        name: 'edit',
-        type: 'material-icons',
-      },
-      key: 'change_status',
-      title: 'Change Status',
-      onPress: () => {
-        setOpenDialogStatus(true);
-        setOpen(false);
-      },
-    },
-  ];
 
-  const closeDialog = () => {
-    setOpenDialogStatus(false);
-    setOpenDialogLocation(false)
-  };
-
-  const onCancel = () => {
-    setSelectedStatus(dataSelected.status);
-    setLocationCode(dataSelected.location?.resource?.code);
-    closeDialog();
-  };
-
-  const onChangeCode = (value : String) =>{
-      setLocationCode(value)
-      setErrorLocationCode('')
-  }
-
-  useEffect(() => {
+  const onRefresh = () => {
+    setRefreshing(true);
     getDetail();
-  }, [props.route.params.pallet]);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!props.route.params.pallet) navigation.goBack();
+      else getDetail();
+    }, [props.route.params.pallet]),
+  );
 
   return (
     <Layout>
-      <Header
-        title={props.route.params.pallet.reference}
-        useLeftIcon
-        useRightIcon
-        rightIcon={
-          <TouchableOpacity onPress={() => setOpen(true)}>
-            <Icon name="menu" type="entypo" />
-          </TouchableOpacity>
-        }
-      />
-      <Divider style={styles.divider} />
-      {!loading ? (
-        <ScrollView>{renderContent()}</ScrollView>
-      ) : (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={MAINCOLORS.primary} />
-        </View>
-      )}
-      <Dialog isVisible={openDialogStatus}>
-        <Dialog.Title title="Change State" />
-        <View>
-          <CheckBox
-            title="Storing"
-            checked={selectedStatus === 'storing'}
-            onPress={() => setSelectedStatus('storing')}
-          />
-          <CheckBox
-            title="Lost"
-            checked={selectedStatus === 'lost'}
-            onPress={() => setSelectedStatus('lost')}
-          />
-          <CheckBox
-            title="Damaged"
-            checked={selectedStatus === 'damaged'}
-            onPress={() => setSelectedStatus('damaged')}
-          />
-          <CheckBox
-            title="Picking"
-            checked={selectedStatus === 'picking'}
-            onPress={() => setSelectedStatus('picking')}
-          />
-          <CheckBox
-            title="Picked"
-            checked={selectedStatus === 'picked'}
-            onPress={() => setSelectedStatus('picked')}
-          />
-          <CheckBox
-            title="Dispatched"
-            checked={selectedStatus === 'dispatched'}
-            onPress={() => setSelectedStatus('dispatched')}
-          />
-          <View style={styles.dialogButtonContainer}>
-            <Button type="secondary" title="Cancel" onPress={onCancel} />
-            <Button type="primary" title="Submit" onPress={ChangeStatus} />
+      <View style={{flex: 1}}>
+        <Header
+          title={props.route.params.pallet.reference}
+          useLeftIcon
+          useRightIcon
+          rightIcon={
+            <TouchableOpacity onPress={() => setOpen(true)}>
+              <Icon name="menu" type="entypo" />
+            </TouchableOpacity>
+          }
+        />
+        <Divider style={styles.divider} />
+        {!loading ? (
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
+            {renderContent()}
+          </ScrollView>
+        ) : (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={MAINCOLORS.primary} />
           </View>
-        </View>
-      </Dialog>
+        )}
 
-      <Dialog isVisible={openDialogLocation}>
-        <Dialog.Title title="Change Location" />
-        <Divider />
-        <View>
-          <Text style={styles.textLabel}>Location Code : </Text>
-          <View style={styles.searchContainer}>
-            <View style={styles.inputContainer}>
-              <TextInput style={styles.input} placeholder="Code" value={locationCode} onChangeText={onChangeCode}/>
-            </View>
-            <View style={styles.buttonScan}>
-              <TouchableOpacity style={styles.searchIcon} onPress={()=>navigation.navigate('Change Location Pallet Scanner',{ pallet : dataSelected })}>
-                <Icon name="qr-code-scanner" type="material" size={24} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <Text style={{ color : 'red', fontSize : 12 }}>{errorLocationCode}</Text>
-          <Divider style={{ marginTop : 20}}/>
-          <View style={styles.dialogButtonContainer}>
-            <Button type="secondary" title="Cancel" onPress={onCancel} />
-            <Button type="primary" title="Submit" onPress={getLocationCode}/>
-          </View>
-        </View>
-      </Dialog>
+        <ChangeStatusPallet
+          visible={openDialogStatus}
+          pallet={dataSelected}
+          onClose={() => setOpenDialogStatus(false)}
+        />
 
-      <BottomSheet modalProps={{}} isVisible={open}>
-        <View style={styles.wrapper}>
-          <Header
-            title="Setting"
-            rightIcon={
-              <TouchableOpacity
-                onPress={() => setOpen(false)}
-                style={{marginRight: 20}}>
-                <Icon
-                  color={MAINCOLORS.danger}
-                  name="closecircle"
-                  type="antdesign"
-                  size={20}
-                />
-              </TouchableOpacity>
-            }
-          />
-          <Divider />
-          <View style={{marginVertical: 15}}>
-            {buttonFeatures.map((l, i) => (
-              <ListItem
-                key={i}
-                containerStyle={{...l.containerStyle}}
-                onPress={l.onPress}>
-                <Icon {...l.icon} size={18} />
-                <ListItem.Content>
-                  <ListItem.Title>{l.title}</ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
+        <ChangeLocation
+          visible={openLocation}
+          onClose={() => {
+            setOpenLocation(false);
+          }}
+          pallet={dataSelected?.id}
+          bulk={false}
+          onSuccess={() => getDetail()}
+        />
+
+        <BottomSheet modalProps={{}} isVisible={open}>
+          <View style={styles.wrapper}>
+            <Header
+              title="Setting"
+              rightIcon={
+                <TouchableOpacity
+                  onPress={() => setOpen(false)}
+                  style={{marginRight: 20}}>
+                  <Icon
+                    color={MAINCOLORS.danger}
+                    name="closecircle"
+                    type="antdesign"
+                    size={20}
+                  />
+                </TouchableOpacity>
+              }
+            />
+            <Divider />
+            <View style={{marginVertical: 15}}>
+              {buttonFeatures.map((l, i) => (
+                <ListItem
+                  key={i}
+                  containerStyle={{...l.containerStyle}}
+                  onPress={l.onPress}>
+                  <Icon {...l.icon} size={18} />
+                  <ListItem.Content>
+                    <ListItem.Title>{l.title}</ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              ))}
+            </View>
           </View>
-        </View>
-      </BottomSheet>
+        </BottomSheet>
+      </View>
     </Layout>
   );
 }
@@ -456,13 +347,13 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   searchIcon: {
-    paddingVertical : 8,
-    paddingHorizontal : 5
+    paddingVertical: 8,
+    paddingHorizontal: 5,
   },
-  textLabel : {
-    fontWeight : "500",
-    marginTop : 20
-  }
+  textLabel: {
+    fontWeight: '500',
+    marginTop: 20,
+  },
 });
 
 export default PalletDetail;

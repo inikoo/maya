@@ -3,13 +3,14 @@ import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
-import {Avatar, Text, Icon} from '@rneui/themed'; // Import Icon from your icon library
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {Text} from '@rneui/themed';
+import {MAINCOLORS} from '~/Utils/Colors';
 import PalletCard from '~/Components/palletComponents/ListCardReturn';
 import {Request, IconColor} from '~/Utils';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import AbsoluteButton from '~/Components/absoluteButton';
 import SetChangeStatusNotPicked from '~/Components/SetChangeStatusPalletNotPicked';
+import StoredItemsCard from '~/Components/palletComponents/StoredItemsCard'
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -185,7 +186,7 @@ const PalletinReturns = props => {
           record,
           {onLongPress = () => null, listModeBulk = false, bulkValue = []},
         ) => (
-          <PalletCard
+          <StoredItemsCard
             data={{
               record: record,
               onLongPress,
@@ -225,6 +226,7 @@ const PalletinReturns = props => {
           />
         </View>
       )}
+
       {returnData?.state == 'picked' && (
         <View>
           <AbsoluteButton
@@ -243,6 +245,7 @@ const PalletinReturns = props => {
           />
         </View>
       )}
+
       <SetChangeStatusNotPicked
         pallet={selectedPallet}
         visible={openNotPickedDialog}
@@ -251,6 +254,7 @@ const PalletinReturns = props => {
         }}
         onClose={() => setOpenNotPickedDialog(false)}
       />
+
     </>
   );
 };

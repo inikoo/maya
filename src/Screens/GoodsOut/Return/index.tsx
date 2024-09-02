@@ -70,6 +70,7 @@ const Returns = props => {
       </View>
     );
   };
+  
   return (
     <BaseList
       headerProps={{
@@ -83,14 +84,14 @@ const Returns = props => {
         ),
       }}
       title="Fullfilment Returns"
-      itemKey="reference"
+      itemKey="id"
       urlKey="return-index"
       args={[oraganisation.active_organisation.id, warehouse.id]}
       itemList={Item}
       sortSchema="reference"
       screenNavigation={'Pallet Scanner'}
       params={{
-        ['elements[state]'] : ["confirmed","picking","picked","dispatched"]
+        ['elements[state]'] : "confirmed,picking,picked,dispatched"
       }}
       filterSchema={[
         {
@@ -131,10 +132,6 @@ const Returns = props => {
               {
                 label: 'Dispatched',
                 value: 'dispatched',
-              },
-              {
-                label: 'Cancel',
-                value: 'cancel',
               },
             ],
           },

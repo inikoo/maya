@@ -28,23 +28,25 @@ const Dashboard: React.FC<Props> = props => {
 
   return (
     <Layout>
-      <Header
-        title="Inventory"
-        useLeftIcon={true}
-        leftIcon={
-          <TouchableOpacity
-            style={styles.leftIconContainer}
-            onPress={() => props.navigation.toggleDrawer()}>
-            <Icon name="bars" type="font-awesome-5" color="black" size={20} />
-          </TouchableOpacity>
-        }
-        rightIcon={<SearchNotif />}
-      />
-
       <View>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Scan')}>
-          <Text>Dashboard Inventory</Text>
-        </TouchableOpacity>
+        <Header
+          title="Inventory"
+          useLeftIcon={true}
+          leftIcon={
+            <TouchableOpacity
+              style={styles.leftIconContainer}
+              onPress={() => props.navigation.toggleDrawer()}>
+              <Icon name="bars" type="font-awesome-5" color="black" size={20} />
+            </TouchableOpacity>
+          }
+          rightIcon={<SearchNotif />}
+        />
+
+        <View>
+          <TouchableOpacity onPress={() => props.navigation.navigate('Scan')}>
+            <Text>Dashboard Inventory</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </Layout>
   );
