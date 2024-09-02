@@ -42,7 +42,20 @@ library.add(
   faSortSizeUp
 );
 
-const PalletCard = props => {
+type Props = {
+  data : {
+    record : {
+      id : Integer,
+      location_code : String,
+      type_icon : {
+        color : String
+      }
+    },
+    onLongPress : Funcition
+  }
+}
+
+const PalletCard = (props : Props) => {
   const navigation = useNavigation();
 
   return (

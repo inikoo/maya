@@ -48,6 +48,7 @@ type Props = {
   height: Number;
   hiddenItem: ReactNode;
   bulkMenu : ReactNode
+  useBulk : boolean
 };
 
 let timeoutId: any;
@@ -381,6 +382,7 @@ const BaseList = forwardRef((props: Props, ref) => {
 
   return (
     <Layout>
+      <>
       <View>
         <Header
           title={props.title}
@@ -389,7 +391,7 @@ const BaseList = forwardRef((props: Props, ref) => {
         />
         {renderSearch()}
         <View style={styles.recordsWrapper}>
-          {listModeBulk ? (
+          {listModeBulk && props.useBulk ? (
             <View style={styles.recordsContainer}>
               <Text style={styles.recordsText}>
                 Selected : {bulkValue.length}/{TotalData}
@@ -407,7 +409,7 @@ const BaseList = forwardRef((props: Props, ref) => {
                 size={30}
                 containerStyle={styles.sortInactive}
                 icon={{
-                  name: !sortValue.includes('-')
+                  name: sortValue.includes('-')
                     ? 'sort-alpha-down'
                     : 'sort-alpha-up-alt',
                   type: 'font-awesome-5',
@@ -455,6 +457,7 @@ const BaseList = forwardRef((props: Props, ref) => {
           {bulkMenu()}
         </View>
       </BottomSheet>
+      </>
     </Layout>
   );
 });
@@ -469,6 +472,7 @@ BaseList.defaultProps = {
   rightOpenValue: -60,
   useScan: true,
   height: 520,
+  useBulk : false
 };
 
 const styles = StyleSheet.create({

@@ -82,7 +82,7 @@ const Pallet = props => {
     <>
       <BaseList
         title="Pallets"
-        itemKey="reference"
+        itemKey="id"
         prefix="pallets"
         urlKey="pallet-index"
         sortSchema="reference"
@@ -91,6 +91,7 @@ const Pallet = props => {
         enableSwipe={true}
         rightOpenValue={-120}
         leftOpenValue={0}
+        useBulk={true}
         headerProps={{
           useLeftIcon: true,
           leftIcon: (
