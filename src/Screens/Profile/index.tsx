@@ -19,10 +19,15 @@ const Profile = () => {
   const dispatch = useDispatch();
   const organisation = useSelector(state => state.organisationReducer);
 
-  const logOut = () => {
-    RemoveCredential();
-    dispatch(Action.DestroyUserSessionProperties());
+  const logOut = async () => {
+    try {
+      await RemoveCredential(); 
+      dispatch(Action.DestroyUserSessionProperties());
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
+  
 
   return (
     <Layout>

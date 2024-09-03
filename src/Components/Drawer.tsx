@@ -61,10 +61,15 @@ export const CustomDrawer = (props = null) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const logOut = () => {
-    RemoveCredential();
-    dispatch(Action.DestroyUserSessionProperties());
+  const logOut = async () => {
+    try {
+      await RemoveCredential(); 
+      dispatch(Action.DestroyUserSessionProperties());
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
+  
 
   return (
     <View style={{flex: 1}}>

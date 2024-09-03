@@ -1,7 +1,7 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:1:1-32:12
-MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:1:1-32:12
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:1:1-33:12
+MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:1:1-33:12
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:2:1-9:12
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:2:1-9:12
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:2:1-9:12
@@ -182,10 +182,26 @@ uses-permission#android.permission.READ_MEDIA_IMAGES
 ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:9:5-75
 	android:name
 		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:9:22-73
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:10:5-79
+MERGED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-79
+MERGED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-79
+MERGED from [com.google.firebase:firebase-messaging:23.4.1] C:\Users\62852\.gradle\caches\transforms-3\42141c13a80777e90ae8d420bf0f4283\transformed\jetified-firebase-messaging-23.4.1\AndroidManifest.xml:22:5-79
+MERGED from [com.google.firebase:firebase-messaging:23.4.1] C:\Users\62852\.gradle\caches\transforms-3\42141c13a80777e90ae8d420bf0f4283\transformed\jetified-firebase-messaging-23.4.1\AndroidManifest.xml:22:5-79
+MERGED from [com.google.firebase:firebase-installations:17.2.0] C:\Users\62852\.gradle\caches\transforms-3\c8fc2349083b394e9aad4bee1c82fb70\transformed\jetified-firebase-installations-17.2.0\AndroidManifest.xml:7:5-79
+MERGED from [com.google.firebase:firebase-installations:17.2.0] C:\Users\62852\.gradle\caches\transforms-3\c8fc2349083b394e9aad4bee1c82fb70\transformed\jetified-firebase-installations-17.2.0\AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.gms:play-services-cloud-messaging:17.1.0] C:\Users\62852\.gradle\caches\transforms-3\49a52040e901f02fc7f743ed4e7705d7\transformed\jetified-play-services-cloud-messaging-17.1.0\AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.gms:play-services-cloud-messaging:17.1.0] C:\Users\62852\.gradle\caches\transforms-3\49a52040e901f02fc7f743ed4e7705d7\transformed\jetified-play-services-cloud-messaging-17.1.0\AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\62852\.gradle\caches\transforms-3\d77aaa61b8062f298ae1729a0b603089\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\62852\.gradle\caches\transforms-3\d77aaa61b8062f298ae1729a0b603089\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\62852\.gradle\caches\transforms-3\1ef7b7c3f498391ab8e50cbd7931a039\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:22:5-79
+MERGED from [com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\62852\.gradle\caches\transforms-3\1ef7b7c3f498391ab8e50cbd7931a039\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:22:5-79
+	android:name
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:10:22-76
 application
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:12:5-31:19
-MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:12:5-31:19
-MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:12:5-31:19
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:13:5-32:19
+MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:13:5-32:19
+MERGED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:13:5-32:19
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:5:5-8:50
 MERGED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-41:19
 MERGED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-41:19
@@ -264,53 +280,53 @@ MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\62852\.gradle\c
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.9.0] C:\Users\62852\.gradle\caches\transforms-3\131a14e650442bdc8d41eaaa9e5b4d34\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
 	android:label
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:14:7-39
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:14:7-39
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:15:7-39
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:15:7-39
 	tools:ignore
 		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:8:9-48
 	android:roundIcon
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:16:7-46
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:16:7-46
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:17:7-46
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:17:7-46
 	tools:targetApi
 		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:7:9-29
 	android:icon
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:15:7-41
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:15:7-41
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:16:7-41
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:16:7-41
 	android:allowBackup
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:17:7-34
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:17:7-34
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:18:7-34
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:18:7-34
 	android:theme
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:18:7-38
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:18:7-38
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:19:7-38
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:19:7-38
 	android:usesCleartextTraffic
 		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:6:9-44
 	android:name
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:13:7-38
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:13:7-38
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:14:7-38
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:14:7-38
 activity#com.maya.MainActivity
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:19:7-30:18
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:20:7-31:18
 	android:label
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:21:9-41
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:22:9-41
 	android:launchMode
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:23:9-40
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:24:9-40
 	android:windowSoftInputMode
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:24:9-51
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:25:9-51
 	android:exported
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:25:9-32
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:26:9-32
 	android:configChanges
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:22:9-118
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:23:9-118
 	android:name
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:20:9-37
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:21:9-37
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:26:9-29:25
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:27:9-30:25
 action#android.intent.action.MAIN
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:27:13-65
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:28:13-65
 	android:name
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:27:21-62
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:28:21-62
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:28:13-73
+ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:29:13-73
 	android:name
-		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:28:23-70
+		ADDED from C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:29:23-70
 uses-sdk
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml
@@ -573,20 +589,6 @@ MERGED from [com.google.android.gms:play-services-cloud-messaging:17.1.0] C:\Use
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.1.0] C:\Users\62852\.gradle\caches\transforms-3\49a52040e901f02fc7f743ed4e7705d7\transformed\jetified-play-services-cloud-messaging-17.1.0\AndroidManifest.xml:9:5-68
 	android:name
 		ADDED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:22-65
-uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-79
-MERGED from [com.google.firebase:firebase-messaging:23.4.1] C:\Users\62852\.gradle\caches\transforms-3\42141c13a80777e90ae8d420bf0f4283\transformed\jetified-firebase-messaging-23.4.1\AndroidManifest.xml:22:5-79
-MERGED from [com.google.firebase:firebase-messaging:23.4.1] C:\Users\62852\.gradle\caches\transforms-3\42141c13a80777e90ae8d420bf0f4283\transformed\jetified-firebase-messaging-23.4.1\AndroidManifest.xml:22:5-79
-MERGED from [com.google.firebase:firebase-installations:17.2.0] C:\Users\62852\.gradle\caches\transforms-3\c8fc2349083b394e9aad4bee1c82fb70\transformed\jetified-firebase-installations-17.2.0\AndroidManifest.xml:7:5-79
-MERGED from [com.google.firebase:firebase-installations:17.2.0] C:\Users\62852\.gradle\caches\transforms-3\c8fc2349083b394e9aad4bee1c82fb70\transformed\jetified-firebase-installations-17.2.0\AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.gms:play-services-cloud-messaging:17.1.0] C:\Users\62852\.gradle\caches\transforms-3\49a52040e901f02fc7f743ed4e7705d7\transformed\jetified-play-services-cloud-messaging-17.1.0\AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.gms:play-services-cloud-messaging:17.1.0] C:\Users\62852\.gradle\caches\transforms-3\49a52040e901f02fc7f743ed4e7705d7\transformed\jetified-play-services-cloud-messaging-17.1.0\AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\62852\.gradle\caches\transforms-3\d77aaa61b8062f298ae1729a0b603089\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\62852\.gradle\caches\transforms-3\d77aaa61b8062f298ae1729a0b603089\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\62852\.gradle\caches\transforms-3\1ef7b7c3f498391ab8e50cbd7931a039\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:22:5-79
-MERGED from [com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\62852\.gradle\caches\transforms-3\1ef7b7c3f498391ab8e50cbd7931a039\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:22:5-79
-	android:name
-		ADDED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:22-76
 service#io.invertase.firebase.messaging.ReactNativeFirebaseMessagingHeadlessService
 ADDED from [:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:9-14:40
 	android:exported

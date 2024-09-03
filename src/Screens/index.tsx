@@ -18,64 +18,60 @@ export { default as DashboardFullfilment } from './Fullfilment/Dashboard';
 export { default as FullfilmentNavigation } from './Fullfilment/Navigator';
 
 //locations fullfilment
-export { default as Locations } from './Fullfilment/Location';
-export { default as LocationInFulfilment } from './Fullfilment/Location/Detail';
-export { default as LocationPallet } from './Fullfilment/Location/Pallet';
-export { default as LocationScanner } from './Fullfilment/Location/Scanner';
-
-//palet
-export { default as Pallets } from './Fullfilment/Pallet';
-export { default as Pallet } from './Fullfilment/Pallet/Detail';
-export { default as PalletScanner } from './Fullfilment/Pallet/Scanner';
-export { default as ChangeLocationPalletByScanner } from './Fullfilment/Pallet/Detail/ChangeLocationByScanner';
-
-//stored Items
-export { default as StoredItems } from './Fullfilment/StoredItems';
-
-//delivery
-export { default as Deliveries } from './Fullfilment/Delivery';
-export { default as DeliveryDetail } from './Fullfilment/Delivery/Detail';
-export { default as DeliveryPallet } from './Fullfilment/Delivery/Pallet';
-export { default as DeliveryScanner } from './Fullfilment/Delivery/Scanner';
-
-
-//return
-export { default as PalletReturns } from './Fullfilment/Return/PalletReturns';
-export { default as StoredItemsReturns } from './Fullfilment/Return/StoredItemsReturns';
-export { default as ReturnDetail } from './Fullfilment/Return/Detail';
-export { default as ReturnScanner } from './Fullfilment/Return/Scanner';
+export { default as Locations } from './Locations/Location';
+export { default as LocationInFulfilment } from './Locations/Location/Detail';
+export { default as LocationPallet } from './Locations/Location/Pallet';
+export { default as LocationScanner } from './Locations/Location/Scanner';
 
 //global Scanners
 export { default as GlobalSearch } from './GlobalScanner';
 export { default as GlobalScanner } from './GlobalScanner/Scanner';
 
-// Production 
-export { default as ProductionNavigation } from './Production/Navigator';
-export { default as DashboardProduction } from './Production/Dashboard';
-
 
 // Inventory
 export { default as InventoryDashboard } from './Inventory/Dashboard';
 export { default as InventoryNavigation } from './Inventory/Navigator';
-export { default as SKU } from './Inventory/Sku';
-export { default as SKUFamily } from './Inventory/SkuFamily';
 
+//orgStock
+export { default as OrgStocks } from './Inventory/OrgStock';
+export { default as OrgStock } from './Inventory/OrgStock/Detail';
 
-//Dispatching
-export { default as  DispatchingDashboard } from './Dispatching/Dashboard';
+//palet
+export { default as Pallets } from './Inventory/Pallet';
+export { default as Pallet } from './Inventory/Pallet/Detail';
+export { default as PalletScanner } from './Inventory/Pallet/Scanner';
+export { default as ChangeLocationPalletByScanner } from './Inventory/Pallet/Detail/ChangeLocationByScanner';
 
+//stored Items
+export { default as StoredItems } from './Inventory/StoredItems';
 
 //Locations
 export { default as  LocationsDashboard } from './Locations/Dashboard';
 export { default as  LocationsNavigation } from './Locations/Navigator';
 export { default as  Area } from './Locations/Area';
-export { default as  WarehouseInLocation } from './Locations/Warehouse';
 export { default as  Location } from './Locations/Location';
 
-//Procurement
-export { default as  ProcurementDashboard } from './Procurement/Dashboard';
-export { default as  ProcurementNavigation } from './Procurement/Navigator';
-export { default as  Agents } from './Procurement/Agents';
-export { default as  Patners } from './Procurement/Patners';
-export { default as  PurchasedOrder } from './Procurement/PurchasedOrder';
-export { default as  Suppliers } from './Procurement/Suppliers';
+//Goods In
+export { default as GoodsInDashboard } from './GoodsIn/Dashboard';
+export { default as GoodsInNavigation } from './GoodsIn/Navigator';
+
+export { default as StockDeliveries } from './GoodsIn/StockDeliveries';
+
+//delivery
+export { default as Deliveries } from './GoodsIn/Delivery';
+export { default as DeliveryDetail } from './GoodsIn/Delivery/Detail';
+export { default as DeliveryPallet } from './GoodsIn/Delivery/Pallet';
+export { default as DeliveryScanner } from './GoodsIn/Delivery/Scanner';
+
+//Goods Out
+export { default as GoodsOutDashboard } from './GoodsOut/Dashboard';
+export { default as GoodsOutNavigation } from './GoodsOut/Navigator';
+
+export { default as DeliveryNotes } from './GoodsOut/DeliveryNotes';
+
+//return
+export { default as Returns } from './GoodsOut/Return';
+export { default as StoredItemsReturns } from './GoodsOut/Return/StoredItems';
+export { default as PalletReturns } from './GoodsOut/Return/Pallet';
+export { default as ReturnDetail } from './GoodsOut/Return/Detail';
+export { default as ReturnScanner } from './GoodsOut/Return/Scanner';
