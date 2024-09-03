@@ -29,12 +29,12 @@
 17    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 17-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:9:5-75
 17-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:9:22-73
-18    <uses-permission android:name="android.permission.WAKE_LOCK" />
-18-->[:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:5-68
-18-->[:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:22-65
-19    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-19-->[:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-79
-19-->[:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:22-76
+18    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+18-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:10:5-79
+18-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:10:22-76
+19    <uses-permission android:name="android.permission.WAKE_LOCK" />
+19-->[:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:5-68
+19-->[:react-native-firebase_messaging] C:\Users\62852\Project\maya2\Maya\node_modules\@react-native-firebase\messaging\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:22-65
 20
 21    <uses-feature
 21-->[:react-native-camera] C:\Users\62852\Project\maya2\Maya\node_modules\react-native-camera\android\build\intermediates\merged_manifest\generalDebug\AndroidManifest.xml:9:5-11:36
@@ -80,48 +80,48 @@
 41-->[com.android.installreferrer:installreferrer:1.1.2] C:\Users\62852\.gradle\caches\transforms-3\2f6a6b1a8be320996740940505612ba4\transformed\jetified-installreferrer-1.1.2\AndroidManifest.xml:9:22-107
 42
 43    <application
-43-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:12:5-31:19
+43-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:13:5-32:19
 44        android:name="com.maya.MainApplication"
-44-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:13:7-38
+44-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:14:7-38
 45        android:allowBackup="false"
-45-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:17:7-34
+45-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:18:7-34
 46        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 46-->[androidx.core:core:1.9.0] C:\Users\62852\.gradle\caches\transforms-3\131a14e650442bdc8d41eaaa9e5b4d34\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
 47        android:debuggable="true"
 48        android:extractNativeLibs="true"
 49        android:icon="@mipmap/ic_launcher"
-49-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:15:7-41
+49-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:16:7-41
 50        android:label="@string/app_name"
-50-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:14:7-39
+50-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:15:7-39
 51        android:roundIcon="@mipmap/ic_launcher"
-51-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:16:7-46
+51-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:17:7-46
 52        android:theme="@style/AppTheme"
-52-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:18:7-38
+52-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:19:7-38
 53        android:usesCleartextTraffic="true" >
 53-->C:\Users\62852\Project\maya2\Maya\android\app\src\debug\AndroidManifest.xml:6:9-44
 54        <activity
-54-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:19:7-30:18
+54-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:20:7-31:18
 55            android:name="com.maya.MainActivity"
-55-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:20:9-37
+55-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:21:9-37
 56            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-56-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:22:9-118
+56-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:23:9-118
 57            android:exported="true"
-57-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:25:9-32
+57-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:26:9-32
 58            android:label="@string/app_name"
-58-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:21:9-41
+58-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:22:9-41
 59            android:launchMode="singleTask"
-59-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:23:9-40
+59-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:24:9-40
 60            android:windowSoftInputMode="adjustResize" >
-60-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:24:9-51
+60-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:25:9-51
 61            <intent-filter>
-61-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:26:9-29:25
+61-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:27:9-30:25
 62                <action android:name="android.intent.action.MAIN" />
-62-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:27:13-65
-62-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:27:21-62
+62-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:28:13-65
+62-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:28:21-62
 63
 64                <category android:name="android.intent.category.LAUNCHER" />
-64-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:28:13-73
-64-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:28:23-70
+64-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:29:13-73
+64-->C:\Users\62852\Project\maya2\Maya\android\app\src\main\AndroidManifest.xml:29:23-70
 65            </intent-filter>
 66        </activity>
 67

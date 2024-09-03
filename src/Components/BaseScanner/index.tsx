@@ -90,6 +90,7 @@ export default function BaseScanner(props : Props) {
       ) : (
         <View>
           <Empty
+            imageurl={require('../../assets/image/Scanner.png')}
             buttonOnPress={() => setScanned(true)}
             title=""
             subtitle=""

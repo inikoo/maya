@@ -1,14 +1,15 @@
-import {InventoryDashboard, GlobalSearch, SKU, SKUFamily} from '~/Screens';
+import {InventoryDashboard, GlobalSearch, Pallets, StoredItems, OrgStocks} from '~/Screens';
 import {library} from '@fortawesome/fontawesome-svg-core';
 
 import {
-  faBoxes,
+  faPallet,
   faBox,
   faChartNetwork,
   faSearch,
+  faBoxes
 } from 'assets/fa/pro-regular-svg-icons';
 
-library.add(faBox, faBoxes, faChartNetwork, faSearch);
+library.add(faBox, faPallet, faChartNetwork, faSearch, faBoxes);
 
 const navigation = [
   {
@@ -24,7 +25,7 @@ const navigation = [
           tabBarLabel: 'Dasboard',
         },
       },
-      {
+     /*  {
         name: 'Search',
         component: GlobalSearch,
         options: {
@@ -32,21 +33,30 @@ const navigation = [
           headerShown: false,
           tabBarIcon: faSearch,
         },
-      },
+      }, */
       {
-        name: 'Sku Family',
-        component: SKUFamily,
+        name: 'Org Stocks',
+        component: OrgStocks,
         options: {
-          tabBarLabel: 'SKU Family',
+          tabBarLabel: 'Org Stocks',
           headerShown: false,
           tabBarIcon: faBoxes,
         },
       },
       {
-        name: 'Sku',
-        component: SKU,
+        name: 'Pallets',
+        component: Pallets,
         options: {
-          tabBarLabel: 'SKU',
+          tabBarLabel: 'Pallets',
+          headerShown: false,
+          tabBarIcon: faPallet,
+        },
+      },
+      {
+        name: 'Stored Item',
+        component: StoredItems,
+        options: {
+          tabBarLabel: 'Stored Item',
           headerShown: false,
           tabBarIcon: faBox,
         },

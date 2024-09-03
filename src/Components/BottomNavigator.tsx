@@ -109,7 +109,7 @@ function BottomMenu(props: Props) {
 
 const styles = StyleSheet.create({
   tabBarContainer: {
-    paddingHorizontal: 5,
+    paddingHorizontal: 0,
     borderColor: 'black',
     borderWidth: 0.5,
   },
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 25,
+    gap: 0,
   },
   tabButtonContainer: {
     alignItems: 'center',

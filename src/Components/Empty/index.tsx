@@ -8,40 +8,53 @@ type Props = {
   title: String,
   useButton: Boolean,
   subtitle: String,
+  imageurl?: any, // Updated to allow any type (local or remote)
   icon: {
     name: string,
     type: String,
     size: Number,
     color: String,
   },
-  useImage : Boolean
+  useImage: Boolean,
   button: {
     size: Number,
     text: String,
     color: String,
   },
-  buttonOnPress: noop,
+  buttonOnPress: () => void,
 }
 
-const Empty = (props : Props) => {
-  return (
-    <View style={styles.container}>
-      {!props.useImage ? (
+const Empty = (props: Props) => {
+  const renderImage = () => {
+    if (!props.useImage) {
+      return (
         <Icon
           name={props.icon.name}
           type={props.icon.type}
           size={props.icon.size}
           color={props.icon.color}
         />
-      ) : (
-        <View style={{height: 300, width: 300}}>
-          <Image
-            source={require('../../assets/image/9264822.jpg')}
-            style={{flex: 1, width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </View>
-      )}
+      );
+    }
+
+    const imageSource = typeof props.imageurl === 'string'
+      ? {uri: props.imageurl} // If it's a URI
+      : props.imageurl; // If it's a local image path
+
+    return (
+      <View style={{height: 300, width: 300}}>
+        <Image
+          source={imageSource}
+          style={{flex: 1, width: '100%', height: '100%'}}
+          resizeMode="contain"
+        />
+      </View>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      {renderImage()}
 
       <Text style={styles.title}>{props.title}</Text>
       <Text style={styles.subtitle}>{props.subtitle}</Text>
@@ -49,7 +62,7 @@ const Empty = (props : Props) => {
       <View>
         {props.useButton && (
           <Button
-            onPress={e => props.buttonOnPress(e)}
+            onPress={props.buttonOnPress}
             containerStyle={styles.button}
             size={props.button.size}
             color={props.button.color}>
@@ -64,8 +77,9 @@ const Empty = (props : Props) => {
 Empty.defaultProps = {
   title: 'Empty',
   useButton: true,
-  useImage : true,
-  subtitle: 'you dont have any data in here',
+  useImage: true,
+  subtitle: 'You don\'t have any data here',
+  imageurl: require('../../assets/image/9264822.jpg'), // Use require for static image paths
   icon: {
     name: 'inbox',
     type: 'antdesign',
