@@ -17,3 +17,22 @@ export type navigation = {
     components: setNavigation[]; 
   };
 };
+
+export type palletTypes = {
+  id: Number;
+  location_code: String;
+  reference:String;
+  status_icon:{
+    color : String,
+    icon : String
+  }
+  type_icon: {
+    color: String;
+    icon : String;
+  };
+}
+
+export type BaseListTypes = {
+  refreshList: Function,
+  bulkValue : Array<any>
+}

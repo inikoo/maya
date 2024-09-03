@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, MAINCOLORS} from '~/Utils/Colors';
@@ -20,10 +20,11 @@ import {
   faArrowAltFromLeft,
   faPallet,
   faBox,
-  faSortSizeUp
+  faSortSizeUp,
 } from 'assets/fa/pro-light-svg-icons';
 import {findColorFromAiku} from '~/Utils';
 
+// Add icons to the library
 library.add(
   faSeedling,
   faShare,
@@ -39,38 +40,64 @@ library.add(
   faArrowAltFromLeft,
   faPallet,
   faBox,
-  faSortSizeUp
+  faSortSizeUp,
 );
 
-type Props = {
-  data : {
-    record : {
-      id : Integer,
-      location_code : String,
-      type_icon : {
-        color : String
-      }
-    },
-    onLongPress : Funcition
-  }
-}
+type RecordType = {
+  id: number; // Changed to lowercase number
+  location_code: string; // Changed to lowercase string
+  reference: string;
+  status_icon: {
+    color: string;
+    icon: any;
+  };
+  type_icon: {
+    color: string;
+    icon: any;
+  };
+};
 
-const PalletCard = (props : Props) => {
+type Props = {
+  data: {
+    record: RecordType;
+    onLongPress: (record: RecordType) => void; // Provide a type for the function
+    bulkValue: Array<number>; // Array of numbers, assuming IDs are numbers
+    listModeBulk: boolean;
+  };
+};
+
+const PalletCard: React.FC<Props> = (props) => {
   const navigation = useNavigation();
 
   return (
-    <View style={{...styles.container,  backgroundColor: props.data.bulkValue.includes(props.data.record.id) ? MAINCOLORS.primary : 'white'}}>
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor: props.data.bulkValue.includes(props.data.record.id)
+          ? MAINCOLORS.primary
+          : 'white',
+      }}>
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('Pallet', {pallet: props.data.record})
-        }
-        onLongPress={()=>props.data.onLongPress(props.data.record)}
+        onPress={() => {
+          if (!props.data.listModeBulk) {
+            navigation.navigate('Pallet', {pallet: props.data.record});
+          }
+        }}
+        onLongPress={() => props.data.onLongPress(props.data.record)}
       >
         <View style={styles.row}>
           <View style={styles.textContainer}>
-            <Text style={styles.title}>{props.data.record?.reference}</Text>
+            <Text
+              style={{
+                ...styles.title,
+                color: props.data.bulkValue.includes(props.data.record.id)
+                  ? 'white'
+                  : 'black',
+              }}>
+              {props.data.record?.reference}
+            </Text>
             <Text style={styles.description}>
-              Location : {props.data.record?.location_code || ' -'}
+              Location: {props.data.record?.location_code || ' -'}
             </Text>
           </View>
           <View style={styles.iconContainer}>
@@ -119,7 +146,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
-    gap:10
+    gap: 10,
   },
   textContainer: {
     flex: 1,
@@ -131,9 +158,9 @@ const styles = StyleSheet.create({
   icon: {
     marginHorizontal: 5,
   },
-  description : {
-    fontSize : 12,
+  description: {
+    fontSize: 12,
     color: COLORS.grey6,
-    marginVertical : 3
-  }
+    marginVertical: 3,
+  },
 });
