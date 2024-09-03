@@ -97,7 +97,6 @@ const DeliveryPallet = props => {
       title: 'Success',
       textBody: 'success change status',
     });
-    console.log(res);
   };
 
   const onFailedChangeStatus = error => {

@@ -179,7 +179,7 @@ const BaseList = forwardRef((props: Props, ref) => {
     }
   };
 
-  const renderItem = ({item}: {item: ItemData}) => {
+  const renderItem = ({item}: {item}) => {
     if (!props.itemList) {
       return (
         <View style={{backgroundColor: '#ffffff'}}>
@@ -200,7 +200,7 @@ const BaseList = forwardRef((props: Props, ref) => {
     }
   };
 
-  const renderHiddenItem = ({item}: {item: ItemData}) => {
+  const renderHiddenItem = ({item}: {item}) => {
     if (props.hiddenItem) return props.hiddenItem(item);
     else
       return (
