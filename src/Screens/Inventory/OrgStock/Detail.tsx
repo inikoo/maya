@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   TouchableOpacity,
-  Alert
+  Alert,
 } from 'react-native';
 import {Request} from '~/Utils';
 import {useSelector} from 'react-redux';
@@ -27,8 +27,8 @@ import {MAINCOLORS} from '~/Utils/Colors';
 import Header from '~/Components/Header';
 import Layout from '~/Components/Layout';
 import AssociateLocation from '~/Components/Stock/AddAssosiateLocation';
-import StockCheck from '~/Components/Stock/StockCheck.tsx'
-import MoveStock from '~/Components/Stock/MoveStock'
+import StockCheck from '~/Components/Stock/StockCheck.tsx';
+import MoveStock from '~/Components/Stock/MoveStock';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -38,9 +38,17 @@ import {
   faForklift,
   faUnlink,
   faTimesCircle,
+  faPlusCircle,
 } from 'assets/fa/pro-light-svg-icons';
 
-library.add(faInventory, faClipboard, faForklift, faUnlink, faTimesCircle);
+library.add(
+  faInventory,
+  faClipboard,
+  faForklift,
+  faUnlink,
+  faTimesCircle,
+  faPlusCircle,
+);
 
 function OrgStockDetail(props) {
   const navigation = useNavigation();
@@ -74,8 +82,7 @@ function OrgStockDetail(props) {
       key: 'StockCheck',
       title: 'Stock Check',
       onPress: () => {
-        setOpenStockCheck(true),
-        setOpenStockControls(false)
+        setOpenStockCheck(true), setOpenStockControls(false);
       },
     },
     {
@@ -83,8 +90,8 @@ function OrgStockDetail(props) {
       key: 'MoveStock',
       title: 'Move Stock',
       onPress: () => {
-        setOpenMoveStock(true)
-        setOpenStockControls(false)
+        setOpenMoveStock(true);
+        setOpenStockControls(false);
       },
     },
     {
@@ -92,31 +99,31 @@ function OrgStockDetail(props) {
       key: 'UnlinkLocation',
       title: 'Unlink Location',
       onPress: () => {
-        setOpenStockControls(false)
-        confirmUnlink()
+        setOpenStockControls(false);
+        confirmUnlink();
       },
     },
   ];
 
   const confirmUnlink = () => {
     Alert.alert(
-      "Confirm Unlink",
-      "Are you sure you want to unlink this location?",
+      'Confirm Unlink',
+      'Are you sure you want to unlink this location?',
       [
         {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
         },
-        { text: "Unlink", onPress: () => handleUnlink() }
+        {text: 'Unlink', onPress: () => handleUnlink()},
       ],
-      { cancelable: true }
+      {cancelable: true},
     );
   };
-  
+
   const handleUnlink = () => {
     // Your unlink logic here
-    console.log("Location unlinked");
+    console.log('Location unlinked');
   };
 
   const getDetail = () => {
@@ -152,7 +159,6 @@ function OrgStockDetail(props) {
       textBody: error.response.data.message,
     });
   };
-
 
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
@@ -200,16 +206,31 @@ function OrgStockDetail(props) {
         </View>
         <View style={styles.rowDetail}>
           <View>
-            <Text style={{fontWeight: 'bold', marginBottom: 10}}>
-              Locations:
-            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginRight: 12,
+              }}>
+              <Text style={{fontWeight: 'bold', marginBottom: 10}}>
+                Locations:
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setOpenAssociateLocation(true);
+                }}>
+                <FontAwesomeIcon icon={faPlusCircle} size={18} />
+              </TouchableOpacity>
+            </View>
+
             <ScrollView style={styles.locationsScroll}>
               <View style={styles.rowContainer}>
                 {dataSelected.locations.map((item, index) => (
                   <TouchableOpacity
                     onPress={() => {
                       setOpenStockControls(true),
-                      setSelectedLocationStock(item)
+                        setSelectedLocationStock(item);
                     }}
                     key={index}
                     style={[
@@ -306,15 +327,15 @@ function OrgStockDetail(props) {
           onClose={() => setOpenAssociateLocation(false)}
           data={selectedLocationStock}
         />
-        <StockCheck 
-            visible={openStockCheck}
-            onClose={() => setOpenStockCheck(false)}
-            data={selectedLocationStock}
+        <StockCheck
+          visible={openStockCheck}
+          onClose={() => setOpenStockCheck(false)}
+          data={selectedLocationStock}
         />
-        <MoveStock 
-           visible={openMoveStock}
-           onClose={() => setOpenMoveStock(false)}
-           data={selectedLocationStock}
+        <MoveStock
+          visible={openMoveStock}
+          onClose={() => setOpenMoveStock(false)}
+          data={selectedLocationStock}
         />
 
         <Dialog isVisible={openStockControls}>
@@ -329,10 +350,10 @@ function OrgStockDetail(props) {
                 Stock Controls
               </Text>
               <TouchableOpacity onPress={() => setOpenStockControls(false)}>
-                <FontAwesomeIcon icon={faTimesCircle} color="red" size={20}/>
+                <FontAwesomeIcon icon={faTimesCircle} color="red" size={20} />
               </TouchableOpacity>
             </View>
-            <Divider style={{ marginVertical : 10}}/>
+            <Divider style={{marginVertical: 10}} />
             <View>
               {menuControl.map((l, i) => (
                 <ListItem

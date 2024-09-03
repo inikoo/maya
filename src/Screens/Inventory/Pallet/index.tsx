@@ -9,6 +9,7 @@ import Information from '~/Components/palletComponents/Information';
 import PalletCard from '~/Components/palletComponents/ListCardPallet';
 import ChangeLocation from '~/Components/ChangeLocationPallet';
 import SetChangeStatusNotPicked from '~/Components/SetChangeStatusPalletNotPicked';
+import { palletTypes, BaseListTypes } from '~/Utils/types'
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
@@ -42,11 +43,13 @@ library.add(
 
 const Pallet = props => {
   const navigation = useNavigation();
-  const oraganisation = useSelector(state => state.organisationReducer);
+  const Init = useSelector(state => state);
+  console.log(Init)
+  const organisation = useSelector(state => state.organisationReducer);
   const warehouse = useSelector(state => state.warehouseReducer);
   const [openDialog, setOpenDialog] = useState(false);
   const [openLocation, setOpenLocation] = useState(false);
-  const _baseList = useRef(null);
+  const _baseList = useRef<BaseListTypes | null>(null);
   const [bulkMode, setBlukMode] = useState(false);
   const [selectedPallet, setSelectedPallet] = useState(null);
   const [openNotPickedDialog, setOpenNotPickedDialog] = useState(false);
@@ -103,9 +106,9 @@ const Pallet = props => {
           ),
         }}
         args={[
-          oraganisation.active_organisation.id,
+          organisation.active_organisation.id,
           warehouse.id,
-          oraganisation.active_organisation.active_authorised_fulfilments.id,
+          organisation.active_organisation.active_authorised_fulfilments.id,
         ]}
         filterSchema={[
           {
@@ -143,7 +146,7 @@ const Pallet = props => {
           },
         ]}
         itemList={(
-          record,
+          record : palletTypes,
           {onLongPress = () => null, listModeBulk = false, bulkValue = []},
         ) => (
           <PalletCard
