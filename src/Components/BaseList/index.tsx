@@ -296,13 +296,11 @@ export default function BaseList(props) {
   };
 
   const onSearch = value => {
-    setSearch(value);
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-      // Clear current data and reset page number
-      fetchMoreData();
-    }, 500);
-  };
+      setSearch(value);
+    }, 3000); 
+  }
 
   const goScanner = () => {
     navigation.navigate(`${props.title} Scanner`);
@@ -402,7 +400,7 @@ export default function BaseList(props) {
       headerRight: HeaderRight,
       headerShown: !activeSearch,
     });
-  }, [activeSearch, search, sortValue, filterValue]);
+  }, [activeSearch, search,sortValue, filterValue]);
 
   return loading ? (
     renderLoading()
