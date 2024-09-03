@@ -19,12 +19,26 @@ import Barcode from 'react-native-barcode-builder';
 import Information from '~/Components/loactionComponents/Information';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
+import {reduxData, LocationTypesIndex, DetailLocationTypes } from '~/Utils/types'
 
-const Detail = (props) => {
+type Props = {
+  navigation: any;
+  route: {
+    key: string;
+    name: string;
+    params: {
+      location: LocationTypesIndex;
+    };
+    path: string;
+  };
+};
+
+
+const Detail = (props : Props) => {
   const [loading, setLoading] = useState(true);
-  const organisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
-  const [dataSelected, setDataSelected] = useState(null);
+  const organisation = useSelector((state : reduxData) => state.organisationReducer);
+  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
+  const [dataSelected, setDataSelected] = useState<DetailLocationTypes | null>(null);
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
   const [openDialogInfo, setOpenDialogInfo] = useState(false);
@@ -46,12 +60,12 @@ const Detail = (props) => {
     );
   };
 
-  const onSuccessGetDetail = (response) => {
+  const onSuccessGetDetail = (response : any) => {
     setDataSelected(response);
     setLoading(false);
   };
 
-  const onFailedGetDetail = (error) => {
+  const onFailedGetDetail = (error : any) => {
     setLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -98,6 +112,7 @@ const Detail = (props) => {
 
   return (
     <Layout>
+      <>
       <Header
         title={props.route.params.location.code}
         useLeftIcon={true}
@@ -162,12 +177,13 @@ const Detail = (props) => {
         <Dialog.Title title="Info" />
         <Information />
       </Dialog>
+      </>
     </Layout>
   );
 };
 
 
-export const RenderContent = ({ dataSelected = {} }) => {
+export const RenderContent: React.FC<DetailLocationTypes> = ({ dataSelected }) => {
   return (
     <View style={styles.containerContent}>
       <View style={styles.barcodeContainer}>
@@ -188,7 +204,7 @@ export const RenderContent = ({ dataSelected = {} }) => {
                   ? MAINCOLORS.success
                   : MAINCOLORS.danger
               }
-              buttonStyle={{ padding: 1, marginHorizontal: 2 }}
+              buttonStyle={{ padding: 2, width : 100}}
               titleStyle={{ fontSize: 14 }}
             />
           )}
@@ -234,9 +250,9 @@ export const RenderContent = ({ dataSelected = {} }) => {
       <View style={styles.rowDetail}>
         <DetailRow
           title="Tags"
-          text={() => (
+          text={(
             <View style={styles.chipContainer}>
-              {dataSelected.tags.map((tag, index) => (
+              {dataSelected.tags.map((tag : any , index : any) => (
                 <Chip
                   key={index}
                   title={tag}

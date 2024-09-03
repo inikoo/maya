@@ -57,7 +57,6 @@ const LoginScreen = () => {
   const onLoginFailed = (res: {
     response: {data: {[key: string]: string[]}};
   }) => {
-    console.log(res)
     setLoading(false);
     if(res?.response?.data?.errors){
       for (let error in res.response.data.errors) {

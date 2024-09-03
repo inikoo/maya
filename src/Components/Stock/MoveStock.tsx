@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, ReactNode } from 'react';
 import {View, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import {Dialog, Text, Divider, Icon} from '@rneui/themed';
 import Button from '~/Components/Button';
@@ -9,7 +9,7 @@ type Props = {
   onClose: Function;
   onSuccess: Function;
   onFailed: Function;
-  data : Object
+  data?: Object|null
 };
 
 function StockCheck(props: Props) {

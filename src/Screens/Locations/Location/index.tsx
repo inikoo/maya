@@ -4,20 +4,16 @@ import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Icon, Card} from '@rneui/themed';
-import {COLORS} from '~/Utils/Colors';
-import {IconColor} from '~/Utils';
 
-const Locations = props => {
+import {PropsScreens, reduxData, LocationTypesIndex } from '~/Utils/types'
+
+
+const Locations = (props : PropsScreens) => {
   const navigation = useNavigation();
-  const organisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
-  const [openDialog, setOpenDialog] = useState(false);
+  const organisation = useSelector((state :reduxData) => state.organisationReducer);
+  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
 
-  const setDialog = () => {
-    setOpenDialog(!openDialog);
-  };
-
-  const Item = record => {
+  const Item = (record : LocationTypesIndex) => {
     return (
       <View style={{backgroundColor: '#ffffff'}}>
         <TouchableOpacity
@@ -59,17 +55,6 @@ const Locations = props => {
 export default Locations;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-    margin: 5,
-    borderWidth: 1,
-    borderColor: COLORS.grey6,
-  },
   title: {
     fontSize: 18,
     fontFamily: 'TitilliumWeb-SemiBold',
@@ -78,16 +63,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
-  },
-  textContainer: {
-    flex: 1,
-    alignItems: 'flex-start',
-  },
-  iconContainer: {
-    alignItems: 'flex-end',
-  },
-  icon: {
-    marginHorizontal: 5,
   },
   leftIconContainer: {
     marginRight: 18,

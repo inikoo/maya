@@ -9,13 +9,7 @@ import {
 } from 'react-native';
 import {findColorFromAiku, Request} from '~/Utils';
 import {useSelector} from 'react-redux';
-import {
-  Text,
-  Divider,
-  Icon,
-  BottomSheet,
-  ListItem,
-} from '@rneui/themed';
+import {Text, Divider, Icon, BottomSheet, ListItem} from '@rneui/themed';
 import {useFocusEffect} from '@react-navigation/native';
 import {defaultTo} from 'lodash';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
@@ -27,6 +21,7 @@ import Header from '~/Components/Header';
 import Layout from '~/Components/Layout';
 import ChangeLocation from '~/Components/ChangeLocationPallet';
 import ChangeStatusPallet from '~/Components/ChangeStatusPallet';
+import {reduxData, PalletTypesIndex, PalletDetailTypes} from '~/Utils/types';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
@@ -58,11 +53,27 @@ library.add(
   faGhost,
 );
 
-function PalletDetail(props) {
+type Props = {
+  navigation: any;
+  route: {
+    key: string;
+    name: string;
+    params: {
+      pallet: PalletTypesIndex;
+    };
+    path: string;
+  };
+};
+
+function PalletDetail(props: Props) {
   const navigation = useNavigation();
-  const organisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
-  const [dataSelected, setDataSelected] = useState(null);
+  const organisation = useSelector(
+    (state: reduxData) => state.organisationReducer,
+  );
+  const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
+  const [dataSelected, setDataSelected] = useState<PalletDetailTypes | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [openDialogStatus, setOpenDialogStatus] = useState(false);
   const [open, setOpen] = useState(false);
@@ -114,13 +125,13 @@ function PalletDetail(props) {
     );
   };
 
-  const onSuccessGetDetail = response => {
+  const onSuccessGetDetail = (response: any) => {
     setDataSelected(response.data);
     setLoading(false);
     setRefreshing(false);
   };
 
-  const onFailedGetDetail = error => {
+  const onFailedGetDetail = (error: any) => {
     setLoading(false);
     setRefreshing(false);
     Toast.show({
@@ -165,12 +176,30 @@ function PalletDetail(props) {
         <View style={styles.rowDetail}>
           <DetailRow
             title="Status"
-            text={(
-              <View style={{ flexDirection : 'row' , gap : 4, backgroundColor : findColorFromAiku(dataSelected.status_icon.color), paddingHorizontal : 10, borderRadius : 30, paddingVertical : 3}}>
-                <FontAwesomeIcon color='#ffff' size={12} icon={dataSelected.status_icon.icon} />
-                <Text style={{ color : '#ffff', fontSize : 12 }}>{dataSelected.status}</Text>
+            text={
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: 100,
+                  gap: 4,
+                  backgroundColor: findColorFromAiku(
+                    dataSelected.status_icon.color,
+                  ),
+                  paddingHorizontal: 10,
+                  borderRadius: 30,
+                  paddingVertical: 3,
+                }}>
+                <FontAwesomeIcon
+                  color="#ffff"
+                  size={12}
+                  icon={dataSelected.status_icon.icon}
+                  style={{marginVertical: 3}}
+                />
+                <Text style={{color: '#ffff', fontSize: 12}}>
+                  {dataSelected.status}
+                </Text>
               </View>
-            )}
+            }
           />
         </View>
         <View style={styles.rowDetail}>
@@ -182,7 +211,6 @@ function PalletDetail(props) {
       </View>
     );
   };
-
 
   const onRefresh = () => {
     setRefreshing(true);

@@ -1,31 +1,31 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
 
-const DetailRow = ({title = "", text = "", titleStyle = null, textStyle = null}) => {
+interface DetailRowProps {
+  title?: string;
+  text?: React.ReactNode;
+  titleStyle?: StyleProp<TextStyle>;
+  textStyle?: StyleProp<TextStyle>;
+}
+
+const DetailRow: React.FC<DetailRowProps> = ({ title = '-', text = '-', titleStyle, textStyle }) => {
   return (
     <View style={styles.row}>
       <Text style={[styles.title, titleStyle]}>
         {title}:
       </Text>
-      <Text style={[styles.text, textStyle]}>
-        {text}
-      </Text>
+      <View style={[styles.text, textStyle]}>
+        {typeof text === 'string' ? <Text>{text}</Text> : text}
+      </View>
     </View>
   );
-};
-
-DetailRow.defaultProps = {
-  title: '-',
-  text: '-',
-  titleStyle: {},
-  textStyle: {},
 };
 
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     marginBottom: 5,
-    alignItems: 'center', // Ensures title and text are vertically aligned
+    alignItems: 'center',
   },
   title: {
     fontWeight: 'bold',
