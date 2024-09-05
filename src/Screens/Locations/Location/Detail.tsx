@@ -43,6 +43,21 @@ const Detail = (props : Props) => {
   const [open, setOpen] = useState(false);
   const [openDialogInfo, setOpenDialogInfo] = useState(false);
 
+  const buttonFeatures = [
+    {
+      icon: {
+        name: 'pallet',
+        type: 'font-awesome-5',
+      },
+      key: 'pallet',
+      title: 'Pallet in location',
+      onPress: () => {
+        navigation.navigate('Location Pallet', { location: dataSelected });
+        setOpen(false);
+      },
+    },
+  ];
+
   const getDetail = () => {
     setLoading(true);
     Request(
@@ -73,34 +88,6 @@ const Detail = (props : Props) => {
       textBody: error.response.data.message,
     });
   };
-
-  const buttonFeatures = [
-    {
-      icon: {
-        name: 'info',
-        type: 'material-icons',
-      },
-      key: 'info',
-      containerStyle: { borderBottomWidth: 1 },
-      title: 'Information',
-      onPress: () => {
-        setOpenDialogInfo(true);
-        setOpen(false);
-      },
-    },
-    {
-      icon: {
-        name: 'pallet',
-        type: 'font-awesome-5',
-      },
-      key: 'pallet',
-      title: 'Pallet in location',
-      onPress: () => {
-        navigation.navigate('Location Pallet', { location: dataSelected });
-        setOpen(false);
-      },
-    },
-  ];
 
   const setDialog = () => {
     setOpenDialogInfo(!openDialogInfo);
@@ -183,7 +170,7 @@ const Detail = (props : Props) => {
 };
 
 
-export const RenderContent: React.FC<DetailLocationTypes> = ({ dataSelected }) => {
+export const RenderContent: React.FC<DetailLocationTypes | null > = ({ dataSelected }) => {
   return (
     <View style={styles.containerContent}>
       <View style={styles.barcodeContainer}>

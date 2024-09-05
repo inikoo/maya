@@ -1,23 +1,13 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
-import {useNavigation} from '@react-navigation/native';
-import {Text, Icon } from '@rneui/themed';
-import  {COLORS } from '~/Utils/Colors';
-import {IconColor} from '~/Utils';
+import { Icon } from '@rneui/themed';
+import {reduxData, PropsScreens} from '~/Utils/types';
 
-const StockDeliveries = props => {
-  const navigation = useNavigation();
-  const organisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
-  const [openDialog, setOpenDialog] = useState(false);
-
-  const setDialog = () => {
-    setOpenDialog(!openDialog);
-  };
-
-
+const StockDeliveries = (props : PropsScreens) => {
+  const organisation = useSelector((state : reduxData) => state.organisationReducer);
+  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
 
   return (
     <>
@@ -47,39 +37,9 @@ const StockDeliveries = props => {
 export default StockDeliveries;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-    margin: 5,
-    borderWidth: 1,
-    borderColor: COLORS.grey6,
-  },
   title: {
     fontSize: 18,
     fontFamily: 'TitilliumWeb-SemiBold',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
-  },
-  textContainer: {
-    flex: 1,
-    alignItems: 'flex-start',
-  },
-  iconContainer: {
-    alignItems: 'flex-end',
-  },
-  icon: {
-    marginHorizontal: 5,
   },
   leftIconContainer: {
     marginRight: 18,

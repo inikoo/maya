@@ -23,13 +23,13 @@ import {defaultTo} from 'lodash';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import DetailRow from '~/Components/DetailRow';
 import Barcode from 'react-native-barcode-builder';
-import {MAINCOLORS} from '~/Utils/Colors';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import Header from '~/Components/Header';
 import Layout from '~/Components/Layout';
 import AssociateLocation from '~/Components/Stock/AddAssosiateLocation';
 import StockCheck from '~/Components/Stock/StockCheck.tsx';
 import MoveStock from '~/Components/Stock/MoveStock';
-import {DetailOrgStockTypes, reduxData, ItemOrgStockIndex, PropsScreens } from '~/Utils/types';
+import {DetailOrgStockTypes, reduxData, ItemOrgStockIndex, LocationTypesIndex } from '~/Utils/types';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -40,6 +40,7 @@ import {
   faUnlink,
   faTimesCircle,
   faPlusCircle,
+  faShoppingBasket
 } from 'assets/fa/pro-light-svg-icons';
 
 library.add(
@@ -75,7 +76,7 @@ function OrgStockDetail(props : Props) {
   const [openStockControls, setOpenStockControls] = useState(false);
   const [openStockCheck, setOpenStockCheck] = useState(false);
   const [openMoveStock, setOpenMoveStock] = useState(false);
-  const [selectedLocationStock, setSelectedLocationStock] = useState(null);
+  const [selectedLocationStock, setSelectedLocationStock] = useState<LocationTypesIndex | null>(null);
 
   const buttonFeatures = [
     {
@@ -116,12 +117,37 @@ function OrgStockDetail(props : Props) {
         confirmUnlink();
       },
     },
+    {
+      icon: faShoppingBasket,
+      key: 'pickingLocation',
+      title: 'Set to be picking location',
+      onPress: () => {
+        setOpenStockControls(false);
+        confirmPickingLocation();
+      },
+    },
   ];
 
   const confirmUnlink = () => {
     Alert.alert(
       'Confirm Unlink',
       'Are you sure you want to unlink this location?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'Unlink', onPress: () => handleUnlink()},
+      ],
+      {cancelable: true},
+    );
+  };
+
+  const confirmPickingLocation = () => {
+    Alert.alert(
+      'Confirm Picking Location',
+      'Are you sure you want to set this location to be Picking Location ?',
       [
         {
           text: 'Cancel',
@@ -173,14 +199,14 @@ function OrgStockDetail(props : Props) {
     });
   };
 
-  const getRandomColor = () => {
+/*   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
     let color = '#';
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
-  };
+  }; */
 
   const renderContent = () => {
     if (!dataSelected) return null;
@@ -237,18 +263,20 @@ function OrgStockDetail(props : Props) {
               </TouchableOpacity>
             </View>
 
+            
+
             <ScrollView style={styles.locationsScroll}>
               <View style={styles.rowContainer}>
                 {dataSelected.locations.map((item, index) => (
                   <TouchableOpacity
                     onPress={() => {
                       setOpenStockControls(true),
-                        setSelectedLocationStock(item);
+                      setSelectedLocationStock(item);
                     }}
                     key={index}
                     style={[
                       styles.itemContainer,
-                      {backgroundColor: getRandomColor()},
+                      {backgroundColor: item.type === 'picking' ? MAINCOLORS : COLORS.grey},
                     ]}>
                     <Text style={styles.itemText}>
                       {item.location.code} ( {item.quantity} )
@@ -262,6 +290,13 @@ function OrgStockDetail(props : Props) {
       </View>
     );
   };
+
+ const filterMenuLocation = () => {
+  if(selectedLocationStock && selectedLocationStock.type == 'picking'){
+    return menuControl.filter((item)=>item.key != "pickingLocation")
+  } 
+  return menuControl
+ }
 
   useFocusEffect(
     useCallback(() => {
@@ -334,6 +369,7 @@ function OrgStockDetail(props : Props) {
             </View>
           </View>
         </BottomSheet>
+        
         <AssociateLocation
           visible={openAssociateLocation}
           onClose={() => setOpenAssociateLocation(false)}
@@ -367,7 +403,7 @@ function OrgStockDetail(props : Props) {
             </View>
             <Divider style={{marginVertical: 10}} />
             <View>
-              {menuControl.map((l, i) => (
+              {filterMenuLocation().map((l, i) => (
                 <ListItem
                   key={i}
                   onPress={l.onPress}>

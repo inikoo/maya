@@ -6,6 +6,7 @@ import {Text, Divider, Icon, Dialog} from '@rneui/themed';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
 import Button from '~/Components/Button';
+import { reduxData } from '~/Utils/types';
 
 
 type Props = {
@@ -19,8 +20,34 @@ type Props = {
 
 function AssociateLocation(props : Props) {
   const navigation = useNavigation();
-  const [locationCode, setLocationCode] = useState(null);
+  const organisation = useSelector((state : reduxData) => state.organisationReducer);
+  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
+  const [locationCode, setLocationCode] = useState<String|null>(null);
   const [errorLocationCode, setErrorLocationCode] = useState('');
+
+  const getLocationCode = async () => {
+    await Request(
+      'get',
+      'locations-show-by-code',
+      {},
+      {},
+      [organisation.active_organisation.id, warehouse.id, locationCode],
+      LocationCodeSuccess,
+      LocationCodeFailed,
+    );
+  };
+
+  const LocationCodeSuccess = async (response : any ) => {
+    console.log(response)
+  };
+
+  const LocationCodeFailed = (response : any) => {
+    if (response.response.status == 404) {
+      setErrorLocationCode('cannot find location');
+    } else {
+      setErrorLocationCode(response?.response?.data?.message || 'Server error');
+    }
+  };
 
   const onCancel = () => {
     props.onClose()
@@ -49,7 +76,7 @@ function AssociateLocation(props : Props) {
           <View style={styles.buttonScan}>
             <TouchableOpacity
               style={styles.searchIcon}
-              onPress={() => navigation.navigate('Change Location Pallet Scanner', {pallet: props.pallet})}
+            /*   onPress={() => navigation.navigate('Change Location Pallet Scanner', {pallet: props.pallet})} */
             >
               <Icon name="qr-code-scanner" type="material" size={24} />
             </TouchableOpacity>
@@ -59,7 +86,7 @@ function AssociateLocation(props : Props) {
         <Divider style={{marginTop: 20}} />
         <View style={styles.dialogButtonContainer}>
           <Button type="secondary" title="Cancel" onPress={onCancel} />
-          <Button type="primary" title="Submit"  />
+          <Button type="primary" title="Submit"  onPress={getLocationCode}/>
         </View>
       </View>
     </Dialog>

@@ -58,9 +58,9 @@ type Props = {
         icon : any;
       };
     };
-    onLongPress: Function;
-    bulkValue : Array<any>
-    listModeBulk : Boolean
+    onLongPress?: Function;
+    bulkValue?: Array<any>
+    listModeBulk?: Boolean
   };
 };
 
