@@ -138,7 +138,7 @@ function OrgStockDetail(props : Props) {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'Unlink', onPress: () => handleUnlink()},
+        {text: 'Unlink', onPress: () => diassosiateLocation()},
       ],
       {cancelable: true},
     );
@@ -160,10 +160,35 @@ function OrgStockDetail(props : Props) {
     );
   };
 
-  const handleUnlink = () => {
-    // Your unlink logic here
-    console.log('Location unlinked');
+  const diassosiateLocation = () => {
+    setLoading(true);
+    Request(
+      'delete',
+      'org-stock-assosiate-diassosiate-location',
+      {},
+      {},
+      [selectedLocationStock.id],
+      diassosiateLocationSuccsess,
+      diassosiateLocationfailed,
+    );
   };
+
+  const diassosiateLocationSuccsess = (response : any) =>{
+    Toast.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: 'Success',
+      textBody: 'success diassosiate location',
+    });
+  }
+
+  const diassosiateLocationfailed = (error : any) =>{
+    console.log(error)
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message || 'failed diassosiate location',
+    });
+}
 
   const getDetail = () => {
     setLoading(true);
@@ -374,16 +399,19 @@ function OrgStockDetail(props : Props) {
           visible={openAssociateLocation}
           onClose={() => setOpenAssociateLocation(false)}
           data={selectedLocationStock}
+          stockId={dataSelected?.id}
         />
         <StockCheck
           visible={openStockCheck}
           onClose={() => setOpenStockCheck(false)}
           data={selectedLocationStock}
+          stockId={dataSelected?.id}
         />
         <MoveStock
           visible={openMoveStock}
           onClose={() => setOpenMoveStock(false)}
           data={selectedLocationStock}
+          stockId={dataSelected?.id}
         />
 
         <Dialog isVisible={openStockControls}>

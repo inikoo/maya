@@ -15,7 +15,9 @@ export default {
 	//Org Stock
 	'org-stock-index' : 'maya/org/{}/warehouses/{}/inventory/stocks',
 	'org-stock-show' : 'maya/org/{}/warehouses/{}/inventory/stocks/{}',
-	'org-stock-assosiate-location' : 'maya/action/org-stock/{}/location/{}',
+	'org-stock-assosiate-diassosiate-location' : 'maya/action/org-stock/{}/location/{}',
+	'org-stock-move-location' : 'maya/action/org-stock/{}/location/{}',
+	'org-stock-audit-location'  : 'maya/action/location-org-stock/{}/audit',
 
 
 	//pallet

@@ -2,6 +2,9 @@ import React, { useState, useEffect, ReactNode } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { Dialog, Text, Divider } from '@rneui/themed';
 import Button from '~/Components/Button';
+import {Request} from '~/Utils';
+import { reduxData, Location2 } from '~/Utils/types';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 type Props = {
   title: ReactNode;
@@ -9,12 +12,44 @@ type Props = {
   onClose: Function;
   onSuccess: Function;
   onFailed: Function;
-  data?: Object|null
+  data: Location2
+  stockId : Number|any
 };
 
 function StockCheck(props: Props) {
   const [Value, setValue] = useState(String(props?.data?.quantity));
   const [errorValue, setErrorValue] = useState('');
+
+  const SetAudit = async () => {
+    await Request(
+      'patch',
+      'org-stock-audit-location',
+      {},
+      {},
+      [props.data.id],
+      auditSuccess,
+      auditFailed,
+    );
+  };
+
+  const auditSuccess = (response : any) =>{
+    props.onClose();
+    Toast.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: 'Success',
+      textBody: 'Success audit',
+    });
+  }
+
+  const auditFailed = (error : any) =>{
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message || 'Failed audit',
+    });
+  }
+
+
 
   const onCancel = () => {
     props.onClose();
@@ -45,7 +80,7 @@ function StockCheck(props: Props) {
         <Divider style={{ marginTop: 20 }} />
         <View style={styles.dialogButtonContainer}>
           <Button type="secondary" title="Cancel" onPress={onCancel} />
-          <Button type="primary" title="Submit" />
+          <Button type="primary" title="Submit" onPress={SetAudit}/>
         </View>
       </View>
     </Dialog>

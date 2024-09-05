@@ -16,6 +16,7 @@ type Props = {
     onSuccess : Function,
     onFailed : Function
     data?: Object|null
+    stockId : Number|any
   };
 
 function AssociateLocation(props : Props) {
@@ -38,8 +39,33 @@ function AssociateLocation(props : Props) {
   };
 
   const LocationCodeSuccess = async (response : any ) => {
-    console.log(response)
+    await Request(
+      'post',
+      'org-stock-move-location',
+      {},
+      {},
+      [props.stockId,response.id],
+      AddLocationSuccess,
+      AddLocationFailed,
+    );
   };
+
+  const AddLocationSuccess = (response : any) => {
+    props.onClose();
+    Toast.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: 'Success',
+      textBody: 'Success move location',
+    });
+  }
+
+  const AddLocationFailed = (error : any) => {
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: error.response.data.message || 'failed find location',
+    });
+  }
 
   const LocationCodeFailed = (response : any) => {
     if (response.response.status == 404) {
