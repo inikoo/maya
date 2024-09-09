@@ -50,6 +50,7 @@ function StockCheck(props: Props) {
 
   const MoveLocationCodeSuccess = (response : any) => {
     props.onClose();
+    props.onSuccess()
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
@@ -58,6 +59,8 @@ function StockCheck(props: Props) {
 }
 
   const MoveLocationCodeFailed = (error : any) => {
+      props.onFailed()
+      props.onClose();
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: 'Error',
@@ -66,6 +69,7 @@ function StockCheck(props: Props) {
   }
 
   const LocationCodeFailed = (error : any) => {
+    props.onClose();
     if (error.response.status == 404) {
       setErrorvalue('cannot find location');
     } else {

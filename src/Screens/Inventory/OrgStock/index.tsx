@@ -18,7 +18,7 @@ const OrgStocks: React.FC<PropsScreens> = props => {
       <View style={{backgroundColor: '#ffffff'}}>
         <TouchableOpacity onPress={()=>navigation.navigate('Org Stock', {orgStock : item})}>
           <Card containerStyle={styles.cardStat}>
-            <Text style={styles.labelStat}>{item.name}</Text>
+            <Text style={styles.labelStat}>{item.code}</Text>
           </Card>
         </TouchableOpacity>
       </View>

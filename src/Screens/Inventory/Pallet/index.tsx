@@ -7,7 +7,13 @@ import Information from '~/Components/palletComponents/Information';
 import PalletCard from '~/Components/palletComponents/ListCardPallet';
 import ChangeLocation from '~/Components/ChangeLocationPallet';
 import SetChangeStatusNotPicked from '~/Components/SetChangeStatusPalletNotPicked';
-import { reduxData, PalletTypesIndex, PropsScreens, BaseListTypes, PalletDetailTypes } from '~/Utils/types';
+import {
+  reduxData,
+  PalletTypesIndex,
+  PropsScreens,
+  BaseListTypes,
+  PalletDetailTypes,
+} from '~/Utils/types';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -25,7 +31,6 @@ import {
   faGhost,
 } from 'assets/fa/pro-regular-svg-icons';
 
-
 library.add(
   faInventory,
   faTruckCouch,
@@ -40,27 +45,31 @@ library.add(
   faGhost,
 );
 
-const Pallet = (props : PropsScreens) => {
-  const organisation = useSelector((state : reduxData) => state.organisationReducer);
-  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
+const Pallet = (props: PropsScreens) => {
+  const organisation = useSelector(
+    (state: reduxData) => state.organisationReducer,
+  );
+  const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
   const [openDialog, setOpenDialog] = useState(false);
   const [openLocation, setOpenLocation] = useState(false);
   const _baseList = useRef<BaseListTypes | null>(null);
   const [bulkMode, setBlukMode] = useState(false);
-  const [selectedPallet, setSelectedPallet] = useState<PalletTypesIndex | null>(null);
+  const [selectedPallet, setSelectedPallet] = useState<PalletTypesIndex | null>(
+    null,
+  );
   const [openNotPickedDialog, setOpenNotPickedDialog] = useState(false);
 
   const setDialog = () => {
     setOpenDialog(!openDialog);
   };
 
-  const renderHiddenItem = (item : PalletTypesIndex) => {
+  const renderHiddenItem = (item: PalletTypesIndex) => {
     return (
       <View style={styles.hiddenItemContainer}>
         <View style={{flexDirection: 'row', gap: 5}}>
           <TouchableOpacity
             onPress={() => {
-              setOpenLocation(true)
+              setOpenLocation(true);
               setSelectedPallet(item);
             }}
             style={styles.editButton}>
@@ -68,7 +77,7 @@ const Pallet = (props : PropsScreens) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setOpenNotPickedDialog(true)
+              setOpenNotPickedDialog(true);
               setSelectedPallet(item);
             }}
             style={styles.dangerButton}>
@@ -79,9 +88,9 @@ const Pallet = (props : PropsScreens) => {
     );
   };
 
-  const refershList = () =>{
+  const refershList = () => {
     if (_baseList.current) _baseList.current.refreshList();
-  }
+  };
 
   return (
     <>
@@ -148,7 +157,7 @@ const Pallet = (props : PropsScreens) => {
           },
         ]}
         itemList={(
-          record : PalletTypesIndex,
+          record: PalletTypesIndex,
           {onLongPress = () => null, listModeBulk = false, bulkValue = []},
         ) => (
           <PalletCard
@@ -168,7 +177,9 @@ const Pallet = (props : PropsScreens) => {
 
       <ChangeLocation
         visible={openLocation}
-        onClose={() => { setOpenLocation(false), setBlukMode(false)}}
+        onClose={() => {
+          setOpenLocation(false), setBlukMode(false);
+        }}
         onSuccess={refershList}
         pallet={
           bulkMode && _baseList.current

@@ -101,7 +101,7 @@ function Request(
 			})
 		})
 			.then(response => {
-				onSuccess(response.data, extra)}
+				onSuccess(response.data, extra, response)}
 			)
 			.catch(error => {
 				onFailed(error)

@@ -140,6 +140,7 @@ const BaseList = forwardRef((props: Props, ref) => {
   };
 
   const onFailed = (error: Object) => {
+    console.log(error)
     setIsListEnd(true);
     setLoading(false);
     setRefreshing(false);
@@ -469,7 +470,7 @@ BaseList.defaultProps = {
   leftOpenValue: 50,
   rightOpenValue: -60,
   useScan: true,
-  height: 520,
+  height: 500,
   useBulk : false
 };
 
@@ -541,9 +542,6 @@ const styles = StyleSheet.create({
   labelStat: {
     fontSize: 14,
     fontWeight: '700',
-  },
-  listWraper: {
-    height: 550,
   },
   footerContainer: {
     marginVertical: 10,

@@ -25,7 +25,7 @@ function StockCheck(props: Props) {
       'patch',
       'org-stock-audit-location',
       {},
-      {},
+      {quantity : Value},
       [props.data.id],
       auditSuccess,
       auditFailed,
@@ -34,6 +34,7 @@ function StockCheck(props: Props) {
 
   const auditSuccess = (response : any) =>{
     props.onClose();
+    props.onSuccess()
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
@@ -42,14 +43,14 @@ function StockCheck(props: Props) {
   }
 
   const auditFailed = (error : any) =>{
+    props.onClose();
+    props.onFailed()
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
       textBody: error.response.data.message || 'Failed audit',
     });
   }
-
-
 
   const onCancel = () => {
     props.onClose();

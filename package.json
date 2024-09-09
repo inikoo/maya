@@ -44,6 +44,7 @@
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.18.1",
     "react-native-get-random-values": "^1.11.0",
+    "react-native-gifted-charts": "^1.4.32",
     "react-native-image-picker": "^7.1.2",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-pager-view": "^6.3.4",

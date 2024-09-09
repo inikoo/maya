@@ -6,8 +6,18 @@ import {useNavigation} from '@react-navigation/native';
 import {Text, Icon} from '@rneui/themed';
 import {COLORS} from '~/Utils/Colors';
 import {warehouseAreaIndexTypes, reduxData, PropsScreens} from '~/Utils/types';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {
+  faInventory,
+} from 'assets/fa/pro-regular-svg-icons';
 
-const Locations = (props: PropsScreens) => {
+library.add(
+  faInventory,
+);
+
+
+const WarehouseArea = (props: PropsScreens) => {
   const navigation = useNavigation();
   const organisation = useSelector((state: reduxData) => state.organisationReducer);
   const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
@@ -16,7 +26,7 @@ const Locations = (props: PropsScreens) => {
   const Item = (record: warehouseAreaIndexTypes) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('Location', {location: record})}
+      /*   onPress={() => navigation.navigate('Area', {area: record})} */
         style={{
           ...styles.container,
           backgroundColor: 'white',
@@ -27,6 +37,19 @@ const Locations = (props: PropsScreens) => {
           </View>
         </View>
       </TouchableOpacity>
+    );
+  };
+
+  const renderHiddenItem = (item) => {
+    return (
+      <View style={styles.hiddenItemContainer}>
+        <View style={{flexDirection: 'row', gap: 5}}>
+          <TouchableOpacity onPress={()=>navigation.navigate('Location in area', { area : item })}
+            style={styles.editButton}>
+            <FontAwesomeIcon icon={faInventory} size={20} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   };
 
@@ -44,11 +67,12 @@ const Locations = (props: PropsScreens) => {
           ),
         }}
         itemList={Item}
+        enableSwipe={true}
+        hiddenItem={renderHiddenItem}
         title="WareHouse Area"
         itemKey="code"
         urlKey="warehouse-area-index"
         args={[organisation.active_organisation.id, warehouse.id]}
-        enableSwipe={false}
         sortSchema="code"
         screenNavigation={'Location Scanner'}
       />
@@ -56,7 +80,7 @@ const Locations = (props: PropsScreens) => {
   );
 };
 
-export default Locations;
+export default WarehouseArea;
 
 const styles = StyleSheet.create({
   container: {
@@ -89,5 +113,20 @@ const styles = StyleSheet.create({
   },
   leftIconContainer: {
     marginRight: 18,
+  },
+  hiddenItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: 15,
+    alignContent: 'center',
+    borderRadius: 10,
+    marginVertical: 5,
+    gap: 5,
+  },
+  editButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
   },
 });

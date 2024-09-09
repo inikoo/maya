@@ -29,7 +29,7 @@ import Layout from '~/Components/Layout';
 import AssociateLocation from '~/Components/Stock/AddAssosiateLocation';
 import StockCheck from '~/Components/Stock/StockCheck.tsx';
 import MoveStock from '~/Components/Stock/MoveStock';
-import {DetailOrgStockTypes, reduxData, ItemOrgStockIndex, LocationTypesIndex } from '~/Utils/types';
+import {DetailOrgStockTypes, reduxData, ItemOrgStockIndex, LocationTypesIndex, Location2 } from '~/Utils/types';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -76,7 +76,7 @@ function OrgStockDetail(props : Props) {
   const [openStockControls, setOpenStockControls] = useState(false);
   const [openStockCheck, setOpenStockCheck] = useState(false);
   const [openMoveStock, setOpenMoveStock] = useState(false);
-  const [selectedLocationStock, setSelectedLocationStock] = useState<LocationTypesIndex | null>(null);
+  const [selectedLocationStock, setSelectedLocationStock] = useState<Location2|null>(null);
 
   const buttonFeatures = [
     {
@@ -123,7 +123,16 @@ function OrgStockDetail(props : Props) {
       title: 'Set to be picking location',
       onPress: () => {
         setOpenStockControls(false);
-        confirmPickingLocation();
+        confirmChangeTypeLocation('picking');
+      },
+    },
+    {
+      icon: faShoppingBasket,
+      key: 'StoringLocation',
+      title: 'Set to be Storing location',
+      onPress: () => {
+        setOpenStockControls(false);
+        confirmChangeTypeLocation('storing');
       },
     },
   ];
@@ -144,36 +153,41 @@ function OrgStockDetail(props : Props) {
     );
   };
 
-  const confirmPickingLocation = () => {
+  const confirmChangeTypeLocation = (type : String) => {
     Alert.alert(
-      'Confirm Picking Location',
-      'Are you sure you want to set this location to be Picking Location ?',
+      'Confirm change type location',
+      `Are you sure you want to set this location to be ${type} Location ?`,
       [
         {
           text: 'Cancel',
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'Unlink', onPress: () => handleUnlink()},
+        {text: 'Unlink', onPress: () => setTypeLocation()},
       ],
       {cancelable: true},
     );
   };
+  
+  const setTypeLocation = () => {
+  }
 
   const diassosiateLocation = () => {
     setLoading(true);
     Request(
       'delete',
-      'org-stock-assosiate-diassosiate-location',
+      'org-stock-diassosiate-location',
       {},
       {},
-      [selectedLocationStock.id],
+      [ selectedLocationStock?.id],
       diassosiateLocationSuccsess,
       diassosiateLocationfailed,
     );
   };
 
   const diassosiateLocationSuccsess = (response : any) =>{
+    setLoading(false);
+    setDataSelected(response.data)
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
@@ -182,7 +196,7 @@ function OrgStockDetail(props : Props) {
   }
 
   const diassosiateLocationfailed = (error : any) =>{
-    console.log(error)
+    setLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -287,9 +301,6 @@ function OrgStockDetail(props : Props) {
                 <FontAwesomeIcon icon={faPlusCircle} size={18} />
               </TouchableOpacity>
             </View>
-
-            
-
             <ScrollView style={styles.locationsScroll}>
               <View style={styles.rowContainer}>
                 {dataSelected.locations.map((item, index) => (
@@ -301,9 +312,9 @@ function OrgStockDetail(props : Props) {
                     key={index}
                     style={[
                       styles.itemContainer,
-                      {backgroundColor: item.type === 'picking' ? MAINCOLORS : COLORS.grey},
+                      { backgroundColor: item.type === 'picking' ? MAINCOLORS.primary : '#CBD5E1'},
                     ]}>
-                    <Text style={styles.itemText}>
+                    <Text style={{color : item.type === 'picking' ? '#ffff' : '', fontWeight : 500}}>
                       {item.location.code} ( {item.quantity} )
                     </Text>
                   </TouchableOpacity>
@@ -398,18 +409,21 @@ function OrgStockDetail(props : Props) {
         <AssociateLocation
           visible={openAssociateLocation}
           onClose={() => setOpenAssociateLocation(false)}
+          onSuccess={()=>getDetail()}
           data={selectedLocationStock}
           stockId={dataSelected?.id}
         />
         <StockCheck
           visible={openStockCheck}
           onClose={() => setOpenStockCheck(false)}
+          onSuccess={()=>getDetail()}
           data={selectedLocationStock}
           stockId={dataSelected?.id}
         />
         <MoveStock
           visible={openMoveStock}
           onClose={() => setOpenMoveStock(false)}
+          onSuccess={()=>getDetail()}
           data={selectedLocationStock}
           stockId={dataSelected?.id}
         />
@@ -492,9 +506,9 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginBottom: 5,
   },
-  itemText: {
+  /* itemText: {
     color: 'white',
-  },
+  }, */
   locationsScroll: {
     maxHeight: 150,
   },

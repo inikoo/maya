@@ -41,9 +41,9 @@ function AssociateLocation(props : Props) {
   const LocationCodeSuccess = async (response : any ) => {
     await Request(
       'post',
-      'org-stock-move-location',
+      'org-stock-assosiate-location',
       {},
-      {},
+      {location_org_stock_type : 'storing'},
       [props.stockId,response.id],
       AddLocationSuccess,
       AddLocationFailed,
@@ -52,6 +52,7 @@ function AssociateLocation(props : Props) {
 
   const AddLocationSuccess = (response : any) => {
     props.onClose();
+    props.onSuccess()
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
@@ -60,6 +61,9 @@ function AssociateLocation(props : Props) {
   }
 
   const AddLocationFailed = (error : any) => {
+    console.log(error)
+    props.onFailed()
+    props.onClose();
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
