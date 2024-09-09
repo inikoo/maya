@@ -5,7 +5,7 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {Card} from '@rneui/themed';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import { reduxData, ItemOrgStockIndex, PropsScreens } from '~/Utils/types'
+import { reduxData, ItemOrgStockIndex, PropsScreens } from '~/Types/types'
 
 
 const OrgStocks: React.FC<PropsScreens> = props => {

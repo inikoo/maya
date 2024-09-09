@@ -8,7 +8,7 @@ import SearchNotif from '~/Components/Search&Notification';
 
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {reduxData, PropsScreens} from '~/Utils/types';
+import {reduxData, PropsScreens} from '~/Types/types';
 
 
 const Dashboard: React.FC<PropsScreens> = props => {

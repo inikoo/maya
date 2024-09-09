@@ -17,7 +17,9 @@ import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import AbsoluteButton from '~/Components/absoluteButton';
 import {ListItem} from '@rneui/themed';
 import ChangeRentals from '~/Components/ChangeRentalPallet';
-import { MAINCOLORS } from '~/Utils/Colors';
+import { reduxData } from '~/Types/types'
+import { Data } from '~/Types/DeliveryDetailTypes'
+import { Daum } from '~/Types/IndexPalletInDelivery'
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
@@ -49,36 +51,41 @@ library.add(
   faShare,
 );
 
-const DeliveryPallet = props => {
-  const navigation = useNavigation(); // Get the navigation object
-  const organisation = useSelector( state => state.organisationReducer.active_organisation,);
-  const warehouse = useSelector(state => state.warehouseReducer);
-  const delivery = props.route.params?.delivery; // Use optional chaining to safely access delivery
-  const [openLocation, setOpenLocation] = useState(false);
+type Props = {
+  navigation : any
+  route : {
+    key: string;
+    name: string;
+    params: {
+      delivery : Data
+    };
+    path: string;
+  }
+}
+
+const DeliveryPallet = (props : Props) => {
+  const navigation = useNavigation();
+  const organisation = useSelector( (state : reduxData) => state.organisationReducer.active_organisation,);
+  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
+  const [openLocation, setOpenLocation] = useState<Boolean>(false);
   const [openRentals, setOpenRentals] = useState(false);
-  const [selectedPallet, setSelectedPallet] = useState(false);
-  const [loadingButton, setLoadingButton] = useState(false);
-  const [bulkMode, setBlukMode] = useState(false);
+  const [selectedPallet, setSelectedPallet] = useState<Daum|null>(null);
+  const [loadingButton, setLoadingButton] = useState<Boolean>(false);
+  const [bulkMode, setBlukMode] = useState<Boolean>(false);
   const _baseList = useRef(null);
+  const delivery = props.route.params?.delivery;
 
-  // If delivery is not available, navigate back
-  useEffect(() => {
-    if (!delivery) {
-      navigation.goBack();
-    }
-  }, [delivery, navigation]);
-
-  const onChangeLocation = pallet => {
+  const onChangeLocation = (pallet : Daum) => {
     setSelectedPallet(pallet);
     setOpenLocation(true);
   };
 
-  const onChangeRentals = pallet => {
+  const onChangeRentals = (pallet : Daum) => {
     setSelectedPallet(pallet);
     setOpenRentals(true);
   };
 
-  const sendNotReciveToServer = pallet => {
+  const sendNotReciveToServer = (pallet : Daum) => {
     Request(
       'patch',
       'set-pallet-not-reiceved',
@@ -90,7 +97,7 @@ const DeliveryPallet = props => {
     );
   };
 
-  const onSuccessChangeStatus = res => {
+  const onSuccessChangeStatus = (res : any) => {
     if (_baseList.current) _baseList.current.refreshList();
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
@@ -99,7 +106,7 @@ const DeliveryPallet = props => {
     });
   };
 
-  const onFailedChangeStatus = error => {
+  const onFailedChangeStatus = (error : any) => {
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -107,7 +114,7 @@ const DeliveryPallet = props => {
     });
   };
 
-  const setNotRecived = pallet => {
+  const setNotRecived = (pallet : Daum) => {
     Alert.alert('Confrim not Recived', 'Are you sure to set pallet not recieved ?', [
       {
         text: 'No',
@@ -120,7 +127,7 @@ const DeliveryPallet = props => {
   );
   };
 
-  const sendUndoToServer = pallet => {
+  const sendUndoToServer = (pallet : Daum) => {
     Request(
       'patch',
       'set-pallet-undo',
@@ -132,7 +139,7 @@ const DeliveryPallet = props => {
     );
   };
 
-  const onSuccessUndo = res => {
+  const onSuccessUndo = (res : any) => {
     if (_baseList.current) _baseList.current.refreshList();
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
@@ -141,7 +148,7 @@ const DeliveryPallet = props => {
     });
   };
 
-  const onFailedUndo = error => {
+  const onFailedUndo = (error : any) => {
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -149,7 +156,7 @@ const DeliveryPallet = props => {
     });
   };
 
-  const setUndoNotRecieved = pallet => {
+  const setUndoNotRecieved = (pallet : Daum) => {
     Alert.alert('', 'Are you sure to undo pallet status ?', [
       {
         text: 'No',
@@ -159,7 +166,7 @@ const DeliveryPallet = props => {
     ]);
   };
 
-  const renderHiddenItem = item => {
+  const renderHiddenItem = (item : Daum) => {
     return (
       <View style={styles.hiddenItemContainer}>
         {item.state == 'not-received' ? (
@@ -249,13 +256,13 @@ const DeliveryPallet = props => {
     );
   };
 
-  const onSuccessChangeStatusDelivery = res => {
+  const onSuccessChangeStatusDelivery = (res : any) => {
     setLoadingButton(false)
     navigation.navigate('Delivery',{delivery : delivery})
     if (_baseList.current) _baseList.current.refreshList();
   };
 
-  const onFailedChangeStatusDelivery = error => {
+  const onFailedChangeStatusDelivery = (error : any) => {
     setLoadingButton(false)
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -263,6 +270,73 @@ const DeliveryPallet = props => {
       textBody: error.response.data.message || 'failed to change status',
     });
   };
+
+  const absoluteButton = () => {
+    if (delivery?.state === 'confirmed') {
+      return (
+          <AbsoluteButton
+            loading={loadingButton}
+            onPress={() => changeStatusDelivery({url: 'delivery-status-recived'})}
+            content={
+              <View style={styles.centerContent}>
+                <FontAwesomeIcon icon={faCheck} size={30} color={'white'} />
+                <Text style={{color: 'white', fontSize: 10}}>Received</Text>
+              </View>
+            }
+          />
+      );
+    }
+  
+    if (delivery?.state === 'received') {
+      return (
+          <AbsoluteButton
+            loading={loadingButton}
+            onPress={() => changeStatusDelivery({url: 'delivery-status-booking-in'})}
+            content={
+              <View style={styles.centerContent}>
+                <FontAwesomeIcon
+                  style={{marginLeft: 5}}
+                  icon={faCheck}
+                  size={28}
+                  color={'white'}
+                />
+                <Text style={{color: 'white', fontSize: 10}}>Booking in</Text>
+              </View>
+            }
+          />
+      );
+    }
+  
+    if (delivery?.state === 'booking-in') {
+      return (
+          <AbsoluteButton
+            loading={loadingButton}
+            onPress={() => changeStatusDelivery({url: 'delivery-status-booked-in'})}
+            content={
+              <View style={styles.centerContent}>
+                <FontAwesomeIcon
+                  style={{marginLeft: 5}}
+                  icon={faCheckDouble}
+                  size={28}
+                  color={'white'}
+                />
+                <Text style={{color: 'white', fontSize: 10}}>Booked in</Text>
+              </View>
+            }
+          />
+      );
+    }
+  
+    // Return null if no conditions are met to avoid rendering an empty component
+    return null;
+  };
+  
+
+  useEffect(() => {
+    if (!delivery) {
+      navigation.goBack();
+    }
+  }, [delivery, navigation]);
 
   return (
     <>
@@ -285,7 +359,7 @@ const DeliveryPallet = props => {
           bulkMenu={(value: Array<any>) => bulkMenu(value)}
           title={`Pallets in ${delivery.reference}`}
           itemList={(
-            record,
+            record : Daum,
             {onLongPress = () => null, listModeBulk = false, bulkValue = []},
           ) => (
             <PalletCard
@@ -300,61 +374,7 @@ const DeliveryPallet = props => {
         />
       )}
 
-      {delivery?.state == 'confirmed' && (
-        <View>
-          <AbsoluteButton
-            loading = {loadingButton}
-            onPress={() =>
-              changeStatusDelivery({url: 'delivery-status-recived'})
-            }
-            content={
-              <View>
-                <FontAwesomeIcon icon={faCheck} size={30} color={'white'} />
-                <Text style={{color: 'white', fontSize: 10}}>Recived</Text>
-              </View>
-            }
-          />
-        </View>
-      )}
-
-      {delivery?.state == 'received' && (
-        <View>
-          <AbsoluteButton
-            loading = {loadingButton}
-            onPress={() =>
-              changeStatusDelivery({url: 'delivery-status-booking-in'})
-            }
-            content={
-              <View>
-                <FontAwesomeIcon  style={{ marginLeft : 5}} icon={faCheck} size={28} color={'white'} />
-                <Text style={{color: 'white', fontSize: 10}}>Booking in</Text>
-              </View>
-            }
-          />
-        </View>
-      )}
-
-      {delivery?.state == 'booking-in' && (
-        <View>
-          <AbsoluteButton
-            loading = {loadingButton}
-            onPress={() =>
-              changeStatusDelivery({url: 'delivery-status-booked-in'})
-            }
-            content={
-              <View>
-                <FontAwesomeIcon
-                  style={{ marginLeft : 5}}
-                  icon={faCheckDouble}
-                  size={28}
-                  color={'white'}
-                />
-                <Text style={{color: 'white', fontSize: 10}}>Booked in</Text>
-              </View>
-            }
-          />
-        </View>
-      )}
+     {absoluteButton()}
 
       <ChangeLocation
         visible={openLocation}
@@ -364,7 +384,7 @@ const DeliveryPallet = props => {
         pallet={
           bulkMode && _baseList.current
             ? _baseList.current.bulkValue
-            : selectedPallet.id
+            : selectedPallet?.id
         }
         bulk={bulkMode}
         onSuccess={onSuccessChange}
@@ -377,11 +397,11 @@ const DeliveryPallet = props => {
         pallet={
           bulkMode && _baseList.current
             ? _baseList.current.bulkValue
-            : selectedPallet.id
+            : selectedPallet?.id
         }
         bulk={bulkMode}
         onSuccess={onSuccessChange}
-        value={selectedPallet.rental_id}
+        value={selectedPallet?.rental_id}
       />
     </>
   );
@@ -395,14 +415,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
     alignItems: 'center',
     margin: 5,
   },
@@ -439,5 +451,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     padding: 10,
     borderRadius: 5,
+  },
+  centerContent: {
+    justifyContent: 'center', // Center vertically
+    alignItems: 'center', // Center horizontally
   },
 });

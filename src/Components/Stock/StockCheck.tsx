@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput } from 'react-native';
 import { Dialog, Text, Divider } from '@rneui/themed';
 import Button from '~/Components/Button';
 import {Request} from '~/Utils';
-import { reduxData, Location2 } from '~/Utils/types';
+import { reduxData, Location2 } from '~/Types/types';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 type Props = {

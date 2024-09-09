@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import { Icon } from '@rneui/themed';
-import {reduxData, PropsScreens} from '~/Utils/types';
+import {reduxData, PropsScreens} from '~/Types/types';
 
 const StockDeliveries = (props : PropsScreens) => {
   const organisation = useSelector((state : reduxData) => state.organisationReducer);

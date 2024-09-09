@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Text,
   SafeAreaView,
+  Dimensions
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {MAINCOLORS} from '~/Utils/Colors';
@@ -27,6 +28,8 @@ import Filter from '~/Components/Filter';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {FlatList} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
+
+const {height: screenHeight} = Dimensions.get('window');
 
 type Props = {
   title?: ReactNode;
@@ -245,6 +248,7 @@ const BaseList = forwardRef((props: Props, ref) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
+          contentContainerStyle={{ paddingBottom: 80 }} // Tambahkan padding di bawah
         />
       );
     } else {
@@ -260,10 +264,12 @@ const BaseList = forwardRef((props: Props, ref) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
+          contentContainerStyle={{ paddingBottom: 80 }} // Tambahkan padding di bawah
         />
       );
     }
   };
+  
 
   const onSearch = (value: string) => {
     setSearch(value);
@@ -470,7 +476,7 @@ BaseList.defaultProps = {
   leftOpenValue: 50,
   rightOpenValue: -60,
   useScan: true,
-  height: 500,
+  height: screenHeight * 0.75,
   useBulk : false
 };
 

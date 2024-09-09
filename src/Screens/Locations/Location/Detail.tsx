@@ -19,7 +19,7 @@ import Barcode from 'react-native-barcode-builder';
 import Information from '~/Components/loactionComponents/Information';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
-import {reduxData, LocationTypesIndex, DetailLocationTypes } from '~/Utils/types'
+import {reduxData, LocationTypesIndex, DetailLocationTypes } from '~/Types/types'
 
 type Props = {
   navigation: any;

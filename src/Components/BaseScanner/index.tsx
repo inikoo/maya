@@ -11,7 +11,7 @@ import {Request} from '~/Utils';
 import Empty from '~/Components/Empty';
 import {MAINCOLORS} from '~/Utils/Colors';
 import {useSelector} from 'react-redux';
-import {reduxData} from '~/Utils/types';
+import {reduxData} from '~/Types/types';
 
 type Props = {
   prefix?: string

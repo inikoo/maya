@@ -5,7 +5,7 @@ import {
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import PalletCard from '~/Components/palletComponents/ListCardDelivery';
-import {reduxData, PalletTypesIndex, DetailLocationTypes } from '~/Utils/types'
+import {reduxData, PalletTypesIndex, DetailLocationTypes } from '~/Types/types'
 
 type Props = {
   navigation: any;

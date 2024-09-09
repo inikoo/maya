@@ -6,7 +6,7 @@ import {Text, Divider, Icon, Dialog} from '@rneui/themed';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
 import Button from '~/Components/Button';
-import { reduxData } from '~/Utils/types';
+import { reduxData } from '~/Types/types';
 
 type Props = {
     title: ReactNode|String;

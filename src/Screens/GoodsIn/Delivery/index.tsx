@@ -1,13 +1,14 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Icon, Text} from '@rneui/themed';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {COLORS} from '~/Utils/Colors';
 import {findColorFromAiku} from '~/Utils';
 import dayjs from 'dayjs';
-import {defaultTo} from 'lodash';
+import { reduxData, navigation } from '~/Types/types'
+import { Daum } from '~/Types/IndexDelivery'
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -22,12 +23,12 @@ import {
 
 library.add(faSeedling, faShare, faSpellCheck, faCheck, faTimes, faCheckDouble);
 
-const Delivery = props => {
+const Delivery = (props : navigation ) => {
   const navigation = useNavigation();
-  const oraganisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
+  const oraganisation = useSelector((state : reduxData) => state.organisationReducer);
+  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
 
-  const Item = record => {
+  const Item = (record : Daum) => {
     return (
       <View style={{...styles.container, backgroundColor: 'white'}}>
         <TouchableOpacity
@@ -132,14 +133,6 @@ const styles = StyleSheet.create({
     padding: 17,
     backgroundColor: 'white',
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
     marginVertical: 5,
     borderWidth: 1,
     borderColor: COLORS.grey6,

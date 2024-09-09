@@ -5,7 +5,7 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Icon} from '@rneui/themed';
 import {COLORS} from '~/Utils/Colors';
-import {warehouseAreaIndexTypes, reduxData, PropsScreens} from '~/Utils/types';
+import {warehouseAreaIndexTypes, reduxData, PropsScreens} from '~/Types/types';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {

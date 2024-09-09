@@ -5,7 +5,7 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {Icon, Dialog} from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '~/Utils/Colors';
-import { reduxData, PalletTypesIndex, PropsScreens, BaseListTypes, PalletDetailTypes } from '~/Utils/types';
+import { reduxData, PalletTypesIndex, PropsScreens, BaseListTypes, PalletDetailTypes } from '~/Types/types';
 import {findColorFromAiku} from '~/Utils';
 import { Datum } from '~/Utils/StoredItemTypes'
 

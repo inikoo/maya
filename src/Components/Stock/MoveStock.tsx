@@ -3,7 +3,7 @@ import {View, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import {Dialog, Text, Divider, Icon} from '@rneui/themed';
 import Button from '~/Components/Button';
 import {Request} from '~/Utils';
-import { reduxData, Location2 } from '~/Utils/types';
+import { reduxData, Location2 } from '~/Types/types';
 import {useSelector} from 'react-redux';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 

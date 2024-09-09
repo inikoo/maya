@@ -19,8 +19,8 @@ import {useNavigation} from '@react-navigation/native';
 import {MAINCOLORS} from '~/Utils/Colors';
 import Header from '~/Components/Header';
 import Layout from '~/Components/Layout';
-import {reduxData} from '~/Utils/types';
-import { Data, Datum} from '~/Utils/StoredItemTypes'
+import {reduxData} from '~/Types/types';
+import {Data, Datum} from '~/Types/StoredItemTypes';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
@@ -70,11 +70,22 @@ function PalletDetail(props: Props) {
     (state: reduxData) => state.organisationReducer,
   );
   const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
-  const [dataSelected, setDataSelected] = useState<Data | null>(
-    null,
-  );
+  const [dataSelected, setDataSelected] = useState<Data | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const buttonFeatures = [
+    {
+      icon: {
+        name: 'location-pin',
+        type: 'material-icons',
+      },
+      key: 'move_location',
+      title: 'Move Location',
+      onPress: () => {},
+    },
+  ];
 
   const getDetail = () => {
     setLoading(true);
@@ -217,6 +228,39 @@ function PalletDetail(props: Props) {
             <ActivityIndicator size="large" color={MAINCOLORS.primary} />
           </View>
         )}
+        <BottomSheet modalProps={{}} isVisible={open}>
+          <View style={styles.wrapper}>
+            <Header
+              title="Setting"
+              rightIcon={
+                <TouchableOpacity
+                  onPress={() => setOpen(false)}
+                  style={{marginRight: 20}}>
+                  <Icon
+                    color={MAINCOLORS.danger}
+                    name="closecircle"
+                    type="antdesign"
+                    size={20}
+                  />
+                </TouchableOpacity>
+              }
+            />
+            <Divider />
+            <View style={{marginVertical: 15, backgroundColor: 'white'}}>
+              {buttonFeatures.map((l, i) => (
+                <ListItem
+                  key={i}
+                  containerStyle={{...l.containerStyle}}
+                  onPress={l.onPress}>
+                  <Icon {...l.icon} size={18} />
+                  <ListItem.Content>
+                    <ListItem.Title>{l.title}</ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              ))}
+            </View>
+          </View>
+        </BottomSheet>
       </View>
     </Layout>
   );
@@ -248,7 +292,11 @@ const styles = StyleSheet.create({
   },
   divider: {
     marginBottom: 15,
-  }, 
+  },
+  wrapper: {
+    backgroundColor: '#ffffff',
+    padding: 15,
+  },
 });
 
 export default PalletDetail;

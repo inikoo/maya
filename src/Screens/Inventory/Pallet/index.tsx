@@ -13,7 +13,7 @@ import {
   PropsScreens,
   BaseListTypes,
   PalletDetailTypes,
-} from '~/Utils/types';
+} from '~/Types/types';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
