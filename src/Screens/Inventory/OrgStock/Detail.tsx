@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   ScrollView,
@@ -29,6 +29,7 @@ import Layout from '~/Components/Layout';
 import AssociateLocation from '~/Components/Stock/AddAssosiateLocation';
 import StockCheck from '~/Components/Stock/StockCheck.tsx';
 import MoveStock from '~/Components/Stock/MoveStock';
+import {DetailOrgStockTypes, reduxData, ItemOrgStockIndex, PropsScreens } from '~/Utils/types';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -50,11 +51,23 @@ library.add(
   faPlusCircle,
 );
 
-function OrgStockDetail(props) {
+type Props = {
+  navigation : any
+  route : {
+    key: string;
+    name: string;
+    params: {
+      orgStock : ItemOrgStockIndex
+    };
+    path: string;
+  }
+}
+
+function OrgStockDetail(props : Props) {
   const navigation = useNavigation();
-  const organisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
-  const [dataSelected, setDataSelected] = useState(null);
+  const organisation = useSelector((state : reduxData) => state.organisationReducer);
+  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
+  const [dataSelected, setDataSelected] = useState<DetailOrgStockTypes | null >(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [open, setOpen] = useState(false);
@@ -144,13 +157,13 @@ function OrgStockDetail(props) {
     );
   };
 
-  const onSuccessGetDetail = response => {
+  const onSuccessGetDetail = (response : any) => {
     setDataSelected(response);
     setLoading(false);
     setRefreshing(false);
   };
 
-  const onFailedGetDetail = error => {
+  const onFailedGetDetail = (error : any) => {
     setLoading(false);
     setRefreshing(false);
     Toast.show({
@@ -311,7 +324,6 @@ function OrgStockDetail(props) {
               {buttonFeatures.map((l, i) => (
                 <ListItem
                   key={i}
-                  containerStyle={{...l.containerStyle}}
                   onPress={l.onPress}>
                   <FontAwesomeIcon icon={l.icon} />
                   <ListItem.Content>
@@ -358,7 +370,6 @@ function OrgStockDetail(props) {
               {menuControl.map((l, i) => (
                 <ListItem
                   key={i}
-                  containerStyle={{...l.containerStyle}}
                   onPress={l.onPress}>
                   <FontAwesomeIcon icon={l.icon} />
                   <ListItem.Content>
@@ -421,7 +432,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   locationsScroll: {
-    maxHeight: 150, // Limit height to ensure it scrolls if too many items
+    maxHeight: 150,
   },
 });
 

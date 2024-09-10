@@ -7,14 +7,14 @@ import Button from '~/Components/Button';
 
 
 type Props = {
-    title: ReactNode;
-    visible: Boolean;
-    onClose: Function;
-    pallet: Object;
-    bulk: boolean;
-    onSuccess: Function;
-    onFailed: Function;
-    value: any;
+    title?: ReactNode;
+    visible?: Boolean;
+    onClose?: Function;
+    pallet?: Object|any;
+    bulk?: boolean;
+    onSuccess?: Function;
+    onFailed?: Function;
+    value?: any;
   };
 
 function ChangeStatusPallet(props : Props) {

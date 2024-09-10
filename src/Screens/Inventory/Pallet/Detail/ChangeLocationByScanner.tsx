@@ -37,7 +37,6 @@ export default function ScannerPage(props) {
       };
     
       const onSuccess = async (response) => {
-        console.log(response)
         setScanned(false);
         setLoading(false);
         ChangeLocation(response.data.model)
@@ -78,7 +77,6 @@ export default function ScannerPage(props) {
       }
     
       const ChangeLocationFailed = error =>{
-        console.log('errorMove',error)
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: 'Error',

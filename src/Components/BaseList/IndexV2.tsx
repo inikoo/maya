@@ -25,30 +25,29 @@ import {isObject, isArray, get} from 'lodash';
 import Empty from '~/Components/Empty';
 import Filter from '~/Components/Filter';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
-import LinearGradient from 'react-native-linear-gradient';
 import {FlatList} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
 type Props = {
-  title: ReactNode;
-  urlKey: string;
-  args: any[];
-  filterSchema: any[];
-  sortSchema: string;
-  prefix: string;
-  params: Object;
-  itemKey: string;
-  leftOpenValue: Number;
-  rightOpenValue: Number;
-  enableSwipe: boolean;
-  itemList: ReactNode | Function;
-  useScan: Boolean;
-  screenNavigation: String;
-  headerProps: any;
-  height: Number;
-  hiddenItem: ReactNode;
-  bulkMenu : ReactNode
-  useBulk : boolean
+  title?: ReactNode;
+  urlKey?: string;
+  args?: any[];
+  filterSchema?: any[];
+  sortSchema?: string;
+  prefix?: string;
+  params?: Object;
+  itemKey?: string;
+  leftOpenValue?: Number;
+  rightOpenValue?: Number;
+  enableSwipe?: boolean;
+  itemList?: ReactNode | Function;
+  useScan?: Boolean;
+  screenNavigation?: String;
+  headerProps?: any;
+  height?: Number;
+  hiddenItem?: ReactNode|Function;
+  bulkMenu?: ReactNode
+  useBulk?: boolean
 };
 
 let timeoutId: any;
@@ -141,7 +140,6 @@ const BaseList = forwardRef((props: Props, ref) => {
   };
 
   const onFailed = (error: Object) => {
-    console.log(error)
     setIsListEnd(true);
     setLoading(false);
     setRefreshing(false);

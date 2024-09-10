@@ -4,15 +4,15 @@ import {View, StyleSheet} from 'react-native';
 import { MAINCOLORS } from '~/Utils/Colors';
 
 type Props = {
-  title: ReactNode;
-  type: String;
-  loading: Boolean;
-  styleContainer: Object;
-  titleStyle: Object;
-  onPress: Function;
-  size: "sm" | "md" | "lg"
-  iconRight : Boolean
-  icon : ReactNode
+  title?: ReactNode;
+  type?: String;
+  loading?: Boolean;
+  styleContainer?: Object;
+  titleStyle?: Object;
+  onPress?: Function;
+  size?: "sm" | "md" | "lg"
+  iconRight?: Boolean
+  icon?: ReactNode
 };
 
 const Button = (props: Props) => {
