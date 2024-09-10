@@ -2,10 +2,6 @@ import React, {useState, useEffect, ReactNode } from 'react';
 import {View, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import {Dialog, Text, Divider, Icon} from '@rneui/themed';
 import Button from '~/Components/Button';
-import {Request} from '~/Utils';
-import { reduxData, Location2 } from '~/Types/types';
-import {useSelector} from 'react-redux';
-import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 type Props = {
   title: ReactNode;
@@ -13,73 +9,13 @@ type Props = {
   onClose: Function;
   onSuccess: Function;
   onFailed: Function;
-  data?: Location2
-  stockId:Number|any
+  data?: Object|null
 };
 
 function StockCheck(props: Props) {
-  const organisation = useSelector((state : reduxData) => state.organisationReducer);
-  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
   const [value, setValue] = useState(String(props?.data?.quantity));
   const [location, setLocation] = useState('');
   const [errorvalue, setErrorvalue] = useState('');
-
-  const getLocationCode = async () => {
-    await Request(
-      'get',
-      'locations-show-by-code',
-      {},
-      {},
-      [organisation.active_organisation.id, warehouse.id, location],
-      LocationCodeSuccess,
-      LocationCodeFailed,
-    );
-  };
-
-  const LocationCodeSuccess = async (response : any ) => {
-    await Request(
-      'post',
-      'org-stock-move-location',
-      {},
-      {},
-      [props.stockId,response.id],
-      MoveLocationCodeSuccess,
-      MoveLocationCodeFailed,
-    );
-  };
-
-  const MoveLocationCodeSuccess = (response : any) => {
-    props.onClose();
-    props.onSuccess()
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: 'Success',
-      textBody: 'Success move location',
-    });
-}
-
-  const MoveLocationCodeFailed = (error : any) => {
-      props.onFailed()
-      props.onClose();
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: 'Error',
-        textBody: error.response.data.message || 'failed find location',
-      });
-  }
-
-  const LocationCodeFailed = (error : any) => {
-    props.onClose();
-    if (error.response.status == 404) {
-      setErrorvalue('cannot find location');
-    } else {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: 'Error',
-        textBody: error.response.data.message || 'failed find location',
-      });
-    }
-  };
 
   const onCancel = () => {
     props.onClose();
@@ -136,7 +72,7 @@ useEffect(()=>{
         <Divider style={{marginTop: 20}} />
         <View style={styles.dialogButtonContainer}>
           <Button type="secondary" title="Cancel" onPress={onCancel} />
-          <Button type="primary" title="Submit" onPress={getLocationCode}/>
+          <Button type="primary" title="Submit" />
         </View>
       </View>
     </Dialog>

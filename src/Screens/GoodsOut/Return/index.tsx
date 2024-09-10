@@ -1,13 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Icon, Text} from '@rneui/themed';
-import {COLORS} from '~/Utils/Colors';
+import {COLORS, MAINCOLORS} from '~/Utils/Colors';
 import {findColorFromAiku} from '~/Utils';
-import { reduxData, navigation } from '~/Types/types';
-import { Daum } from '~/Types/IndexReturnFullfiment'
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -33,12 +31,12 @@ library.add(
   faNarwhal,
 );
 
-const Returns = ( props : navigation ) => {
+const Returns = props => {
   const navigation = useNavigation();
-  const oraganisation = useSelector((state : reduxData) => state.organisationReducer);
-  const warehouse = useSelector((state : reduxData )=> state.warehouseReducer);
+  const oraganisation = useSelector(state => state.organisationReducer);
+  const warehouse = useSelector(state => state.warehouseReducer);
 
-  const Item = (record : Daum) => {
+  const Item = record => {
     return (
       <View style={{...styles.container, backgroundColor: 'white'}}>
         <TouchableOpacity
@@ -91,7 +89,7 @@ const Returns = ( props : navigation ) => {
       args={[oraganisation.active_organisation.id, warehouse.id]}
       itemList={Item}
       sortSchema="reference"
-      screenNavigation={'Return Scanner'}
+      screenNavigation={'Pallet Scanner'}
       params={{
         ['elements[state]'] : "confirmed,picking,picked,dispatched"
       }}

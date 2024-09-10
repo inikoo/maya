@@ -21,7 +21,7 @@ import Header from '~/Components/Header';
 import Layout from '~/Components/Layout';
 import ChangeLocation from '~/Components/ChangeLocationPallet';
 import ChangeStatusPallet from '~/Components/ChangeStatusPallet';
-import {reduxData, PalletTypesIndex, PalletDetailTypes} from '~/Types/types';
+import {reduxData, PalletTypesIndex, PalletDetailTypes} from '~/Utils/types';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {

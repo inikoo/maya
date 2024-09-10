@@ -6,7 +6,7 @@ import {Text, Divider, Icon, Dialog} from '@rneui/themed';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
 import Button from '~/Components/Button';
-import { reduxData } from '~/Types/types';
+import { reduxData } from '~/Utils/types';
 
 type Props = {
     title: ReactNode|String;
@@ -68,7 +68,6 @@ function ChangeLocation(props : Props) {
   };
 
   const ChangeLocationFailed = (error : any) => {
-    onCancel()
     props.onFailed()
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   buttonScan: {
-    width: '19%',
+    width: '15%',
     marginTop: 5,
     marginBottom: 10,
     borderRadius: 10,

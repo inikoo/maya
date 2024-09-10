@@ -11,34 +11,14 @@ import {Request} from '~/Utils';
 import Empty from '~/Components/Empty';
 import {MAINCOLORS} from '~/Utils/Colors';
 import {useSelector} from 'react-redux';
-import {reduxData} from '~/Types/types';
 
 type Props = {
-  prefix?: string
-  onSuccess: Function
-  onFailed: Function
+  prefix : string
 }
 
-const onSuccess = async (response : any) => {
-  const navigation = useNavigation();
-  switch (response.data.model_type) {
-    case 'Location':
-      return  navigation.navigate( 'Location', { location : response.data.model});
-    case 'Pallet':
-      return navigation.navigate( 'Pallet', { pallet : response.data.model});
-    case 'PalletDelivery':
-      return navigation.navigate( 'Delivery', { delivery : response.data.model});
-    case 'PalletReturn':
-      return navigation.navigate( 'Return', { return : response.data.model});
-    default:
-      return null
-  }
-};
-
-
 export default function BaseScanner(props : Props) {
-  const organisation = useSelector((state:reduxData) => state.organisationReducer);
-  const warehouse = useSelector((state :reduxData) => state.warehouseReducer);
+  const organisation = useSelector(state => state.organisationReducer);
+  const warehouse = useSelector(state => state.warehouseReducer);
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -56,26 +36,35 @@ export default function BaseScanner(props : Props) {
     );
   };
 
-  const onSuccess = async (response : any) => {
+  const onSuccess = async (response) => {
     setScanned(false);
     setLoading(false);
-    props.onSuccess(response)
+    switch (response.data.model_type) {
+      case 'Location':
+        return  navigation.navigate( 'Location', { location : response.data.model});
+      case 'Pallet':
+        return navigation.navigate( 'Pallet', { pallet : response.data.model});
+      case 'PalletDelivery':
+        return navigation.navigate( 'Delivery', { delivery : response.data.model});
+      case 'PalletReturn':
+        return navigation.navigate( 'Return', { return : response.data.model});
+      default:
+        return null
+    }
   };
 
-  const onFailed = (error : any) => {
+  const onFailed = res => {
     setScanned(false);
     setLoading(false);
-    props.onFailed(error)
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
-      textBody: error.response.data.message,
+      textBody: res.response.data.message,
     });
   };
 
   const onSuccessScanner = async (result : Object) => {
     setScanned(false);
-    console.log(result.data)
     handleBarCodeScanned(result.data)
   };
 
@@ -113,10 +102,7 @@ export default function BaseScanner(props : Props) {
   );
 }
 
-BaseScanner.defaultProps = {
-  onSuccess: onSuccess,
-  onFailed: ()=>null
-};
+BaseScanner.defaultProps = {};
 
 const styles = StyleSheet.create({
   container: {

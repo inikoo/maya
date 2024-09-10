@@ -44,15 +44,11 @@ export { default as ChangeLocationPalletByScanner } from './Inventory/Pallet/Det
 
 //stored Items
 export { default as StoredItems } from './Inventory/StoredItems';
-export { default as StoredItem } from './Inventory/StoredItems/Detail';
-export { default as StoredItemPallet } from './Inventory/StoredItems/Pallets';
 
 //Locations
 export { default as  LocationsDashboard } from './Locations/Dashboard';
 export { default as  LocationsNavigation } from './Locations/Navigator';
 export { default as  Area } from './Locations/Area';
-export { default as  AreaDetail } from './Locations/Area/Detail';
-export { default as  AreaLocation } from './Locations/Area/Location/index';
 export { default as  Location } from './Locations/Location';
 
 //Goods In
