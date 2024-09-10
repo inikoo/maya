@@ -93,7 +93,6 @@ function ChangeRentals(props: Props) {
 
   const onFailedChangeRental = error => {
     props.onFailed();
-    console.log(error);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',

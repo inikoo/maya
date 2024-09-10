@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, ReactNode} from 'react';
 import {View, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import {Request} from '~/Utils';
 import {useSelector} from 'react-redux';
@@ -6,13 +6,13 @@ import {Text, Divider, Icon, Dialog} from '@rneui/themed';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
 import Button from '~/Components/Button';
-
+import { reduxData } from '~/Utils/types';
 
 type Props = {
-    title: ReactNode;
+    title: ReactNode|String;
     visible : Boolean,
     onClose : Function,
-    pallet: Object
+    pallet: Number|null|any
     bulk : boolean
     onSuccess : Function,
     onFailed : Function
@@ -20,9 +20,9 @@ type Props = {
 
 function ChangeLocation(props : Props) {
   const navigation = useNavigation();
-  const organisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
-  const [locationCode, setLocationCode] = useState(null);
+  const organisation = useSelector((state : reduxData) => state.organisationReducer);
+  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
+  const [locationCode, setLocationCode] = useState<String|null>('');
   const [errorLocationCode, setErrorLocationCode] = useState('');
 
   const getLocationCode = async () => {
@@ -37,7 +37,7 @@ function ChangeLocation(props : Props) {
     );
   };
 
-  const LocationCodeSuccess = async response => {
+  const LocationCodeSuccess = async (response : any ) => {
     await Request(
       'patch',
       'pallet-location',
@@ -49,7 +49,7 @@ function ChangeLocation(props : Props) {
     );
   };
 
-  const LocationCodeFailed = response => {
+  const LocationCodeFailed = (response : any) => {
     if (response.response.status == 404) {
       setErrorLocationCode('cannot find location');
     } else {
@@ -57,7 +57,7 @@ function ChangeLocation(props : Props) {
     }
   };
 
-  const ChangeLocationSuccess = response => {
+  const ChangeLocationSuccess = ( response : any ) => {
     props.onSuccess()
     onCancel()
     Toast.show({
@@ -67,9 +67,8 @@ function ChangeLocation(props : Props) {
     });
   };
 
-  const ChangeLocationFailed = error => {
+  const ChangeLocationFailed = (error : any) => {
     props.onFailed()
-    console.log('errorMove', error);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',

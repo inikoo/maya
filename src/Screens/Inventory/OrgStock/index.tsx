@@ -5,13 +5,15 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {Card} from '@rneui/themed';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import { reduxData, ItemOrgStockIndex, PropsScreens } from '~/Utils/types'
 
-const OrgStocks: React.FC<Props> = props => {
+
+const OrgStocks: React.FC<PropsScreens> = props => {
   const navigation = useNavigation();
-  const warehouse = useSelector(state => state.warehouseReducer);
-  const organisation = useSelector(state => state.organisationReducer);
+  const warehouse = useSelector((state : reduxData ) => state.warehouseReducer);
+  const organisation = useSelector((state : reduxData ) => state.organisationReducer);
 
-  const renderItem = (item, {onLongPress, listModeBulk, bulkValue}) => {
+  const renderItem = (item : ItemOrgStockIndex , { onLongPress = ()=> null , listModeBulk = false, bulkValue = []}) => {
     return (
       <View style={{backgroundColor: '#ffffff'}}>
         <TouchableOpacity onPress={()=>navigation.navigate('Org Stock', {orgStock : item})}>
@@ -35,6 +37,7 @@ const OrgStocks: React.FC<Props> = props => {
           </TouchableOpacity>
         ),
       }}
+      useScan={false}
       title="Organisation Stock"
       itemKey="name"
       urlKey="org-stock-index"
@@ -46,8 +49,8 @@ const OrgStocks: React.FC<Props> = props => {
       enableSwipe={false}
       height={520}
       sortSchema="code"
-      screenNavigation={'Location Scanner'}
-    />
+      screenNavigation={'Location Scanner'} filterSchema={[]} prefix={''} 
+      />
   );
 };
 

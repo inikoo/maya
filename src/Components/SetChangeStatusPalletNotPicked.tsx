@@ -29,14 +29,14 @@ const options = [
 ];
 
 type Props = {
-  title: ReactNode;
-  visible: Boolean;
-  onClose: Function;
-  pallet: Object;
-  bulk: boolean;
-  onSuccess: Function;
-  onFailed: Function;
-  value: any;
+  title?: ReactNode;
+  visible?: Boolean;
+  onClose?: Function;
+  pallet?: Object;
+  bulk?: boolean;
+  onSuccess?: Function;
+  onFailed?: Function;
+  value?: any;
 };
 
 type Item = {

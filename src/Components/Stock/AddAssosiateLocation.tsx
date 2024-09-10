@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, ReactNode} from 'react';
 import {View, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import {Request} from '~/Utils';
 import {useSelector} from 'react-redux';
@@ -9,12 +9,12 @@ import Button from '~/Components/Button';
 
 
 type Props = {
-    title: ReactNode;
+    title: ReactNode | String;
     visible : Boolean,
     onClose : Function,
     onSuccess : Function,
     onFailed : Function
-    data : Object
+    data?: Object|null
   };
 
 function AssociateLocation(props : Props) {

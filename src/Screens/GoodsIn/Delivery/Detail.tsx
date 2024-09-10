@@ -117,7 +117,6 @@ const DeliveryDetail = props => {
   };
 
   const onFailedChangeStatus = error => {
-    console.log(error);
     setLoadingPrimary(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,

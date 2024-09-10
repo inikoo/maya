@@ -100,7 +100,6 @@ const DeliveryPallet = props => {
   };
 
   const onFailedChangeStatus = error => {
-    console.log(error);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',

@@ -23,7 +23,7 @@ type Props = {
     params: string;
   };
   extraData: {
-    components: Array<any>;
+    components: any;
   };
 };
 
