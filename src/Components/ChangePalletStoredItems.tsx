@@ -36,7 +36,7 @@ function Changeitem(props : Props) {
       'get',
       'global-search-scanner',
       {},
-      {},
+      {type : 'Pallet'},
       [organisation.active_organisation.id, warehouse.id, palletCode],
       PalletCodeSuccess,
       PalletCodeFailed,
