@@ -15,7 +15,7 @@ const DetailRow: React.FC<DetailRowProps> = ({ title = '-', text = '-', titleSty
         {title}:
       </Text>
       <View style={[styles.text, textStyle]}>
-        {typeof text === 'string' || typeof text === 'number' ? <Text>{text}</Text> : text}
+        {typeof text === 'string' ? <Text>{text}</Text> : text}
       </View>
     </View>
   );

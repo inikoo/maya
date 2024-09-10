@@ -6,7 +6,6 @@ import {Text, Divider, Icon, Dialog} from '@rneui/themed';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
 import Button from '~/Components/Button';
-import { reduxData } from '~/Types/types';
 
 
 type Props = {
@@ -16,68 +15,12 @@ type Props = {
     onSuccess : Function,
     onFailed : Function
     data?: Object|null
-    stockId : Number|any
   };
 
 function AssociateLocation(props : Props) {
   const navigation = useNavigation();
-  const organisation = useSelector((state : reduxData) => state.organisationReducer);
-  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
-  const [locationCode, setLocationCode] = useState<String|null>(null);
+  const [locationCode, setLocationCode] = useState(null);
   const [errorLocationCode, setErrorLocationCode] = useState('');
-
-  const getLocationCode = async () => {
-    await Request(
-      'get',
-      'locations-show-by-code',
-      {},
-      {},
-      [organisation.active_organisation.id, warehouse.id, locationCode],
-      LocationCodeSuccess,
-      LocationCodeFailed,
-    );
-  };
-
-  const LocationCodeSuccess = async (response : any ) => {
-    await Request(
-      'post',
-      'org-stock-assosiate-location',
-      {},
-      {location_org_stock_type : 'storing'},
-      [props.stockId,response.id],
-      AddLocationSuccess,
-      AddLocationFailed,
-    );
-  };
-
-  const AddLocationSuccess = (response : any) => {
-    props.onClose();
-    props.onSuccess()
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: 'Success',
-      textBody: 'Success move location',
-    });
-  }
-
-  const AddLocationFailed = (error : any) => {
-    console.log(error)
-    props.onFailed()
-    props.onClose();
-    Toast.show({
-      type: ALERT_TYPE.DANGER,
-      title: 'Error',
-      textBody: error.response.data.message || 'failed find location',
-    });
-  }
-
-  const LocationCodeFailed = (response : any) => {
-    if (response.response.status == 404) {
-      setErrorLocationCode('cannot find location');
-    } else {
-      setErrorLocationCode(response?.response?.data?.message || 'Server error');
-    }
-  };
 
   const onCancel = () => {
     props.onClose()
@@ -106,7 +49,7 @@ function AssociateLocation(props : Props) {
           <View style={styles.buttonScan}>
             <TouchableOpacity
               style={styles.searchIcon}
-            /*   onPress={() => navigation.navigate('Change Location Pallet Scanner', {pallet: props.pallet})} */
+              onPress={() => navigation.navigate('Change Location Pallet Scanner', {pallet: props.pallet})}
             >
               <Icon name="qr-code-scanner" type="material" size={24} />
             </TouchableOpacity>
@@ -116,7 +59,7 @@ function AssociateLocation(props : Props) {
         <Divider style={{marginTop: 20}} />
         <View style={styles.dialogButtonContainer}>
           <Button type="secondary" title="Cancel" onPress={onCancel} />
-          <Button type="primary" title="Submit"  onPress={getLocationCode}/>
+          <Button type="primary" title="Submit"  />
         </View>
       </View>
     </Dialog>

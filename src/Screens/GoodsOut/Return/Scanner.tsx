@@ -1,24 +1,20 @@
-import React  from 'react';
-import { StyleSheet } from 'react-native';
-import Layout from '~/Components/Layout';
-import Header from '~/Components/Header';
+import React from 'react';
 import BaseScanner from '~/Components/BaseScanner';
-import { useNavigation } from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {MAINCOLORS} from '~/Utils/Colors';
 
-export default function ScannerPage() {
-  const navigation = useNavigation()
+export default function PalletScanner() {
+  const organisation = useSelector(state => state.organisationReducer);
+  const warehouse = useSelector(state => state.warehouseReducer);
 
   return (
-    <Layout>
-      <>
-        <Header title="Scanner Return" useLeftIcon={true} />
-        <BaseScanner 
-          prefix={'PalletReturn'} 
-          onSuccess={(e)=>navigation.navigate('Return', { return : {...e.data.model}})} 
-        />
-      </>
-    </Layout>
+    <BaseScanner
+      title="Return"
+      scannerKey="return"
+      showMarker={true}
+      markerStyle={{borderColor: MAINCOLORS.primary}}
+      prefix="par"
+      args={[organisation.active_organisation.id, warehouse.id]}
+    />
   );
 }
-
-const styles = StyleSheet.create({});

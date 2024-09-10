@@ -6,19 +6,24 @@ import {ActivityIndicator} from 'react-native';
 
 type Props = {
   content: ReactNode;
-  position: Object;
-  containerStyle: Object; // perbaikan typo constainerStyle menjadi containerStyle
-  loading: Boolean;
+  postion: Object;
+  constainerStyle: Object;
+  loading: boolean;
   onPress: Function;
 };
 
 const AbsoluteButton = (props: Props) => {
   return (
     <TouchableOpacity
-      style={[styles.absolutePosition, props.position, props.containerStyle]} // pastikan menggunakan styles.absolutePosition untuk absolute positioning
+      style={{...props.postion, ...props.constainerStyle}}
       onPress={props.onPress}>
       <View
-        style={styles.buttonContent}>
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+        }}>
         {props.loading ? <ActivityIndicator color={'white'} /> : props.content}
       </View>
     </TouchableOpacity>
@@ -27,31 +32,20 @@ const AbsoluteButton = (props: Props) => {
 
 AbsoluteButton.defaultProps = {
   onPress: () => null,
-  position: {
-    bottom: 10, // Set to 20 or any desired distance from bottom
-    right: 20, // Set to 20 or any desired distance from right
+  postion: {
+    bottom: 20,
+    left: 280,
   },
   loading: false,
-  containerStyle: {
+  constainerStyle: {
     backgroundColor: MAINCOLORS.primary,
     height: 80,
     width: 80,
-    borderRadius: 40, // Circle shape
+    borderRadius: 35,
   },
   content: <Text>Button</Text>,
 };
 
-const styles = StyleSheet.create({
-  absolutePosition: {
-    position: 'absolute',
-    zIndex: 1000, // Ensures it's on top of other elements
-  },
-  buttonContent: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  },
-});
+const styles = StyleSheet.create({});
 
 export default AbsoluteButton;

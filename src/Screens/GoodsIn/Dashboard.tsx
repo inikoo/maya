@@ -8,15 +8,11 @@ import SearchNotif from '~/Components/Search&Notification';
 
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {reduxData, PropsScreens} from '~/Types/types';
 
-
-const Dashboard: React.FC<PropsScreens> = props => {
+const Dashboard: React.FC<Props> = props => {
   const navigation = useNavigation();
-  const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
-  const organisation = useSelector(
-    (state: reduxData) => state.organisationReducer,
-  );
+  const warehouse = useSelector(state => state.warehouseReducer);
+  const organisation = useSelector(state => state.organisationReducer);
 
   useFocusEffect(
     useCallback(() => {
@@ -32,26 +28,24 @@ const Dashboard: React.FC<PropsScreens> = props => {
 
   return (
     <Layout>
-      <>
-        <Header
-          title="Goods In"
-          useLeftIcon={true}
-          leftIcon={
-            <TouchableOpacity
-              style={styles.leftIconContainer}
-              onPress={() => props.navigation.toggleDrawer()}>
-              <Icon name="bars" type="font-awesome-5" color="black" size={20} />
-            </TouchableOpacity>
-          }
-          rightIcon={<SearchNotif />}
-        />
-
-        <View>
-          <TouchableOpacity onPress={() => props.navigation.navigate('Scan')}>
-            <Text>Dashboard Goods In</Text>
+      <Header
+        title="Goods In"
+        useLeftIcon={true}
+        leftIcon={
+          <TouchableOpacity
+            style={styles.leftIconContainer}
+            onPress={() => props.navigation.toggleDrawer()}>
+            <Icon name="bars" type="font-awesome-5" color="black" size={20} />
           </TouchableOpacity>
-        </View>
-      </>
+        }
+        rightIcon={<SearchNotif />}
+      />
+
+      <View>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Scan')}>
+          <Text>Dashboard Goods In</Text>
+        </TouchableOpacity>
+      </View>
     </Layout>
   );
 };

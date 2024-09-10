@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Request, IconColor } from '~/Utils';
 import { useSelector } from 'react-redux';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Text, BottomSheet, Icon, Chip, Dialog, Divider, ListItem } from '@rneui/themed';
 import { defaultTo, isNull } from 'lodash';
 import dayjs from 'dayjs';
@@ -19,7 +19,7 @@ import Barcode from 'react-native-barcode-builder';
 import Information from '~/Components/loactionComponents/Information';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
-import {reduxData, LocationTypesIndex, DetailLocationTypes } from '~/Types/types'
+import {reduxData, LocationTypesIndex, DetailLocationTypes } from '~/Utils/types'
 
 type Props = {
   navigation: any;
@@ -42,21 +42,6 @@ const Detail = (props : Props) => {
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
   const [openDialogInfo, setOpenDialogInfo] = useState(false);
-
-  const buttonFeatures = [
-    {
-      icon: {
-        name: 'pallet',
-        type: 'font-awesome-5',
-      },
-      key: 'pallet',
-      title: 'Pallet in location',
-      onPress: () => {
-        navigation.navigate('Location Pallet', { location: dataSelected });
-        setOpen(false);
-      },
-    },
-  ];
 
   const getDetail = () => {
     setLoading(true);
@@ -89,19 +74,41 @@ const Detail = (props : Props) => {
     });
   };
 
+  const buttonFeatures = [
+    {
+      icon: {
+        name: 'info',
+        type: 'material-icons',
+      },
+      key: 'info',
+      containerStyle: { borderBottomWidth: 1 },
+      title: 'Information',
+      onPress: () => {
+        setOpenDialogInfo(true);
+        setOpen(false);
+      },
+    },
+    {
+      icon: {
+        name: 'pallet',
+        type: 'font-awesome-5',
+      },
+      key: 'pallet',
+      title: 'Pallet in location',
+      onPress: () => {
+        navigation.navigate('Location Pallet', { location: dataSelected });
+        setOpen(false);
+      },
+    },
+  ];
+
   const setDialog = () => {
     setOpenDialogInfo(!openDialogInfo);
   };
 
-
-  useFocusEffect(
-    useCallback(() => {
-      if(props.route.params.location) getDetail();
-      else navigation.navigate('Locations')
-    }, [props.route.params.location.id]),
-  );
-
-  console.log(props)
+  useEffect(() => {
+    getDetail();
+  }, []);
 
   return (
     <Layout>
@@ -119,11 +126,7 @@ const Detail = (props : Props) => {
       <View style={styles.container}>
         {!loading ? (
           <View>
-            {dataSelected && (
-            <ScrollView>
-              <RenderContent dataSelected={dataSelected} />
-            </ScrollView>   
-            )}
+            <ScrollView><RenderContent dataSelected={dataSelected} /></ScrollView>
           </View>
         ) : (
           <View
@@ -180,12 +183,12 @@ const Detail = (props : Props) => {
 };
 
 
-export const RenderContent: React.FC<DetailLocationTypes | null > = ({ dataSelected }) => {
+export const RenderContent: React.FC<DetailLocationTypes> = ({ dataSelected }) => {
   return (
     <View style={styles.containerContent}>
       <View style={styles.barcodeContainer}>
-        <Barcode value={`${dataSelected?.slug}`} width={1} height={70} />
-        <Text style={styles.barcodeText}>{`${dataSelected?.slug}`}</Text>
+        <Barcode value={`${dataSelected.slug}`} width={1} height={70} />
+        <Text style={styles.barcodeText}>{`${dataSelected.slug}`}</Text>
       </View>
       <View style={styles.rowDetail}>
         <DetailRow title="Code" text={defaultTo(dataSelected.code, '-')} />

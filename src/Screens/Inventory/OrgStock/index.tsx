@@ -5,7 +5,7 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {Card} from '@rneui/themed';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import { reduxData, ItemOrgStockIndex, PropsScreens } from '~/Types/types'
+import { reduxData, ItemOrgStockIndex, PropsScreens } from '~/Utils/types'
 
 
 const OrgStocks: React.FC<PropsScreens> = props => {
@@ -18,7 +18,7 @@ const OrgStocks: React.FC<PropsScreens> = props => {
       <View style={{backgroundColor: '#ffffff'}}>
         <TouchableOpacity onPress={()=>navigation.navigate('Org Stock', {orgStock : item})}>
           <Card containerStyle={styles.cardStat}>
-            <Text style={styles.labelStat}>{item.code}</Text>
+            <Text style={styles.labelStat}>{item.name}</Text>
           </Card>
         </TouchableOpacity>
       </View>

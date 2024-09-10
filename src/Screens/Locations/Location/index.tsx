@@ -5,7 +5,7 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Icon, Card} from '@rneui/themed';
 
-import {PropsScreens, reduxData, LocationTypesIndex } from '~/Types/types'
+import {PropsScreens, reduxData, LocationTypesIndex } from '~/Utils/types'
 
 
 const Locations = (props : PropsScreens) => {
@@ -57,7 +57,7 @@ export default Locations;
 const styles = StyleSheet.create({
   title: {
     fontSize: 18,
-    fontFamily: 'Inter',
+    fontFamily: 'TitilliumWeb-SemiBold',
   },
   row: {
     flexDirection: 'row',

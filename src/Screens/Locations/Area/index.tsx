@@ -5,47 +5,28 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Icon} from '@rneui/themed';
 import {COLORS} from '~/Utils/Colors';
-import {reduxData, PropsScreens} from '~/Types/types';
-import {library} from '@fortawesome/fontawesome-svg-core';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import { Daum } from '~/Types/IndexArea'
-import {faInventory} from 'assets/fa/pro-regular-svg-icons';
+import {warehouseAreaIndexTypes, reduxData, PropsScreens} from '~/Utils/types';
 
-library.add(
-  faInventory,
-);
-
-
-const WarehouseArea = (props: PropsScreens) => {
+const Locations = (props: PropsScreens) => {
   const navigation = useNavigation();
   const organisation = useSelector((state: reduxData) => state.organisationReducer);
   const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
 
 
-  const Item = (record: Daum) => {
+  const Item = (record: warehouseAreaIndexTypes) => {
     return (
       <TouchableOpacity
-      /*   onPress={() => navigation.navigate('Area', {area: record})} */
-        style={{ ...styles.container}}>
+        onPress={() => navigation.navigate('Location', {location: record})}
+        style={{
+          ...styles.container,
+          backgroundColor: 'white',
+        }}>
         <View style={styles.row}>
           <View style={styles.textContainer}>
             <Text style={styles.title}>{record.name}</Text>
           </View>
         </View>
       </TouchableOpacity>
-    );
-  };
-
-  const renderHiddenItem = (item : Daum) => {
-    return (
-      <View style={styles.hiddenItemContainer}>
-        <View style={{flexDirection: 'row', gap: 5}}>
-          <TouchableOpacity onPress={()=>navigation.navigate('Location in area', { area : item })}
-            style={styles.editButton}>
-            <FontAwesomeIcon icon={faInventory} size={18} color="#fff" />
-          </TouchableOpacity>
-        </View>
-      </View>
     );
   };
 
@@ -63,33 +44,39 @@ const WarehouseArea = (props: PropsScreens) => {
           ),
         }}
         itemList={Item}
-        enableSwipe={true}
-        useScan={false}
-        hiddenItem={renderHiddenItem}
         title="WareHouse Area"
         itemKey="code"
         urlKey="warehouse-area-index"
         args={[organisation.active_organisation.id, warehouse.id]}
+        enableSwipe={false}
         sortSchema="code"
+        screenNavigation={'Location Scanner'}
       />
     </>
   );
 };
 
-export default WarehouseArea;
+export default Locations;
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
     margin: 5,
     borderWidth: 1,
     borderColor: COLORS.grey6,
-    backgroundColor: '#FAFAFA',
   },
   title: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 18,
+    fontFamily: 'TitilliumWeb-SemiBold',
   },
   row: {
     flexDirection: 'row',
@@ -102,20 +89,5 @@ const styles = StyleSheet.create({
   },
   leftIconContainer: {
     marginRight: 18,
-  },
-  hiddenItemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: 15,
-    alignContent: 'center',
-    borderRadius: 10,
-    marginVertical: 5,
-    gap: 5,
-  },
-  editButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
   },
 });

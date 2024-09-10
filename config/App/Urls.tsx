@@ -15,11 +15,6 @@ export default {
 	//Org Stock
 	'org-stock-index' : 'maya/org/{}/warehouses/{}/inventory/stocks',
 	'org-stock-show' : 'maya/org/{}/warehouses/{}/inventory/stocks/{}',
-	'org-stock-assosiate-location' : 'maya/action/org-stock/{}/location/{}',
-	'org-stock-diassosiate-location' : 'maya/action/location-org-stock/{}',
-	'org-stock-move-location' : 'maya/action/org-stock/{}/location/{}',
-	'org-stock-audit-location'  : 'maya/action/location-org-stock/{}/audit',
-
 
 	//pallet
 	'pallet-index' : 'maya/org/{}/warehouses/{}/inventory/pallets',
@@ -43,15 +38,12 @@ export default {
 	'stock-deliveries-show' : 'maya/org/{}/warehouses/{}/incoming/stock-deliveries/{}',
 
 	//stored Items
-	'stored-item-index' : 'maya/org/{}/warehouses/{}/inventory/stored-items',
-	'stored-item-show' : 'maya/org/{}/warehouses/{}/inventory/stored-items/{}',
-	'stored-item-pallets' : 'maya/org/{}/warehouses/{}/inventory/stored-items/{}/pallets',
-	'stored-item-pallet' : 'maya/action/pallet/{}/stored-item/{}',
+	'stored-item-index' : 'maya/org/{}/warehouses/{}/fulfilments/{}/pallets/{}/stored-items',
+	'stored-item-show' : 'maya/action/pallet/{}/stored-item/{}',
 
 	//warehouse
 	'warehouse-area-index' : 'maya/org/{}/warehouses/{}/areas',
 	'warehouse-area-show' : 'maya/org/{}/warehouses/{}/areas/{}',
-	'warehouse-area-location' : 'maya/org/{}/warehouses/{}/areas/{}/locations',
 
 	//location
 	'locations-index' : 'maya/org/{}/warehouses/{}/locations',
