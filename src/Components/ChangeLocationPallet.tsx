@@ -68,6 +68,7 @@ function ChangeLocation(props : Props) {
   };
 
   const ChangeLocationFailed = (error : any) => {
+    onCancel()
     props.onFailed()
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   buttonScan: {
-    width: '15%',
+    width: '19%',
     marginTop: 5,
     marginBottom: 10,
     borderRadius: 10,

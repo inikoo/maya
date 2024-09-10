@@ -57,7 +57,7 @@ export default Locations;
 const styles = StyleSheet.create({
   title: {
     fontSize: 18,
-    fontFamily: 'TitilliumWeb-SemiBold',
+    fontFamily: 'Inter',
   },
   row: {
     flexDirection: 'row',

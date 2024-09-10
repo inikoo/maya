@@ -91,6 +91,7 @@ const Delivery = (props : navigation ) => {
         ],
       }}
       sortSchema="reference"
+      screenNavigation={'Delivery Scanner'}
       filterSchema={[
         {
           title: 'State',

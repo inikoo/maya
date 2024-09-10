@@ -45,6 +45,7 @@ export { default as ChangeLocationPalletByScanner } from './Inventory/Pallet/Det
 //stored Items
 export { default as StoredItems } from './Inventory/StoredItems';
 export { default as StoredItem } from './Inventory/StoredItems/Detail';
+export { default as StoredItemPallet } from './Inventory/StoredItems/Pallets';
 
 //Locations
 export { default as  LocationsDashboard } from './Locations/Dashboard';

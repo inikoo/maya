@@ -77,13 +77,13 @@ function PalletDetail(props: Props) {
 
   const buttonFeatures = [
     {
-      icon: {
-        name: 'location-pin',
-        type: 'material-icons',
+      icon: faPallet,
+      key: 'pallet',
+      title: 'Pallet contained',
+      onPress: () => {
+        setOpen(false)
+        navigation.navigate('Item Pallet', {items : dataSelected})
       },
-      key: 'move_location',
-      title: 'Move Location',
-      onPress: () => {},
     },
   ];
 
@@ -112,6 +112,7 @@ function PalletDetail(props: Props) {
   };
 
   const onFailedGetDetail = (error: any) => {
+    console.log('sss',error)
     setLoading(false);
     setRefreshing(false);
     Toast.show({
@@ -252,7 +253,7 @@ function PalletDetail(props: Props) {
                   key={i}
                   containerStyle={{...l.containerStyle}}
                   onPress={l.onPress}>
-                  <Icon {...l.icon} size={18} />
+                    <FontAwesomeIcon  icon={l.icon} size={18}/>
                   <ListItem.Content>
                     <ListItem.Title>{l.title}</ListItem.Title>
                   </ListItem.Content>

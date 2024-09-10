@@ -42,6 +42,8 @@ export default {
 	//stored Items
 	'stored-item-index' : 'maya/org/{}/warehouses/{}/inventory/stored-items',
 	'stored-item-show' : 'maya/org/{}/warehouses/{}/inventory/stored-items/{}',
+	'stored-item-pallets' : 'maya/org/{}/warehouses/{}/inventory/stored-items/{}/pallets',
+	'stored-item-pallet' : 'maya/action/pallet/{}/stored-item/{}',
 
 	//warehouse
 	'warehouse-area-index' : 'maya/org/{}/warehouses/{}/areas',

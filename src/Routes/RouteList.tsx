@@ -57,6 +57,8 @@ import {
   GlobalScanner,
 
   StoredItem,
+  StoredItemPallet,
+
   AreaLocation
 } from '~/Screens';
 
@@ -252,6 +254,11 @@ const routes = ({organisation = null, warehouse = null}) => [
   {
     name: 'Item',
     component: StoredItem,
+    options: {headerShown: false}, 
+  },
+  {
+    name: 'Item Pallet',
+    component: StoredItemPallet,
     options: {headerShown: false}, 
   },
   

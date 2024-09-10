@@ -75,6 +75,7 @@ export default function BaseScanner(props : Props) {
 
   const onSuccessScanner = async (result : Object) => {
     setScanned(false);
+    console.log(result.data)
     handleBarCodeScanned(result.data)
   };
 

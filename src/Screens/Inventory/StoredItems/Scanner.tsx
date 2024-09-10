@@ -11,10 +11,10 @@ export default function ScannerPage() {
   return (
     <Layout>
       <>
-        <Header title="Scanner Delivery" useLeftIcon={true} />
+        <Header title="Scanner Location" useLeftIcon={true} />
         <BaseScanner 
-          prefix={'PalletDelivery'} 
-          onSuccess={(e)=>navigation.navigate('Delivery', {delivery: {...e.data.model}})} 
+          prefix={'S'} 
+          onSuccess={(e)=>navigation.navigate('Location', {location: {...e.data.model}})}
         />
       </>
     </Layout>

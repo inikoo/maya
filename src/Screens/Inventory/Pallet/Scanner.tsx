@@ -3,14 +3,19 @@ import {StyleSheet, View} from 'react-native';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
 import BaseScanner from '~/Components/BaseScanner';
+import {useNavigation} from '@react-navigation/native';
 
 export default function ScannerPage() {
+  const navigation = useNavigation();
   return (
     <Layout>
-      <View>
+      <>
         <Header title="Scanner Pallet" useLeftIcon={true} />
-        <BaseScanner prefix={'Pallet'} />
-      </View>
+        <BaseScanner 
+        prefix={'Pallet'} 
+        onSuccess={(e)=>navigation.navigate('Pallet', {pallet: {...e.data.model}})}
+        />
+      </>
     </Layout>
   );
 }

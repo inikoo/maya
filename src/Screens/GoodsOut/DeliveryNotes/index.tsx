@@ -28,7 +28,7 @@ const DeliveryNotes = props => {
       urlKey="delivery-notes-index"
       args={[oraganisation.active_organisation.id, warehouse.id]}
       sortSchema="reference"
-      screenNavigation={'Pallet Scanner'}
+      useScan={false}
     />
   );
 };

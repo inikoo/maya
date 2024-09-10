@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Request, IconColor } from '~/Utils';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Text, BottomSheet, Icon, Chip, Dialog, Divider, ListItem } from '@rneui/themed';
 import { defaultTo, isNull } from 'lodash';
 import dayjs from 'dayjs';
@@ -93,9 +93,15 @@ const Detail = (props : Props) => {
     setOpenDialogInfo(!openDialogInfo);
   };
 
-  useEffect(() => {
-    getDetail();
-  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      if(props.route.params.location) getDetail();
+      else navigation.navigate('Locations')
+    }, [props.route.params.location.id]),
+  );
+
+  console.log(props)
 
   return (
     <Layout>
@@ -113,7 +119,11 @@ const Detail = (props : Props) => {
       <View style={styles.container}>
         {!loading ? (
           <View>
-            <ScrollView><RenderContent dataSelected={dataSelected} /></ScrollView>
+            {dataSelected && (
+            <ScrollView>
+              <RenderContent dataSelected={dataSelected} />
+            </ScrollView>   
+            )}
           </View>
         ) : (
           <View
@@ -174,8 +184,8 @@ export const RenderContent: React.FC<DetailLocationTypes | null > = ({ dataSelec
   return (
     <View style={styles.containerContent}>
       <View style={styles.barcodeContainer}>
-        <Barcode value={`${dataSelected.slug}`} width={1} height={70} />
-        <Text style={styles.barcodeText}>{`${dataSelected.slug}`}</Text>
+        <Barcode value={`${dataSelected?.slug}`} width={1} height={70} />
+        <Text style={styles.barcodeText}>{`${dataSelected?.slug}`}</Text>
       </View>
       <View style={styles.rowDetail}>
         <DetailRow title="Code" text={defaultTo(dataSelected.code, '-')} />

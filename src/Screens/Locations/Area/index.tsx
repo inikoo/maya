@@ -5,12 +5,11 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Icon} from '@rneui/themed';
 import {COLORS} from '~/Utils/Colors';
-import {warehouseAreaIndexTypes, reduxData, PropsScreens} from '~/Types/types';
+import {reduxData, PropsScreens} from '~/Types/types';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faInventory,
-} from 'assets/fa/pro-regular-svg-icons';
+import { Daum } from '~/Types/IndexArea'
+import {faInventory} from 'assets/fa/pro-regular-svg-icons';
 
 library.add(
   faInventory,
@@ -23,14 +22,11 @@ const WarehouseArea = (props: PropsScreens) => {
   const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
 
 
-  const Item = (record: warehouseAreaIndexTypes) => {
+  const Item = (record: Daum) => {
     return (
       <TouchableOpacity
       /*   onPress={() => navigation.navigate('Area', {area: record})} */
-        style={{
-          ...styles.container,
-          backgroundColor: 'white',
-        }}>
+        style={{ ...styles.container}}>
         <View style={styles.row}>
           <View style={styles.textContainer}>
             <Text style={styles.title}>{record.name}</Text>
@@ -40,13 +36,13 @@ const WarehouseArea = (props: PropsScreens) => {
     );
   };
 
-  const renderHiddenItem = (item) => {
+  const renderHiddenItem = (item : Daum) => {
     return (
       <View style={styles.hiddenItemContainer}>
         <View style={{flexDirection: 'row', gap: 5}}>
           <TouchableOpacity onPress={()=>navigation.navigate('Location in area', { area : item })}
             style={styles.editButton}>
-            <FontAwesomeIcon icon={faInventory} size={20} color="#fff" />
+            <FontAwesomeIcon icon={faInventory} size={18} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
@@ -68,13 +64,13 @@ const WarehouseArea = (props: PropsScreens) => {
         }}
         itemList={Item}
         enableSwipe={true}
+        useScan={false}
         hiddenItem={renderHiddenItem}
         title="WareHouse Area"
         itemKey="code"
         urlKey="warehouse-area-index"
         args={[organisation.active_organisation.id, warehouse.id]}
         sortSchema="code"
-        screenNavigation={'Location Scanner'}
       />
     </>
   );
@@ -86,21 +82,14 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
     margin: 5,
     borderWidth: 1,
     borderColor: COLORS.grey6,
+    backgroundColor: '#FAFAFA',
   },
   title: {
-    fontSize: 18,
-    fontFamily: 'TitilliumWeb-SemiBold',
+    fontSize: 16,
+    fontWeight: '700',
   },
   row: {
     flexDirection: 'row',

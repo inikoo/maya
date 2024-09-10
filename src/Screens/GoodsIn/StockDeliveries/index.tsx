@@ -28,7 +28,7 @@ const StockDeliveries = (props : PropsScreens) => {
         args={[organisation.active_organisation.id, warehouse.id]}
         enableSwipe={false}
         sortSchema='code'
-        screenNavigation={'Location Scanner'}
+        useScan={false}
       />
     </>
   );

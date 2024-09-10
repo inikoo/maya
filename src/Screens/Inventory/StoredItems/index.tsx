@@ -90,6 +90,7 @@ const StoredItems = (props : PropsScreens) => {
         urlKey="stored-item-index"
         sortSchema="reference"
         screenNavigation={'Pallet Scanner'}
+        useScan={false}
         headerProps={{
           useLeftIcon: true,
           leftIcon: (
@@ -104,7 +105,6 @@ const StoredItems = (props : PropsScreens) => {
         args={[
           organisation.active_organisation.id,
           warehouse.id,
-          organisation.active_organisation.active_authorised_fulfilments.id,
         ]}
       />
     </>
