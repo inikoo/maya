@@ -29,7 +29,7 @@ import Layout from '~/Components/Layout';
 import AssociateLocation from '~/Components/Stock/AddAssosiateLocation';
 import StockCheck from '~/Components/Stock/StockCheck.tsx';
 import MoveStock from '~/Components/Stock/MoveStock';
-import {DetailOrgStockTypes, reduxData, ItemOrgStockIndex, PropsScreens } from '~/Utils/types';
+import {DetailOrgStockTypes, reduxData, ItemOrgStockIndex, PropsScreens } from '~/types/types';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';

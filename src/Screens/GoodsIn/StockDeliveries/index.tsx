@@ -34,6 +34,7 @@ const StockDeliveries = props => {
         }}
         title="Stock Deliveries"
         itemKey='code'
+        useScan={false}
         urlKey='stock-deliveries-index'
         args={[organisation.active_organisation.id, warehouse.id]}
         enableSwipe={false}

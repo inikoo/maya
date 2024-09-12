@@ -1,30 +1,37 @@
-import React, {ReactNode} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Text} from '@rneui/themed';
-import {MAINCOLORS} from '~/Utils/Colors';
-import {ActivityIndicator} from 'react-native';
+import React, { ReactNode } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text } from '@rneui/themed';
+import { MAINCOLORS } from '~/Utils/Colors';
+import { ActivityIndicator } from 'react-native';
 
 type Props = {
   content: ReactNode;
-  postion: Object;
-  constainerStyle: Object;
+  position: {
+    bottom: number;
+    left: number;
+  };
+  containerStyle: {
+    backgroundColor: string;
+    height: number;
+    width: number;
+    borderRadius: number;
+  };
   loading: boolean;
-  onPress: Function;
+  onPress: () => void;
 };
 
 const AbsoluteButton = (props: Props) => {
   return (
     <TouchableOpacity
-      style={{...props.postion, ...props.constainerStyle}}
-      onPress={props.onPress}>
-      <View
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100%',
-        }}>
-        {props.loading ? <ActivityIndicator color={'white'} /> : props.content}
+      style={[styles.absoluteButton, props.position, props.containerStyle]}
+      onPress={props.onPress}
+    >
+      <View style={styles.contentContainer}>
+        {props.loading ? (
+          <ActivityIndicator color={'white'} />
+        ) : (
+          props.content
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -32,20 +39,30 @@ const AbsoluteButton = (props: Props) => {
 
 AbsoluteButton.defaultProps = {
   onPress: () => null,
-  postion: {
+  position: {
     bottom: 20,
-    left: 280,
+    right: 10,
   },
   loading: false,
-  constainerStyle: {
+  containerStyle: {
     backgroundColor: MAINCOLORS.primary,
     height: 80,
     width: 80,
-    borderRadius: 35,
+    borderRadius: 40, // Half of height and width to ensure a perfect circle
   },
   content: <Text>Button</Text>,
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  absoluteButton: {
+    position: 'absolute',
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+});
 
 export default AbsoluteButton;

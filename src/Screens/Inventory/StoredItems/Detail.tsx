@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   ScrollView,
@@ -10,18 +10,16 @@ import {
 import {findColorFromAiku, Request} from '~/Utils';
 import {useSelector} from 'react-redux';
 import {Text, Divider, Icon, BottomSheet, ListItem} from '@rneui/themed';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {defaultTo} from 'lodash';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import DetailRow from '~/Components/DetailRow';
 import Barcode from 'react-native-barcode-builder';
-import {useNavigation} from '@react-navigation/native';
 import {MAINCOLORS} from '~/Utils/Colors';
 import Header from '~/Components/Header';
 import Layout from '~/Components/Layout';
-import ChangeLocation from '~/Components/ChangeLocationPallet';
-import ChangeStatusPallet from '~/Components/ChangeStatusPallet';
-import {reduxData, PalletTypesIndex, PalletDetailTypes} from '~/types/types';
+import {reduxData} from '~/types/types';
+import {Data} from '~/types/ShowStoredItemTypes';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
@@ -59,50 +57,28 @@ type Props = {
     key: string;
     name: string;
     params: {
-      pallet: PalletTypesIndex;
+      item: Data;
     };
     path: string;
   };
 };
 
-function PalletDetail(props: Props) {
+function ShowStoredItem(props: Props) {
   const navigation = useNavigation();
-  const organisation = useSelector(
-    (state: reduxData) => state.organisationReducer,
-  );
+  const organisation = useSelector((state: reduxData) => state.organisationReducer);
   const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
-  const [dataSelected, setDataSelected] = useState<PalletDetailTypes | null>(
-    null,
-  );
+  const [dataSelected, setDataSelected] = useState<Data | null>(null);
   const [loading, setLoading] = useState(true);
-  const [openDialogStatus, setOpenDialogStatus] = useState(false);
   const [open, setOpen] = useState(false);
-  const [openLocation, setOpenLocation] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const buttonFeatures = [
     {
-      icon: {
-        name: 'location-pin',
-        type: 'material-icons',
-      },
-      key: 'move_location',
-      containerStyle: {borderBottomWidth: 1},
-      title: 'Move Location',
+      icon: faPallet,
+      title: 'Pallet Contained',
+      key: 'pallet_contained',
       onPress: () => {
-        setOpenLocation(true);
         setOpen(false);
-      },
-    },
-    {
-      icon: {
-        name: 'edit',
-        type: 'material-icons',
-      },
-      key: 'change_status',
-      title: 'Change state',
-      onPress: () => {
-        setOpenDialogStatus(true);
-        setOpen(false);
+        navigation.navigate('StoredItemPalletContained',{item : dataSelected})
       },
     },
   ];
@@ -111,13 +87,13 @@ function PalletDetail(props: Props) {
     setLoading(true);
     Request(
       'get',
-      'pallet-show',
+      'stored-item-show',
       {},
       {},
       [
         organisation.active_organisation.id,
         warehouse.id,
-        props.route.params.pallet.id,
+        props.route.params.item.id,
       ],
       onSuccessGetDetail,
       onFailedGetDetail,
@@ -157,55 +133,43 @@ function PalletDetail(props: Props) {
         <View style={styles.rowDetail}>
           <DetailRow
             title="Customer Name"
-            text={defaultTo(dataSelected.customer.name, '-')}
+            text={defaultTo(dataSelected.customer_name, '-')}
           />
         </View>
         <View style={styles.rowDetail}>
           <DetailRow
-            title="Customer Reference"
-            text={defaultTo(dataSelected.customer_reference, '-')}
+            title="Quantity"
+            text={defaultTo(dataSelected.total_quantity, '-')}
           />
         </View>
         <View style={styles.rowDetail}>
           <DetailRow
-            title="Location"
-            text={defaultTo(dataSelected.location?.resource.code, '-')}
+            title="Max quantity"
+            text={defaultTo(dataSelected.max_quantity, '-')}
           />
         </View>
         <View style={styles.rowDetail}>
-          <DetailRow
-            title="Status"
-            text={
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: 100,
-                  gap: 4,
-                  backgroundColor: findColorFromAiku(
-                    dataSelected.status_icon.color,
-                  ),
-                  paddingHorizontal: 10,
-                  borderRadius: 30,
-                  paddingVertical: 3,
-                }}>
-                <FontAwesomeIcon
-                  color="#ffff"
-                  size={12}
-                  icon={dataSelected.status_icon.icon}
-                  style={{marginVertical: 3}}
-                />
-                <Text style={{color: '#ffff', fontSize: 12}}>
-                  {dataSelected.status}
-                </Text>
-              </View>
-            }
-          />
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow title="State" text={defaultTo(dataSelected.state, '-')} />
-        </View>
-        <View style={styles.rowDetail}>
-          <DetailRow title="Notes" text={defaultTo(dataSelected.notes, '-')} />
+        <DetailRow
+          title="State"
+          text={
+            <View
+              style={{
+                ...styles.stateContainer,
+                backgroundColor: findColorFromAiku(
+                dataSelected?.state_icon?.color,
+                ),
+              }}>
+              <FontAwesomeIcon
+                icon={dataSelected?.state_icon?.icon}
+                color="white"
+                size={12}
+              />
+              <Text style={{fontSize: 12, color: 'white'}}>
+                {defaultTo(dataSelected.state_icon.tooltip, '-')}
+              </Text>
+            </View>
+          }
+        />
         </View>
       </View>
     );
@@ -218,16 +182,16 @@ function PalletDetail(props: Props) {
 
   useFocusEffect(
     useCallback(() => {
-      if (!props.route.params.pallet) navigation.goBack();
+      if (!props.route.params.item) navigation.goBack();
       else getDetail();
-    }, [props.route.params.pallet]),
+    }, [props.route.params.item]),
   );
 
   return (
     <Layout>
       <View style={{flex: 1}}>
         <Header
-          title={props.route.params.pallet.reference}
+          title={props.route.params.item.reference}
           useLeftIcon
           useRightIcon
           rightIcon={
@@ -250,23 +214,7 @@ function PalletDetail(props: Props) {
           </View>
         )}
 
-        <ChangeStatusPallet
-          visible={openDialogStatus}
-          pallet={dataSelected}
-          onClose={() => setOpenDialogStatus(false)}
-        />
-
-        <ChangeLocation
-          visible={openLocation}
-          onClose={() => {
-            setOpenLocation(false);
-          }}
-          pallet={dataSelected?.id}
-          bulk={false}
-          onSuccess={() => getDetail()}
-        />
-
-        <BottomSheet modalProps={{}} isVisible={open}>
+        <BottomSheet isVisible={open}>
           <View style={styles.wrapper}>
             <Header
               title="Setting"
@@ -290,7 +238,7 @@ function PalletDetail(props: Props) {
                   key={i}
                   containerStyle={{...l.containerStyle}}
                   onPress={l.onPress}>
-                  <Icon {...l.icon} size={18} />
+                  <FontAwesomeIcon icon={l.icon} size={18} />
                   <ListItem.Content>
                     <ListItem.Title>{l.title}</ListItem.Title>
                   </ListItem.Content>
@@ -381,6 +329,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 20,
   },
+  stateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    gap: 5,
+    paddingVertical: 2,
+  },
 });
 
-export default PalletDetail;
+export default ShowStoredItem;

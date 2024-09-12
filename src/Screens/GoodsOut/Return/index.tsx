@@ -89,7 +89,7 @@ const Returns = props => {
       args={[oraganisation.active_organisation.id, warehouse.id]}
       itemList={Item}
       sortSchema="reference"
-      screenNavigation={'Pallet Scanner'}
+      screenNavigation={'Return Scanner'}
       params={{
         ['elements[state]'] : "confirmed,picking,picked,dispatched"
       }}

@@ -5,7 +5,7 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Icon} from '@rneui/themed';
 import {COLORS} from '~/Utils/Colors';
-import {warehouseAreaIndexTypes, reduxData, PropsScreens} from '~/Utils/types';
+import {warehouseAreaIndexTypes, reduxData, PropsScreens} from '~/types/types';
 
 const Locations = (props: PropsScreens) => {
   const navigation = useNavigation();
@@ -16,7 +16,6 @@ const Locations = (props: PropsScreens) => {
   const Item = (record: warehouseAreaIndexTypes) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('Location', {location: record})}
         style={{
           ...styles.container,
           backgroundColor: 'white',
@@ -43,6 +42,7 @@ const Locations = (props: PropsScreens) => {
             </TouchableOpacity>
           ),
         }}
+        useScan={false}
         itemList={Item}
         title="WareHouse Area"
         itemKey="code"

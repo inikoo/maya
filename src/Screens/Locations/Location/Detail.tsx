@@ -1,25 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
   ActivityIndicator,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
-import { Request, IconColor } from '~/Utils';
-import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { Text, BottomSheet, Icon, Chip, Dialog, Divider, ListItem } from '@rneui/themed';
-import { defaultTo, isNull } from 'lodash';
+import {Request, IconColor} from '~/Utils';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {
+  Text,
+  BottomSheet,
+  Icon,
+  Chip,
+  Dialog,
+  Divider,
+  ListItem,
+} from '@rneui/themed';
+import {defaultTo, isNull} from 'lodash';
 import dayjs from 'dayjs';
-import { MAINCOLORS } from '~/Utils/Colors';
-import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
+import {MAINCOLORS} from '~/Utils/Colors';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import DetailRow from '~/Components/DetailRow';
 import Barcode from 'react-native-barcode-builder';
 import Information from '~/Components/loactionComponents/Information';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
-import {reduxData, LocationTypesIndex, DetailLocationTypes } from '~/Utils/types'
+import {
+  reduxData,
+  LocationTypesIndex,
+  DetailLocationTypes,
+} from '~/types/types';
 
 type Props = {
   navigation: any;
@@ -33,12 +45,15 @@ type Props = {
   };
 };
 
-
-const Detail = (props : Props) => {
+const Detail = (props: Props) => {
   const [loading, setLoading] = useState(true);
-  const organisation = useSelector((state : reduxData) => state.organisationReducer);
-  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
-  const [dataSelected, setDataSelected] = useState<DetailLocationTypes | null>(null);
+  const organisation = useSelector(
+    (state: reduxData) => state.organisationReducer,
+  );
+  const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
+  const [dataSelected, setDataSelected] = useState<DetailLocationTypes | null>(
+    null,
+  );
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
   const [openDialogInfo, setOpenDialogInfo] = useState(false);
@@ -60,12 +75,12 @@ const Detail = (props : Props) => {
     );
   };
 
-  const onSuccessGetDetail = (response : any) => {
+  const onSuccessGetDetail = (response: any) => {
     setDataSelected(response);
     setLoading(false);
   };
 
-  const onFailedGetDetail = (error : any) => {
+  const onFailedGetDetail = (error: any) => {
     setLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -81,7 +96,7 @@ const Detail = (props : Props) => {
         type: 'material-icons',
       },
       key: 'info',
-      containerStyle: { borderBottomWidth: 1 },
+      containerStyle: {borderBottomWidth: 1},
       title: 'Information',
       onPress: () => {
         setOpenDialogInfo(true);
@@ -96,7 +111,7 @@ const Detail = (props : Props) => {
       key: 'pallet',
       title: 'Pallet in location',
       onPress: () => {
-        navigation.navigate('Location Pallet', { location: dataSelected });
+        navigation.navigate('Location Pallet', {location: dataSelected});
         setOpen(false);
       },
     },
@@ -113,77 +128,80 @@ const Detail = (props : Props) => {
   return (
     <Layout>
       <>
-      <Header
-        title={props.route.params.location.code}
-        useLeftIcon={true}
-        rightIcon={
-          <TouchableOpacity onPress={() => setOpen(true)}>
-            <Icon name="menu" type="entypo" />
-          </TouchableOpacity>
-        }
-      />
-      <Divider />
-      <View style={styles.container}>
-        {!loading ? (
-          <View>
-            <ScrollView><RenderContent dataSelected={dataSelected} /></ScrollView>
-          </View>
-        ) : (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-            }}>
-            <ActivityIndicator size="large" />
-          </View>
-        )}
-      </View>
-
-      <BottomSheet modalProps={{}} isVisible={open}>
-        <View style={styles.wrapper}>
-          <Header
-            title="Setting"
-            rightIcon={
-              <TouchableOpacity
-                onPress={() => setOpen(false)}
-                style={{ marginRight: 20 }}>
-                <Icon
-                  color={MAINCOLORS.danger}
-                  name="closecircle"
-                  type="antdesign"
-                  size={20}
-                />
-              </TouchableOpacity>
-            }
-          />
-          <Divider />
-          <View style={{ marginVertical: 15 }}>
-            {buttonFeatures.map((l, i) => (
-              <ListItem
-                key={i}
-                containerStyle={{ ...l.containerStyle }}
-                onPress={l.onPress}>
-                <Icon {...l.icon} size={18} />
-                <ListItem.Content>
-                  <ListItem.Title>{l.title}</ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
-          </View>
+        <Header
+          title={props.route.params.location.code}
+          useLeftIcon={true}
+          rightIcon={
+            <TouchableOpacity onPress={() => setOpen(true)}>
+              <Icon name="menu" type="entypo" />
+            </TouchableOpacity>
+          }
+        />
+        <Divider />
+        <View style={styles.container}>
+          {!loading ? (
+            <View>
+              <ScrollView>
+                <RenderContent dataSelected={dataSelected} />
+              </ScrollView>
+            </View>
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size="large" color={MAINCOLORS.primary} />
+            </View>
+          )}
         </View>
-      </BottomSheet>
 
-      <Dialog isVisible={openDialogInfo} onBackdropPress={setDialog}>
-        <Dialog.Title title="Info" />
-        <Information />
-      </Dialog>
+        <BottomSheet modalProps={{}} isVisible={open}>
+          <View style={styles.wrapper}>
+            <Header
+              title="Setting"
+              rightIcon={
+                <TouchableOpacity
+                  onPress={() => setOpen(false)}
+                  style={{marginRight: 20}}>
+                  <Icon
+                    color={MAINCOLORS.danger}
+                    name="closecircle"
+                    type="antdesign"
+                    size={20}
+                  />
+                </TouchableOpacity>
+              }
+            />
+            <Divider />
+            <View style={{marginVertical: 15}}>
+              {buttonFeatures.map((l, i) => (
+                <ListItem
+                  key={i}
+                  containerStyle={{...l.containerStyle}}
+                  onPress={l.onPress}>
+                  <Icon {...l.icon} size={18} />
+                  <ListItem.Content>
+                    <ListItem.Title>{l.title}</ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              ))}
+            </View>
+          </View>
+        </BottomSheet>
+
+        <Dialog isVisible={openDialogInfo} onBackdropPress={setDialog}>
+          <Dialog.Title title="Info" />
+          <Information />
+        </Dialog>
       </>
     </Layout>
   );
 };
 
-
-export const RenderContent: React.FC<DetailLocationTypes> = ({ dataSelected }) => {
+export const RenderContent: React.FC<DetailLocationTypes> = ({
+  dataSelected,
+}) => {
   return (
     <View style={styles.containerContent}>
       <View style={styles.barcodeContainer}>
@@ -196,7 +214,7 @@ export const RenderContent: React.FC<DetailLocationTypes> = ({ dataSelected }) =
       <View style={styles.rowDetail}>
         <DetailRow
           title="Status"
-          text={(
+          text={
             <Chip
               title={defaultTo(dataSelected.status, '-')}
               color={
@@ -204,10 +222,10 @@ export const RenderContent: React.FC<DetailLocationTypes> = ({ dataSelected }) =
                   ? MAINCOLORS.success
                   : MAINCOLORS.danger
               }
-              buttonStyle={{ padding: 2, width : 100}}
-              titleStyle={{ fontSize: 14 }}
+              buttonStyle={{padding: 2, width: 100}}
+              titleStyle={{fontSize: 14}}
             />
-          )}
+          }
         />
       </View>
       <View style={styles.rowDetail}>
@@ -250,25 +268,27 @@ export const RenderContent: React.FC<DetailLocationTypes> = ({ dataSelected }) =
       <View style={styles.rowDetail}>
         <DetailRow
           title="Tags"
-          text={(
+          text={
             <View style={styles.chipContainer}>
-              {dataSelected.tags.map((tag : any , index : any) => (
+              {dataSelected.tags.map((tag: any, index: any) => (
                 <Chip
                   key={index}
                   title={tag}
-                  color={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
+                  color={`#${Math.floor(Math.random() * 16777215).toString(
+                    16,
+                  )}`}
                   buttonStyle={styles.chip}
-                  titleStyle={{ fontSize: 12 }}
+                  titleStyle={{fontSize: 12}}
                 />
               ))}
             </View>
-          )}
+          }
         />
       </View>
       <View style={styles.rowDetail}>
         <DetailRow
           title="Location status"
-          text={(
+          text={
             <View style={styles.iconContainer}>
               <View style={styles.row}>
                 <Icon
@@ -303,7 +323,7 @@ export const RenderContent: React.FC<DetailLocationTypes> = ({ dataSelected }) =
                 />
               </View>
             </View>
-          )}
+          }
         />
       </View>
     </View>
@@ -363,7 +383,5 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
 });
-
-
 
 export default Detail;

@@ -1,13 +1,13 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Icon, Text} from '@rneui/themed';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {COLORS} from '~/Utils/Colors';
 import {findColorFromAiku} from '~/Utils';
 import dayjs from 'dayjs';
-import {defaultTo} from 'lodash';
+import {reduxData} from '~/types/types';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -22,16 +22,16 @@ import {
 
 library.add(faSeedling, faShare, faSpellCheck, faCheck, faTimes, faCheckDouble);
 
-const Delivery = props => {
+const Delivery = ( props ) => {
   const navigation = useNavigation();
-  const oraganisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
+  const oraganisation = useSelector((state : reduxData) => state.organisationReducer);
+  const warehouse = useSelector((state :  reduxData) => state.warehouseReducer);
 
   const Item = record => {
     return (
       <View style={{...styles.container, backgroundColor: 'white'}}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Delivery', {delivery: record})}>
+          onPress={() => navigation.navigate('ShowDelivery', {delivery: record})}>
           <View style={styles.row}>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{record.reference}</Text>
@@ -78,6 +78,7 @@ const Delivery = props => {
       title="Fullfilmennt Deliveries"
       itemKey="reference"
       urlKey="delivery-index"
+      screenNavigation={'Delivery Scanner'}
       args={[oraganisation.active_organisation.id, warehouse.id]}
       itemList={Item}
       params={{

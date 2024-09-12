@@ -1,4 +1,4 @@
-import React, {useState, ReactNode} from 'react';
+import React, {useState, useEffect, useRef } from 'react';
 import {View, StyleSheet, TouchableOpacity, TextInput, Keyboard} from 'react-native';
 import {Request} from '~/Utils';
 import {useSelector} from 'react-redux';
@@ -6,14 +6,14 @@ import {Text, Divider, Icon, Dialog} from '@rneui/themed';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
 import Button from '~/Components/Button';
-import { reduxData } from '~/Utils/types';
+import { reduxData } from '~/types/types';
 
 type Props = {
-    title: ReactNode|String;
+    title?: String;
     visible : Boolean,
     onClose : Function,
-    pallet: Number|null|any
-    bulk : boolean
+    pallet : Number|null|any
+    bulkMode?: Boolean
     onSuccess : Function,
     onFailed : Function
   };
@@ -24,6 +24,7 @@ function ChangeLocation(props : Props) {
   const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
   const [locationCode, setLocationCode] = useState<String|null>('');
   const [errorLocationCode, setErrorLocationCode] = useState('');
+  const inputRef = useRef<TextInput>(null);
 
   const getLocationCode = async () => {
     await Request(
@@ -38,7 +39,6 @@ function ChangeLocation(props : Props) {
   };
 
   const LocationCodeSuccess = async (response : any ) => {
-    console.log(response)
     if(response.data.model.id && response.data.model_type == 'Location'){
     await Request(
       'patch',
@@ -61,8 +61,8 @@ function ChangeLocation(props : Props) {
   };
 
   const ChangeLocationSuccess = ( response : any ) => {
-    props.onSuccess()
     onCancel()
+    props.onSuccess()
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
@@ -72,13 +72,13 @@ function ChangeLocation(props : Props) {
 
   const ChangeLocationFailed = (error : any) => {
     props.onFailed()
+    onCancel()
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
-      textBody: error.response.data.message,
+      textBody: error.response.data.message || 'failed to set Location',
     });
   };
-
 
   const onCancel = () => {
     props.onClose()
@@ -91,8 +91,14 @@ function ChangeLocation(props : Props) {
 
   const onSubmit = () => {
     getLocationCode();
-    Keyboard.dismiss(); // Optional: dismiss the keyboard
+    Keyboard.dismiss();
   };
+
+  useEffect(() => {
+    if (props.visible && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [props.visible]);
 
   return (
     <Dialog isVisible={props.visible}>
@@ -106,17 +112,16 @@ function ChangeLocation(props : Props) {
               style={styles.input}
               placeholder="Code"
               value={locationCode}
+              ref={inputRef}
               onChangeText={onChangeCode}
-              onSubmitEditing={onSubmit} // Handle the Enter key press
+              onSubmitEditing={onSubmit}
             />
           </View>
           <View style={styles.buttonScan}>
             <TouchableOpacity
               style={styles.searchIcon}
               onPress={() =>
-                navigation.navigate('Change Location Pallet Scanner', {
-                  pallet: props.pallet,
-                })
+                navigation.navigate('Change Location Pallet Scanner', { pallet: props.pallet })
               }>
               <Icon name="qr-code-scanner" type="material" size={24} />
             </TouchableOpacity>
@@ -134,9 +139,9 @@ function ChangeLocation(props : Props) {
 }
 
 ChangeLocation.defaultProps = {
-    title: 'Change Location',
+    title: 'Set Location',
     visible : false,
-    onClose : ()=>null,
+    onClose : ()=> null,
     bulkMode : false,
     onFailed : () => null,
     onSuccess : () => null
@@ -162,7 +167,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   buttonScan: {
-    width: '15%',
+    width: '19%',
     marginTop: 5,
     marginBottom: 10,
     borderRadius: 10,
