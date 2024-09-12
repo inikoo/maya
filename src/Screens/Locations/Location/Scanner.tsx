@@ -3,13 +3,19 @@ import { StyleSheet } from 'react-native';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
 import BaseScanner from '~/Components/BaseScanner';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ScannerPage() {
-
+  const navigation = useNavigation()
   return (
     <Layout>
+      <>
       <Header title="Scanner Location" useLeftIcon={true} />
-      <BaseScanner prefix={'Location'} />
+      <BaseScanner 
+        prefix={'Location'} 
+        onSuccess={(e)=>navigation.navigate('Location', {location: e.data.model})}
+      />
+      </>
     </Layout>
   );
 }

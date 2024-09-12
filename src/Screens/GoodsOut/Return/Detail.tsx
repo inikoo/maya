@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   StyleSheet,
   View,
@@ -7,12 +7,13 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  Alert
 } from 'react-native';
 import {Request, IconColor} from '~/Utils';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {Text, BottomSheet, Icon, Divider, ListItem} from '@rneui/themed';
-import {defaultTo, isNull} from 'lodash';
+import {defaultTo} from 'lodash';
 import dayjs from 'dayjs';
 import {MAINCOLORS} from '~/Utils/Colors';
 import {findColorFromAiku} from '~/Utils';
@@ -22,6 +23,8 @@ import Barcode from 'react-native-barcode-builder';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
 import AbsoluteButton from '~/Components/absoluteButton';
+import {reduxData} from '~/types/types';
+import {Data,Root} from '~/types/ShowReturnTypes';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -49,15 +52,50 @@ library.add(
   faNarwhal,
 );
 
-const RetrunDetail = props => {
-  const [loading, setLoading] = useState(true);
-  const organisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
-  const [dataSelected, setDataSelected] = useState(null);
-  const [open, setOpen] = useState(false);
+type Props = {
+  navigation: any;
+  route: {
+    key: string;
+    name: string;
+    params: {
+      return: Data;
+    };
+    path: string;
+  };
+};
+
+const ShowRetrun = (props : Props ) => {
+  const organisation = useSelector((state: reduxData)  => state.organisationReducer);
+  const warehouse = useSelector((state: reduxData)  => state.warehouseReducer);
+  const [dataSelected, setDataSelected] = useState<Data | null>(null);
+  const [open, setOpen] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<Boolean>(true);
+  const [loadingPrimary, setLoadingPrimary] = useState<Boolean>(false);
+  const [refreshing, setRefreshing] = React.useState<Boolean>(false);
   const navigation = useNavigation();
-  const [loadingPrimary, setLoadingPrimary] = useState(false);
-  const [refreshing, setRefreshing] = React.useState(false);
+
+
+  const setPicking = () => {
+    Alert.alert(
+      'Confrim Picking',
+      'you must check the Items before changing it status to booked in !',
+      [
+        {
+          text: 'No',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () =>{
+              navigation.navigate('Return Pallet', { return: dataSelected });
+              setOpen(false);
+          }
+        },
+      ],
+      {cancelable: true},
+    );
+  };
 
   const getDetail = () => {
     setLoading(true);
@@ -76,12 +114,12 @@ const RetrunDetail = props => {
     );
   };
 
-  const onSuccessGetDetail = response => {
+  const onSuccessGetDetail = (response : Root) => {
     setDataSelected(response.data);
     setLoading(false);
   };
 
-  const onFailedGetDetail = error => {
+  const onFailedGetDetail = (error : any) => {
     setLoading(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -103,12 +141,12 @@ const RetrunDetail = props => {
     );
   };
 
-  const onSuccessChangeStatus = res => {
+  const onSuccessChangeStatus = () => {
     getDetail();
     setLoadingPrimary(false);
   };
 
-  const onFailedChangeStatus = error => {
+  const onFailedChangeStatus = (error : any) => {
     setLoadingPrimary(false);
     Toast.show({
       type: ALERT_TYPE.DANGER,
@@ -117,11 +155,70 @@ const RetrunDetail = props => {
     });
   };
 
+  const renderAbsoluteButton = () => {
+    if (dataSelected?.state === 'confirmed') {
+      return (
+        <View>
+          <AbsoluteButton
+            loading={loadingPrimary}
+            onPress={() => changeStatus({url: 'return-status-picking'})}
+            content={
+              <View style={{alignItems: 'center'}}>
+                <FontAwesomeIcon icon={faTruck} size={30} color={'white'} />
+                <Text style={{color: 'white', fontSize: 10}}>Picking</Text>
+              </View>
+            }
+          />
+        </View>
+      );
+    }
+
+    if (dataSelected?.state === 'picking') {
+      return (
+        <View>
+          <AbsoluteButton
+            loading={loadingPrimary}
+            onPress={() => setPicking()}
+            content={
+              <View style={{alignItems: 'center'}}>
+                <FontAwesomeIcon icon={faCheck} size={30} color={'white'} />
+                <Text style={{color: 'white', fontSize: 10}}>Picked</Text>
+              </View>
+            }
+          />
+        </View>
+      );
+    }
+
+    if (dataSelected?.state === 'picked') {
+      return (
+        <View>
+          <AbsoluteButton
+            loading={loadingPrimary}
+            onPress={() => changeStatus({url: 'retrun-status-dispatch'})}
+            content={
+              <View style={{alignItems: 'center'}}>
+                <FontAwesomeIcon
+                  icon={faCheckDouble}
+                  size={30}
+                  color={'white'}
+                />
+                <Text style={{color: 'white', fontSize: 10}}>Dispatched</Text>
+              </View>
+            }
+          />
+        </View>
+      );
+    }
+
+    return null; // Return null if none of the conditions match
+  };
+
   useFocusEffect(
     useCallback(() => {
       if (props.route.params.return) getDetail();
       else navigation.goBack();
-    }, [props.route.params.return.id])
+    }, [props.route.params.return.id]),
   );
 
   return (
@@ -150,86 +247,6 @@ const RetrunDetail = props => {
               }>
               <RenderContent dataSelected={dataSelected} />
             </ScrollView>
-
-            {dataSelected?.state == 'confirmed' && (
-              <View>
-                <AbsoluteButton
-                  loading={loadingPrimary}
-                  onPress={() =>
-                    changeStatus({url: 'retrun-status-picking'})
-                  }
-                  postion={{
-                    bottom: -30,
-                    left: 260,
-                  }}
-                  content={
-                    <View>
-                      <FontAwesomeIcon
-                        icon={faTruck}
-                        size={30}
-                        color={'white'}
-                      />
-                      <Text style={{color: 'white', fontSize: 10}}>
-                        Picking
-                      </Text>
-                    </View>
-                  }
-                />
-              </View>
-            )}
-
-            {dataSelected?.state == 'picking' && (
-              <View>
-                <AbsoluteButton
-                  loading={loadingPrimary}
-                  onPress={() =>
-                    changeStatus({url: 'return-status-picked'})
-                  }
-                  postion={{
-                    bottom: -30,
-                    left: 260,
-                  }}
-                  content={
-                    <View>
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        size={30}
-                        color={'white'}
-                      />
-                      <Text style={{color: 'white', fontSize: 10}}>
-                        Picked
-                      </Text>
-                    </View>
-                  }
-                />
-              </View>
-            )}
-            {dataSelected?.state == 'picked' && (
-              <View>
-                <AbsoluteButton
-                  loading={loadingPrimary}
-                  onPress={() =>
-                    changeStatus({url: 'retrun-status-dispatch'})
-                  }
-                  postion={{
-                    bottom: -30,
-                    left: 260,
-                  }}
-                  content={
-                    <View>
-                      <FontAwesomeIcon
-                        icon={faCheckDouble}
-                        size={30}
-                        color={'white'}
-                      />
-                      <Text style={{color: 'white', fontSize: 10}}>
-                        Dispatched
-                      </Text>
-                    </View>
-                  }
-                />
-              </View>
-            )}
           </View>
         ) : (
           <View
@@ -241,7 +258,8 @@ const RetrunDetail = props => {
             <ActivityIndicator size={'large'} color={MAINCOLORS.primary} />
           </View>
         )}
-        <BottomSheet modalProps={{}} isVisible={open}>
+        {renderAbsoluteButton()}
+        <BottomSheet isVisible={open}>
           <View style={styles.wrapper}>
             <Header
               title="Menu"
@@ -263,9 +281,7 @@ const RetrunDetail = props => {
               {dataSelected?.type == 'pallet' ? (
                 <ListItem
                   onPress={() => {
-                    navigation.navigate('Return Pallet', {
-                      return: dataSelected,
-                    });
+                    navigation.navigate('Return Pallet', {return: dataSelected});
                     setOpen(false);
                   }}>
                   <FontAwesomeIcon icon={faPallet} size={18} />
@@ -276,9 +292,7 @@ const RetrunDetail = props => {
               ) : (
                 <ListItem
                   onPress={() => {
-                    navigation.navigate('Return Stored Items', {
-                      return: dataSelected,
-                    });
+                    navigation.navigate('Return Stored Items', {return: dataSelected});
                     setOpen(false);
                   }}>
                   <FontAwesomeIcon icon={faNarwhal} size={18} />
@@ -295,7 +309,7 @@ const RetrunDetail = props => {
   );
 };
 
-const RenderContent = ({dataSelected = {}}) => {
+const RenderContent: React.FC<Data | null> = ({dataSelected = {}}) => {
   return (
     <View style={styles.containerContent}>
       <View style={styles.barcodeContainer}>
@@ -431,4 +445,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RetrunDetail;
+export default ShowRetrun;

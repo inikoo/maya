@@ -91,6 +91,7 @@ const IndexStoredItems = (props: PropsScreens) => {
             </TouchableOpacity>
           ),
         }}
+        useScan={false}
         title="Stored Items"
         itemKey="id"
         prefix="pallets"

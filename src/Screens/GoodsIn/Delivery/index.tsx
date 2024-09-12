@@ -22,8 +22,6 @@ import {
 
 library.add(faSeedling, faShare, faSpellCheck, faCheck, faTimes, faCheckDouble);
 
-
-
 const Delivery = ( props ) => {
   const navigation = useNavigation();
   const oraganisation = useSelector((state : reduxData) => state.organisationReducer);
@@ -80,6 +78,7 @@ const Delivery = ( props ) => {
       title="Fullfilmennt Deliveries"
       itemKey="reference"
       urlKey="delivery-index"
+      screenNavigation={'Delivery Scanner'}
       args={[oraganisation.active_organisation.id, warehouse.id]}
       itemList={Item}
       params={{

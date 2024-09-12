@@ -23,6 +23,7 @@ const DeliveryNotes = props => {
           </TouchableOpacity>
         ),
       }}
+      useScan={false}
       title="Delivery Notes"
       itemKey="reference"
       urlKey="delivery-notes-index"

@@ -20,7 +20,6 @@ import Header from '~/Components/Header';
 import Layout from '~/Components/Layout';
 import {reduxData} from '~/types/types';
 import {Data} from '~/types/ShowStoredItemTypes';
-/* import ChangePalletStoredItem from '~/Components/ChangePalletStoredItem' */
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
@@ -215,13 +214,6 @@ function ShowStoredItem(props: Props) {
           </View>
         )}
 
-
-      {/*   <ChangePalletStoredItem
-            visible={changePalletVisible}
-            onClose={()=>setChangePalletVisible(false)}
-            item={}
-        />
- */}
         <BottomSheet isVisible={open}>
           <View style={styles.wrapper}>
             <Header

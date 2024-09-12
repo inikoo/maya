@@ -1,14 +1,15 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 import {StyleSheet, TouchableOpacity, View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {Icon} from '@rneui/themed';
 import {COLORS} from '~/Utils/Colors';
 import {findColorFromAiku} from '~/Utils';
-import { Daum } from '~/types/indexStoredItemTypes'
-import { reduxData } from '~/types/types';
-import { Data } from '~/types/ShowStoredItemTypes';
+import {Daum} from '~/types/indexStoredItemTypes';
+import {reduxData} from '~/types/types';
+import {Data} from '~/types/ShowStoredItemTypes';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import ChangePalletStoredItem from '~/Components/ChangePalletStoredItem';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -24,8 +25,8 @@ import {
   faShare,
   faSpellCheck,
   faGhost,
+  faForklift,
 } from 'assets/fa/pro-regular-svg-icons';
-import { navigation } from '../Navigator/Descriptor';
 
 library.add(
   faInventory,
@@ -39,40 +40,40 @@ library.add(
   faSpellCheck,
   faShare,
   faGhost,
+  faForklift,
 );
 
 type Props = {
-    navigation: any;
-    route: {
-      key: string;
-      name: string;
-      params: {
-        item: Data;
-      };
-      path: string;
+  navigation: any;
+  route: {
+    key: string;
+    name: string;
+    params: {
+      item: Data;
     };
+    path: string;
   };
-  
+};
 
 const IndexStoredItems = (props: Props) => {
-  const navigation = useNavigation()
-  const _BaseList = useRef()
+  const navigation = useNavigation();
+  const _BaseList = useRef();
   const organisation = useSelector((state: reduxData) => state.organisationReducer);
   const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
+  const [changePalletVisible, setChangePalletVisible] = useState<Boolean>(false);
+  const [selectedPallet, setSelectedPallet] = useState<Daum | null>(null); 
 
 
-  const Item = (record : Daum) => {
+  const Item = (record: Daum) => {
     return (
       <View style={{...styles.container, backgroundColor: 'white'}}>
-        <TouchableOpacity
-          onPress={()=>navigation.navigate('ShowStoredItem', { item : record })}
-        >
+        <TouchableOpacity>
           <View style={styles.row}>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{record.reference}</Text>
               <View style={{marginTop: 5, flexDirection: 'row'}}>
-                <Text style={{...styles.description, marginRight : 3}}>
-                  Total : {record.total_quantity}
+                <Text style={{...styles.description, marginRight: 3}}>
+                  items quantity : {record.stored_items_quantity}
                 </Text>
               </View>
             </View>
@@ -91,25 +92,52 @@ const IndexStoredItems = (props: Props) => {
     );
   };
 
+  const renderHiddenItem = (item: Data) => {
+    return (
+      <View style={styles.hiddenItemContainer}>
+        <TouchableOpacity style={styles.editButton} onPress={() => {
+          setSelectedPallet(item)
+          setChangePalletVisible(true)
+        }}>
+          <FontAwesomeIcon icon={faForklift} color="#ffffff" size={30} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   useFocusEffect(
     useCallback(() => {
       if (!props.route.params.item) navigation.goBack();
     }, [props.route.params.item]),
   );
 
-
   return (
+    <>
       <BaseList
         ref={_BaseList}
         title="Stored Items"
         itemKey="id"
+        useScan={false}
         prefix="pallets"
         urlKey="stored-item-pallet-contained"
         sortSchema="reference"
         screenNavigation={'Pallet Scanner'}
-       /*  itemList={Item} */
-        args={[organisation.active_organisation.id, warehouse.id, props.route.params.item.id ]}
+        itemList={Item}
+        enableSwipe={true}
+        hiddenItem={renderHiddenItem}
+        args={[
+          organisation.active_organisation.id,
+          warehouse.id,
+          props.route.params.item.id,
+        ]}
       />
+      <ChangePalletStoredItem
+        visible={changePalletVisible}
+        onClose={() => setChangePalletVisible(false)}
+        pallet={selectedPallet}
+        item={props.route.params.item}
+      />
+    </>
   );
 };
 
@@ -157,5 +185,19 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
     color: COLORS.grey6,
+  },
+  hiddenItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    backgroundColor: '#FAFAFA',
+    paddingTop: 15,
+    borderRadius: 10,
+    marginVertical: 5,
+  },
+  editButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
   },
 });

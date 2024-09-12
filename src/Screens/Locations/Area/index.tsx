@@ -16,7 +16,6 @@ const Locations = (props: PropsScreens) => {
   const Item = (record: warehouseAreaIndexTypes) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('Location', {location: record})}
         style={{
           ...styles.container,
           backgroundColor: 'white',
@@ -43,6 +42,7 @@ const Locations = (props: PropsScreens) => {
             </TouchableOpacity>
           ),
         }}
+        useScan={false}
         itemList={Item}
         title="WareHouse Area"
         itemKey="code"
