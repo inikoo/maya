@@ -102,6 +102,11 @@ const PalletCard: React.FC<Props> = (props) => {
           </View>
           <View style={styles.iconContainer}>
             <View style={styles.row}>
+            <FontAwesomeIcon
+                icon={props.data.record?.state_icon.icon}
+                size={15}
+                color={findColorFromAiku(props.data.record?.state_icon.color)}
+              />
               <FontAwesomeIcon
                 icon={props.data.record?.type_icon.icon}
                 size={15}

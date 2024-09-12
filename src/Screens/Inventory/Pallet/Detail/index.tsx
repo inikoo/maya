@@ -99,7 +99,7 @@ function PalletDetail(props: Props) {
         type: 'material-icons',
       },
       key: 'change_status',
-      title: 'Change Status',
+      title: 'Change state',
       onPress: () => {
         setOpenDialogStatus(true);
         setOpen(false);
@@ -117,7 +117,6 @@ function PalletDetail(props: Props) {
       [
         organisation.active_organisation.id,
         warehouse.id,
-        organisation.active_organisation.active_authorised_fulfilments.id,
         props.route.params.pallet.id,
       ],
       onSuccessGetDetail,

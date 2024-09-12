@@ -22,10 +22,6 @@ const options = [
     label: 'Lost',
     value: 'lost',
   },
-  {
-    label: 'Other Incident',
-    value: 'other-incident',
-  },
 ];
 
 type Props = {
@@ -62,15 +58,18 @@ function SetNotPicked(props: Props) {
   };
 
   const onChangeStatus = () => {
-    Request(
-      'patch',
-      'set-pallet-pallet-and-stored-item-not-picked',
-      {},
-      {state : valueStatus, notes : valueDescription},
-      [props.pallet],
-      onSuccessChangeStatus,
-      onFailedChangeStatus,
-    );
+    if(valueStatus){
+      Request(
+        'patch',
+        valueStatus == 'damaged' ? 'set-pallet-damaged' : 	'set-pallet-lost' ,
+        {},
+        {state : valueStatus, notes : valueDescription},
+        [props.pallet],
+        onSuccessChangeStatus,
+        onFailedChangeStatus,
+      );
+    }
+   
   };
 
   const onSuccessChangeStatus = (response : any) => {
@@ -85,6 +84,7 @@ function SetNotPicked(props: Props) {
 
   const onFailedChangeStatus = (error : any) => {
     props.onFailed(error);
+    onCancel();
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -95,6 +95,7 @@ function SetNotPicked(props: Props) {
   const onCancel = () => {
     setValueStatus(null);
     setErrorStatus('');
+    setValueDescription('')
     props.onClose();
   };
 
@@ -116,7 +117,6 @@ function SetNotPicked(props: Props) {
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
             data={options}
-            search
             maxHeight={300}
             labelField="label"
             valueField="value"

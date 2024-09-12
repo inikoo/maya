@@ -25,6 +25,9 @@ export default {
 	'set-pallet-rental' : 'maya/action/pallet/{}/set-rental',
 	'set-pallet-not-reiceved' : 'maya/action/pallet/{}/not-received',
 	'set-pallet-undo' : 'maya/action/pallet/{}/undo-not-received',
+	'set-pallet-damaged' : 'maya/action/pallet/{}/damaged',
+	'set-pallet-lost' : 'maya/action/pallet/{}/lost',
+
 
 
 	'set-pallet-pallet-and-stored-item-pick' : 'maya/action/pallet-return-item/{}/pick',

@@ -1,5 +1,5 @@
 import React, {useState, ReactNode} from 'react';
-import {View, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, TextInput, Keyboard} from 'react-native';
 import {Request} from '~/Utils';
 import {useSelector} from 'react-redux';
 import {Text, Divider, Icon, Dialog} from '@rneui/themed';
@@ -28,9 +28,9 @@ function ChangeLocation(props : Props) {
   const getLocationCode = async () => {
     await Request(
       'get',
-      'locations-show-by-code',
+      'global-search-scanner',
       {},
-      {},
+      {type : 'Location'},
       [organisation.active_organisation.id, warehouse.id, locationCode],
       LocationCodeSuccess,
       LocationCodeFailed,
@@ -38,15 +38,18 @@ function ChangeLocation(props : Props) {
   };
 
   const LocationCodeSuccess = async (response : any ) => {
+    console.log(response)
+    if(response.data.model.id && response.data.model_type == 'Location'){
     await Request(
       'patch',
       'pallet-location',
       {},
       {},
-      [response.id, props.pallet],
+      [response.data.model.id , props.pallet],
       ChangeLocationSuccess,
       ChangeLocationFailed,
     );
+   }
   };
 
   const LocationCodeFailed = (response : any) => {
@@ -86,6 +89,11 @@ function ChangeLocation(props : Props) {
     setErrorLocationCode('');
   };
 
+  const onSubmit = () => {
+    getLocationCode();
+    Keyboard.dismiss(); // Optional: dismiss the keyboard
+  };
+
   return (
     <Dialog isVisible={props.visible}>
       <Dialog.Title title={props.title} />
@@ -99,6 +107,7 @@ function ChangeLocation(props : Props) {
               placeholder="Code"
               value={locationCode}
               onChangeText={onChangeCode}
+              onSubmitEditing={onSubmit} // Handle the Enter key press
             />
           </View>
           <View style={styles.buttonScan}>

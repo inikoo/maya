@@ -8,9 +8,9 @@ import Button from '~/Components/Button';
 
 type Props = {
     title?: ReactNode;
-    visible?: Boolean;
-    onClose?: Function;
-    pallet?: Object|any;
+    visible: Boolean;
+    onClose: Function;
+    pallet: Object|any;
     bulk?: boolean;
     onSuccess?: Function;
     onFailed?: Function;
@@ -32,7 +32,7 @@ function ChangeStatusPallet(props : Props) {
     );
   };
 
-  const ChangeStatusSuccess = response => {
+  const ChangeStatusSuccess = (response : any) => {
     closeDialog()
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
@@ -41,7 +41,7 @@ function ChangeStatusPallet(props : Props) {
     });
   };
 
-  const ChangeStatusFailed = response => {
+  const ChangeStatusFailed = (response : any) => {
     const message = response?.response?.data?.message || 'Server error';
     Toast.show({
       type: ALERT_TYPE.DANGER,
