@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
+import {View, Text, StyleSheet, StyleProp, TextStyle} from 'react-native';
 
 interface DetailRowProps {
   title?: string;
@@ -8,15 +8,22 @@ interface DetailRowProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-const DetailRow: React.FC<DetailRowProps> = ({ title = '-', text = '-', titleStyle, textStyle }) => {
+const DetailRow: React.FC<DetailRowProps> = ({
+  title = '-',
+  text = '-',
+  titleStyle,
+  textStyle,
+}) => {
   return (
     <View style={styles.row}>
-      <Text style={[styles.title, titleStyle]}>
-        {title}:
-      </Text>
-      <View style={[styles.text, textStyle]}>
-        {typeof text === 'string' ? <Text>{text}</Text> : text}
-      </View>
+      <Text style={[styles.title, titleStyle]}>{title}:</Text>
+      {typeof text === 'string' || typeof text === 'number' ? (
+        <Text style={[styles.text, textStyle]}>
+          {typeof text === 'string' || typeof text === 'number' ? text : ''}
+        </Text>
+      ) : (
+        text
+      )}
     </View>
   );
 };

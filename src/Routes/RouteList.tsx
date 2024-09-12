@@ -55,6 +55,9 @@ import {
   GoodsOutNavigation,
   OrgStock,
   GlobalScanner,
+
+  ShowStoredItems,
+  StoredItemsPalletContained
 } from '~/Screens';
 
 import {Icon} from '@rneui/themed';
@@ -207,7 +210,7 @@ const routes = ({organisation = null, warehouse = null}) => [
     options: {headerShown: false},
   },
   {
-    name: 'Delivery',
+    name: 'ShowDelivery',
     component: DeliveryDetail,
     options: {headerShown: false},
   },
@@ -249,6 +252,19 @@ const routes = ({organisation = null, warehouse = null}) => [
   {
     name: 'Org Stock',
     component: OrgStock,
+    options: {headerShown: false}, 
+  },
+
+
+  //storedItems
+  {
+    name: 'ShowStoredItem',
+    component: ShowStoredItems,
+    options: {headerShown: false}, 
+  },
+  {
+    name: 'StoredItemPalletContained',
+    component: StoredItemsPalletContained,
     options: {headerShown: false}, 
   },
 

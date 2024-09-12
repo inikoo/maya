@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef } from 'react';
+import React, {useState, ReactNode} from 'react';
 import {View, StyleSheet, TouchableOpacity, TextInput, Keyboard} from 'react-native';
 import {Request} from '~/Utils';
 import {useSelector} from 'react-redux';
@@ -9,11 +9,11 @@ import Button from '~/Components/Button';
 import { reduxData } from '~/types/types';
 
 type Props = {
-    title?: String;
+    title: ReactNode|String;
     visible : Boolean,
     onClose : Function,
-    pallet : Number|null|any
-    bulkMode?: Boolean
+    pallet: Number|null|any
+    bulk : boolean
     onSuccess : Function,
     onFailed : Function
   };
@@ -24,7 +24,6 @@ function ChangeLocation(props : Props) {
   const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
   const [locationCode, setLocationCode] = useState<String|null>('');
   const [errorLocationCode, setErrorLocationCode] = useState('');
-  const inputRef = useRef<TextInput>(null);
 
   const getLocationCode = async () => {
     await Request(
@@ -39,6 +38,7 @@ function ChangeLocation(props : Props) {
   };
 
   const LocationCodeSuccess = async (response : any ) => {
+    console.log(response)
     if(response.data.model.id && response.data.model_type == 'Location'){
     await Request(
       'patch',
@@ -61,8 +61,8 @@ function ChangeLocation(props : Props) {
   };
 
   const ChangeLocationSuccess = ( response : any ) => {
-    onCancel()
     props.onSuccess()
+    onCancel()
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
@@ -72,13 +72,13 @@ function ChangeLocation(props : Props) {
 
   const ChangeLocationFailed = (error : any) => {
     props.onFailed()
-    onCancel()
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
-      textBody: error.response.data.message || 'failed to set Location',
+      textBody: error.response.data.message,
     });
   };
+
 
   const onCancel = () => {
     props.onClose()
@@ -91,14 +91,8 @@ function ChangeLocation(props : Props) {
 
   const onSubmit = () => {
     getLocationCode();
-    Keyboard.dismiss();
+    Keyboard.dismiss(); // Optional: dismiss the keyboard
   };
-
-  useEffect(() => {
-    if (props.visible && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [props.visible]);
 
   return (
     <Dialog isVisible={props.visible}>
@@ -112,16 +106,17 @@ function ChangeLocation(props : Props) {
               style={styles.input}
               placeholder="Code"
               value={locationCode}
-              ref={inputRef}
               onChangeText={onChangeCode}
-              onSubmitEditing={onSubmit}
+              onSubmitEditing={onSubmit} // Handle the Enter key press
             />
           </View>
           <View style={styles.buttonScan}>
             <TouchableOpacity
               style={styles.searchIcon}
               onPress={() =>
-                navigation.navigate('Change Location Pallet Scanner', { pallet: props.pallet })
+                navigation.navigate('Change Location Pallet Scanner', {
+                  pallet: props.pallet,
+                })
               }>
               <Icon name="qr-code-scanner" type="material" size={24} />
             </TouchableOpacity>
@@ -139,9 +134,9 @@ function ChangeLocation(props : Props) {
 }
 
 ChangeLocation.defaultProps = {
-    title: 'Set Location',
+    title: 'Change Location',
     visible : false,
-    onClose : ()=> null,
+    onClose : ()=>null,
     bulkMode : false,
     onFailed : () => null,
     onSuccess : () => null
@@ -167,7 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   buttonScan: {
-    width: '19%',
+    width: '15%',
     marginTop: 5,
     marginBottom: 10,
     borderRadius: 10,

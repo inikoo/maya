@@ -38,8 +38,9 @@ export default {
 	'stock-deliveries-show' : 'maya/org/{}/warehouses/{}/incoming/stock-deliveries/{}',
 
 	//stored Items
-	'stored-item-index' : 'maya/org/{}/warehouses/{}/fulfilments/{}/pallets/{}/stored-items',
-	'stored-item-show' : 'maya/action/pallet/{}/stored-item/{}',
+	'stored-item-index' : 'maya/org/{}/warehouses/{}/inventory/stored-items',
+	'stored-item-show' : 'maya/org/{}/warehouses/{}/inventory/stored-items/{}',
+	'stored-item-pallet-contained' : 'maya/org/{}/warehouses/{}/inventory/stored-items/{}/pallets',
 
 	//warehouse
 	'warehouse-area-index' : 'maya/org/{}/warehouses/{}/areas',

@@ -7,7 +7,7 @@ import Information from '~/Components/palletComponents/Information';
 import PalletCard from '~/Components/palletComponents/ListCardPallet';
 import ChangeLocation from '~/Components/ChangeLocationPallet';
 import SetChangeStatusNotPicked from '~/Components/SetChangeStatusPalletNotPicked';
-import { reduxData, PalletTypesIndex, PropsScreens, BaseListTypes, PalletDetailTypes } from '~/Utils/types';
+import { reduxData, PalletTypesIndex, PropsScreens, BaseListTypes, PalletDetailTypes } from '~/types/types';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';

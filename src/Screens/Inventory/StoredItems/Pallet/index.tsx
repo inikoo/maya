@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {StyleSheet, TouchableOpacity, View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
@@ -6,11 +6,9 @@ import {Icon} from '@rneui/themed';
 import {COLORS} from '~/Utils/Colors';
 import {findColorFromAiku} from '~/Utils';
 import { Daum } from '~/types/indexStoredItemTypes'
-import { useNavigation } from '@react-navigation/native';
-import {
-  reduxData,
-  PropsScreens,
-} from '~/types/types';
+import { reduxData } from '~/types/types';
+import { Data } from '~/types/ShowStoredItemTypes';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -43,10 +41,25 @@ library.add(
   faGhost,
 );
 
-const IndexStoredItems = (props: PropsScreens) => {
+type Props = {
+    navigation: any;
+    route: {
+      key: string;
+      name: string;
+      params: {
+        item: Data;
+      };
+      path: string;
+    };
+  };
+  
+
+const IndexStoredItems = (props: Props) => {
   const navigation = useNavigation()
+  const _BaseList = useRef()
   const organisation = useSelector((state: reduxData) => state.organisationReducer);
   const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
+
 
   const Item = (record : Daum) => {
     return (
@@ -78,27 +91,24 @@ const IndexStoredItems = (props: PropsScreens) => {
     );
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      if (!props.route.params.item) navigation.goBack();
+    }, [props.route.params.item]),
+  );
+
 
   return (
       <BaseList
-        headerProps={{
-          useLeftIcon: true,
-          leftIcon: (
-            <TouchableOpacity
-              style={styles.leftIconContainer}
-              onPress={() => props.navigation.toggleDrawer()}>
-              <Icon name="bars" type="font-awesome-5" color="black" size={20} />
-            </TouchableOpacity>
-          ),
-        }}
+        ref={_BaseList}
         title="Stored Items"
         itemKey="id"
         prefix="pallets"
-        urlKey="stored-item-index"
+        urlKey="stored-item-pallet-contained"
         sortSchema="reference"
         screenNavigation={'Pallet Scanner'}
-        itemList={Item}
-        args={[organisation.active_organisation.id, warehouse.id]}
+       /*  itemList={Item} */
+        args={[organisation.active_organisation.id, warehouse.id, props.route.params.item.id ]}
       />
   );
 };

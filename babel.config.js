@@ -11,6 +11,7 @@ module.exports = {
           '~/Utils': './src/Utils',
           '~/Store': './src/Store',
           '~/asset': './src/asset',
+          '~/Types': './src/types'
         },
         "extensions": [".js", ".jsx", ".es", ".es6", ".mjs", ".svg",".jpg",".png",".ts",".ts"],
       },

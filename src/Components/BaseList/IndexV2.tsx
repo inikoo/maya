@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Text,
   SafeAreaView,
+  Dimensions 
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {MAINCOLORS} from '~/Utils/Colors';
@@ -71,6 +72,13 @@ const BaseList = forwardRef((props: Props, ref) => {
   const [bulkValue, setBulkValue] = useState([]);
   const [bulkMenuVisible, setBulkMenuVisible] = useState(false);
 
+  const screenHeight = Dimensions.get('window').height;
+  const headerHeight = 100;
+  const bottomNavigationHeight = 60;
+  const paddingAdjustment = 100; 
+  
+  const listHeight = screenHeight - headerHeight - bottomNavigationHeight - paddingAdjustment;
+  
   useImperativeHandle(ref, () => ({
     refreshList: () => {onRefresh()},
     bulkValue : bulkValue
@@ -380,7 +388,6 @@ const BaseList = forwardRef((props: Props, ref) => {
 
   return (
     <Layout>
-      <>
       <View>
         <Header
           title={props.title}
@@ -418,7 +425,7 @@ const BaseList = forwardRef((props: Props, ref) => {
           )}
         </View>
         <Divider style={styles.divider} />
-        <View style={{height: props.height}}>
+      <View style={{ height: listHeight }}>
           {loading ? renderLoading() : renderList()}
         </View>
         <Filter
@@ -455,7 +462,6 @@ const BaseList = forwardRef((props: Props, ref) => {
           {bulkMenu()}
         </View>
       </BottomSheet>
-      </>
     </Layout>
   );
 });
