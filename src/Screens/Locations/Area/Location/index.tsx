@@ -4,41 +4,26 @@ import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Icon, Card} from '@rneui/themed';
-import {reduxData, PropsScreens} from '~/types/types';
-import { Daum } from '~/types/indexWarehouseArea'
 
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faInventory
-} from 'assets/fa/pro-light-svg-icons';
+import {PropsScreens, reduxData, LocationTypesIndex } from '~/types/types'
 
-const IndexArea = (props: PropsScreens) => {
+
+const Locations = (props : PropsScreens) => {
   const navigation = useNavigation();
-  const organisation = useSelector((state: reduxData) => state.organisationReducer);
-  const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
+  const organisation = useSelector((state :reduxData) => state.organisationReducer);
+  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
 
-
-  const Item = (record : Daum) => {
+  const Item = (record : LocationTypesIndex) => {
     return (
       <View style={{backgroundColor: '#ffffff'}}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Location', {location: record})}>
           <Card containerStyle={styles.cardStat}>
             <Text style={styles.labelStat}>{record.code}</Text>
           </Card>
         </TouchableOpacity>
       </View>
     );
-  };
-
-  const renderHiddenItem = (item : Daum) => {
-      return (
-        <View style={styles.hiddenItemContainer}>
-          <TouchableOpacity
-            style={styles.editButton}>
-            <FontAwesomeIcon icon={faInventory} color="#ffffff"  size={25}/>
-          </TouchableOpacity>
-        </View>
-      );
   };
 
   return (
@@ -54,24 +39,22 @@ const IndexArea = (props: PropsScreens) => {
             </TouchableOpacity>
           ),
         }}
-        useScan={false}
-        hiddenItem={renderHiddenItem}
-        itemList={Item}
-        title="WareHouse Area"
+        title="Location"
         itemKey="code"
-        urlKey="warehouse-area-index"
+        urlKey="locations-index"
         args={[organisation.active_organisation.id, warehouse.id]}
-        enableSwipe={true}
+        enableSwipe={false}
         sortSchema="code"
-        leftOpenValue={0}
-        rightOpenValue={-60}
+        itemList={Item}
+        leftOpenValue={-120}
+        rightOpenValue={-180}
         screenNavigation={'Location Scanner'}
       />
     </>
   );
 };
 
-export default IndexArea;
+export default Locations;
 
 const styles = StyleSheet.create({
   title: {
@@ -97,19 +80,5 @@ const styles = StyleSheet.create({
   labelStat: {
     fontSize: 14,
     fontWeight: '700',
-  },
-  hiddenItemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    backgroundColor: '#FAFAFA',
-    paddingTop: 15,
-    borderRadius: 10,
-    marginVertical: 5,
-  },
-  editButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
   },
 });

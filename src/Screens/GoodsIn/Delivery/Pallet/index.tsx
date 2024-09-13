@@ -267,7 +267,7 @@ const DeliveryPallet = (props: Props) => {
 
   const onSuccessChangeStatusDelivery = () => {
     setLoadingButton(false);
-    navigation.navigate('Delivery', {delivery: delivery});
+    navigation.navigate('ShowDelivery', {delivery: delivery});
     if (_baseList.current) _baseList.current.refreshList();
   };
 

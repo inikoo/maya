@@ -3,9 +3,8 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
-import {Text, Icon } from '@rneui/themed';
+import { Icon } from '@rneui/themed';
 import  {COLORS } from '~/Utils/Colors';
-import {IconColor} from '~/Utils';
 
 const StockDeliveries = props => {
   const navigation = useNavigation();
