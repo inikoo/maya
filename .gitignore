@@ -71,3 +71,8 @@ src/assets/fa/
 
 # testing
 /coverage
+android/app/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+android/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt
+android/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt
+android/app/build/kotlin/compileDebugKotlin/cacheable/last-build.bin
+android/app/build/kotlin/compileDebugKotlin/local-state/build-history.bin
