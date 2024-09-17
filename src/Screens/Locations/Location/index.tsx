@@ -5,7 +5,7 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Icon, Card} from '@rneui/themed';
 
-import {PropsScreens, reduxData, LocationTypesIndex } from '~/types/types'
+import {PropsScreens, reduxData, LocationTypesIndex } from '~/Utils/types'
 
 
 const Locations = (props : PropsScreens) => {

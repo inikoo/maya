@@ -1,14 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   StyleSheet,
   View,
   ActivityIndicator,
   ScrollView,
   TouchableOpacity,
+  RefreshControl
 } from 'react-native';
 import {Request, IconColor} from '~/Utils';
 import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {
   Text,
   BottomSheet,
@@ -47,16 +48,40 @@ type Props = {
 
 const Detail = (props: Props) => {
   const [loading, setLoading] = useState(true);
-  const organisation = useSelector(
-    (state: reduxData) => state.organisationReducer,
-  );
+  const organisation = useSelector((state: reduxData) => state.organisationReducer);
   const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
-  const [dataSelected, setDataSelected] = useState<DetailLocationTypes | null>(
-    null,
-  );
+  const [dataSelected, setDataSelected] = useState<DetailLocationTypes | null>(null);
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
   const [openDialogInfo, setOpenDialogInfo] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const buttonFeatures = [
+    {
+      icon: {
+        name: 'info',
+        type: 'material-icons',
+      },
+      key: 'info',
+      containerStyle: {borderBottomWidth: 1},
+      title: 'Information',
+      onPress: () => {
+        setOpenDialogInfo(true);
+        setOpen(false);
+      },
+    },
+    {
+      icon: {
+        name: 'pallet',
+        type: 'font-awesome-5',
+      },
+      key: 'pallet',
+      title: 'Pallet in location',
+      onPress: () => {
+        navigation.navigate('Location Pallet', {location: dataSelected});
+        setOpen(false);
+      },
+    },
+  ];
 
   const getDetail = () => {
     setLoading(true);
@@ -89,41 +114,16 @@ const Detail = (props: Props) => {
     });
   };
 
-  const buttonFeatures = [
-    {
-      icon: {
-        name: 'info',
-        type: 'material-icons',
-      },
-      key: 'info',
-      containerStyle: {borderBottomWidth: 1},
-      title: 'Information',
-      onPress: () => {
-        setOpenDialogInfo(true);
-        setOpen(false);
-      },
-    },
-    {
-      icon: {
-        name: 'pallet',
-        type: 'font-awesome-5',
-      },
-      key: 'pallet',
-      title: 'Pallet in location',
-      onPress: () => {
-        navigation.navigate('Location Pallet', {location: dataSelected});
-        setOpen(false);
-      },
-    },
-  ];
-
   const setDialog = () => {
     setOpenDialogInfo(!openDialogInfo);
   };
 
-  useEffect(() => {
-    getDetail();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getDetail();
+    }, [props.route.params.location.id]),
+  );
+
 
   return (
     <Layout>
@@ -140,8 +140,14 @@ const Detail = (props: Props) => {
         <Divider />
         <View style={styles.container}>
           {!loading ? (
-            <View>
-              <ScrollView>
+              <View>
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={() => getDetail()}
+                  />
+                }>
                 <RenderContent dataSelected={dataSelected} />
               </ScrollView>
             </View>

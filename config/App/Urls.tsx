@@ -46,6 +46,7 @@ export default {
 	//warehouse
 	'warehouse-area-index' : 'maya/org/{}/warehouses/{}/areas',
 	'warehouse-area-show' : 'maya/org/{}/warehouses/{}/areas/{}',
+	'warehouse-area-location' : 'maya/org/{}/warehouses/{}/areas/{}/locations',
 
 	//location
 	'locations-index' : 'maya/org/{}/warehouses/{}/locations',

@@ -57,7 +57,9 @@ import {
   GlobalScanner,
 
   ShowStoredItems,
-  StoredItemsPalletContained
+  StoredItemsPalletContained,
+
+  AreaLocation
 } from '~/Screens';
 
 import {Icon} from '@rneui/themed';
@@ -265,6 +267,13 @@ const routes = ({organisation = null, warehouse = null}) => [
   {
     name: 'StoredItemPalletContained',
     component: StoredItemsPalletContained,
+    options: {headerShown: false}, 
+  },
+
+  //warehouseArea
+  {
+    name: 'WarehouseAreaLocation',
+    component: AreaLocation,
     options: {headerShown: false}, 
   },
 

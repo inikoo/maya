@@ -1,14 +1,27 @@
-import React, {useState} from 'react';
+import React, {useState,useCallback} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect } from '@react-navigation/native';
 import {Text, Icon, Card} from '@rneui/themed';
+import { Daum } from '~/types/indexWarehouseArea'
 
-import {PropsScreens, reduxData, LocationTypesIndex } from '~/types/types'
+import {reduxData, LocationTypesIndex } from '~/types/types'
 
 
-const Locations = (props : PropsScreens) => {
+type Props = {
+    navigation: any;
+    route: {
+      key: string;
+      name: string;
+      params: {
+        area: Daum;
+      };
+      path: string;
+    };
+  };
+
+const Locations = (props : Props) => {
   const navigation = useNavigation();
   const organisation = useSelector((state :reduxData) => state.organisationReducer);
   const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
@@ -26,28 +39,22 @@ const Locations = (props : PropsScreens) => {
     );
   };
 
+  useFocusEffect(
+    useCallback(() => {
+    navigation.goBack()
+    }, [props.route.params.area.id]),
+  );
+
   return (
     <>
       <BaseList
-        headerProps={{
-          useLeftIcon: true,
-          leftIcon: (
-            <TouchableOpacity
-              style={styles.leftIconContainer}
-              onPress={() => props.navigation.toggleDrawer()}>
-              <Icon name="bars" type="font-awesome-5" color="black" size={20} />
-            </TouchableOpacity>
-          ),
-        }}
         title="Location"
         itemKey="code"
-        urlKey="locations-index"
-        args={[organisation.active_organisation.id, warehouse.id]}
+        urlKey="warehouse-area-location"
+        args={[organisation.active_organisation.id, warehouse.id, props.route.params.area.id]}
         enableSwipe={false}
         sortSchema="code"
         itemList={Item}
-        leftOpenValue={-120}
-        rightOpenValue={-180}
         screenNavigation={'Location Scanner'}
       />
     </>

@@ -50,8 +50,9 @@ export { default as StoredItemsPalletContained } from './Inventory/StoredItems/P
 //Locations
 export { default as  LocationsDashboard } from './Locations/Dashboard';
 export { default as  LocationsNavigation } from './Locations/Navigator';
-export { default as  Area } from './Locations/Area';
 export { default as  Location } from './Locations/Location';
+export { default as  Area } from './Locations/Area';
+export { default as  AreaLocation } from './Locations/Area/Location';
 
 //Goods In
 export { default as GoodsInDashboard } from './GoodsIn/Dashboard';
