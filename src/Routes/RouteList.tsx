@@ -58,8 +58,10 @@ import {
 
   ShowStoredItems,
   StoredItemsPalletContained,
-
-  AreaLocation
+  ScanerMoveLocation,
+  AreaLocation,
+  ShowDeliveryNotes,
+  DeliveryNotesItem
 } from '~/Screens';
 
 import {Icon} from '@rneui/themed';
@@ -199,11 +201,6 @@ const routes = ({organisation = null, warehouse = null}) => [
     component: PalletScanner,
     options: {headerShown: false},
   },
-  {
-    name: 'Change Location Pallet Scanner',
-    component: ChangeLocationPalletByScanner,
-    options: {headerShown: false},
-  },
 
   //fullfilment deliveries
   {
@@ -274,6 +271,24 @@ const routes = ({organisation = null, warehouse = null}) => [
   {
     name: 'WarehouseAreaLocation',
     component: AreaLocation,
+    options: {headerShown: false}, 
+  },
+
+  {
+    name: 'ScannerMoveLocation',
+    component: ScanerMoveLocation,
+    options: {headerShown: false}, 
+  },
+
+  {
+    name: 'ShowDeliveryNote',
+    component: ShowDeliveryNotes,
+    options: {headerShown: false}, 
+  },
+  
+  {
+    name: 'deliveryNotesItem',
+    component: DeliveryNotesItem,
     options: {headerShown: false}, 
   },
 

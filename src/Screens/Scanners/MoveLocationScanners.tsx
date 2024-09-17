@@ -6,9 +6,21 @@ import BaseScanner from '~/Components/BaseScanner';
 import {useNavigation} from '@react-navigation/native';
 import {Request} from '~/Utils';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import {PalletDetailTypes} from '~/types/types';
 
+type Props = {
+  navigation: any;
+  route: {
+    key: string;
+    name: string;
+    params: {
+      pallet: PalletDetailTypes;
+    };
+    path: string;
+  };
+};
 
-export default function ScannerPageChangeLocation() {
+export default function ScannerPageChangeLocation(porps : Props) {
   const navigation = useNavigation();
 
   const ChangeLocation = async (response : any ) => {
@@ -18,13 +30,15 @@ export default function ScannerPageChangeLocation() {
       'pallet-location',
       {},
       {},
-      [response.data.model.id , props.pallet],
+      [response.data.model.id,porps.route.params.pallet.id],
       ChangeLocationSuccess,
       ChangeLocationFailed,
     );
    }
   };
+
   const ChangeLocationSuccess = ( response : any ) => {
+    navigation.navigate('Pallet',{pallet : response})
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
@@ -33,6 +47,7 @@ export default function ScannerPageChangeLocation() {
   };
 
   const ChangeLocationFailed = (error : any) => {
+    console.log(error)
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -45,7 +60,7 @@ export default function ScannerPageChangeLocation() {
     <Layout>
       <>
         <Header title="Scanner Location" useLeftIcon={true} />
-        <BaseScanner prefix={'Location'} onSuccess={} />
+        <BaseScanner prefix={'Location'} onSuccess={ChangeLocation} />
       </>
     </Layout>
   );

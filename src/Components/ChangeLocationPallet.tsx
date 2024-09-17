@@ -121,7 +121,7 @@ function ChangeLocation(props : Props) {
             <TouchableOpacity
               style={styles.searchIcon}
               onPress={() =>
-                navigation.navigate('Change Location Pallet Scanner', { pallet: props.pallet })
+                navigation.navigate('ScannerMoveLocation', { pallet: props.pallet })
               }>
               <Icon name="qr-code-scanner" type="material" size={24} />
             </TouchableOpacity>

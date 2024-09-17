@@ -65,6 +65,13 @@ export default {
 
 	'delivery-notes-index' : 'maya/org/1/warehouses/1/dispatching/delivery-notes',
 	'delivery-notes-show' : 'maya/org/{}/warehouses/{}/dispatching/delivery-notes/{}',
+	'delivery-notes-item-index' : 'maya/org/{}/warehouses/{}/dispatching/delivery-notes/{}/items',
+	'delivery-notes-item-picking' : 'maya/action/pickings/{}/picking',
+	'delivery-notes-item-queried' : 'maya/action/pickings/{}/queried',
+	'delivery-notes-item-waiting' : 'maya/action/pickings/{}/waiting',
+	'delivery-notes-item-picked' : 'maya/action/pickings/{}/picked',
+	'delivery-notes-item-packing' : 'maya/action/pickings/{}/packing',
+	
 
 	//return
 	'return-index' : "maya/org/1/warehouses/1/dispatching/fulfilment-returns",

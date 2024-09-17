@@ -40,7 +40,6 @@ export { default as OrgStock } from './Inventory/OrgStock/Detail';
 export { default as Pallets } from './Inventory/Pallet';
 export { default as Pallet } from './Inventory/Pallet/Detail';
 export { default as PalletScanner } from './Inventory/Pallet/Scanner';
-export { default as ChangeLocationPalletByScanner } from './Inventory/Pallet/Detail/ChangeLocationByScanner';
 
 //stored Items
 export { default as StoredItems } from './Inventory/StoredItems';
@@ -71,6 +70,8 @@ export { default as GoodsOutDashboard } from './GoodsOut/Dashboard';
 export { default as GoodsOutNavigation } from './GoodsOut/Navigator';
 
 export { default as DeliveryNotes } from './GoodsOut/DeliveryNotes';
+export { default as ShowDeliveryNotes } from './GoodsOut/DeliveryNotes/Detail';
+export { default as DeliveryNotesItem } from './GoodsOut/DeliveryNotes/Items';
 
 //return
 export { default as Returns } from './GoodsOut/Return';
@@ -78,3 +79,7 @@ export { default as StoredItemsReturns } from './GoodsOut/Return/StoredItems';
 export { default as PalletReturns } from './GoodsOut/Return/Pallet';
 export { default as ReturnDetail } from './GoodsOut/Return/Detail';
 export { default as ReturnScanner } from './GoodsOut/Return/Scanner';
+
+
+//scanner
+export { default as ScanerMoveLocation } from './Scanners/MoveLocationScanners';

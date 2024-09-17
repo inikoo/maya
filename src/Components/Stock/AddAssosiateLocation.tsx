@@ -49,7 +49,7 @@ function AssociateLocation(props : Props) {
           <View style={styles.buttonScan}>
             <TouchableOpacity
               style={styles.searchIcon}
-              onPress={() => navigation.navigate('Change Location Pallet Scanner', {pallet: props.pallet})}
+              onPress={() => navigation.navigate('ScannerMoveLocation', {pallet: props.pallet})}
             >
               <Icon name="qr-code-scanner" type="material" size={24} />
             </TouchableOpacity>

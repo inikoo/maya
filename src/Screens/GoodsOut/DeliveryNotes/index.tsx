@@ -1,15 +1,59 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
-import {Avatar, Text, Icon} from '@rneui/themed'; // Import Icon from your icon library
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
+import {Card, Icon} from '@rneui/themed'; 
+import {reduxData} from '~/types/types';
+import {COLORS} from '~/Utils/Colors';
+import dayjs from 'dayjs';
 
 const DeliveryNotes = props => {
-  const navigation = useNavigation();
-  const oraganisation = useSelector(state => state.organisationReducer);
-  const warehouse = useSelector(state => state.warehouseReducer);
+  const oraganisation = useSelector((state : reduxData) => state.organisationReducer);
+  const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
+  const navigation = useNavigation()
+
+
+/*   const itemList = record => {
+    return (
+      <View style={{backgroundColor: '#ffffff'}}>
+        <TouchableOpacity onPress={()=>navigation.navigate('ShowDeliveryNote',{ deliveryNote : record })}>
+          <Card containerStyle={styles.cardStat}>
+            <Text style={styles.labelStat}>{record.reference}</Text>
+          </Card>
+        </TouchableOpacity>
+      </View>
+    );
+  }; */
+
+  const itemList = record => {
+    return (
+      <View style={{...styles.container, backgroundColor: 'white'}}>
+        <TouchableOpacity
+        onPress={()=>navigation.navigate('ShowDeliveryNote',{ deliveryNote : record })}
+        >
+          <View style={styles.row}>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>{record.reference}</Text>
+              <View style={{marginTop: 5, flexDirection: 'row'}}>
+                <Text style={{...styles.description, marginRight : 3}}>
+                  type : {record.type}  |  
+                </Text>
+                
+                <Text style={styles.description}>
+                  Date :{'  '}
+                  { record.date ? 
+                    dayjs(record.date).format('DD-MM-YYYY') : '-'
+                  }
+                </Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
 
   return (
     <BaseList
@@ -23,6 +67,7 @@ const DeliveryNotes = props => {
           </TouchableOpacity>
         ),
       }}
+      itemList={itemList}
       useScan={false}
       title="Delivery Notes"
       itemKey="reference"
@@ -40,7 +85,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 17,
     backgroundColor: 'white',
-    flexDirection: 'row',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -50,8 +94,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
     elevation: 7,
-    alignItems: 'center',
-    margin: 5,
+    marginVertical: 5,
     borderWidth: 1,
     borderColor: COLORS.grey6,
   },
@@ -59,17 +102,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'TitilliumWeb-SemiBold',
   },
-  description: {
-    fontSize: 12,
-    marginLeft: 3,
-    marginRight: 3,
-  },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    marginVertical: 5,
+  },
+  textContainer: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  iconContainer: {
+    alignItems: 'flex-end',
+  },
+  icon: {
+    marginHorizontal: 5,
   },
   leftIconContainer: {
     marginRight: 18,
+  },
+  description: {
+    fontSize: 12,
+    color: COLORS.grey6,
   },
 });

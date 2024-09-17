@@ -148,6 +148,7 @@ const BaseList = forwardRef((props: Props, ref) => {
   };
 
   const onFailed = (error: Object) => {
+    console.log(error)
     setIsListEnd(true);
     setLoading(false);
     setRefreshing(false);
@@ -388,6 +389,7 @@ const BaseList = forwardRef((props: Props, ref) => {
 
   return (
     <Layout>
+      <>
       <View>
         <Header
           title={props.title}
@@ -462,6 +464,7 @@ const BaseList = forwardRef((props: Props, ref) => {
           {bulkMenu()}
         </View>
       </BottomSheet>
+      </>
     </Layout>
   );
 });
