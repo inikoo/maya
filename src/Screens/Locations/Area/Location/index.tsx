@@ -8,7 +8,6 @@ import { Daum } from '~/types/indexWarehouseArea'
 
 import {reduxData, LocationTypesIndex } from '~/types/types'
 
-
 type Props = {
     navigation: any;
     route: {
@@ -41,7 +40,7 @@ const Locations = (props : Props) => {
 
   useFocusEffect(
     useCallback(() => {
-    navigation.goBack()
+    if(!props.route.params.area.id) navigation.goBack()
     }, [props.route.params.area.id]),
   );
 

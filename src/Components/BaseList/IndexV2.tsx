@@ -14,7 +14,7 @@ import {
   ActivityIndicator,
   Text,
   SafeAreaView,
-  Dimensions 
+  Dimensions,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {MAINCOLORS} from '~/Utils/Colors';
@@ -46,9 +46,9 @@ type Props = {
   screenNavigation?: String;
   headerProps?: any;
   height?: Number;
-  hiddenItem?: ReactNode|Function;
-  bulkMenu?: ReactNode
-  useBulk?: boolean
+  hiddenItem?: ReactNode | Function;
+  bulkMenu?: ReactNode;
+  useBulk?: boolean;
 };
 
 let timeoutId: any;
@@ -75,13 +75,16 @@ const BaseList = forwardRef((props: Props, ref) => {
   const screenHeight = Dimensions.get('window').height;
   const headerHeight = 100;
   const bottomNavigationHeight = 60;
-  const paddingAdjustment = 100; 
-  
-  const listHeight = screenHeight - headerHeight - bottomNavigationHeight - paddingAdjustment;
-  
+  const paddingAdjustment = 100;
+
+  const listHeight =
+    screenHeight - headerHeight - bottomNavigationHeight - paddingAdjustment;
+
   useImperativeHandle(ref, () => ({
-    refreshList: () => {onRefresh()},
-    bulkValue : bulkValue
+    refreshList: () => {
+      onRefresh();
+    },
+    bulkValue: bulkValue,
   }));
 
   const fetchMoreData = (isLoadMore = false) => {
@@ -148,7 +151,7 @@ const BaseList = forwardRef((props: Props, ref) => {
   };
 
   const onFailed = (error: Object) => {
-    console.log(error)
+    console.log(error);
     setIsListEnd(true);
     setLoading(false);
     setRefreshing(false);
@@ -343,12 +346,11 @@ const BaseList = forwardRef((props: Props, ref) => {
 
   const BulkMenuButton = () => {
     return (
-      <TouchableOpacity onPress={()=>setBulkMenuVisible(true)}>
+      <TouchableOpacity onPress={() => setBulkMenuVisible(true)}>
         <Icon name="bars" type="font-awesome" color="black" />
       </TouchableOpacity>
     );
   };
-
 
   const onChangeFilter = value => {
     if (value) {
@@ -375,13 +377,13 @@ const BaseList = forwardRef((props: Props, ref) => {
     if (props.screenNavigation) navigation.navigate(props.screenNavigation);
   };
 
-  const bulkMenu  = () => {
-    if(props.bulkMenu){
-      return props.bulkMenu(bulkValue)
-    }else {
-      return <Empty useButton={false} title={""} subtitle={''} />
+  const bulkMenu = () => {
+    if (props.bulkMenu) {
+      return props.bulkMenu(bulkValue);
+    } else {
+      return <Empty useButton={false} title={''} subtitle={''} />;
     }
-  }
+  };
 
   useEffect(() => {
     fetchMoreData();
@@ -390,80 +392,82 @@ const BaseList = forwardRef((props: Props, ref) => {
   return (
     <Layout>
       <>
-      <View>
-        <Header
-          title={props.title}
-          rightIcon={listModeBulk ? BulkMenuButton() : filterButton()}
-          {...props.headerProps}
-        />
-        {renderSearch()}
-        <View style={styles.recordsWrapper}>
-          {listModeBulk && props.useBulk ? (
-            <View style={styles.recordsContainer}>
-              <Text style={styles.recordsText}>
-                Selected : {bulkValue.length}/{TotalData}
-              </Text>
-            </View>
-          ) : (
-            <View style={styles.recordsContainer}>
-              <Text style={styles.recordsText}>Records : {TotalData}</Text>
-            </View>
-          )}
-
-          {props.sortSchema && (
-            <TouchableOpacity onPress={onSort} style={styles.avatarBackground}>
-              <Avatar
-                size={30}
-                containerStyle={styles.sortInactive}
-                icon={{
-                  name: sortValue.includes('-')
-                    ? 'sort-alpha-down'
-                    : 'sort-alpha-up-alt',
-                  type: 'font-awesome-5',
-                  color: 'black',
-                }}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-        <Divider style={styles.divider} />
-      <View style={{ height: listHeight }}>
-          {loading ? renderLoading() : renderList()}
-        </View>
-        <Filter
-          bluprint={props.filterSchema}
-          onChangeFilter={onChangeFilter}
-          value={filterValue}
-          isVisible={filterVisible}
-          onClose={() => setFilterVisible(false)}
-        />
-      </View>
-
-      <BottomSheet isVisible={bulkMenuVisible}>
-        <View style={{ backgroundColor : '#ffffff'}}>
+        <View>
           <Header
-            title={
-              <View style={styles.headerSheetContainer}>
-                <Text style={styles.title}>Bulk Actions</Text>
+            title={props.title}
+            rightIcon={listModeBulk ? BulkMenuButton() : filterButton()}
+            {...props.headerProps}
+          />
+          {renderSearch()}
+          <View style={styles.recordsWrapper}>
+            {listModeBulk && props.useBulk ? (
+              <View style={styles.recordsContainer}>
+                <Text style={styles.recordsText}>
+                  Selected : {bulkValue.length}/{TotalData}
+                </Text>
               </View>
-            }
-            rightIcon={
+            ) : (
+              <View style={styles.recordsContainer}>
+                <Text style={styles.recordsText}>Records : {TotalData}</Text>
+              </View>
+            )}
+
+            {props.sortSchema && (
               <TouchableOpacity
-                onPress={()=>setBulkMenuVisible(false)}
-                style={{marginRight: 20}}>
-                <Icon
-                  color={MAINCOLORS.danger}
-                  name="closecircle"
-                  type="antdesign"
-                  size={20}
+                onPress={onSort}
+                style={styles.avatarBackground}>
+                <Avatar
+                  size={30}
+                  containerStyle={styles.sortInactive}
+                  icon={{
+                    name: sortValue.includes('-')
+                      ? 'sort-alpha-down'
+                      : 'sort-alpha-up-alt',
+                    type: 'font-awesome-5',
+                    color: 'black',
+                  }}
                 />
               </TouchableOpacity>
-            }
+            )}
+          </View>
+          <Divider style={styles.divider} />
+          <View style={{height: listHeight}}>
+            {loading ? renderLoading() : renderList()}
+          </View>
+          <Filter
+            bluprint={props.filterSchema}
+            onChangeFilter={onChangeFilter}
+            value={filterValue}
+            isVisible={filterVisible}
+            onClose={() => setFilterVisible(false)}
           />
-          <Divider />
-          {bulkMenu()}
         </View>
-      </BottomSheet>
+
+        <BottomSheet isVisible={bulkMenuVisible}>
+          <View style={{backgroundColor: '#ffffff'}}>
+            <Header
+              title={
+                <View style={styles.headerSheetContainer}>
+                  <Text style={styles.title}>Bulk Actions</Text>
+                </View>
+              }
+              rightIcon={
+                <TouchableOpacity
+                  onPress={() => setBulkMenuVisible(false)}
+                  style={{marginRight: 20}}>
+                  <Icon
+                    color={MAINCOLORS.danger}
+                    name="closecircle"
+                    type="antdesign"
+                    size={20}
+                  />
+                </TouchableOpacity>
+              }
+            />
+            <Divider />
+            {bulkMenu()}
+          </View>
+        </BottomSheet>
       </>
     </Layout>
   );
@@ -479,7 +483,7 @@ BaseList.defaultProps = {
   rightOpenValue: -60,
   useScan: true,
   height: 520,
-  useBulk : false
+  useBulk: false,
 };
 
 const styles = StyleSheet.create({

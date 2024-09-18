@@ -21,7 +21,7 @@ export const LeftIcon = () => {
       onPress={() => navigation.goBack()}
       accessible={true}
       accessibilityLabel="Go back"
-      style={{ marginRight : 15}}
+      style={{ marginRight: 15 }}
     >
       <Icon name="left" type="antdesign" size={25} />
     </TouchableOpacity>
@@ -29,7 +29,7 @@ export const LeftIcon = () => {
 };
 
 // Header Component
-export function Header( props : Props) {
+export function Header(props: Props) {
   return (
     <View style={styles.headerContainer}>
       {props.useLeftIcon && (
@@ -40,8 +40,10 @@ export function Header( props : Props) {
       <Text
         style={[
           styles.title,
-          props.type === 'center' && styles.typeCenterTitle
+          props.type === 'center' && styles.typeCenterTitle,
         ]}
+        numberOfLines={2} // Limit to one line
+        ellipsizeMode="tail" // Truncate the text with ellipsis at the end
       >
         {props.title}
       </Text>
@@ -54,14 +56,13 @@ export function Header( props : Props) {
   );
 }
 
- 
 Header.defaultProps = {
-  useLeftIcon : false,
-  useRightIcon : true,
-  leftIcon : <LeftIcon />,
-  rightIcon : <View />,
-  title : '',
-  type : 'start',
+  useLeftIcon: false,
+  useRightIcon: true,
+  leftIcon: <LeftIcon />,
+  rightIcon: <View />,
+  title: '',
+  type: 'start',
 };
 
 // Styles
@@ -78,18 +79,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     fontSize: 28,
     fontWeight: '700',
-    flex: 1, 
+    flex: 1,
   },
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     width: 40,
   },
-  typeCenterTitle : {
-    textAlign : 'center',
-    marginHorizontal : 'auto',
-    paddingHorizontal : 'auto'
-  }
+  typeCenterTitle: {
+    textAlign: 'center',
+    marginHorizontal: 'auto',
+    paddingHorizontal: 'auto',
+  },
 });
 
 export default Header;

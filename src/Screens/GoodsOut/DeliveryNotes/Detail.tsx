@@ -65,7 +65,7 @@ const ShowDeliveryNote = (props: Props) => {
         type: 'font-awesome-5',
       },
       key: 'pallet',
-      title: 'Delivery item in DeliveryNote',
+      title: 'Pickings item in DeliveryNote',
       onPress: () => {
         setOpen(false);
         navigation.navigate('deliveryNotesItem', {deliveryNote : dataSelected})
