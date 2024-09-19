@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Icon, Text, FAB} from '@rneui/themed';
@@ -13,6 +14,8 @@ import Empty from '~/Components/Empty';
 import {MAINCOLORS} from '~/Utils/Colors';
 import {useNavigation} from '@react-navigation/native';
 import Header from '~/Components/Header';
+
+const {height: screenHeight} = Dimensions.get('window');
 
 const Organisation = (props: Object) => {
   const organisation = useSelector(state => state.organisationReducer);
@@ -67,27 +70,30 @@ const Organisation = (props: Object) => {
     );
   };
 
-  useEffect(()=>{
-    let setDataList = organisation.active_organisation.authorised_fulfilments
-    const shop =  organisation.active_organisation.authorised_shops.filter((item)=> item.state == 'open')
-    setDataList = [...setDataList,...shop]
-    setData(setDataList)
-  },[])
+  useEffect(() => {
+    let setDataList = organisation.active_organisation.authorised_fulfilments;
+    const shop = organisation.active_organisation.authorised_shops.filter(
+      (item) => item.state === 'open'
+    );
+    setDataList = [...setDataList, ...shop];
+    setData(setDataList);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.scrollViewContent}>
-        <Header title='Fullfilments' />
-          <FlatList
-            data={data || []}
-            renderItem={renderItem}
-            keyExtractor={item => item.slug}
-            ListEmptyComponent={() => (
-              <View style={styles.emptyContainer}>
-                <Empty useButton={false} />
-              </View>
-            )}
-          />
+        <Header title="Fullfilments" />
+        <FlatList
+          data={data || []}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.slug}
+          ListEmptyComponent={() => (
+            <View style={styles.emptyContainer}>
+              <Empty useButton={false} />
+            </View>
+          )}
+          style={{ height: screenHeight * 0.75 }} // Set FlatList height dynamically
+        />
         {organisation.active_organisation.active_authorised_fulfilments?.slug && (
           <FAB
             placement="right"
@@ -108,7 +114,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontFamily: 'Inter',
+    fontFamily: 'Inter', 
     fontSize: 28,
     fontWeight: '700',
     marginBottom: 15,

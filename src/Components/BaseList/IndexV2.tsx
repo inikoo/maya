@@ -73,12 +73,11 @@ const BaseList = forwardRef((props: Props, ref) => {
   const [bulkMenuVisible, setBulkMenuVisible] = useState(false);
 
   const screenHeight = Dimensions.get('window').height;
-  const headerHeight = 100;
-  const bottomNavigationHeight = 60;
+  const bottomNavigationHeight = 160;
   const paddingAdjustment = 100;
 
   const listHeight =
-    screenHeight - headerHeight - bottomNavigationHeight - paddingAdjustment;
+    screenHeight  - bottomNavigationHeight - paddingAdjustment;
 
   useImperativeHandle(ref, () => ({
     refreshList: () => {

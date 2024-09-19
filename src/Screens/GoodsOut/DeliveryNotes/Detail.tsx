@@ -16,14 +16,13 @@ import {Text, BottomSheet, Icon, Divider, ListItem} from '@rneui/themed';
 import {defaultTo} from 'lodash';
 import dayjs from 'dayjs';
 import {MAINCOLORS} from '~/Utils/Colors';
-import {findColorFromAiku} from '~/Utils';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import DetailRow from '~/Components/DetailRow';
 import Barcode from 'react-native-barcode-builder';
 import Layout from '~/Components/Layout';
 import Header from '~/Components/Header';
 import {reduxData} from '~/types/types';
-import {Data,Root} from '~/types/indexShowDelivery';
+import { Root, Data } from '~/types/indexShowDelivery';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -65,7 +64,7 @@ const ShowDeliveryNote = (props: Props) => {
         type: 'font-awesome-5',
       },
       key: 'pallet',
-      title: 'Pickings item in DeliveryNote',
+      title: 'Pickings item in Delivery Note',
       onPress: () => {
         setOpen(false);
         navigation.navigate('deliveryNotesItem', {deliveryNote : dataSelected})
@@ -92,7 +91,6 @@ const ShowDeliveryNote = (props: Props) => {
 
   const onSuccessGetDetail = (response : Root ) => {
     setDataSelected(response.data);
-    console.log(res)
     setLoading(false);
   };
 

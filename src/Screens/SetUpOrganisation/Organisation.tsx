@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Dimensions, // Import Dimensions
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Icon, Text, FAB} from '@rneui/themed';
@@ -16,21 +17,18 @@ import {useNavigation} from '@react-navigation/native';
 import {UpdateCredential} from '~/Utils';
 import Header from '~/Components/Header';
 
+// Get the device's height for dynamic sizing
+const {height} = Dimensions.get('window');
+
 // Organisation Component
 const Organisation = () => {
-  // State hooks for profile data and loading status
   const [profileData, setProfileData] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-
-  // Selectors for accessing redux state
   const user = useSelector(state => state.userReducer);
   const organisation = useSelector(state => state.organisationReducer);
-
-  // Hooks for navigation and dispatching actions
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  // Function to handle setting the active organisation
   const setOrganisation = data => {
     dispatch(
       Action.CreateUserOrganisationProperties({
@@ -44,7 +42,6 @@ const Organisation = () => {
     dispatch(Action.CreateWarehouseProperties(data));
   };
 
-  // Individual item component for the list
   const Item = ({data}) => (
     <TouchableOpacity
       style={styles.itemContainer}
@@ -70,10 +67,8 @@ const Organisation = () => {
     </TouchableOpacity>
   );
 
-  // RenderItem function for FlatList
   const renderItem = ({item}) => <Item data={item} />;
 
-  // Effect to fetch user profile data on component mount
   React.useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -112,7 +107,7 @@ const Organisation = () => {
                     )
                   : []
               }
-              renderItem={renderItem} // Ensure renderItem is properly assigned
+              renderItem={renderItem}
               keyExtractor={item => item.id.toString()}
               ListEmptyComponent={() => (
                 <View style={styles.emptyContainer}>
@@ -137,16 +132,9 @@ const Organisation = () => {
 
 export default Organisation;
 
-// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  title: {
-    fontFamily: 'Inter',
-    fontSize: 28,
-    fontWeight: '700',
-    marginBottom: 15,
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -154,6 +142,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   itemContainer: {
+    height: height / 10, 
     marginVertical: 8,
     backgroundColor: '#FAFAFA',
     borderRadius: 10,
@@ -176,7 +165,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#444', // Text color for the label
+    color: '#444',
   },
   emptyContainer: {
     alignItems: 'center',

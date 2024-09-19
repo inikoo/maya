@@ -7,6 +7,7 @@ import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
 import Button from '~/Components/Button';
 import { reduxData } from '~/types/types';
+import SelectQuery from '~/Components/Selectquery';
 
 type Props = {
     title?: String;
@@ -26,7 +27,7 @@ function ChangeLocation(props : Props) {
   const [errorLocationCode, setErrorLocationCode] = useState('');
   const inputRef = useRef<TextInput>(null);
 
-  const getLocationCode = async () => {
+ /*  const getLocationCode = async () => {
     await Request(
       'get',
       'global-search-scanner',
@@ -36,29 +37,27 @@ function ChangeLocation(props : Props) {
       LocationCodeSuccess,
       LocationCodeFailed,
     );
-  };
+  }; */
 
-  const LocationCodeSuccess = async (response : any ) => {
-    if(response.data.model.id && response.data.model_type == 'Location'){
+  const changeLocation = async (response : any ) => {
     await Request(
       'patch',
       'pallet-location',
       {},
       {},
-      [response.data.model.id , props.pallet],
+      [locationCode , props.pallet],
       ChangeLocationSuccess,
       ChangeLocationFailed,
     );
    }
-  };
 
-  const LocationCodeFailed = (response : any) => {
+/*   const LocationCodeFailed = (response : any) => {
     if (response.response.status == 404) {
       setErrorLocationCode('cannot find location');
     } else {
       setErrorLocationCode(response?.response?.data?.message || 'Server error');
     }
-  };
+  }; */
 
   const ChangeLocationSuccess = ( response : any ) => {
     onCancel()
@@ -84,21 +83,22 @@ function ChangeLocation(props : Props) {
     props.onClose()
   };
 
-  const onChangeCode = (value: String) => {
+ /*  const onChangeCode = (value: String) => {
     setLocationCode(value);
     setErrorLocationCode('');
-  };
+  }; */
 
-  const onSubmit = () => {
+/*   const onSubmit = () => {
     getLocationCode();
     Keyboard.dismiss();
   };
+ */
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (props.visible && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [props.visible]);
+  }, [props.visible]); */
 
   return (
     <Dialog isVisible={props.visible}>
@@ -107,7 +107,7 @@ function ChangeLocation(props : Props) {
       <View>
         <Text style={styles.textLabel}>Location Code : </Text>
         <View style={styles.searchContainer}>
-          <View style={styles.inputContainer}>
+         {/*  <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
               placeholder="Code"
@@ -116,7 +116,16 @@ function ChangeLocation(props : Props) {
               onChangeText={onChangeCode}
               onSubmitEditing={onSubmit}
             />
-          </View>
+          </View> */}
+          <View style={{ width : '80%'}}>
+            <SelectQuery
+              urlKey={'locations-index'}
+              args={[organisation.active_organisation.id, warehouse.id]}
+              value={locationCode}
+              onChange={e => setLocationCode(e.id)}
+            />
+            </View>
+
           <View style={styles.buttonScan}>
             <TouchableOpacity
               style={styles.searchIcon}
@@ -131,7 +140,7 @@ function ChangeLocation(props : Props) {
         <Divider style={{marginTop: 20}} />
         <View style={styles.dialogButtonContainer}>
           <Button type="secondary" title="Cancel" onPress={onCancel} />
-          <Button type="primary" title="Submit" onPress={getLocationCode} />
+          <Button type="primary" title="Submit" onPress={changeLocation} />
         </View>
       </View>
     </Dialog>
@@ -160,7 +169,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '81%',
     marginTop: 5,
-    marginBottom: 10,
+    marginBottom: 0,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: 'gray',

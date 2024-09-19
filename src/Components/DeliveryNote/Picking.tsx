@@ -1,133 +1,196 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-} from 'react-native';
-import {Request} from '~/Utils';
-import {useSelector} from 'react-redux';
-import {Text, Divider, Icon, Dialog} from '@rneui/themed';
-import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
-import {useNavigation} from '@react-navigation/native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, TextInput } from 'react-native';
+import { Request } from '~/Utils';
+import { useSelector } from 'react-redux';
+import { Text, Divider, Dialog } from '@rneui/themed';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
+import { useNavigation } from '@react-navigation/native';
 import Button from '~/Components/Button';
-import {reduxData} from '~/types/types';
 import SelectQuery from '~/Components/Selectquery';
+import { reduxData } from '~/types/types';
+import { Daum } from '~/types/indexDeliveryNoteItems';
 
 type Props = {
-  title?: String;
-  visible: Boolean;
-  stock: Object;
-  onClose: Function;
-  onSuccess: Function;
-  onFailed: Function;
+  title?: string;
+  visible: boolean;
+  stock: Daum,
+  onClose: () => void;
+  onSuccess: () => void;
+  onFailed: () => void;
+  formType: 'default' | 'deleteQuantity' | 'location';
 };
 
-function ChangeLocation(props: Props) {
-  const navigation = useNavigation();
+function ChangeLocation({ title, visible, stock, onClose, onSuccess, onFailed, formType } : Props) {
   const organisation = useSelector((state: reduxData) => state.organisationReducer);
   const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
-  const user =  useSelector((state: reduxData) => state.userReducer);
-  const [locationCode, setLocationCode] = useState<String | null>('');
+  const user = useSelector((state: reduxData) => state.userReducer);
+
+  const [locationCode, setLocationCode] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState<number | null>(null);
+  const [quantityRemoved, setQuantityRemoved] = useState<number | null>(null);
   const [errorLocationCode, setErrorLocationCode] = useState('');
-  const [quantity, setQuantity] = useState<number | null>(null); // State for quantity
-  const [errorQuantity, setErrorQuantity] = useState(''); // State for quantity error
+  const [errorQuantity, setErrorQuantity] = useState('');
+
   const inputRef = useRef<TextInput>(null);
 
-  const onCancel = () => {
-    props.onClose();
+  const resetForm = () => {
+    setLocationCode(null);
+    setQuantity(null);
+    setQuantityRemoved(null);
+    setErrorLocationCode('');
+    setErrorQuantity('');
   };
 
-
-  const onChangeQuantity = (value: string) => {
+  const validateQuantity = (value: string, max: number) => {
     const numericValue = parseInt(value, 10);
     if (!isNaN(numericValue)) {
-      setQuantity(numericValue);
-      setErrorQuantity('');
-    } else {
-      setQuantity(null);
-      setErrorQuantity('Please enter a valid number');
+      return Math.min(numericValue, max);
+    }
+    return null;
+  };
+
+  const onChangeQuantity = (value: string) => {
+    const validQuantity = validateQuantity(value, stock.quantity_required);
+    setQuantity(validQuantity);
+    setErrorQuantity(validQuantity !== null ? '' : 'Please enter a valid number');
+  };
+
+  const onChangeRemoveQuantity = (value: string) => {
+    const validRemovedQuantity = validateQuantity(value, stock.quantity_picked);
+    setQuantityRemoved(validRemovedQuantity);
+    setErrorQuantity(validRemovedQuantity !== null ? '' : 'Please enter a valid number');
+  };
+
+  const setDataFormValidation = () => {
+    const baseData = { picker_id: user.id, location_id: locationCode };
+    switch (formType) {
+      case 'default':
+        return { ...baseData, quantity_picked: quantity };
+      case 'deleteQuantity':
+        return { quantity_removed: quantityRemoved };
+      case 'location':
+        return baseData;
+      default:
+        return {};
     }
   };
 
-  const setPicking = () =>{
+  const setPicking = () => {
+    const data = setDataFormValidation();
+    console.log(data);
+    // Uncomment this section to perform the actual request
     Request(
       'patch',
       'delivery-notes-item-picking',
       {},
-      {
-        picker_id : user.id,
-        quantity_picked : quantity,
-        location_id : locationCode
-      },
-      [props.stock.id],
-      onSuccess,
-      onFailed
-    )
-  }
+      data,
+      [stock.id],
+      onSuccessCallback,
+      onFailedCallback
+    ); 
+  };
 
-  const onSuccess = (response) => {
-    console.log(response)
-    props.onSuccess()
+  const onSuccessCallback = (response : any) => {
+    onSuccess();
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: 'Success',
-      textBody: 'changed successfully',
+      textBody: 'Changed successfully',
     });
-  }
+  };
 
-  const onFailed = (error) => {
-    console.log(error)
-    props.onFailed()
+  const onFailedCallback = (error : any ) => {
+    onFailed();
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
-      textBody: error.response.data.message || 'Failed to change rental',
+      textBody: error.response?.data?.message || 'Failed to change rental',
     });
-  }
+  };
 
-  useEffect(() => {
-    if (props.visible && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [props.visible]);
-
-  return (
-    <Dialog isVisible={props.visible}>
-      <Dialog.Title title={props.title} />
-      <Divider />
-
-      <View>
-        {!props.stock.location_id && (
+  const renderForm = () => {
+    switch (formType) {
+      case 'default':
+        return (
           <>
-            <Text style={styles.textLabel}>Location Code :</Text>
+            {!stock.location_id && (
+              <>
+                <Text style={styles.textLabel}>Location Code:</Text>
+                <SelectQuery
+                  urlKey={'locations-index'}
+                  args={[organisation.active_organisation.id, warehouse.id]}
+                  value={locationCode}
+                  onChange={(e) => setLocationCode(e.id)}
+                />
+                <Text style={styles.errorText}>{errorLocationCode}</Text>
+              </>
+            )}
+            <Text style={styles.textLabel}>Quantity:</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Quantity"
+                keyboardType="numeric"
+                value={quantity !== null ? quantity.toString() : ''}
+                onChangeText={onChangeQuantity}
+              />
+            </View>
+            <Text style={styles.errorText}>{errorQuantity}</Text>
+          </>
+        );
+      case 'deleteQuantity':
+        return (
+          <>
+            <Text style={styles.textLabel}>Quantity Removed:</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Quantity"
+                keyboardType="numeric"
+                value={quantityRemoved !== null ? quantityRemoved.toString() : ''}
+                onChangeText={onChangeRemoveQuantity}
+              />
+            </View>
+            <Text style={styles.errorText}>{errorQuantity}</Text>
+          </>
+        );
+      case 'location':
+        return (
+          <>
+            <Text style={styles.textLabel}>Location Code:</Text>
             <SelectQuery
               urlKey={'locations-index'}
               args={[organisation.active_organisation.id, warehouse.id]}
               value={locationCode}
-              onChange={e => setLocationCode(e.id)}
+              onChange={(e) => setLocationCode(e.id)}
             />
-            <Text style={{color: 'red', fontSize: 12}}>
-              {errorLocationCode}
-            </Text>
+            <Text style={styles.errorText}>{errorLocationCode}</Text>
           </>
-        )}
+        );
+      default:
+        return null;
+    }
+  };
 
-        {/* Quantity Field */}
-        <Text style={styles.textLabel}>Quantity :</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Quantity"
-            keyboardType="numeric"
-            value={quantity !== null ? quantity.toString() : ''}
-            onChangeText={onChangeQuantity}
-          />
-        </View>
-        <Text style={{color: 'red', fontSize: 12}}>{errorQuantity}</Text>
+  useEffect(() => {
+    if (visible) {
+      resetForm();
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+      setLocationCode(stock?.location_id);
+    }
+  }, [visible, stock.location_id]);
 
-        <Divider style={{marginTop: 20}} />
+  return (
+    <Dialog isVisible={visible}>
+      <Dialog.Title title={title} />
+      <Divider />
+      <View>
+        {renderForm()}
+        <Divider style={styles.divider} />
         <View style={styles.dialogButtonContainer}>
-          <Button type="secondary" title="Cancel" onPress={onCancel} />
+          <Button type="secondary" title="Cancel" onPress={onClose} />
           <Button type="primary" title="Submit" onPress={setPicking} />
         </View>
       </View>
@@ -141,13 +204,13 @@ ChangeLocation.defaultProps = {
   onClose: () => null,
   onFailed: () => null,
   onSuccess: () => null,
+  formType: 'default',
 };
 
 const styles = StyleSheet.create({
   dialogButtonContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
     flexDirection: 'row',
+    justifyContent: 'flex-end',
     gap: 10,
     marginTop: 20,
   },
@@ -161,29 +224,17 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     backgroundColor: '#fff',
   },
-  buttonScan: {
-    width: '19%',
-    marginTop: 5,
-    marginBottom: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    backgroundColor: '#fff',
-  },
   input: {
     flex: 1,
     height: 40,
     paddingHorizontal: 10,
   },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    gap: 3,
+  divider: {
+    marginTop: 20,
   },
-  searchIcon: {
-    paddingVertical: 8,
-    paddingHorizontal: 5,
+  errorText: {
+    color: 'red',
+    fontSize: 12,
   },
   textLabel: {
     fontWeight: '500',

@@ -5,8 +5,12 @@ import BaseList from '~/Components/BaseList/IndexV2';
 import {reduxData} from '~/types/types';
 import {COLORS} from '~/Utils/Colors';
 import dayjs from 'dayjs';
-import {Data, Root} from '~/types/indexShowDelivery';
+import { Data } from '~/types/ShowDeliveryNoteTypes';
 import Picking from '~/Components/DeliveryNote/Picking';
+import { Daum } from '~/types/indexDeliveryNoteItems';
+
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faForklift, faInventory } from 'assets/fa/pro-light-svg-icons';
 
 type Props = {
   navigation: any;
@@ -27,17 +31,19 @@ const DeliveryNotesItems = (props: Props) => {
   const warehouse = useSelector((state: reduxData) => state.warehouseReducer);
   const [pickingStock, setPickingStock] = useState<Object | null>(null);
   const [pickingVisible, setPickingVisible] = useState<Boolean>(false);
+  const [formType, setFormType] = useState<String>('default');
   const _baseList = useRef();
 
-  const onSelect = item => {
+  const onSelect = (item : Daum, type = 'default') => {
     setPickingVisible(true);
     setPickingStock(item);
+    setFormType(type);
   };
 
-  const itemList = record => {
+  const itemList = ( record : Daum ) => {
     return (
       <View style={{...styles.container, backgroundColor: 'white'}}>
-        <TouchableOpacity onPress={() => onSelect(record)}>
+        <TouchableOpacity onPress={() => onSelect(record, 'default')}>
           <View style={styles.row}>
             <View style={styles.textContainer}>
               <Text style={styles.title}>{record.org_stock_code}</Text>
@@ -78,50 +84,21 @@ const DeliveryNotesItems = (props: Props) => {
     );
   };
 
-  /*   const changeStatus = ({url = '', record : {}}) => {
-    Request(
-      'patch',
-      url,
-      {},
-      {},
-      [record.id],
-      onSuccessChangeStatus,
-      onFailedChangeStatus,
+
+  const renderHiddenItem = (item : Daum) => {
+    return (
+      <View style={styles.hiddenItemContainer}>
+        <TouchableOpacity style={styles.deleteButton} onPress={()=>onSelect(item,'deleteQuantity')}>
+          <FontAwesomeIcon icon={faForklift} size={30} color="#ffffff" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.editButton} onPress={()=>onSelect(item,'location')}>
+          <FontAwesomeIcon icon={faInventory} size={30} color="#ffffff" />
+        </TouchableOpacity>
+
+      </View>
     );
   };
-
-  const onSuccessChangeStatus = () => {
-    if (_baseList.current) _baseList.current.refreshList();
-  };
-
-  const onFailedChangeStatus = (error : any) => {
-    Toast.show({
-      type: ALERT_TYPE.DANGER,
-      title: 'Error',
-      textBody: error.response.data.message || 'failed to change status',
-    });
-  }; */
-
-  /*   const renderHiddenItem = (item) => {
-    const deliveryNoteState = props.route.params.deliveryNote.state;
-  
-    switch (deliveryNoteState) {
-      case '':
-        return (
-          <View style={styles.hiddenItemContainer}>
-            <TouchableOpacity
-              onPress={() => changeStatus({ url: 'delivery-notes-item-picking', record: item })}
-              style={styles.editButton}
-            >
-              <FontAwesomeIcon icon={faForklift} size={30} color="#ffffff" />
-            </TouchableOpacity>
-          </View>
-        );
-      // Add more cases if needed
-      default:
-        return null; // or handle other states
-    }
-  }; */
 
   return (
     <>
@@ -129,8 +106,10 @@ const DeliveryNotesItems = (props: Props) => {
         ref={_baseList}
         itemList={itemList}
         leftOpenValue={0}
-        rightOpenValue={-60}
+        rightOpenValue={-120}
         useScan={false}
+        enableSwipe={true}
+        hiddenItem={renderHiddenItem}
         title="Delivery Notes Pickings"
         itemKey="org_stock_code"
         urlKey="delivery-notes-item-index"
@@ -145,12 +124,13 @@ const DeliveryNotesItems = (props: Props) => {
         visible={pickingVisible}
         onClose={() => setPickingVisible(false)}
         stock={pickingStock}
-        onFailed={()=>{
-          setPickingVisible(false)
+        formType={formType}
+        onFailed={() => {
+          setPickingVisible(false);
         }}
-        onSuccess={()=>{
-          setPickingVisible(false)
-          if(_baseList.current) _baseList.current.refreshList();
+        onSuccess={() => {
+          setPickingVisible(false);
+          if (_baseList.current) _baseList.current.refreshList();
         }}
       />
     </>
@@ -211,9 +191,15 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     borderRadius: 10,
     marginVertical: 5,
+    gap : 5
   },
   editButton: {
     backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+  },
+  deleteButton: {
+    backgroundColor: 'red',
     padding: 10,
     borderRadius: 5,
   },

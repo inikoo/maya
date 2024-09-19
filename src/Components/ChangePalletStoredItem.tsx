@@ -78,7 +78,6 @@ const ChangeItem: React.FC<Props> = ({
   };
 
   const handleFailed = (error: any) => {
-    console.log('ddddf',error)
     onFailed();
     onCancel();
     Toast.show({

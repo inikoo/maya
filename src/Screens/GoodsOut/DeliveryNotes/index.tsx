@@ -3,30 +3,19 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BaseList from '~/Components/BaseList/IndexV2';
 import {useNavigation} from '@react-navigation/native';
-import {Card, Icon} from '@rneui/themed'; 
-import {reduxData} from '~/types/types';
+import {Icon} from '@rneui/themed'; 
+import {reduxData, PropsScreens } from '~/types/types';
+import { Daum } from '~/types/indexDeliveryNoteTypes';
 import {COLORS} from '~/Utils/Colors';
 import dayjs from 'dayjs';
 
-const DeliveryNotes = props => {
+const DeliveryNotes = ( props : PropsScreens ) => {
   const oraganisation = useSelector((state : reduxData) => state.organisationReducer);
   const warehouse = useSelector((state : reduxData) => state.warehouseReducer);
   const navigation = useNavigation()
 
 
-/*   const itemList = record => {
-    return (
-      <View style={{backgroundColor: '#ffffff'}}>
-        <TouchableOpacity onPress={()=>navigation.navigate('ShowDeliveryNote',{ deliveryNote : record })}>
-          <Card containerStyle={styles.cardStat}>
-            <Text style={styles.labelStat}>{record.reference}</Text>
-          </Card>
-        </TouchableOpacity>
-      </View>
-    );
-  }; */
-
-  const itemList = record => {
+  const itemList = (record : Daum ) => {
     return (
       <View style={{...styles.container, backgroundColor: 'white'}}>
         <TouchableOpacity
@@ -37,7 +26,7 @@ const DeliveryNotes = props => {
               <Text style={styles.title}>{record.reference}</Text>
               <View style={{marginTop: 5, flexDirection: 'row'}}>
                 <Text style={{...styles.description, marginRight : 3}}>
-                  type : {record.type}  |  
+                  Type : {record.type}  |  
                 </Text>
                 
                 <Text style={styles.description}>
