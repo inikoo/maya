@@ -1,118 +1,88 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect, useReducer, useMemo } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { GluestackUIProvider } from '@/src/components/ui/gluestack-ui-provider';
+import LoginScreen from '@/src/components/screens/LoginScreen';
+import Home from '@/src/components/screens/Home';
+import RootStackScreen from '@/src/components/screens/RootStackScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getData } from '@/src/utils/AsyncStorage';
+import { AuthContext } from '@/src/components/Context/context';
+import { loginReducer } from '@/src/Reducer/loginReducer';
+import './global.css';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const initialLoginState = {
+    isLoading: true,
+    userData: null,
+    userToken: null,
   };
 
+  const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
+
+  const authContext = useMemo(
+    () => ({
+      signIn: async (user) => {
+        try {
+          await AsyncStorage.setItem('persist:user', JSON.stringify(user));
+        } catch (e) {
+          console.log('Error storing token:', e);
+        }
+        dispatch({ type: 'LOGIN', user, token: user.token, userData: user });
+      },
+      signOut: async () => {
+        try {
+          await AsyncStorage.removeItem('persist:user');
+        } catch (e) {
+          console.log('Error removing token:', e);
+        }
+        dispatch({ type: 'LOGOUT' });
+      },
+      userData: loginState,
+    }),
+    []
+  );
+
+  useEffect(() => {
+    const loadUserToken = async () => {
+      try {
+        const storedUser = await getData('persist:user');
+        const userToken = storedUser ? storedUser.token : null;
+        dispatch({ type: 'RETRIEVE_TOKEN', token: userToken, userData: storedUser });
+      } catch (error) {
+        console.error('Error retrieving token:', error);
+      }
+    };
+
+    loadUserToken();
+  }, []);
+
+  if (loginState.isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <GluestackUIProvider>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          {loginState.userToken !== null ? (
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Home" component={Home} />
+            </Stack.Navigator>
+          ) : (
+            <RootStackScreen />
+          )}
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </GluestackUIProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
