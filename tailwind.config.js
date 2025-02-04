@@ -7,6 +7,7 @@ module.exports = {
   content: [
     './App.{html,js,jsx,ts,tsx}',
     './src/**/*.{html,js,jsx,ts,tsx}',
+    './src/screens/**/*.{html,js,jsx,ts,tsx,mdx}',
     './src/core-components/**/**/*.{html,js,jsx,ts,tsx}',
     './src/components/**/*.{html,js,jsx,ts,tsx,mdx}',
     './src/hooks/**/*.{html,js,jsx,ts,tsx,mdx}',

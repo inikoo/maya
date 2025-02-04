@@ -3,9 +3,8 @@ import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GluestackUIProvider } from '@/src/components/ui/gluestack-ui-provider';
-import LoginScreen from '@/src/components/screens/LoginScreen';
-import Home from '@/src/components/screens/Home';
-import RootStackScreen from '@/src/components/screens/RootStackScreen';
+import MainStackScreen from '@/src/screens/routes/MainStackScreen';
+import RootStackScreen from '@/src/screens/routes/RootStackScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getData } from '@/src/utils/AsyncStorage';
 import { AuthContext } from '@/src/components/Context/context';
@@ -19,19 +18,26 @@ function App(): React.JSX.Element {
     isLoading: true,
     userData: null,
     userToken: null,
+    organisation : null,
+    fulfilment : null
   };
 
   const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
-  const authContext = useMemo(
-    () => ({
+  const authContext = useMemo(() => ({
       signIn: async (user) => {
         try {
           await AsyncStorage.setItem('persist:user', JSON.stringify(user));
         } catch (e) {
           console.log('Error storing token:', e);
         }
-        dispatch({ type: 'LOGIN', user, token: user.token, userData: user });
+        dispatch({ type: 'LOGIN', token: user.token, userData: user });
+      },
+      setOrganisation: (user) => {
+        dispatch({ type: 'SET_ORGANISATION', token: user.token, userData: user, organisation: user.organisation });
+      },
+      setFulfilment: (user) => {
+        dispatch({ type: 'SET_FULFILMENT', token: user.token, userData: user, organisation: user.organisation, fulfilment : user.fulfilment });
       },
       signOut: async () => {
         try {
@@ -41,9 +47,11 @@ function App(): React.JSX.Element {
         }
         dispatch({ type: 'LOGOUT' });
       },
-      userData: loginState,
+      userData: loginState.userData,
+      organisation : loginState.organisation,
+      fulfilment : loginState.fulfilment,
     }),
-    []
+    [loginState]
   );
 
   useEffect(() => {
@@ -56,7 +64,6 @@ function App(): React.JSX.Element {
         console.error('Error retrieving token:', error);
       }
     };
-
     loadUserToken();
   }, []);
 
@@ -73,9 +80,7 @@ function App(): React.JSX.Element {
       <AuthContext.Provider value={authContext}>
         <NavigationContainer>
           {loginState.userToken !== null ? (
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Home" component={Home} />
-            </Stack.Navigator>
+            <MainStackScreen />
           ) : (
             <RootStackScreen />
           )}

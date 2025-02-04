@@ -1,15 +1,45 @@
 export const loginReducer = (prevState, action) => {
-    console.log('dsdsd',prevState)
-    switch (action.type) {
-      case 'RETRIEVE_TOKEN':
-        return { ...prevState, userData: action.userData, userToken: action.token, isLoading: false };
-      case 'LOGIN':
-        return { ...prevState, userData: action.userData, userToken: action.token, isLoading: false };
-      case 'LOGOUT':
-        return { ...prevState, userData: null, userName: null, userToken: null, isLoading: false };
-      case 'REGISTER':
-        return { ...prevState, userData: action.userData, userToken: action.token, isLoading: false };
-      default:
-        return prevState;
-    }
-  };
+  switch (action.type) {
+    case 'RETRIEVE_TOKEN':
+      return {
+        userData: action.userData,
+        userToken: action.token,
+        isLoading: false,
+        organisation: null,
+        fulfilment: null,
+      };
+    case 'LOGIN':
+      return {
+        userData: action.userData,
+        userToken: action.token,
+        isLoading: false,
+        organisation: null,
+        fulfilment: null,
+      };
+    case 'LOGOUT':
+      return {
+        userData: null,
+        userToken: null,
+        isLoading: false,
+      };
+    case 'SET_ORGANISATION':
+      return {
+        userData: action.userData,
+        userToken: action.token,
+        isLoading: false,
+        organisation: action.organisation,
+        fulfilment: null,
+      };
+    case 'SET_FULFILMENT':
+      return {
+        userData: action.userData,
+        userToken: action.token,
+        isLoading: false,
+        organisation: action.organisation,
+        fulfilment: action.fulfilment,
+      };
+
+    default:
+      return prevState;
+  }
+};
