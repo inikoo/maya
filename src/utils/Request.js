@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_URL } from "@env"
 import urlConfig from '@/config/url';
-import { logout, refreshToken } from '@/pages/user/utils';
+/* import { logout, refreshToken } from '@/pages/user/utils'; */
 import { getData } from "@/src/utils/AsyncStorage";
 
 
@@ -41,7 +41,7 @@ const addRefreshSubscriber = (callback: (token) => void) => {
 api.interceptors.request.use(
   async (config) => {
     const state = await getData('persist:user');
-    const accessToken = state?.user?.access_token;
+    const accessToken = state?.token;
 
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
@@ -106,7 +106,6 @@ const request = async ({
     let finalUrl = url || urlConfig[urlKey]?.url;
     if (!finalUrl) throw new Error(`Invalid URL key: ${urlKey}`);
     args.forEach((arg) => (finalUrl = finalUrl.replace('{}', arg)));
-
 
     const response = await api.request({
       method,

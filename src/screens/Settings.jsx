@@ -1,37 +1,57 @@
-import React, { useContext } from 'react';
-import { HStack } from '@/src/components/ui/hstack';
+import React, {useContext, useState} from 'react';
+import {HStack} from '@/src/components/ui/hstack';
 import {
   ChevronRightIcon,
   EditIcon,
   Icon,
   SettingsIcon,
 } from '@/src/components/ui/icon';
-import { Image, ScrollView, SafeAreaView, View, TouchableOpacity } from 'react-native';
-import { Text } from '@/src/components/ui/text';
-import { VStack } from '@/src/components/ui/vstack';
-import { Button, ButtonIcon, ButtonText } from '@/src/components/ui/button';
-import { Heading } from '@/src/components/ui/heading';
-import { Center } from '@/src/components/ui/center';
-import { Divider } from '@/src/components/ui/divider';
+import {
+  Image,
+  ScrollView,
+  SafeAreaView,
+  View,
+  TouchableOpacity,
+} from 'react-native';
+import {Text} from '@/src/components/ui/text';
+import {VStack} from '@/src/components/ui/vstack';
+import {Button, ButtonIcon, ButtonText} from '@/src/components/ui/button';
+import {Heading} from '@/src/components/ui/heading';
+import {Center} from '@/src/components/ui/center';
+import {Divider} from '@/src/components/ui/divider';
 
-import { AuthContext } from '@/src/components/Context/context';
+import {AuthContext} from '@/src/components/Context/context';
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faUsers,
   faHandHoldingBox,
   faChevronRight,
 } from '@/private/fa/pro-regular-svg-icons';
 
-const MainContent = ({ navigation }) => {
-  const { userData, organisation } = useContext(AuthContext);
+const MainContent = ({navigation}) => {
+  const {userData, organisation} = useContext(AuthContext);
+  const [imageError, setImageError] = useState(false);
 
+  const handleImageError = () => setImageError(true);
+  const getInitials = name => {
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase();
+  };
   const accountData = [
-    { icon: faUsers, subText: 'Organisation', route: 'organisation' },
+    {icon: faUsers, subText: 'Organisation', route: 'organisation'},
   ];
 
   if (organisation) {
-    accountData.push({ icon: faHandHoldingBox, subText: 'Fulfilment', route: 'fulfilment' });
+    accountData.push({
+      icon: faHandHoldingBox,
+      subText: 'Fulfilment',
+      route: 'fulfilment',
+    });
   }
 
   return (
@@ -46,11 +66,24 @@ const MainContent = ({ navigation }) => {
                 borderBottomRightRadius: 30,
               }}>
               <VStack className="items-center space-y-4 p-6">
-                <Image
+                {!imageError && userData?.image?.original ? (
+                  <Image
+                    source={{uri: userData.image.original}}
+                    className="w-20 h-20 rounded-full border-4 border-white shadow-lg"
+                    onError={handleImageError}
+                  />
+                ) : (
+                  <View className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center mb-2 bg-white">
+                    <Text className="text-xl font-bold text-gray-700">
+                      {getInitials(userData?.username)}
+                    </Text>
+                  </View>
+                )}
+                {/*  <Image
                   source={require('@/asssets/Image/user-profile.jpg')}
                   className="w-20 h-20 rounded-full border-4 border-white shadow-lg"
                   alt="Profile Image"
-                />
+                /> */}
                 <VStack className="items-center space-y-1">
                   <Text
                     size="2xl"
@@ -73,11 +106,13 @@ const MainContent = ({ navigation }) => {
             </View>
           </Center>
           <VStack className="mx-6 space-y-6 p-5">
-            <Heading className="font-roboto text-xl">Setting</Heading>
+            <Heading className="font-roboto text-xl mb-3">Setting</Heading>
             <VStack className="py-5 px-6 border rounded-2xl border-gray-300 shadow-lg space-y-4 bg-white">
               {accountData.map((item, index) => (
                 <React.Fragment key={index}>
-                  <TouchableOpacity onPress={() => navigation.navigate(item.route)} className="justify-start w-full py-3">
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate(item.route)}
+                    className="justify-start w-full py-2">
                     <HStack className="items-center gap-3">
                       <FontAwesomeIcon
                         icon={item.icon}
@@ -101,7 +136,7 @@ const MainContent = ({ navigation }) => {
   );
 };
 
-export const Settings = (props) => (
+export const Settings = props => (
   <SafeAreaView>
     <MainContent navigation={props.navigation} />
   </SafeAreaView>

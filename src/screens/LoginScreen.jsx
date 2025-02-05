@@ -13,7 +13,6 @@ import { EyeIcon, EyeOffIcon } from '@/src/components/ui/icon';
 import SvgUri from 'react-native-svg-uri';
 import request from '@/src/utils/Request';
 import { retrieveProfile } from '@/src/user';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '@/src/components/Context/context';
 
 const LoginScreen = () => {
@@ -46,14 +45,8 @@ const LoginScreen = () => {
               accessToken: userRes.token,
               onSuccess: async (profileRes) => {
                 const user = { ...userRes, ...profileRes.data };
-                try {
-                  const jsonValue = JSON.stringify(user);
-                  await AsyncStorage.setItem('persist:user', jsonValue); // ✅ AsyncStorage sudah diimport
                   signIn(user);
                   resolve(true);
-                } catch (e) {
-                  console.error('Failed to save user:', e);
-                }
               },
               onFailed: (err) => {
                 console.error('Profile Retrieval Failed:', err);

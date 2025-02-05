@@ -5,8 +5,9 @@ export const loginReducer = (prevState, action) => {
         userData: action.userData,
         userToken: action.token,
         isLoading: false,
-        organisation: null,
-        fulfilment: null,
+        organisation: action.organisation,
+        fulfilment: action.fulfilment,
+        warehouse : action.warehouse
       };
     case 'LOGIN':
       return {
@@ -15,12 +16,14 @@ export const loginReducer = (prevState, action) => {
         isLoading: false,
         organisation: null,
         fulfilment: null,
+        warehouse : null
       };
     case 'LOGOUT':
       return {
         userData: null,
         userToken: null,
         isLoading: false,
+        warehouse : null
       };
     case 'SET_ORGANISATION':
       return {
@@ -29,14 +32,16 @@ export const loginReducer = (prevState, action) => {
         isLoading: false,
         organisation: action.organisation,
         fulfilment: null,
+        warehouse : null
       };
-    case 'SET_FULFILMENT':
+    case 'SET_FULFILMENT_WAREHOUSE':
       return {
         userData: action.userData,
         userToken: action.token,
         isLoading: false,
         organisation: action.organisation,
         fulfilment: action.fulfilment,
+        warehouse : action.warehouse
       };
 
     default:

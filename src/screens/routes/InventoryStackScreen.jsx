@@ -7,7 +7,7 @@ import Families from '@/src/screens/Families';
 import Pallet from '@/src/screens/Pallet'
 import StoredItem from '@/src/screens/StoredItem'
 
-import { faBoxesAlt, faPallet, faNarwhal} from '@/private/fa/pro-regular-svg-icons';
+import { faBoxesAlt, faPallet, faNarwhal } from '@/private/fa/pro-regular-svg-icons';
 
 const TabArr = [
   {route: 'families', label: 'Families', icon: faBoxesAlt, component: Families},

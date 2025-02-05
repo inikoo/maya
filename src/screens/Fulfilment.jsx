@@ -9,7 +9,7 @@ const GroupItem = ({ item, navigation, selectedfulfilment }) => {
   const { setFulfilment, userData } = useContext(AuthContext);
   const isActive = selectedfulfilment?.id === item.id;
   const onPickOrganisation = () => {
-    setFulfilment({ ...userData, fulfilment : item })
+    setFulfilment({ ...userData, fulfilment : item, warehouse : item.warehouse[0] })
     navigation.navigate('home-drawer')
   }
 
@@ -43,7 +43,7 @@ const Fulfilment = ({ navigation }) => {
   return (
     <View style={globalStyles.container}>
       <FlatList
-        data={organisation.authorised_fulfilments}
+        data={organisation?.authorised_fulfilments ? organisation?.authorised_fulfilments : []}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => <GroupItem item={item} navigation={navigation} selectedfulfilment={selectedfulfilment}/>}
