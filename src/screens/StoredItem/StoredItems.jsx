@@ -50,12 +50,11 @@ const StoredItems = ({navigation}) => {
 };
 
 const GroupItem = ({item, navigation}) => {
-  console.log(item);
   return (
     <TouchableOpacity
     style={globalStyles.list.card}
     activeOpacity={0.7}
-    onPress={() => null}>
+    onPress={() => navigation.navigate("show-stored-item", { id : item.id })}>
     <View style={globalStyles.list.container}>
       <View style={globalStyles.list.avatarContainer}>
         <FontAwesomeIcon

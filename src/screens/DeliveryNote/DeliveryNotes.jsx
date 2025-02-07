@@ -22,7 +22,7 @@ const DeliveryNotes = ({navigation}) => {
   );
 };
 
-const GroupItem = ({ item, navigation }) => {
+const GroupItem = ({item, navigation}) => {
   const formattedDate = item.date
     ? dayjs(item.date).format('MMMM D[,] YYYY') // Example: "August 27th, 2019"
     : 'No Date Available';
@@ -35,14 +35,13 @@ const GroupItem = ({ item, navigation }) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: 10, 
+          padding: 10,
         },
       ]}
       activeOpacity={0.7}
-      onPress={() => null}
-    >
+      onPress={() => navigation.navigate('show-delivery-note', {id: item.id})}>
       {/* Left section (Text Content) */}
-      <View style={{ flex: 1 }}> 
+      <View style={{flex: 1}}>
         <Text style={globalStyles.list.title}>{formattedDate}</Text>
         <Text style={globalStyles.list.description}>
           {item.reference || '[No reference available]'} - {item.customer_name}
@@ -50,12 +49,11 @@ const GroupItem = ({ item, navigation }) => {
       </View>
 
       {/* Right section (Weight) */}
-      <View style={{ marginLeft: 10 }}>
-        <Text style={{ fontWeight: 'bold' }}>{item.weight} kg</Text>
+      <View style={{marginLeft: 10}}>
+        <Text style={{fontWeight: 'bold'}}>{item.weight} kg</Text>
       </View>
     </TouchableOpacity>
   );
 };
-
 
 export default DeliveryNotes;

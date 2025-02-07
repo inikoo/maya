@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {View, TouchableOpacity, Text} from 'react-native';
-import dayjs from 'dayjs';
 import {AuthContext} from '@/src/components/Context/context';
 import BaseList from '@/src/components/BaseList';
 import globalStyles from '@/globalStyles';
@@ -27,7 +26,7 @@ const GroupItem = ({item, navigation}) => {
     <TouchableOpacity
       style={globalStyles.list.card}
       activeOpacity={0.7}
-      onPress={() => null}>
+      onPress={() => navigation.navigate('show-area', { id : item.id })}>
       <View style={globalStyles.list.container}>
         <View style={globalStyles.list.textContainer}>
           <Text style={globalStyles.list.title}>{item.name}</Text>

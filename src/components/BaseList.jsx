@@ -2,7 +2,6 @@ import React, {forwardRef, useEffect, useState, useContext} from 'react';
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import {Spinner} from '@/src/components/ui/spinner';
 import request from '@/src/utils/Request';
-import {AuthContext} from '@/src/components/Context/context';
 import globalStyles from '@/globalStyles';
 import {SearchIcon} from '@/src/components/ui/icon';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
@@ -34,7 +33,6 @@ const BaseList = forwardRef((props, ref) => {
         ['filter[global]']: searchQuery,
       },
       onBoth: (success, response) => {
-        console.log(response);
         if (success) {
           if (isLoadMore) {
             setData(prevData => [...prevData, ...response.data]);
@@ -124,7 +122,7 @@ const BaseList = forwardRef((props, ref) => {
             }
             renderItem={({item}) =>
               props.listItem ? (
-                props.listItem({item : item},props.navigation)
+                props.listItem({item : item, navigation: props.navigation})
               ) : (
                 <GroupItem item={item} navigation={props.navigation} />
               )

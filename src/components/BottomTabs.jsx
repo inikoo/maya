@@ -75,7 +75,6 @@ export default function AnimTab(props) {
           },
         }}>
         {props.tabArr.map((item, index) => {
-          console.log('sss',item)
           return (
             <Tab.Screen
               key={index}

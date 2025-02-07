@@ -36,6 +36,7 @@
     "react-native": "0.77.0",
     "react-native-alert-notification": "^0.4.2",
     "react-native-animatable": "^1.4.0",
+    "react-native-barcode-svg": "^0.0.15",
     "react-native-dotenv": "^3.4.11",
     "react-native-drawer-layout": "^4.1.1",
     "react-native-gesture-handler": "^2.22.1",
@@ -44,6 +45,7 @@
     "react-native-screens": "^4.6.0",
     "react-native-svg": "^15.11.1",
     "react-native-svg-uri": "^1.2.3",
+    "react-native-timeline-flatlist": "^0.8.0",
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {

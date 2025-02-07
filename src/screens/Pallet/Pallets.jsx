@@ -44,7 +44,6 @@ const Pallet = ({navigation}) => {
 };
 
 const GroupItem = ({item, navigation}) => {
-  console.log(item);
   return (
     <TouchableOpacity
       style={[
@@ -57,7 +56,7 @@ const GroupItem = ({item, navigation}) => {
         },
       ]}
       activeOpacity={0.7}
-      onPress={() => navigation?.navigate('DetailScreen', {item})}>
+      onPress={() => navigation?.navigate('show-pallet', {id : item.id })}>
       <View style={globalStyles.list.container}>
         <View style={globalStyles.list.avatarContainer}>
           {item?.state_icon && (

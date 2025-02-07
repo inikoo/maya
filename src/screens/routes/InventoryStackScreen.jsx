@@ -4,8 +4,8 @@ import { SafeAreaView } from 'react-native';
 import BottomTabs from '@/src/components/BottomTabs'
 
 import Families from '@/src/screens/Families';
-import Pallet from '@/src/screens/Pallet'
-import StoredItem from '@/src/screens/StoredItem'
+import Pallet from '@/src/screens/Pallet/Pallets'
+import StoredItem from '@/src/screens/StoredItem/StoredItems'
 
 import { faBoxesAlt, faPallet, faNarwhal } from '@/private/fa/pro-regular-svg-icons';
 
@@ -15,7 +15,7 @@ const TabArr = [
   {route: 'stored-items', label: 'Stored Item', icon: faNarwhal, component: StoredItem},
 ];
 
-export default function AnimTab3() {
+export default function InventoryStackScreen() {
   return (
     <SafeAreaView style={{flex: 1}}>
       <BottomTabs tabArr={TabArr} />

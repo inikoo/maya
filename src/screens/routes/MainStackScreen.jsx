@@ -12,7 +12,14 @@ import LocationStackScreen from "@/src/screens/routes/LocationStackScreen";
 import Settings from "@/src/screens/Settings";
 import Organisation from "@/src/screens/Organisation";
 import Fulfilment from "@/src/screens/Fulfilment";
-import { Button, ButtonText } from "@/src/components/ui/button"
+import ShowDeliveryNote from '@/src/screens/DeliveryNote/ShowDeliveryNote'
+import ShowFulfilmentReturn from '@/src/screens/Return/ShowFulfilmentReturn'
+import ShowFulfilmentDelivery from '@/src/screens/Delivery/ShowFulfilmentDelivery'
+import ShowLocation from '@/src/screens/Location/ShowLocation'
+import ShowArea from '@/src/screens/Area/ShowArea'
+import ShowPallet from '@/src/screens/Pallet/ShowPallet'
+import ShowStockDelivery from '@/src/screens/Stock/ShowStockDelivery'
+import ShowStoredItem from '@/src/screens/StoredItem/ShowStoredItem'
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -143,6 +150,71 @@ const HomeStack = () => {
         options={{
           headerShown: true,
           title: "Fulfilment",
+        }}
+      />
+     {/*  inventory */}
+     <Stack.Screen
+        name="show-delivery-note"
+        component={ShowDeliveryNote}
+        options={{
+          headerShown: true,
+          title: "Delivery Note",
+        }}
+      />
+       <Stack.Screen
+        name="show-fulfilment-return"
+        component={ShowFulfilmentReturn}
+        options={{
+          headerShown: true,
+          title: "Fulfilment Returns",
+        }}
+      />
+      <Stack.Screen
+        name="show-fulfilment-delivery"
+        component={ShowFulfilmentDelivery}
+        options={{
+          headerShown: true,
+          title: "Fulfilment Delivery",
+        }}
+      />
+      <Stack.Screen
+        name="show-location"
+        component={ShowLocation}
+        options={{
+          headerShown: true,
+          title: "Location",
+        }}
+      />
+      <Stack.Screen
+        name="show-area"
+        component={ShowArea}
+        options={{
+          headerShown: true,
+          title: "Area",
+        }}
+      />
+       <Stack.Screen
+        name="show-pallet"
+        component={ShowPallet}
+        options={{
+          headerShown: true,
+          title: "Pallet",
+        }}
+      />
+       <Stack.Screen
+        name="show-stock-delivery"
+        component={ShowStockDelivery}
+        options={{
+          headerShown: true,
+          title: "Stock Delivery",
+        }}
+      />
+      <Stack.Screen
+        name="show-stored-item"
+        component={ShowStoredItem}
+        options={{
+          headerShown: true,
+          title: "Stored Item",
         }}
       />
     </Stack.Navigator>

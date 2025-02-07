@@ -3,8 +3,8 @@ import React, {} from 'react';
 import { SafeAreaView } from 'react-native';
 import BottomTabs from '@/src/components/BottomTabs'
 
-import Locations from '@/src/screens/Locations';
-import Areas from '@/src/screens/Areas';
+import Locations from '@/src/screens/Location/Locations';
+import Areas from '@/src/screens/Area/Areas';
 
 import { faMapSigns , faInventory } from '@/private/fa/pro-regular-svg-icons';
 
@@ -13,7 +13,7 @@ const TabArr = [
   {route: 'areas', label: 'Areas', icon: faInventory, component: Areas},
 ];
 
-export default function AnimTab3() {
+export default function LocationStackScreen() {
   return (
     <SafeAreaView style={{flex: 1}}>
       <BottomTabs tabArr={TabArr} />

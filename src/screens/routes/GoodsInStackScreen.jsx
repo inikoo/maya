@@ -3,8 +3,8 @@ import React, {} from 'react';
 import { SafeAreaView } from 'react-native';
 import BottomTabs from '@/src/components/BottomTabs'
 
-import StockDeliveries from '@/src/screens/StockDeliveries';
-import FulfilmentDeliveries from '@/src/screens/FulfilmentDeliveries'
+import StockDeliveries from '@/src/screens/Stock/StockDeliveries';
+import FulfilmentDeliveries from '@/src/screens/Delivery/FulfilmentDeliveries'
 
 import { faTruck , faTruckCouch } from '@/private/fa/pro-regular-svg-icons';
 
@@ -13,7 +13,7 @@ const TabArr = [
   {route: 'fulfilment-deliveries', label: 'Deliveries', icon: faTruckCouch, component: FulfilmentDeliveries},
 ];
 
-export default function AnimTab3() {
+export default function GoodsInStackScreen() {
   return (
     <SafeAreaView style={{flex: 1}}>
       <BottomTabs tabArr={TabArr} />
