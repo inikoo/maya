@@ -9,11 +9,11 @@ import {AuthContext} from '@/src/components/Context/context';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faSignOutAlt} from '@/private/fa/pro-regular-svg-icons';
 import {faWarehouse} from '@/private/fa/pro-regular-svg-icons';
+import { logout } from '@/src/user';
 
 const CustomDrawer = props => {
   const {signOut, userData, warehouse} = useContext(AuthContext);
   const [imageError, setImageError] = useState(false);
-
   const handleImageError = () => setImageError(true);
   const getInitials = name => {
     if (!name) return '?';
@@ -73,7 +73,7 @@ const CustomDrawer = props => {
 
       <View className="p-5 border-t border-gray-300">
         <TouchableOpacity
-          onPress={signOut}
+          onPress={()=>logout(signOut)}
           className="py-3 flex-row items-center">
           <FontAwesomeIcon icon={faSignOutAlt} size={22} />
           <Text className="text-base font-medium ml-2">Sign Out</Text>

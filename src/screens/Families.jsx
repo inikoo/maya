@@ -3,7 +3,7 @@ import { Text, View, Button } from 'react-native';
 import { AuthContext } from '@/src/components/Context/context';
 
 const Families = () => {
-  const { signOut, userData } = useContext(AuthContext);  
+  const { userData } = useContext(AuthContext);  
 
 
   return (

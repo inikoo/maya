@@ -1,4 +1,3 @@
-import {history, getDvaApp} from 'umi';
 import {merge} from 'lodash';
 
 import request from '@/src/utils/Request';
@@ -47,8 +46,8 @@ export function retrieveProfile(options) {
     if (removeSession) getDvaApp()._store.dispatch({ type: 'user/remove' });
   
     return null;
-  }
+  } */
 
-export async function logout() {
-  revokeToken();
-} */
+export async function logout(signOut) {
+  signOut();
+}
