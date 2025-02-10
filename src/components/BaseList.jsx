@@ -5,12 +5,15 @@ import request from '@/src/utils/Request';
 import globalStyles from '@/globalStyles';
 import {SearchIcon} from '@/src/components/ui/icon';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import {Button, ButtonText} from '@/src/components/ui/button';
 import {
   Input,
   InputField,
   InputSlot,
   InputIcon,
 } from '@/src/components/ui/input';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faBarcodeScan} from '@/private/fa/pro-regular-svg-icons';
 
 const BaseList = forwardRef((props, ref) => {
   const [data, setData] = useState([]);
@@ -50,7 +53,7 @@ const BaseList = forwardRef((props, ref) => {
             Toast.show({
               type: ALERT_TYPE.DANGER,
               title: 'Error',
-              textBody: 'FAiled to fetch data',
+              textBody: 'Failed to fetch data',
             });
           }
         }
@@ -77,6 +80,7 @@ const BaseList = forwardRef((props, ref) => {
     fetchMoreData(false);
   }, []);
 
+  console.log(props.scannerScreen)
   // Handle Search Query
   useEffect(() => {
     fetchMoreData(false);
@@ -84,8 +88,8 @@ const BaseList = forwardRef((props, ref) => {
 
   return (
     <View style={{flex: 1}}>
-      <View className="py-3">
-        <Input variant="outline" size="md">
+      <View className="py-3 flex-row items-center space-x-2 gap-3">
+        <Input variant="outline" size="md" className="flex-1">
           <InputField
             placeholder="Search..."
             value={searchQuery}
@@ -97,6 +101,11 @@ const BaseList = forwardRef((props, ref) => {
             <InputIcon as={SearchIcon} />
           </InputSlot>
         </Input>
+       {/*  {props.scannerScreen && (
+            <Button size="md" variant="solid" action="primary" onPress={() => props.navigation.navigate(props.scannerScreen)} activeOpacity={0.7}>
+              <FontAwesomeIcon icon={faBarcodeScan} color="#fff" />
+            </Button>
+        )} */}
       </View>
 
       {/* List Container */}
@@ -122,7 +131,7 @@ const BaseList = forwardRef((props, ref) => {
             }
             renderItem={({item}) =>
               props.listItem ? (
-                props.listItem({item : item, navigation: props.navigation})
+                props.listItem({item: item, navigation: props.navigation})
               ) : (
                 <GroupItem item={item} navigation={props.navigation} />
               )

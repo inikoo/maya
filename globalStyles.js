@@ -89,6 +89,52 @@ const globalStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
       },
+  },
+
+  scanner : {
+    centered: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    scannedCodeContainer: {
+      position: 'absolute',
+      bottom: 50,
+      alignSelf: 'center',
+      backgroundColor: 'rgba(0,0,0,0.7)',
+      padding: 10,
+      borderRadius: 10,
+    },
+    scannedCodeText: {
+      color: 'white',
+      fontSize: 16,
+    },
+    buttonContainer: {
+      position: 'absolute',
+      top: 20,
+      right: 20,
+      backgroundColor: 'white',
+      padding: 10,
+      borderRadius: 8,
+      elevation: 5,
+    },
+    buttonText: {
+      fontSize: 14,
+      fontWeight: 'bold',
+    },
+    fullScreenCamera: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      flex: 1,
+      zIndex: 100,
+    },
+    rnholeView: {
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'rgba(0,0,0,0.5)',
+    },
   }
 });
 

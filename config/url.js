@@ -1,5 +1,6 @@
 export default {
 	"login": { url: "maya/connect/credentials" },
+	"login-scanner": { url: "maya/connect/qr-code" },
 	"get-profile": { url: "maya/profile" },
 	"update-profile": { url: "maya/action/profile" },
 
@@ -27,4 +28,8 @@ export default {
 	'get-stored-items' :  { url: "maya/org/{}/warehouses/{}/inventory/stored-items" },
 	'get-pallet' :  { url: "maya/org/{}/warehouses/{}/inventory/pallets/{}" },
 	'get-stored-item' :  { url: "maya/org/{}/warehouses/{}/inventory/stored-items/{}" },
+
+
+	//scanner
+	'get-scanner' : { url: "maya/org/{}/warehouses/{}/scanners/{}" },
 };

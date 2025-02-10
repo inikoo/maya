@@ -1,27 +1,28 @@
-import React, { useContext } from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { createStackNavigator } from "@react-navigation/stack";
-import CustomDrawer from "@/src/components/CustomDrawer";
+import React, {useContext} from 'react';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createStackNavigator} from '@react-navigation/stack';
+import CustomDrawer from '@/src/components/CustomDrawer';
 import {AuthContext} from '@/src/components/Context/context';
 
-import Home from "@/src/screens/Home";
-import InventoryStackScreen from "@/src/screens/routes/InventoryStackScreen";
-import GoodsInStackScreen from "@/src/screens/routes/GoodsInStackScreen";
-import GoodsOutStackScreen from "@/src/screens/routes/GoodsOutStackScreen";
-import LocationStackScreen from "@/src/screens/routes/LocationStackScreen";
-import Settings from "@/src/screens/Settings";
-import Organisation from "@/src/screens/Organisation";
-import Fulfilment from "@/src/screens/Fulfilment";
-import ShowDeliveryNote from '@/src/screens/DeliveryNote/ShowDeliveryNote'
-import ShowFulfilmentReturn from '@/src/screens/Return/ShowFulfilmentReturn'
-import ShowFulfilmentDelivery from '@/src/screens/Delivery/ShowFulfilmentDelivery'
-import ShowLocation from '@/src/screens/Location/ShowLocation'
-import ShowArea from '@/src/screens/Area/ShowArea'
-import ShowPallet from '@/src/screens/Pallet/ShowPallet'
-import ShowStockDelivery from '@/src/screens/Stock/ShowStockDelivery'
-import ShowStoredItem from '@/src/screens/StoredItem/ShowStoredItem'
+import Home from '@/src/screens/Home';
+import InventoryStackScreen from '@/src/screens/routes/InventoryStackScreen';
+import GoodsInStackScreen from '@/src/screens/routes/GoodsInStackScreen';
+import GoodsOutStackScreen from '@/src/screens/routes/GoodsOutStackScreen';
+import LocationStackScreen from '@/src/screens/routes/LocationStackScreen';
+import Settings from '@/src/screens/Settings';
+import Organisation from '@/src/screens/Organisation';
+import Fulfilment from '@/src/screens/Fulfilment';
+import ShowDeliveryNote from '@/src/screens/DeliveryNote/ShowDeliveryNote';
+import ShowFulfilmentReturn from '@/src/screens/Return/ShowFulfilmentReturn';
+import ShowFulfilmentDelivery from '@/src/screens/Delivery/ShowFulfilmentDelivery';
+import ShowLocation from '@/src/screens/Location/ShowLocation';
+import ShowArea from '@/src/screens/Area/ShowArea';
+import ShowPallet from '@/src/screens/Pallet/ShowPallet';
+import ShowStockDelivery from '@/src/screens/Stock/ShowStockDelivery';
+import ShowStoredItem from '@/src/screens/StoredItem/ShowStoredItem';
+import Scanner from '@/src/screens/Scanner';
 
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faHome,
   faPalletAlt,
@@ -29,33 +30,43 @@ import {
   faArrowToBottom,
   faArrowFromLeft,
   faUsers,
-} from "@/private/fa/pro-regular-svg-icons";
-import { faHandHoldingBox } from "@/private/fa/pro-regular-svg-icons";
+  faBarcodeScan,
+} from '@/private/fa/pro-regular-svg-icons';
+import {faHandHoldingBox} from '@/private/fa/pro-regular-svg-icons';
+import {TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 const DrawerNavigator = () => {
-  const { warehouse } = useContext(AuthContext);
+  const {warehouse} = useContext(AuthContext);
+  const navigation = useNavigation();
 
   return (
     <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawer {...props} />}
+      drawerContent={props => <CustomDrawer {...props} />}
       screenOptions={{
         headerShown: true,
-        drawerActiveBackgroundColor: "#fff",
-        drawerActiveTintColor: "#4F46E5",
-        drawerInactiveTintColor: "#333",
-      }}
-    >
+        drawerActiveBackgroundColor: '#fff',
+        drawerActiveTintColor: '#4F46E5',
+        drawerInactiveTintColor: '#333',
+      }}>
       {warehouse ? (
         <>
           <Drawer.Screen
             name="Home"
             component={Home}
             options={{
-              drawerIcon: ({ color }) => (
+              drawerIcon: ({color}) => (
                 <FontAwesomeIcon icon={faHome} size={22} color={color} />
+              ),
+              headerRight: () => (
+                <TouchableOpacity
+                  className="mx-3"
+                  onPress={() => navigation.navigate('scanner')}>
+                  <FontAwesomeIcon icon={faBarcodeScan} size={22} />
+                </TouchableOpacity>
               ),
             }}
           />
@@ -63,8 +74,15 @@ const DrawerNavigator = () => {
             name="Inventory"
             component={InventoryStackScreen}
             options={{
-              drawerIcon: ({ color }) => (
+              drawerIcon: ({color}) => (
                 <FontAwesomeIcon icon={faInventory} size={22} color={color} />
+              ),
+              headerRight: () => (
+                <TouchableOpacity
+                  className="mx-3"
+                  onPress={() => navigation.navigate('scanner')}>
+                  <FontAwesomeIcon icon={faBarcodeScan} size={22} />
+                </TouchableOpacity>
               ),
             }}
           />
@@ -72,8 +90,15 @@ const DrawerNavigator = () => {
             name="Location"
             component={LocationStackScreen}
             options={{
-              drawerIcon: ({ color }) => (
+              drawerIcon: ({color}) => (
                 <FontAwesomeIcon icon={faPalletAlt} size={22} color={color} />
+              ),
+              headerRight: () => (
+                <TouchableOpacity
+                  className="mx-3"
+                  onPress={() => navigation.navigate('scanner')}>
+                  <FontAwesomeIcon icon={faBarcodeScan} size={22} />
+                </TouchableOpacity>
               ),
             }}
           />
@@ -81,8 +106,19 @@ const DrawerNavigator = () => {
             name="Goods In"
             component={GoodsInStackScreen}
             options={{
-              drawerIcon: ({ color }) => (
-                <FontAwesomeIcon icon={faArrowToBottom} size={22} color={color} />
+              drawerIcon: ({color}) => (
+                <FontAwesomeIcon
+                  icon={faArrowToBottom}
+                  size={22}
+                  color={color}
+                />
+              ),
+              headerRight: () => (
+                <TouchableOpacity
+                  className="mx-3"
+                  onPress={() => navigation.navigate('scanner')}>
+                  <FontAwesomeIcon icon={faBarcodeScan} size={22} />
+                </TouchableOpacity>
               ),
             }}
           />
@@ -90,8 +126,19 @@ const DrawerNavigator = () => {
             name="Goods Out"
             component={GoodsOutStackScreen}
             options={{
-              drawerIcon: ({ color }) => (
-                <FontAwesomeIcon icon={faArrowFromLeft} size={22} color={color} />
+              drawerIcon: ({color}) => (
+                <FontAwesomeIcon
+                  icon={faArrowFromLeft}
+                  size={22}
+                  color={color}
+                />
+              ),
+              headerRight: () => (
+                <TouchableOpacity
+                  className="mx-3"
+                  onPress={() => navigation.navigate('scanner')}>
+                  <FontAwesomeIcon icon={faBarcodeScan} size={22} />
+                </TouchableOpacity>
               ),
             }}
           />
@@ -102,7 +149,7 @@ const DrawerNavigator = () => {
             name="Home"
             component={Home}
             options={{
-              drawerIcon: ({ color }) => (
+              drawerIcon: ({color}) => (
                 <FontAwesomeIcon icon={faHome} size={22} color={color} />
               ),
             }}
@@ -111,7 +158,7 @@ const DrawerNavigator = () => {
             name="Organisation"
             component={Organisation}
             options={{
-              drawerIcon: ({ color }) => (
+              drawerIcon: ({color}) => (
                 <FontAwesomeIcon icon={faUsers} size={22} color={color} />
               ),
             }}
@@ -120,8 +167,12 @@ const DrawerNavigator = () => {
             name="Fulfilment"
             component={Fulfilment}
             options={{
-              drawerIcon: ({ color }) => (
-                <FontAwesomeIcon icon={faHandHoldingBox} size={22} color={color} />
+              drawerIcon: ({color}) => (
+                <FontAwesomeIcon
+                  icon={faHandHoldingBox}
+                  size={22}
+                  color={color}
+                />
               ),
             }}
           />
@@ -133,7 +184,7 @@ const DrawerNavigator = () => {
 
 const HomeStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="home-drawer" component={DrawerNavigator} />
       <Stack.Screen name="setting" component={Settings} />
       <Stack.Screen
@@ -141,7 +192,7 @@ const HomeStack = () => {
         component={Organisation}
         options={{
           headerShown: true,
-          title: "Organisation",
+          title: 'Organisation',
         }}
       />
       <Stack.Screen
@@ -149,24 +200,24 @@ const HomeStack = () => {
         component={Fulfilment}
         options={{
           headerShown: true,
-          title: "Fulfilment",
+          title: 'Fulfilment',
         }}
       />
-     {/*  inventory */}
-     <Stack.Screen
+      {/*  inventory */}
+      <Stack.Screen
         name="show-delivery-note"
         component={ShowDeliveryNote}
         options={{
           headerShown: true,
-          title: "Delivery Note",
+          title: 'Delivery Note',
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="show-fulfilment-return"
         component={ShowFulfilmentReturn}
         options={{
           headerShown: true,
-          title: "Fulfilment Returns",
+          title: 'Fulfilment Returns',
         }}
       />
       <Stack.Screen
@@ -174,7 +225,7 @@ const HomeStack = () => {
         component={ShowFulfilmentDelivery}
         options={{
           headerShown: true,
-          title: "Fulfilment Delivery",
+          title: 'Fulfilment Delivery',
         }}
       />
       <Stack.Screen
@@ -182,7 +233,7 @@ const HomeStack = () => {
         component={ShowLocation}
         options={{
           headerShown: true,
-          title: "Location",
+          title: 'Location',
         }}
       />
       <Stack.Screen
@@ -190,23 +241,23 @@ const HomeStack = () => {
         component={ShowArea}
         options={{
           headerShown: true,
-          title: "Area",
+          title: 'Area',
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="show-pallet"
         component={ShowPallet}
         options={{
           headerShown: true,
-          title: "Pallet",
+          title: 'Pallet',
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="show-stock-delivery"
         component={ShowStockDelivery}
         options={{
           headerShown: true,
-          title: "Stock Delivery",
+          title: 'Stock Delivery',
         }}
       />
       <Stack.Screen
@@ -214,7 +265,15 @@ const HomeStack = () => {
         component={ShowStoredItem}
         options={{
           headerShown: true,
-          title: "Stored Item",
+          title: 'Stored Item',
+        }}
+      />
+      <Stack.Screen
+        name="scanner"
+        component={Scanner}
+        options={{
+          /*  headerShown: true, */
+          title: 'scanner',
         }}
       />
     </Stack.Navigator>

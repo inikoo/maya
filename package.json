@@ -40,12 +40,15 @@
     "react-native-dotenv": "^3.4.11",
     "react-native-drawer-layout": "^4.1.1",
     "react-native-gesture-handler": "^2.22.1",
+    "react-native-hole-view": "^3.0.0-alpha4",
+    "react-native-permissions": "^5.2.5",
     "react-native-reanimated": "^3.16.7",
     "react-native-safe-area-context": "^5.1.0",
     "react-native-screens": "^4.6.0",
     "react-native-svg": "^15.11.1",
     "react-native-svg-uri": "^1.2.3",
     "react-native-timeline-flatlist": "^0.8.0",
+    "react-native-vision-camera": "^4.6.3",
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
