@@ -1,11 +1,12 @@
-import React, {forwardRef, useEffect, useState, useContext} from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import React, {forwardRef, useEffect, useState} from 'react';
+import {View, Text, FlatList, TouchableOpacity, RefreshControl} from 'react-native';
 import {Spinner} from '@/src/components/ui/spinner';
 import request from '@/src/utils/Request';
 import globalStyles from '@/globalStyles';
 import {SearchIcon} from '@/src/components/ui/icon';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {Button, ButtonText} from '@/src/components/ui/button';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   Input,
   InputField,
@@ -14,6 +15,7 @@ import {
 } from '@/src/components/ui/input';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBarcodeScan} from '@/private/fa/pro-regular-svg-icons';
+import {faTimes} from '@/private/fa/pro-light-svg-icons';
 
 const BaseList = forwardRef((props, ref) => {
   const [data, setData] = useState([]);
@@ -21,6 +23,8 @@ const BaseList = forwardRef((props, ref) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isFetching, setIsFetching] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const insets = useSafeAreaInsets();
 
   // Fetch Data
   const getDataFromServer = async (isLoadMore = false, newPage = 1) => {
@@ -72,6 +76,12 @@ const BaseList = forwardRef((props, ref) => {
     }
   };
 
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    fetchMoreData(false);
+    setIsRefreshing(false);
+  };
+
   useEffect(() => {
     getDataFromServer(page > 1, page);
   }, [page]);
@@ -80,14 +90,13 @@ const BaseList = forwardRef((props, ref) => {
     fetchMoreData(false);
   }, []);
 
-  console.log(props.scannerScreen)
   // Handle Search Query
   useEffect(() => {
     fetchMoreData(false);
   }, [searchQuery]);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex : 1}} contentContainerStyle={{paddingBottom: insets.bottom + 120}}>
       <View className="py-3 flex-row items-center space-x-2 gap-3">
         <Input variant="outline" size="md" className="flex-1">
           <InputField
@@ -109,7 +118,7 @@ const BaseList = forwardRef((props, ref) => {
       </View>
 
       {/* List Container */}
-      <View style={{flex: 1, marginBottom: 45}}>
+      <View style={{flex: 1, marginBottom: 60 }}>
         {isFetching ? (
           // Show Loading Indicator on First Fetch
           <View
@@ -118,25 +127,30 @@ const BaseList = forwardRef((props, ref) => {
           </View>
         ) : (
           <FlatList
-            data={data}
-            keyExtractor={(item, index) => item.slug + index}
-            showsVerticalScrollIndicator={false}
-            onEndReached={() => fetchMoreData(true)}
-            ListFooterComponent={
-              isLoadingMore ? (
-                <View style={{paddingVertical: 10}}>
-                  <Spinner size="small" />
-                </View>
-              ) : null
-            }
-            renderItem={({item}) =>
-              props.listItem ? (
-                props.listItem({item: item, navigation: props.navigation})
-              ) : (
-                <GroupItem item={item} navigation={props.navigation} />
-              )
-            }
-          />
+          data={data}
+          keyExtractor={(item, index) => item.slug + index}
+          showsVerticalScrollIndicator={false}
+          onEndReached={() => fetchMoreData(true)}
+          onEndReachedThreshold={1}
+          refreshControl={
+            <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+          }
+          ListFooterComponent={
+            isLoadingMore ? (
+              <View style={{ paddingVertical: 10 }}>
+                <Spinner size="small" />
+              </View>
+            ) : null
+          }
+          renderItem={({ item }) =>
+            props.listItem ? (
+              props.listItem({ item: item, navigation: props.navigation })
+            ) : (
+              <GroupItem item={item} navigation={props.navigation} />
+            )
+          }
+        />
+        
         )}
       </View>
     </View>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_URL } from "@env"
 import urlConfig from '@/config/url';
-/* import { logout, refreshToken } from '@/pages/user/utils'; */
+import { logout } from '@/src/user';
 import { getData } from "@/src/utils/AsyncStorage";
 
 
@@ -58,16 +58,18 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      if (!isRefreshingToken) {
+    if (error.response?.status == 401) {
+      logout();
+      /* if (!isRefreshingToken) {
         isRefreshingToken = true;
         try {
-          /* const newToken = await refreshToken(); */
+          console.log('sdsd')
+          const newToken = await refreshToken();
           isRefreshingToken = false;
-         /*  onTokenRefreshed(newToken); */
+          onTokenRefreshed(newToken);
         } catch (err) {
           isRefreshingToken = false;
-        /*   logout(); */
+          logout();
           return Promise.reject(err);
         }
       }
@@ -77,7 +79,7 @@ api.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${token}`;
           resolve(api(originalRequest));
         });
-      });
+      }); */
     }
 
     return Promise.reject(error);

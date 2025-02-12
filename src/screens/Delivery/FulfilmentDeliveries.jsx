@@ -43,7 +43,7 @@ const GroupItem = ({item, navigation}) => {
         <View style={globalStyles.list.avatarContainer}>
           <FontAwesomeIcon
             className={item.state_icon.class}
-            color={item.state_icon.color}
+            color={item?.state_icon?.color}
             icon={item.state_icon.icon}
           />
         </View>

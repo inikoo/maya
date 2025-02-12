@@ -15,18 +15,10 @@ import {Button, ButtonText, ButtonSpinner} from '@/src/components/ui/button';
 import {Input, InputField} from '@/src/components/ui/input';
 import Modal from '@/src/components/Modal';
 import request from '@/src/utils/Request';
-import {
-  Radio,
-  RadioGroup,
-  RadioIndicator,
-  RadioLabel,
-  RadioIcon,
-} from '@/src/components/ui/radio';
-import {Textarea, TextareaInput} from '@/src/components/ui/textarea';
+import {useDelivery} from '@/src/components/Context/delivery';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
-import {CircleIcon} from '@/src/components/ui/icon';
 import {
   faSeedling,
   faShare,
@@ -37,7 +29,6 @@ import {
   faWarehouseAlt,
   faPallet,
   faTimes,
-  faFragile,
 } from '@/private/fa/pro-light-svg-icons';
 import {
   faFileInvoiceDollar,
@@ -59,15 +50,17 @@ library.add(
   faTimes,
   faFileInvoiceDollar,
 );
-const Pallet = ({navigation}) => {
+
+const PalletInDeliveries = ({navigation, route}) => {
   const {organisation, warehouse} = useContext(AuthContext);
+  const {id} = route.params;
 
   return (
     <View style={globalStyles.container}>
       <BaseList
         navigation={navigation}
-        urlKey="get-pallets"
-        args={[organisation.id, warehouse.id]}
+        urlKey="get-pallets-delivery"
+        args={[organisation.id, warehouse.id, id]}
         listItem={({item, navigation}) => (
           <GroupItem item={item} navigation={navigation} />
         )}
@@ -78,16 +71,14 @@ const Pallet = ({navigation}) => {
 
 const GroupItem = ({item: initialItem, navigation}) => {
   const [item, setItem] = useState(initialItem);
+  const {data} = useDelivery();
   const [showModalMovePallet, setShowModalMovePallet] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
-  const [showModalDamaged, setShowModalDamaged] = useState(false);
   const SWIPE_THRESHOLD = 60;
   const MAX_SWIPE = 100;
   const {control, handleSubmit, reset, setValue} = useForm({
     defaultValues: {
-      status: '',
-      notes: '',
       location: '',
     },
   });
@@ -121,6 +112,80 @@ const GroupItem = ({item: initialItem, navigation}) => {
       },
     }),
   ).current;
+
+  const onNotReceived = () => {
+    request({
+      urlKey: 'set-pallet-not-received',
+      method: 'patch',
+      args: [item.id],
+      data: {},
+      onSuccess: response => {
+        setItem(prevItem => ({
+          ...prevItem,
+          state: response.data.state,
+          state_icon: response.data.status_icon,
+        }));
+
+        Animated.spring(translateX, {
+          toValue: 0,
+          useNativeDriver: true,
+        }).start();
+
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'Updated pallet ' + item.reference,
+        });
+      },
+      onFailed: error => {
+        console.log(error);
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: 'Error',
+          textBody:
+            error.detail?.message ||
+            'Failed to update pallet ' + item.reference,
+        });
+      },
+    });
+  };
+
+  const onUndoNotReceived = () => {
+    request({
+      urlKey: 'undo-pallet-not-received',
+      method: 'patch',
+      args: [item.id],
+      data: {},
+      onSuccess: response => {
+        setItem(prevItem => ({
+          ...prevItem,
+          state: response.data.state,
+          state_icon: response.data.status_icon,
+        }));
+
+        Animated.spring(translateX, {
+          toValue: 0,
+          useNativeDriver: true,
+        }).start();
+
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'Updated pallet ' + item.reference,
+        });
+      },
+      onFailed: error => {
+        console.log(error);
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: 'Error',
+          textBody:
+            error.detail?.message ||
+            'Failed to update pallet ' + item.reference,
+        });
+      },
+    });
+  };
 
   const onSubmitSetLocation = formData => {
     request({
@@ -160,26 +225,48 @@ const GroupItem = ({item: initialItem, navigation}) => {
     });
   };
 
-  const onSubmitSetDamaged = async formData => {
-    console.log(formData);
-  };
-
   return (
     <View style={{marginVertical: 5}}>
-      <View style={[{width: MAX_SWIPE}, globalStyles.button_swipe_primary]}>
-        <TouchableOpacity
-          size="md"
-          variant="solid"
-          onPress={() => setShowModalMovePallet(true)}>
-          <FontAwesomeIcon icon={faInventory} size={25} color="#615FFF" />
-        </TouchableOpacity>
-      </View>
+      {data.state === "booking_in" && (
+        <>
+          {item.state !== 'not_received' ? (
+            <View
+              style={[{width: MAX_SWIPE}, globalStyles.button_swipe_primary]}>
+              <TouchableOpacity
+                size="md"
+                variant="solid"
+                onPress={() => setShowModalMovePallet(true)}>
+                <FontAwesomeIcon icon={faInventory} size={25} color="#615FFF" />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View
+              style={[
+                globalStyles.button_swipe_danger,
+                {width: MAX_SWIPE, backgroundColor: '#E5E7EB'},
+              ]}>
+              <TouchableOpacity
+                size="md"
+                variant="solid"
+                onPress={onUndoNotReceived}>
+                <FontAwesomeIcon icon={faHistory} size={25} />
+              </TouchableOpacity>
+            </View>
+          )}
 
-      <View style={[{width: MAX_SWIPE}, globalStyles.button_swipe_danger]}>
-        <TouchableOpacity size="md" variant="solid" onPress={() => setShowModalDamaged(true)}>
-          <FontAwesomeIcon icon={faFragile} color="red" size={25}  />
-        </TouchableOpacity>
-      </View>
+          {item.state !== 'not_received' && (
+            <View
+              style={[{width: MAX_SWIPE}, globalStyles.button_swipe_danger]}>
+              <TouchableOpacity
+                size="md"
+                variant="solid"
+                onPress={onNotReceived}>
+                <FontAwesomeIcon icon={faTimesRegular} color="red" size={25} />
+              </TouchableOpacity>
+            </View>
+          )}
+        </>
+      )}
 
       <Animated.View
         {...panResponder.panHandlers}
@@ -193,9 +280,7 @@ const GroupItem = ({item: initialItem, navigation}) => {
           },
           globalStyles.list.card,
         ]}>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => navigation?.navigate('show-pallet', {id: item.id})}>
+        <TouchableOpacity activeOpacity={0.7}>
           <View style={globalStyles.list.container}>
             <View style={globalStyles.list.avatarContainer}>
               {item?.state_icon && (
@@ -279,70 +364,8 @@ const GroupItem = ({item: initialItem, navigation}) => {
           </Button>
         </View>
       </Modal>
-
-      <Modal
-        isVisible={showModalDamaged}
-        title="Set Damaged"
-        onClose={() => setShowModalDamaged(false)}>
-        <View className="w-full">
-          <Text className="text-sm font-semibold mb-1">Status</Text>
-          <Controller
-            name="status"
-            control={control}
-            render={({field}) => (
-              <RadioGroup
-                value={field.value}
-                onChange={field.onChange}
-                className="my-2">
-                <View className="flex-row gap-4">
-                  <Radio value="damaged">
-                    <RadioIndicator>
-                      <RadioIcon as={CircleIcon} />
-                    </RadioIndicator>
-                    <RadioLabel>Damaged</RadioLabel>
-                  </Radio>
-
-                  <Radio value="lost">
-                    <RadioIndicator>
-                      <RadioIcon as={CircleIcon} />
-                    </RadioIndicator>
-                    <RadioLabel>Lost</RadioLabel>
-                  </Radio>
-                </View>
-              </RadioGroup>
-            )}
-          />
-
-          <Text className="text-sm font-semibold mt-4 mb-1">Notes</Text>
-          <Controller
-            name="notes"
-            control={control}
-            render={({field}) => (
-              <Textarea className="my-2">
-                <TextareaInput
-                  placeholder="Additional notes..."
-                  value={field.value}
-                  onChangeText={field.onChange}
-                />
-              </Textarea>
-            )}
-          />
-
-          <Button size="lg" onPress={handleSubmit(onSubmitSetDamaged)}>
-            {loadingSave ? (
-              <ButtonSpinner />
-            ) : (
-              <View
-                style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-                <FontAwesomeIcon icon={faSave} size={20} color="#fff" />
-                <ButtonText>Save</ButtonText>
-              </View>
-            )}
-          </Button>
-        </View>
-      </Modal>
     </View>
   );
 };
 
-export default Pallet;
+export default PalletInDeliveries;

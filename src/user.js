@@ -1,6 +1,6 @@
 import {merge} from 'lodash';
-
 import request from '@/src/utils/Request';
+import { navigationRef } from '@/src/utils/NavigationService';
 
 export function retrieveProfile(options) {
   options = merge(
@@ -48,6 +48,16 @@ export function retrieveProfile(options) {
     return null;
   } */
 
-export async function logout(signOut) {
-  signOut();
-}
+
+  export function logout(signOut) {
+    console.log("Logging out...");
+  
+    if (signOut) {
+      signOut();
+    } else {
+      if (navigationRef.isReady()) {
+        navigationRef.navigate('session-expired');
+      }
+    }
+  }
+  

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useRef} from 'react';
 import {
   View,
   ScrollView,
@@ -14,6 +14,13 @@ import {Center} from '@/src/components/ui/center';
 import {Text} from '@/src/components/ui/text';
 import dayjs from 'dayjs';
 import globalStyles from '@/globalStyles';
+import Barcode from 'react-native-barcode-svg';
+import Timeline from 'react-native-timeline-flatlist';
+import Description from '@/src/components/Description';
+import Menu from '@/src/components/Menu';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useDelivery } from '@/src/components/Context/delivery';
+
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faClock,
@@ -21,37 +28,120 @@ import {
   faChevronDown,
   faChevronUp,
 } from '@/private/fa/pro-light-svg-icons';
-import Barcode from 'react-native-barcode-svg';
-import Timeline from 'react-native-timeline-flatlist';
-import Description from '@/src/components/Description' 
+import {faBars} from '@/private/fa/pro-regular-svg-icons';
 
 const ShowFulfilmentDelivery = ({navigation, route}) => {
   const {organisation, warehouse} = useContext(AuthContext);
-  const [data, setData] = useState(null);
+  const { data, setData } = useDelivery();
   const [loading, setLoading] = useState(true);
   const [isTimelineOpen, setIsTimelineOpen] = useState(false);
   const {id} = route.params;
+  const insets = useSafeAreaInsets();
+  const menuRef = useRef(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await request({
-          urlKey: 'get-delivery',
-          args: [organisation.id, warehouse.id, id],
+  const setStatusDelivery = state => {
+    request({
+      urlKey: 'set-delivery-' + state,
+      method: 'patch',
+      args: [data.id],
+      data: {state: state},
+      onSuccess: response => {
+        fetchData();
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'success update pallet to ' + state,
         });
-        setData(response.data);
-      } catch (error) {
+      },
+      onFailed: error => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: 'Error',
-          textBody: error.detail?.message || 'Failed to fetch data',
+          textBody: error.detail?.message || 'Failed to update data',
         });
-      } finally {
-        setLoading(false);
-      }
-    };
+      },
+    });
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await request({
+        urlKey: 'get-delivery',
+        args: [organisation.id, warehouse.id, id],
+      });
+      setData(response.data);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Error',
+        textBody: error.detail?.message || 'Failed to fetch data',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onPressMenu = event => {
+    switch (event.event) {
+      case 'received':
+        setStatusDelivery(event.event);
+        break;
+      case 'booking-in':
+        setStatusDelivery(event.event);
+        break;
+      case 'booked-in':
+        setStatusDelivery(event.event);
+        break;
+      case 'cancel':
+        console.log('Option 3 selected');
+        break;
+      default:
+        console.log('Unknown option selected');
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, [id, organisation.id, warehouse.id]);
+
+  const getFilteredActions = () => {
+    if (data?.state === 'confirmed') {
+      return [
+        {id: 'received', title: 'Received'},
+        {id: 'cancel', title: 'Cancel', attributes: {destructive: true}},
+      ];
+    }
+
+    if (data?.state === 'received') {
+      return [{id: 'booking-in', title: 'Booking in'}];
+    }
+
+    if (data?.state === 'booking_in') {
+      return [{id: 'booked-in', title: 'Booked in'}];
+    }
+
+    return [];
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: data ? `Delivery ${data.reference}` : 'Delivery Details',
+      headerRight: () => (
+        <View className="px-4">
+          <Menu
+            ref={menuRef}
+            onPressAction={({nativeEvent}) => onPressMenu(nativeEvent)}
+            button={
+              <TouchableOpacity onPress={() => menuRef?.current?.menu.show()}>
+                <FontAwesomeIcon icon={faBars} />
+              </TouchableOpacity>
+            }
+            actions={getFilteredActions()}
+          />
+        </View>
+      ),
+    });
+  }, [navigation, data]);
 
   if (loading) {
     return (
@@ -70,38 +160,70 @@ const ShowFulfilmentDelivery = ({navigation, route}) => {
   }
 
   const timelineData = data.timeline
-    ? Object.values(data.timeline).map(event => ({
-        time: dayjs(event.timestamp).format('HH:mm'),
-        title: event.label,
-        description: dayjs(event.timestamp).format('YYYY-MM-DD HH:mm'),
-        lineColor : event.label == data.state_label ? '#66DC71' : "gray",
-        circleColor : event.label == data.state_label ? '#66DC71' : "gray",
-      }))
+    ? Object.values(data.timeline).map(event => {
+        const formattedTime = dayjs(event.timestamp).isValid()
+          ? dayjs(event.timestamp).format('HH:mm')
+          : 'N/A';
+        const formattedDate = dayjs(event.timestamp).isValid()
+          ? dayjs(event.timestamp).format('YYYY-MM-DD HH:mm')
+          : 'N/A';
+
+        return {
+          time: formattedTime,
+          title: event.label,
+          description: formattedDate,
+          /*   lineColor: event.label === data.state_label ? '#66DC71' : 'gray', */
+          circleColor: event.label === data.state_label ? '#66DC71' : 'gray',
+        };
+      })
     : [];
 
-    const schema = [
-      {
-        label : "Customer",
-        value : data.customer_name
-      },
-      {
-        label : "Boxes",
-        value : data.customer_name
-      },
-      {
-        label : "Pallets",
-        value : data.customer_name
-      },
-      {
-        label : "Estimated delivery",
-        value : data.estimated_delivery_date ?  dayjs(data.estimated_delivery_date).format('MMMM D[,] YYYY') :  'N/A'
-      },
-    ]
+  const schema = [
+    {
+      label: 'Customer',
+      value: data.customer_name,
+    },
+    {
+      label: 'Boxes',
+      value: data.number_boxes ? data.number_boxes.toString() : '-',
+    },
+    {
+      label: 'Oversizes',
+      value: data.number_oversizes ? data.number_oversizes.toString() : '-',
+    },
+    {
+      label: 'Pallets',
+      value: data.number_pallets ? data.number_pallets.toString() : '-',
+    },
+    {
+      label: 'Services',
+      value: data.number_services ? data.number_services.toString() : '-',
+    },
+    {
+      label: 'Estimated delivery',
+      value: data.estimated_delivery_date
+        ? dayjs(data.estimated_delivery_date).format('MMMM D[,] YYYY')
+        : 'N/A',
+    },
+    {
+      label: 'Note',
+      value: data.public_notes,
+    },
+  ];
 
   return (
-    <ScrollView style={globalStyles.container}>
+    <ScrollView
+      style={globalStyles.container}
+      contentContainerStyle={{paddingBottom: insets.bottom + 120}}>
       <Card>
-        <Barcode value={data.reference} format="CODE128" />
+        <Center>
+          <Barcode
+            value={data.reference}
+            format="CODE128"
+            maxWidth={250}
+            height={60}
+          />
+        </Center>
         <Center>
           <Heading>{data.reference}</Heading>
         </Center>
@@ -120,8 +242,8 @@ const ShowFulfilmentDelivery = ({navigation, route}) => {
             {!isTimelineOpen && (
               <View className="flex-row items-center mt-2 gap-4 ">
                 <FontAwesomeIcon
-                  icon={faCheckDouble}
-                  color="purple"
+                  icon={data.state_icon.icon}
+                  color={data.state_icon.color}
                   size={23}
                 />
                 <Text className="ml-2 font-bold text-white">

@@ -9,17 +9,18 @@ import InventoryStackScreen from '@/src/screens/routes/InventoryStackScreen';
 import GoodsInStackScreen from '@/src/screens/routes/GoodsInStackScreen';
 import GoodsOutStackScreen from '@/src/screens/routes/GoodsOutStackScreen';
 import LocationStackScreen from '@/src/screens/routes/LocationStackScreen';
+import DeliveryStackScreen from '@/src/screens/routes/DeliveryStackScreens'
 import Settings from '@/src/screens/Settings';
 import Organisation from '@/src/screens/Organisation';
 import Fulfilment from '@/src/screens/Fulfilment';
 import ShowDeliveryNote from '@/src/screens/DeliveryNote/ShowDeliveryNote';
 import ShowFulfilmentReturn from '@/src/screens/Return/ShowFulfilmentReturn';
-import ShowFulfilmentDelivery from '@/src/screens/Delivery/ShowFulfilmentDelivery';
 import ShowLocation from '@/src/screens/Location/ShowLocation';
 import ShowArea from '@/src/screens/Area/ShowArea';
 import ShowPallet from '@/src/screens/Pallet/ShowPallet';
 import ShowStockDelivery from '@/src/screens/Stock/ShowStockDelivery';
 import ShowStoredItem from '@/src/screens/StoredItem/ShowStoredItem';
+import SessionExpired from '@/src/screens/SessionExpired';
 import Scanner from '@/src/screens/Scanner';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -222,7 +223,7 @@ const HomeStack = () => {
       />
       <Stack.Screen
         name="show-fulfilment-delivery"
-        component={ShowFulfilmentDelivery}
+        component={DeliveryStackScreen}
         options={{
           headerShown: true,
           title: 'Fulfilment Delivery',
@@ -274,6 +275,14 @@ const HomeStack = () => {
         options={{
           /*  headerShown: true, */
           title: 'scanner',
+        }}
+      />
+       <Stack.Screen
+        name="session-expired"
+        component={SessionExpired}
+        options={{
+          headerShown: false,
+          title: 'Expired Token',
         }}
       />
     </Stack.Navigator>

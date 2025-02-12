@@ -10,6 +10,7 @@ import {getData} from '@/src/utils/AsyncStorage';
 import {AuthContext} from '@/src/components/Context/context';
 import {loginReducer} from '@/src/Reducer/loginReducer';
 import {AlertNotificationRoot} from 'react-native-alert-notification';
+import { navigationRef } from '@/src/utils/NavigationService';
 import './global.css';
 
 const Stack = createNativeStackNavigator();
@@ -116,7 +117,7 @@ function App(): React.JSX.Element {
     <GluestackUIProvider>
       <AlertNotificationRoot>
         <AuthContext.Provider value={authContext}>
-          <NavigationContainer>
+          <NavigationContainer ref={navigationRef}>
             {loginState.userToken !== null ? (
               <MainStackScreen />
             ) : (
