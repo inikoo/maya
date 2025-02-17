@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -12,11 +12,21 @@ import BaseList from '@/src/components/BaseList';
 import globalStyles from '@/globalStyles';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {Button, ButtonText, ButtonSpinner} from '@/src/components/ui/button';
-import {Input, InputField} from '@/src/components/ui/input';
 import Modal from '@/src/components/Modal';
 import request from '@/src/utils/Request';
-import {useDelivery} from '@/src/components/Context/delivery';
-
+import {useReturn} from '@/src/components/Context/return';
+import {Textarea, TextareaInput} from '@/src/components/ui/textarea';
+import SetStateButton from '@/src/components/SetStateButton';
+import {Alert, AlertText } from '@/src/components/ui/alert';
+import {
+  Radio,
+  RadioGroup,
+  RadioIndicator,
+  RadioLabel,
+  RadioIcon,
+} from '@/src/components/ui/radio';
+import {getFilteredActionsReturn} from '@/src/utils';
+import {CircleIcon} from '@/src/components/ui/icon';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
@@ -29,11 +39,15 @@ import {
   faWarehouseAlt,
   faPallet,
   faTimes,
+  faSignOutAlt,
+  faGhost,
+  faCheckCircle
 } from '@/private/fa/pro-light-svg-icons';
 import {
   faFileInvoiceDollar,
   faInventory,
   faTimes as faTimesRegular,
+  faCheck as faCheckRegular,
   faHistory,
   faSave,
 } from '@/private/fa/pro-regular-svg-icons';
@@ -49,18 +63,52 @@ library.add(
   faPallet,
   faTimes,
   faFileInvoiceDollar,
+  faSignOutAlt,
+  faGhost,
 );
 
-const PalletInDeliveries = ({navigation, route}) => {
+const PalletsInReturn = ({navigation, route, onChangeState}) => {
   const {organisation, warehouse} = useContext(AuthContext);
+  const {data, setData} = useReturn();
   const {id} = route.params;
+  const _BaseList = useRef(null)
+  
 
   return (
     <View style={globalStyles.container}>
+      {data.state != 'dispatched' ? (
+        <SetStateButton
+          button1={{
+            size: 'md', 
+            variant: 'outline',
+            action: 'primary',
+            style: {borderTopRightRadius: 0, borderBottomRightRadius: 0},
+            onPress: null,
+            text: `To do : 0 / ${data?.number_pallets|| 0 }`,
+          }}
+          button2={{
+            size: 'md',
+            action: 'primary',
+            style: {borderTopLeftRadius: 0, borderBottomLeftRadius: 0},
+            onPress: () =>
+            onChangeState(getFilteredActionsReturn(data.state).id),
+            text: "Set to "  + getFilteredActionsReturn(data.state).title,
+          }}
+        />
+      ) : (
+        <Alert action="success" variant="solid">
+          <FontAwesomeIcon icon={faCheckCircle} color='green' />
+          <AlertText>Already Dispatched</AlertText>
+        </Alert>
+      )}
       <BaseList
         navigation={navigation}
-        urlKey="get-pallets-delivery"
+        urlKey="get-return-pallets"
         args={[organisation.id, warehouse.id, id]}
+        ref={_BaseList}
+        showResult={false}
+        height={80}
+        showTotalResults={()=>null}
         listItem={({item, navigation}) => (
           <GroupItem item={item} navigation={navigation} />
         )}
@@ -71,15 +119,16 @@ const PalletInDeliveries = ({navigation, route}) => {
 
 const GroupItem = ({item: initialItem, navigation}) => {
   const [item, setItem] = useState(initialItem);
-  const {data} = useDelivery();
-  const [showModalMovePallet, setShowModalMovePallet] = useState(false);
+  const {data} = useReturn();
   const [loadingSave, setLoadingSave] = useState(false);
+  const [modalSetNotPicked, setModalSetNotPicked] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
   const SWIPE_THRESHOLD = 60;
   const MAX_SWIPE = 100;
   const {control, handleSubmit, reset, setValue} = useForm({
     defaultValues: {
-      location: '',
+      state: '',
+      notes: '',
     },
   });
 
@@ -113,17 +162,18 @@ const GroupItem = ({item: initialItem, navigation}) => {
     }),
   ).current;
 
-  const onNotReceived = () => {
+  const onPicked = () => {
     request({
-      urlKey: 'set-pallet-not-received',
+      urlKey: 'set-pallet-picked',
       method: 'patch',
       args: [item.id],
       data: {},
       onSuccess: response => {
+        console.log(response);
         setItem(prevItem => ({
           ...prevItem,
           state: response.data.state,
-          state_icon: response.data.status_icon,
+          state_icon: response.data.state_icon,
         }));
 
         Animated.spring(translateX, {
@@ -150,17 +200,17 @@ const GroupItem = ({item: initialItem, navigation}) => {
     });
   };
 
-  const onUndoNotReceived = () => {
+  const undoPicked = () => {
     request({
-      urlKey: 'undo-pallet-not-received',
+      urlKey: 'undo-pallet-picked',
       method: 'patch',
-      args: [item.id],
       data: {},
+      args: [item.id],
       onSuccess: response => {
         setItem(prevItem => ({
           ...prevItem,
           state: response.data.state,
-          state_icon: response.data.status_icon,
+          state_icon: response.data.state_icon,
         }));
 
         Animated.spring(translateX, {
@@ -187,16 +237,17 @@ const GroupItem = ({item: initialItem, navigation}) => {
     });
   };
 
-  const onSubmitSetLocation = formData => {
+  const notPicked = formData => {
     request({
+      urlKey: 'set-pallet-not-picked',
       method: 'patch',
-      urlKey: "set-delivery-pallet-location",
-      args: [item.id, formData.location],
       data: formData,
+      args: [item.id],
       onSuccess: response => {
         setItem(prevItem => ({
           ...prevItem,
-          location_code: response.data.location.resource.code,
+          state: response.data.state,
+          state_icon: response.data.state_icon,
         }));
 
         Animated.spring(translateX, {
@@ -204,7 +255,7 @@ const GroupItem = ({item: initialItem, navigation}) => {
           useNativeDriver: true,
         }).start();
 
-        setShowModalMovePallet(false);
+        setModalSetNotPicked(false);
 
         Toast.show({
           type: ALERT_TYPE.SUCCESS,
@@ -213,7 +264,8 @@ const GroupItem = ({item: initialItem, navigation}) => {
         });
       },
       onFailed: error => {
-        setShowModalMovePallet(false);
+        console.log(error);
+        setModalSetNotPicked(false);
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: 'Error',
@@ -227,46 +279,60 @@ const GroupItem = ({item: initialItem, navigation}) => {
 
   return (
     <View style={{marginVertical: 5}}>
-      {data.state === "booking_in" && (
-        <>
-          {item.state !== 'not_received' ? (
-            <View
-              style={[{width: MAX_SWIPE}, globalStyles.button_swipe_primary]}>
-              <TouchableOpacity
-                size="md"
-                variant="solid"
-                onPress={() => setShowModalMovePallet(true)}>
-                <FontAwesomeIcon icon={faInventory} size={25} color="#615FFF" />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View
-              style={[
-                globalStyles.button_swipe_danger,
-                {width: MAX_SWIPE, backgroundColor: '#E5E7EB'},
-              ]}>
-              <TouchableOpacity
-                size="md"
-                variant="solid"
-                onPress={onUndoNotReceived}>
-                <FontAwesomeIcon icon={faHistory} size={25} />
-              </TouchableOpacity>
-            </View>
-          )}
+      {data?.state == 'picking' &&
+        item?.state != 'damaged' &&
+        item?.state != 'lost' &&
+        item?.state != 'other_incident' && (
+          <>
+            {item.state == 'picked' ? (
+              <View
+                style={[
+                  globalStyles.button_swipe_primary,
+                  {width: MAX_SWIPE, backgroundColor: '#E5E7EB'},
+                ]}>
+                <TouchableOpacity
+                  size="md"
+                  variant="solid"
+                  onPress={() => undoPicked()}>
+                  <FontAwesomeIcon icon={faHistory} size={25} />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View
+                style={[
+                  globalStyles.button_swipe_primary,
+                  {width: MAX_SWIPE, backgroundColor: '#ECFCCA'},
+                ]}>
+                <TouchableOpacity
+                  size="md"
+                  variant="solid"
+                  onPress={() => onPicked()}>
+                  <FontAwesomeIcon
+                    icon={faCheckRegular}
+                    size={25}
+                    color="#7CCE00"
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
 
-          {item.state !== 'not_received' && (
-            <View
-              style={[{width: MAX_SWIPE}, globalStyles.button_swipe_danger]}>
-              <TouchableOpacity
-                size="md"
-                variant="solid"
-                onPress={onNotReceived}>
-                <FontAwesomeIcon icon={faTimesRegular} color="red" size={25} />
-              </TouchableOpacity>
-            </View>
-          )}
-        </>
-      )}
+            {item.state != 'picked' && (
+              <View
+                style={[{width: MAX_SWIPE}, globalStyles.button_swipe_danger]}>
+                <TouchableOpacity
+                  size="md"
+                  variant="solid"
+                  onPress={() => setModalSetNotPicked(true)}>
+                  <FontAwesomeIcon
+                    icon={faTimesRegular}
+                    color="red"
+                    size={25}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          </>
+        )}
 
       <Animated.View
         {...panResponder.panHandlers}
@@ -300,65 +366,98 @@ const GroupItem = ({item: initialItem, navigation}) => {
             </View>
 
             <View style={globalStyles.list.textContainer}>
-              <Text style={globalStyles.list.title}>
-                {item?.reference || 'No reference available'}
-              </Text>
+              <View className="flex-row justify-between">
+                <Text style={globalStyles.list.title}>
+                  {item?.customer_reference || 'N/A'}
+                </Text>
+                <Text style={globalStyles.list.title}>
+                  {item?.location_code || '-'}
+                </Text>
+              </View>
+
               <Text style={globalStyles.list.description}>
-                {item?.customer_reference || 'No customer reference available'}
+                {item?.reference}
               </Text>
             </View>
 
-            <View
+            {/*  <View
               style={{
                 marginLeft: 10,
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 5,
               }}>
-              <FontAwesomeIcon
-                icon={faInventory}
-                size={20}
-                style={{marginRight: 5}}
-              />
-              <Text style={{fontWeight: 'bold'}}>
+              <Text style={globalStyles.list.title}>
                 {item?.location_code || '-'}
               </Text>
-            </View>
+            </View> */}
           </View>
         </TouchableOpacity>
       </Animated.View>
 
       <Modal
-        isVisible={showModalMovePallet}
-        title="Move Pallet"
-        onClose={() => setShowModalMovePallet(false)}>
+        isVisible={modalSetNotPicked}
+        title="Set Damaged"
+        onClose={() => setModalSetNotPicked(false)}>
         <View className="w-full">
-          <Text className="text-sm font-semibold mb-1">Location</Text>
+          <Text className="text-sm font-semibold mb-1">state</Text>
           <Controller
-            name="location"
+            name="state"
             control={control}
             render={({field}) => (
-              <Input variant="outline" size="md">
-                <InputField
-                  placeholder="Enter new location..."
-                  value={field.value}
-                  onChangeText={field.onChange}
-                />
-              </Input>
+              <RadioGroup
+                value={field.value}
+                onChange={field.onChange}
+                className="my-2">
+                <View className="flex-row gap-4">
+                  <Radio value="damaged">
+                    <RadioIndicator>
+                      <RadioIcon as={CircleIcon} />
+                    </RadioIndicator>
+                    <RadioLabel>Damaged</RadioLabel>
+                  </Radio>
+
+                  <Radio value="lost">
+                    <RadioIndicator>
+                      <RadioIcon as={CircleIcon} />
+                    </RadioIndicator>
+                    <RadioLabel>Lost</RadioLabel>
+                  </Radio>
+
+                  <Radio value="other_incident">
+                    <RadioIndicator>
+                      <RadioIcon as={CircleIcon} />
+                    </RadioIndicator>
+                    <RadioLabel>Other</RadioLabel>
+                  </Radio>
+                </View>
+              </RadioGroup>
             )}
           />
 
-          <Button
-            size="lg"
-            className="my-3"
-            onPress={handleSubmit(onSubmitSetLocation)}>
+          <Text className="text-sm font-semibold mt-4 mb-1">Notes</Text>
+          <Controller
+            name="notes"
+            control={control}
+            render={({field}) => (
+              <Textarea className="my-2">
+                <TextareaInput
+                  placeholder="Additional notes..."
+                  value={field.value}
+                  onChangeText={field.onChange}
+                />
+              </Textarea>
+            )}
+          />
+
+          <Button size="lg" onPress={handleSubmit(notPicked)}>
             {loadingSave ? (
               <ButtonSpinner />
             ) : (
               <View
                 style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
                 <FontAwesomeIcon icon={faSave} size={20} color="#fff" />
-                <ButtonText>Move Pallet</ButtonText>
+                <ButtonText>Save</ButtonText>
               </View>
             )}
           </Button>
@@ -368,4 +467,4 @@ const GroupItem = ({item: initialItem, navigation}) => {
   );
 };
 
-export default PalletInDeliveries;
+export default PalletsInReturn;

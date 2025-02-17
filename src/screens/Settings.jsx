@@ -42,6 +42,7 @@ const MainContent = ({navigation}) => {
       .join('')
       .toUpperCase();
   };
+  
   const accountData = [
     {icon: faUsers, subText: 'Organisation', route: 'organisation'},
   ];
@@ -96,7 +97,7 @@ const MainContent = ({navigation}) => {
                 </VStack>
               </VStack>
               <Center>
-                <Button className="gap-3 border-gray-400 px-6 py-2 rounded-full shadow-sm bg-white border">
+                <Button onPress={()=>navigation.navigate("edit-profile")} className="gap-3 border-gray-400 px-6 py-2 rounded-full shadow-sm bg-white border">
                   <ButtonText className="text-dark font-semibold">
                     Edit Profile
                   </ButtonText>

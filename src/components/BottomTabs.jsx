@@ -65,7 +65,7 @@ const TabButton = props => {
           <FontAwesomeIcon
             icon={item.icon}
             size={22}
-            color={focused ? '#fff' : '#000'}
+            color={'#fff' }
           />
         </View>
         <Animatable.Text ref={textRef} style={[styles.text]}>

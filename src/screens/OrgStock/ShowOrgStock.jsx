@@ -6,11 +6,10 @@ import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {Card} from '@/src/components/ui/card';
 import {Heading} from '@/src/components/ui/heading';
 import {Text} from '@/src/components/ui/text';
+import dayjs from 'dayjs';
 import Description from '@/src/components/Description';
-import Barcode from 'react-native-barcode-svg';
-import {Center} from '@/src/components/ui/center';
 
-const ShowLocation = ({navigation, route}) => {
+const ShowOrgStock = ({navigation, route}) => {
   const {organisation, warehouse} = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,13 +18,14 @@ const ShowLocation = ({navigation, route}) => {
   const getDataFromServer = async () => {
     setLoading(true);
     request({
-      urlKey: 'get-location',
+      urlKey: 'get-org-stock',
       args: [organisation.id, warehouse.id, id],
       onSuccess: response => {
-        setData(response);
+        setData(response.data);
         setLoading(false);
       },
       onFailed: error => {
+        console.log(error)
         setLoading(false);
         Toast.show({
           type: ALERT_TYPE.DANGER,
@@ -38,23 +38,11 @@ const ShowLocation = ({navigation, route}) => {
 
   const schema = [
     {
-      label: 'code',
+      label: 'Code',
       value: data?.code,
     },
-    {label: 'Status', value: data?.status},
-    {label: 'Stock Value', value: data?.stock_value},
-    {
-      label: 'Empty',
-      value: data?.is_empty,
-    },
-    {
-      label: 'Max weight',
-      value: data?.max_weight ? data.max_weight.toString() : '0',
-    },
-    {
-      label: 'Max volume',
-      value: data?.max_volume ? data.max_volume.toString() : '0',
-    },
+    {label: 'unit', value: data?.unit_value},
+    {label: 'locations', value: data?.number_locations ? data.number_locations.toString() : '0'},
   ];
 
   useEffect(() => {
@@ -79,27 +67,18 @@ const ShowLocation = ({navigation, route}) => {
 
   return (
     <ScrollView className="flex-1 bg-gray-50 p-4">
-      {/* <Card className="bg-indigo-600 p-6 rounded-xl shadow-lg mb-5">
-      <Heading className="text-white text-2xl font-bold">
-        Location : {data.code}
-      </Heading>
-    </Card> */}
-
-      <Card>
-        <Center>
-          <Barcode
-            value={data?.slug}
-            format="CODE128"
-            maxWidth={250}
-            height={60}
-          />
-        </Center>
-        <Center>
-          <Heading>{data?.slug}</Heading>
-        </Center>
+      {/* Header */}
+      <Card className="bg-indigo-600 p-6 rounded-xl shadow-lg mb-5">
+        <Heading className="text-white text-2xl font-bold">
+          Code : {data.code || 'N/A'}
+        </Heading>
+        <Text className="text-white text-lg font-semibold">
+          Name: {data.name}
+        </Text>
       </Card>
 
-      <Card className="bg-white p-6 rounded-xl shadow-md mt-4">
+      {/* Detail Section */}
+      <Card className="bg-white p-6 rounded-xl shadow-md">
         <Heading>Details</Heading>
         <Description schema={schema} />
       </Card>
@@ -107,4 +86,4 @@ const ShowLocation = ({navigation, route}) => {
   );
 };
 
-export default ShowLocation;
+export default ShowOrgStock;

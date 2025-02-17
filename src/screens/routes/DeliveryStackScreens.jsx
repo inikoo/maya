@@ -23,8 +23,8 @@ const DeliveryStackScreen = ({navigation, route}) => {
       ),
     },
     {
-      route: 'pallet-in-delivery',
-      label: 'Pallet',
+      route: 'pallets-in-delivery',
+      label: 'Pallets',
       icon: faPallet,
       component: props => (
         <PalletInDeliveries {...props} navigation={navigation} route={route} />

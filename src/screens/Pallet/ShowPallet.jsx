@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState, useRef} from 'react';
-import {View, ScrollView, ActivityIndicator} from 'react-native';
+import {View, ScrollView, ActivityIndicator, TouchableOpacity} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {AuthContext} from '@/src/components/Context/context';
 import request from '@/src/utils/Request';
@@ -23,10 +23,12 @@ import {
 } from '@/src/components/ui/radio';
 import {Input, InputField} from '@/src/components/ui/input';
 import {CircleIcon} from '@/src/components/ui/icon';
+import Menu from '@/src/components/Menu';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faFragile, faSave} from '@/private/fa/pro-light-svg-icons';
+import {faBars} from '@/private/fa/pro-regular-svg-icons';
 
 
 library.add(faFragile);
@@ -38,8 +40,7 @@ const ShowPallet = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [showModalDamaged, setShowModalDamaged] = useState(false);
   const [showModalMovePallet, setShowModalMovePallet] = useState(false);
-   const menuRef = useRef(null);
-  /*   const [location, setLocation] = useState(''); */
+  const menuRef = useRef(null);
   const {id} = route.params;
 
   const {control, handleSubmit, reset, setValue} = useForm({
@@ -50,61 +51,82 @@ const ShowPallet = ({navigation, route}) => {
     },
   });
 
+  const fetchData = async () => {
+    try {
+      const response = await request({
+        urlKey: 'get-pallet',
+        args: [organisation.id, warehouse.id, id],
+      });
+      setData(response.data);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Error',
+        textBody: error.detail?.message || 'Failed to fetch data',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await request({
-          urlKey: 'get-pallet',
-          args: [organisation.id, warehouse.id, id],
-        });
-        setData(response.data);
-      } catch (error) {
-        Toast.show({
-          type: ALERT_TYPE.DANGER,
-          title: 'Error',
-          textBody: error.detail?.message || 'Failed to fetch data',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, [id, organisation.id, warehouse.id]);
 
   const onSubmitSetDamaged = async formData => {
-    console.log(formData);
+    request({
+      urlKey: 'set-pallet-not-picked',
+      method: 'patch',
+      data: formData,
+      args: [data.id],
+      onSuccess: response => {
+        fetchData();
+        setShowModalDamaged(false);
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'Updated pallet ' + data.reference,
+        });
+      },
+      onFailed: error => {
+        setShowModalDamaged(false);
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: 'Error',
+          textBody:
+            error.detail?.message ||
+            'Failed to update pallet ' + data.reference,
+        });
+      },
+    });
   };
 
 
-  /* const getFilteredActions = () => {  
-    if (data?.state === 'received') {
-      return  [
-        { id: 'booked-in', title: 'Booked in' },
-        { id: 'not-received', title: 'Not Received' },
-      ];
-    }
-  
-    if (data?.state === 'received') {
-      return [
-        { id: 'booking-in', title: 'Booking in' },
-      ];
-    }
+  const Menus = [
+    {id: 'move-pallet', title: 'Move Pallet'},
+    {id: 'set-damaged', title: 'Set Damaged', attributes: { destructive: true }},
+  ];
 
-    if (data?.state === 'booking-in') {
-      return [
-        { id: 'booked-in', title: 'Booked in' },
-      ];
+  const onPressMenu = event => {
+    switch (event.event) {
+      case 'move-pallet':
+        setShowModalMovePallet(true)
+        break;
+      case 'set-damaged':
+        setShowModalDamaged(true)
+        break;
+      default:
+        console.log('Unknown option selected');
     }
-  
-    return []; 
-  }; */
+  };
+
 
   useEffect(() => {
     navigation.setOptions({
-      title: data ? `Delivery ${data.reference}` : 'Delivery Details',
+      title: data ? `Pallet ${data.reference}` : 'Pallet Details',
       headerRight: () => (
         <View className="px-4">
-         {/*  <Menu
+          <Menu
             ref={menuRef}
             onPressAction={({ nativeEvent })=>onPressMenu(nativeEvent)}
             button={
@@ -112,8 +134,8 @@ const ShowPallet = ({navigation, route}) => {
                 <FontAwesomeIcon icon={faBars} />
               </TouchableOpacity>
             }
-            actions={getFilteredActions()}
-          /> */}
+            actions={Menus}
+          />
         </View>
       ),
     });
@@ -121,15 +143,30 @@ const ShowPallet = ({navigation, route}) => {
 
 
   const onSubmitSetLocation = formData => {
+    console.log(formData)
     request({
       method:'patch',
-      url: 'set-pallet-location',
-      args : [data.id],
-      data:{
-        location : formData.location
+      urlKey: 'set-pallet-location',
+      args : [data.id, formData.location ],
+      data:{},
+      onSuccess: response => {
+        fetchData();
+        setShowModalMovePallet(false)
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'success update pallet to ' + formData.location,
+        });
       },
-      onSuccess : (e) => console.log(e),
-      onFailed : (e) =>  console.log(e),
+      onFailed: error => {
+        console.log(error)
+        setShowModalMovePallet(false)
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: 'Error',
+          textBody: error.detail?.message || 'Failed to update data',
+        });
+      },
     })
   };
 
@@ -187,7 +224,7 @@ const ShowPallet = ({navigation, route}) => {
         />
       </Card>
 
-      <View className="py-4 gap-3">
+      {/* <View className="py-4 gap-3">
         <Button
           size="lg"
           action="secondary"
@@ -204,7 +241,7 @@ const ShowPallet = ({navigation, route}) => {
             <ButtonText style={{color: '#ef4444'}}>Set as Damaged</ButtonText>
           </View>
         </Button>
-      </View>
+      </View> */}
 
       <Modal
         isVisible={showModalDamaged}
@@ -233,6 +270,13 @@ const ShowPallet = ({navigation, route}) => {
                       <RadioIcon as={CircleIcon} />
                     </RadioIndicator>
                     <RadioLabel>Lost</RadioLabel>
+                  </Radio>
+
+                  <Radio value="other_incident">
+                    <RadioIndicator>
+                      <RadioIcon as={CircleIcon} />
+                    </RadioIndicator>
+                    <RadioLabel>Other</RadioLabel>
                   </Radio>
                 </View>
               </RadioGroup>

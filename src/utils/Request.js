@@ -108,7 +108,6 @@ const request = async ({
     let finalUrl = url || urlConfig[urlKey]?.url;
     if (!finalUrl) throw new Error(`Invalid URL key: ${urlKey}`);
     args.forEach((arg) => (finalUrl = finalUrl.replace('{}', arg)));
-
     const response = await api.request({
       method,
       url: finalUrl,
@@ -121,13 +120,13 @@ const request = async ({
     onBoth(true, response.data, extra)
     return response.data;
   } catch (error) {
+    console.log(error)
     const status = error.response?.status || 500;
     let errorMessage = ERROR_BY_STATUSES[status] || ERROR_BY_STATUSES.default;
 
     if (!useCustomErrorMessage && error.response?.data.message) {
       errorMessage = error.response.data;
     }
-
     const errorObj = { status, detail: errorMessage };
     onFailed(errorObj, extra);
     onBoth(false, errorObj, extra);

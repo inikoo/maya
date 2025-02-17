@@ -1,5 +1,11 @@
-import React, {forwardRef, useEffect, useState} from 'react';
-import {View, Text, FlatList, TouchableOpacity, RefreshControl} from 'react-native';
+import React, {forwardRef, useEffect, useState, useImperativeHandle } from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import {Spinner} from '@/src/components/ui/spinner';
 import request from '@/src/utils/Request';
 import globalStyles from '@/globalStyles';
@@ -7,6 +13,7 @@ import {SearchIcon} from '@/src/components/ui/icon';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {Button, ButtonText} from '@/src/components/ui/button';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Badge, BadgeText} from '@/src/components/ui/badge';
 import {
   Input,
   InputField,
@@ -22,6 +29,7 @@ const BaseList = forwardRef((props, ref) => {
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [isFetching, setIsFetching] = useState(true);
+  const [meta, setMeta] = useState();
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const insets = useSafeAreaInsets();
@@ -46,6 +54,8 @@ const BaseList = forwardRef((props, ref) => {
           } else {
             setData(response.data);
           }
+          setMeta(response.meta);
+          /* setLastPage(response.meta.last_page); */
         } else {
           if (response?.data?.message) {
             Toast.show({
@@ -69,18 +79,27 @@ const BaseList = forwardRef((props, ref) => {
 
   const fetchMoreData = (isLoadMore = false) => {
     if (isLoadMore) {
-      setPage(prevPage => prevPage + 1);
+      if (meta.last_page != page) setPage(prevPage => prevPage + 1);
     } else {
       setPage(1);
       getDataFromServer(false);
     }
   };
 
+
+
   const handleRefresh = () => {
     setIsRefreshing(true);
     fetchMoreData(false);
     setIsRefreshing(false);
   };
+
+  useImperativeHandle(ref, () => ({
+    handleRefresh,
+    showTotalResults,
+    data,
+    meta
+  }));
 
   useEffect(() => {
     getDataFromServer(page > 1, page);
@@ -96,9 +115,11 @@ const BaseList = forwardRef((props, ref) => {
   }, [searchQuery]);
 
   return (
-    <View style={{flex : 1}} contentContainerStyle={{paddingBottom: insets.bottom + 120}}>
-      <View className="py-3 flex-row items-center space-x-2 gap-3">
-        <Input variant="outline" size="md" className="flex-1">
+    <View
+      style={{flex: 1}}
+      contentContainerStyle={{paddingBottom: insets.bottom + props.height}}>
+      <View className="py-3">
+        <Input variant="outline" size="md" className="flex-row items-center">
           <InputField
             placeholder="Search..."
             value={searchQuery}
@@ -110,15 +131,13 @@ const BaseList = forwardRef((props, ref) => {
             <InputIcon as={SearchIcon} />
           </InputSlot>
         </Input>
-       {/*  {props.scannerScreen && (
-            <Button size="md" variant="solid" action="primary" onPress={() => props.navigation.navigate(props.scannerScreen)} activeOpacity={0.7}>
-              <FontAwesomeIcon icon={faBarcodeScan} color="#fff" />
-            </Button>
-        )} */}
+
+        {/* Badge untuk jumlah hasil */}
+        {props.showTotalResults(meta)}
       </View>
 
       {/* List Container */}
-      <View style={{flex: 1, marginBottom: 60 }}>
+      <View style={{flex: 1, marginBottom: 60}}>
         {isFetching ? (
           // Show Loading Indicator on First Fetch
           <View
@@ -127,30 +146,32 @@ const BaseList = forwardRef((props, ref) => {
           </View>
         ) : (
           <FlatList
-          data={data}
-          keyExtractor={(item, index) => item.slug + index}
-          showsVerticalScrollIndicator={false}
-          onEndReached={() => fetchMoreData(true)}
-          onEndReachedThreshold={1}
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
-          }
-          ListFooterComponent={
-            isLoadingMore ? (
-              <View style={{ paddingVertical: 10 }}>
-                <Spinner size="small" />
-              </View>
-            ) : null
-          }
-          renderItem={({ item }) =>
-            props.listItem ? (
-              props.listItem({ item: item, navigation: props.navigation })
-            ) : (
-              <GroupItem item={item} navigation={props.navigation} />
-            )
-          }
-        />
-        
+            data={data}
+            keyExtractor={(item, index) => item.slug + index}
+            showsVerticalScrollIndicator={false}
+            onEndReached={() => fetchMoreData(true)}
+            onEndReachedThreshold={1}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
+              />
+            }
+            ListFooterComponent={
+              isLoadingMore ? (
+                <View style={{paddingVertical: 10}}>
+                  <Spinner size="small" />
+                </View>
+              ) : null
+            }
+            renderItem={({item}) =>
+              props.listItem ? (
+                props.listItem({item: item, navigation: props.navigation})
+              ) : (
+                <GroupItem item={item} navigation={props.navigation} />
+              )
+            }
+          />
         )}
       </View>
     </View>
@@ -175,10 +196,23 @@ const GroupItem = ({item, navigation}) => {
   );
 };
 
+const showTotalResults = (meta) => {
+  return (
+    <View className="bg-indigo-500 px-4 py-1 mt-2 self-start">
+      <Text className="text-white font-semibold">
+        {meta?.total || 0} Results
+      </Text>
+    </View>
+  );
+};
+
 BaseList.defaultProps = {
   urlKey: '',
   args: [],
   params: {},
+  height : 120,
+  showTotalResults, // ✅ Now it's defined before being used
 };
+
 
 export default BaseList;

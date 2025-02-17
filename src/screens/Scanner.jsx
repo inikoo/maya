@@ -47,11 +47,12 @@ export default function Scanner({navigation}) {
   };
 
   const goToDetail = (response) => {
+    console.log(response.data)
     switch (response.data.model_type) {
-      case "Return":
+      case "PalletReturn":
         navigation.navigate("show-fulfilment-return", { id: response.data.model.id });
         break;
-      case "Delivery":
+      case "PalletDelivery":
         navigation.navigate("show-fulfilment-delivery", { id: response.data.model.id });
         break;
       case "Pallet":

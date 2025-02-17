@@ -60,7 +60,7 @@ const GroupItem = ({item, navigation}) => {
           {item?.state_icon && (
             <FontAwesomeIcon
               icon={item.state_icon.icon}
-              color={item.state_icon.color}
+             /*  color={item.state_icon.color} */
               size={item.state_icon.size || 24}
               style={{marginVertical: 3}}
             />
