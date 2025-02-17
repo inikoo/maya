@@ -11,6 +11,7 @@ import {AuthContext} from '@/src/components/Context/context';
 import Menu from '@/src/components/Menu';
 import PalletsInReturn from '@/src/screens/Return/PalletsInReturn';
 import ShowFulfilmentReturn from '@/src/screens/Return/ShowFulfilmentReturn';
+import ItemsInReturn from '@/src/screens/Return/ItemsInReturn';
 import request from '@/src/utils/Request';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
@@ -18,6 +19,7 @@ import {
   faPallet,
   faTachometerAlt,
   faBars,
+  faNarwhal
 } from '@/private/fa/pro-regular-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
@@ -111,6 +113,20 @@ const ReturnStackScreen = ({navigation, route}) => {
       ),
     },
     {
+      route: 'items-in-return',
+      label: 'SKUs',
+      icon: faNarwhal,
+      component: props => (
+        <ItemsInReturn
+          {...props}
+          navigation={navigation}
+          route={route}
+          handleRefresh={getDataFromServer}
+          onChangeState={onPressMenu}
+        />
+      ),
+    },
+    {
       route: 'return-showcase',
       label: 'Showcase',
       icon: faTachometerAlt,
@@ -125,6 +141,15 @@ const ReturnStackScreen = ({navigation, route}) => {
       ),
     },
   ];
+
+  const filteredTabOptions = () => {
+    if(dataReturn?.data?.type == 'pallet'){
+     return TabOptions.filter((tab)=> tab.route != 'items-in-return')
+    }else if(dataReturn?.data?.type == 'stored_item'){
+      return  TabOptions.filter((tab)=> tab.route != 'pallets-in-return' )
+    } else return TabOptions
+  }
+  
 
   useEffect(() => {
     getDataFromServer();
@@ -155,7 +180,7 @@ const ReturnStackScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       {dataReturn?.data ? (
-        <BottomTabs tabArr={TabOptions} />
+        <BottomTabs tabArr={filteredTabOptions()} />
       ) : (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size="large" color="#0000ff" />

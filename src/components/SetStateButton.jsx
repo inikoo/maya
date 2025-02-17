@@ -1,14 +1,14 @@
 import React from 'react';
-import {View} from 'react-native';
-import {Card} from '@/src/components/ui/card';
-import {Button, ButtonText} from '@/src/components/ui/button';
+import { View } from 'react-native';
+import { Card } from '@/src/components/ui/card';
+import { Button, ButtonText } from '@/src/components/ui/button';
 
 const SetStateButton = ({
   button1 = {
     size: 'md',
     variant: 'outline',
     action: 'primary',
-    style: {borderTopRightRadius: 0, borderBottomRightRadius: 0},
+    style: { borderTopRightRadius: 0, borderBottomRightRadius: 0 },
     onPress: null,
     text: 'Button 1',
   },
@@ -16,22 +16,26 @@ const SetStateButton = ({
     size: 'md',
     variant: 'outline',
     action: 'primary',
-    style: {borderTopLeftRadius: 0, borderBottomLeftRadius: 0},
+    style: { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 },
     onPress: null,
     text: 'Button 2',
   },
 }) => {
   return (
-    <Card className="p-4 border border-gray-300 rounded-lg shadow-md">
-      <View className="flex-row items-center justify-between">
-        {/* To Do Button */}
-        <Button {...button1} className="w-1/2">
-          <ButtonText>{button1.text}</ButtonText>
+    <Card className="p-5 border border-gray-200 rounded-xl shadow-lg bg-white">
+      <View className="flex-row items-center">
+        {/* Button 1 */}
+        <Button {...button1} className="w-1/2 min-h-12 rounded-l-lg border-r border-gray-300 justify-center items-center">
+          <ButtonText className="font-semibold text-center px-3 flex-wrap">
+            {button1.text}
+          </ButtonText>
         </Button>
 
-        {/* State Button */}
-        <Button {...button2} className="w-1/2">
-          <ButtonText>{button2.text}</ButtonText>
+        {/* Button 2 */}
+        <Button {...button2} className="w-1/2 min-h-12 rounded-r-lg justify-center items-center">
+          <ButtonText className="font-semibold text-center px-3 flex-wrap">
+            {button2.text}
+          </ButtonText>
         </Button>
       </View>
     </Card>

@@ -16,6 +16,9 @@ import {Input, InputField} from '@/src/components/ui/input';
 import Modal from '@/src/components/Modal';
 import request from '@/src/utils/Request';
 import {useDelivery} from '@/src/components/Context/delivery';
+import {getFilteredActionsDelivery} from '@/src/utils';
+import SetStateButton from '@/src/components/SetStateButton';
+import {Alert, AlertText} from '@/src/components/ui/alert';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
@@ -29,6 +32,7 @@ import {
   faWarehouseAlt,
   faPallet,
   faTimes,
+  faCheckCircle
 } from '@/private/fa/pro-light-svg-icons';
 import {
   faFileInvoiceDollar,
@@ -51,16 +55,44 @@ library.add(
   faFileInvoiceDollar,
 );
 
-const PalletInDeliveries = ({navigation, route}) => {
+const PalletInDeliveries = ({navigation, route, onChangeState}) => {
   const {organisation, warehouse} = useContext(AuthContext);
+  const {data} = useDelivery();
   const {id} = route.params;
 
   return (
     <View style={globalStyles.container}>
+      {data.state != 'booked_in' ? (
+        <SetStateButton
+          button1={{
+            size: 'md',
+            variant: 'outline',
+            action: 'primary',
+            style: {borderTopRightRadius: 0, borderBottomRightRadius: 0},
+            onPress: null,
+            text: `To do : 1 / ${data.number_pallets || 0}`,
+          }}
+          button2={{
+            size: 'md',
+            action: 'primary',
+            style: {borderTopLeftRadius: 0, borderBottomLeftRadius: 0},
+            onPress: () =>
+              onChangeState(getFilteredActionsDelivery(data.state).id),
+            text: 'Set to ' + getFilteredActionsDelivery(data.state).title,
+          }}
+        />
+      ) : (
+        <Alert action="success" variant="solid">
+          <FontAwesomeIcon icon={faCheckCircle} color="green" />
+          <AlertText>Already Booked In</AlertText>
+        </Alert>
+      )}
+
       <BaseList
         navigation={navigation}
         urlKey="get-pallets-delivery"
         args={[organisation.id, warehouse.id, id]}
+        height={80}
         listItem={({item, navigation}) => (
           <GroupItem item={item} navigation={navigation} />
         )}
@@ -86,11 +118,13 @@ const GroupItem = ({item: initialItem, navigation}) => {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (_, gestureState) => Math.abs(gestureState.dx) > 5,
       onPanResponderMove: (_, gestureState) => {
-        translateX.setValue(
-          Math.min(Math.max(gestureState.dx, -MAX_SWIPE), MAX_SWIPE),
-        );
+        if (Math.abs(gestureState.dx) > 100) {
+          translateX.setValue(
+            Math.min(Math.max(gestureState.dx, -MAX_SWIPE), MAX_SWIPE),
+          );
+        }
       },
       onPanResponderRelease: (_, gestureState) => {
         if (gestureState.dx > SWIPE_THRESHOLD) {
@@ -190,7 +224,7 @@ const GroupItem = ({item: initialItem, navigation}) => {
   const onSubmitSetLocation = formData => {
     request({
       method: 'patch',
-      urlKey: "set-delivery-pallet-location",
+      urlKey: 'set-delivery-pallet-location',
       args: [item.id, formData.location],
       data: formData,
       onSuccess: response => {
@@ -227,7 +261,7 @@ const GroupItem = ({item: initialItem, navigation}) => {
 
   return (
     <View style={{marginVertical: 5}}>
-      {data.state === "booking_in" && (
+      {data.state === 'booking_in' && (
         <>
           {item.state !== 'not_received' ? (
             <View
@@ -288,6 +322,7 @@ const GroupItem = ({item: initialItem, navigation}) => {
                   icon={item.state_icon.icon}
                   size={24}
                   style={{marginVertical: 3}}
+                  color={item.state_icon.color}
                 />
               )}
               {item?.type_icon && (
@@ -300,15 +335,21 @@ const GroupItem = ({item: initialItem, navigation}) => {
             </View>
 
             <View style={globalStyles.list.textContainer}>
-              <Text style={globalStyles.list.title}>
-                {item?.reference || 'No reference available'}
-              </Text>
+              <View className="flex-row justify-between">
+                <Text style={globalStyles.list.title}>
+                  {item?.customer_reference || 'N/A'}
+                </Text>
+                <Text style={globalStyles.list.title}>
+                  {item?.location_code || '-'}
+                </Text>
+              </View>
+
               <Text style={globalStyles.list.description}>
-                {item?.customer_reference || 'No customer reference available'}
+                {item?.reference}
               </Text>
             </View>
 
-            <View
+            {/* <View
               style={{
                 marginLeft: 10,
                 flexDirection: 'row',
@@ -323,7 +364,7 @@ const GroupItem = ({item: initialItem, navigation}) => {
               <Text style={{fontWeight: 'bold'}}>
                 {item?.location_code || '-'}
               </Text>
-            </View>
+            </View> */}
           </View>
         </TouchableOpacity>
       </Animated.View>

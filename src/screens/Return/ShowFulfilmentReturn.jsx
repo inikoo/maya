@@ -74,24 +74,21 @@ const ShowFulffilmentReturn = ({navigation, route, onChangeState}) => {
     {
       label: 'Type',
       value: (
-        <View className="flex-row gap-3 items-center">
+        <View className="flex-row items-center justify-center gap-2">
           <FontAwesomeIcon
             icon={data?.type_icon?.icon}
             color={data?.type_icon?.color}
           />
-          <Text>{data.type}</Text>
+          <Text className="text-center">{data.type}</Text>
         </View>
       ),
     },
     {
       label: 'State',
       value: (
-        <View className="flex-row gap-3 items-center">
-          <FontAwesomeIcon
-            icon={data?.state_icon?.icon}
-            color={data?.type_icon?.color}
-          />
-          <Text>{data.state_label}</Text>
+        <View className="flex-row items-center justify-center gap-2">
+          <FontAwesomeIcon icon={data?.state_icon?.icon} color={data?.type_icon?.color} />
+          <Text className="text-center">{data.state_label}</Text>
         </View>
       ),
     },

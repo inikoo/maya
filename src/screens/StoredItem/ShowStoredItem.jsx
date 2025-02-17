@@ -49,9 +49,9 @@ const ShowStoredItem = ({navigation, route}) => {
     {
         label: 'State',
         value: (
-          <View className="flex-row gap-3 items-center">
+     <View className="flex-row items-center justify-center gap-2">
             <FontAwesomeIcon icon={data?.state_icon?.icon ||  faCircle } color={data?.state_icon?.color} />
-            <Text>{data?.state}</Text>
+            <Text className="text-center">{data?.state}</Text>
           </View>
         ),
       },

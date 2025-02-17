@@ -1,13 +1,5 @@
-import React, {useContext, useEffect, useState, useRef} from 'react';
-import {
-  View,
-  ScrollView,
-  ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native';
-import {AuthContext} from '@/src/components/Context/context';
-import request from '@/src/utils/Request';
-import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import React, {useState} from 'react';
+import {View, ScrollView, TouchableOpacity} from 'react-native';
 import {Card} from '@/src/components/ui/card';
 import {Heading} from '@/src/components/ui/heading';
 import {Center} from '@/src/components/ui/center';
@@ -17,139 +9,19 @@ import globalStyles from '@/globalStyles';
 import Barcode from 'react-native-barcode-svg';
 import Timeline from 'react-native-timeline-flatlist';
 import Description from '@/src/components/Description';
-import Menu from '@/src/components/Menu';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import { useDelivery } from '@/src/components/Context/delivery';
+import {useDelivery} from '@/src/components/Context/delivery';
+import {getFilteredActionsDelivery} from '@/src/utils';
+import SetStateButton from '@/src/components/SetStateButton';
+import {Alert, AlertText} from '@/src/components/ui/alert';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faClock,
-  faCheckDouble,
-  faChevronDown,
-  faChevronUp,
-} from '@/private/fa/pro-light-svg-icons';
-import {faBars} from '@/private/fa/pro-regular-svg-icons';
+import {faChevronDown, faChevronUp,faCheckCircle} from '@/private/fa/pro-light-svg-icons';
 
-const ShowFulfilmentDelivery = ({navigation, route}) => {
-  const {organisation, warehouse} = useContext(AuthContext);
-  const { data, setData } = useDelivery();
-  const [loading, setLoading] = useState(true);
+const ShowFulfilmentDelivery = ({navigation, route, onChangeState}) => {
+  const {data} = useDelivery();
   const [isTimelineOpen, setIsTimelineOpen] = useState(false);
-  const {id} = route.params;
   const insets = useSafeAreaInsets();
-  const menuRef = useRef(null);
-
-  const setStatusDelivery = state => {
-    request({
-      urlKey: 'set-delivery-' + state,
-      method: 'patch',
-      args: [data.id],
-      data: {state: state},
-      onSuccess: response => {
-        fetchData();
-        Toast.show({
-          type: ALERT_TYPE.SUCCESS,
-          title: 'Success',
-          textBody: 'success update pallet to ' + state,
-        });
-      },
-      onFailed: error => {
-        Toast.show({
-          type: ALERT_TYPE.DANGER,
-          title: 'Error',
-          textBody: error.detail?.message || 'Failed to update data',
-        });
-      },
-    });
-  };
-
-  const fetchData = async () => {
-    try {
-      const response = await request({
-        urlKey: 'get-delivery',
-        args: [organisation.id, warehouse.id, id],
-      });
-      setData(response.data);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: 'Error',
-        textBody: error.detail?.message || 'Failed to fetch data',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const onPressMenu = event => {
-    switch (event.event) {
-      case 'received':
-        setStatusDelivery(event.event);
-        break;
-      case 'booking-in':
-        setStatusDelivery(event.event);
-        break;
-      case 'booked-in':
-        setStatusDelivery(event.event);
-        break;
-      case 'cancel':
-        console.log('Option 3 selected');
-        break;
-      default:
-        console.log('Unknown option selected');
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [id, organisation.id, warehouse.id]);
-
-  const getFilteredActions = () => {
-    if (data?.state === 'confirmed') {
-      return [
-        {id: 'received', title: 'Received'},
-        {id: 'cancel', title: 'Cancel', attributes: {destructive: true}},
-      ];
-    }
-
-    if (data?.state === 'received') {
-      return [{id: 'booking-in', title: 'Booking in'}];
-    }
-
-    if (data?.state === 'booking_in') {
-      return [{id: 'booked-in', title: 'Booked in'}];
-    }
-
-    return [];
-  };
-
-  useEffect(() => {
-    navigation.setOptions({
-      title: data ? `Delivery ${data.reference}` : 'Delivery Details',
-      headerRight: () => (
-        <View className="px-4">
-          <Menu
-            ref={menuRef}
-            onPressAction={({nativeEvent}) => onPressMenu(nativeEvent)}
-            button={
-              <TouchableOpacity onPress={() => menuRef?.current?.menu.show()}>
-                <FontAwesomeIcon icon={faBars} />
-              </TouchableOpacity>
-            }
-            actions={getFilteredActions()}
-          />
-        </View>
-      ),
-    });
-  }, [navigation, data]);
-
-  if (loading) {
-    return (
-      <View className="flex-1 items-center justify-center bg-gray-100">
-        <ActivityIndicator size="large" color="#3b82f6" />
-      </View>
-    );
-  }
 
   if (!data) {
     return (
@@ -210,12 +82,44 @@ const ShowFulfilmentDelivery = ({navigation, route}) => {
       value: data.public_notes,
     },
   ];
+console.log(data)
 
   return (
     <ScrollView
       style={globalStyles.container}
       contentContainerStyle={{paddingBottom: insets.bottom + 120}}>
-      <Card>
+      {data.state != "Booked-in" ? (
+        <SetStateButton
+          button1={{
+            size: 'md',
+            variant: 'outline',
+            action: 'primary',
+            style: {borderTopRightRadius: 0, borderBottomRightRadius: 0},
+            onPress: null,
+            text: `To do : 1 / ${data.number_pallets || 0}`,
+          }}
+          button2={{
+            size: 'md',
+            action: 'primary',
+            style: {borderTopLeftRadius: 0, borderBottomLeftRadius: 0},
+            onPress: () =>
+              onChangeState(getFilteredActionsDelivery(data.state).id),
+            text: 'Set to ' + getFilteredActionsDelivery(data.state).title,
+          }}
+        />
+      ) : (
+        <Alert action="success" variant="solid">
+          <FontAwesomeIcon icon={faCheckCircle} color="green" />
+          <AlertText>Already Booked In</AlertText>
+        </Alert>
+      )}
+
+      <Card className="mt-4">
+        <Heading>Delivery Details</Heading>
+        <Description schema={schema} />
+      </Card>
+
+      <Card className="mt-4">
         <Center>
           <Barcode
             value={data.reference}
@@ -227,11 +131,6 @@ const ShowFulfilmentDelivery = ({navigation, route}) => {
         <Center>
           <Heading>{data.reference}</Heading>
         </Center>
-      </Card>
-
-      <Card className="mt-4">
-        <Heading>Delivery Details</Heading>
-        <Description schema={schema} />
       </Card>
 
       <Card className={`mt-4 p-2 ${!isTimelineOpen ? 'bg-indigo-300' : ''}`}>

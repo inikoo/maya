@@ -95,11 +95,13 @@ const GroupItem = ({item: initialItem, navigation}) => {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (_, gestureState) => Math.abs(gestureState.dx) > 5,
       onPanResponderMove: (_, gestureState) => {
-        translateX.setValue(
-          Math.min(Math.max(gestureState.dx, -MAX_SWIPE), MAX_SWIPE),
-        );
+        if (Math.abs(gestureState.dx) > 100) {
+          translateX.setValue(
+            Math.min(Math.max(gestureState.dx, -MAX_SWIPE), MAX_SWIPE),
+          );
+        }
       },
       onPanResponderRelease: (_, gestureState) => {
         if (gestureState.dx > SWIPE_THRESHOLD) {
@@ -121,6 +123,7 @@ const GroupItem = ({item: initialItem, navigation}) => {
       },
     }),
   ).current;
+  
 
   const onSubmitSetLocation = formData => {
     request({
@@ -183,6 +186,7 @@ const GroupItem = ({item: initialItem, navigation}) => {
 
       <Animated.View
         {...panResponder.panHandlers}
+        pointerEvents="box-none"
         style={[
           {
             transform: [{translateX}],
@@ -195,13 +199,15 @@ const GroupItem = ({item: initialItem, navigation}) => {
         ]}>
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => navigation?.navigate('show-pallet', {id: item.id})}>
+          pointerEvents="auto"
+          onPress={() => navigation.navigate('show-pallet', {id: item.id})}>
           <View style={globalStyles.list.container}>
             <View style={globalStyles.list.avatarContainer}>
               {item?.state_icon && (
                 <FontAwesomeIcon
                   icon={item.state_icon.icon}
                   size={24}
+                  color={item.state_icon.color}
                   style={{marginVertical: 3}}
                 />
               )}

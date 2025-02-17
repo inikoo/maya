@@ -213,9 +213,9 @@ const ShowPallet = ({navigation, route}) => {
             {
               label: 'Status',
               value: (
-                <View className="flex-row gap-3 items-center">
+               <View className="flex-row items-center justify-center gap-2">
                   <FontAwesomeIcon icon={data.status_icon.icon} />
-                  <Text>{data.status}</Text>
+                  <Text className="text-center">{data.status}</Text>
                 </View>
               ),
             },

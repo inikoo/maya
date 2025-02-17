@@ -135,11 +135,13 @@ const GroupItem = ({item: initialItem, navigation}) => {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (_, gestureState) => Math.abs(gestureState.dx) > 5,
       onPanResponderMove: (_, gestureState) => {
-        translateX.setValue(
-          Math.min(Math.max(gestureState.dx, -MAX_SWIPE), MAX_SWIPE),
-        );
+        if (Math.abs(gestureState.dx) > 100) {
+          translateX.setValue(
+            Math.min(Math.max(gestureState.dx, -MAX_SWIPE), MAX_SWIPE),
+          );
+        }
       },
       onPanResponderRelease: (_, gestureState) => {
         if (gestureState.dx > SWIPE_THRESHOLD) {
@@ -161,7 +163,7 @@ const GroupItem = ({item: initialItem, navigation}) => {
       },
     }),
   ).current;
-
+  
   const onPicked = () => {
     request({
       urlKey: 'set-pallet-picked',
@@ -354,6 +356,7 @@ const GroupItem = ({item: initialItem, navigation}) => {
                   icon={item.state_icon.icon}
                   size={24}
                   style={{marginVertical: 3}}
+                  color={item.state_icon.color}
                 />
               )}
               {item?.type_icon && (
