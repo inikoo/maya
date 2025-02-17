@@ -90,7 +90,7 @@ const ShowStoredItem = ({navigation, route}) => {
       {/* Header */}
       <Card className="bg-indigo-600 p-6 rounded-xl shadow-lg mb-5">
         <Heading className="text-white text-2xl font-bold">
-          Delivery Note: {data.reference || 'N/A'}
+          {data.reference || 'N/A'}
         </Heading>
         <Text className="text-white text-lg font-semibold">
           Status: {data.state.toUpperCase()}

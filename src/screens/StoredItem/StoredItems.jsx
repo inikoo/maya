@@ -18,6 +18,7 @@ import {
   faNarwhal,
   faSortSizeUp,
   faTruck,
+  faInventory
 } from '@/private/fa/pro-light-svg-icons';
 library.add(
   faSeedling,
@@ -30,7 +31,10 @@ library.add(
   faNarwhal,
   faSortSizeUp,
   faTruck,
+  faInventory
 );
+
+
 
 const StoredItems = ({navigation}) => {
   const {organisation, warehouse} = useContext(AuthContext);

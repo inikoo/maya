@@ -41,4 +41,12 @@ const DeliveryStackScreen = ({navigation, route}) => {
   );
 };
 
+const renderStackScreen = ({navigation, route}) => {
+  return (
+    <DeliveryProvider>
+      <DeliveryStackScreen navigation={navigation} route={route} />
+    </DeliveryProvider>
+  );
+};
+
 export default DeliveryStackScreen;
