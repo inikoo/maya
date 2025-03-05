@@ -23,7 +23,7 @@ export default {
 	'get-stored-items' :  { url: "maya/org/{}/warehouses/{}/inventory/stored-items" },
 	'get-stored-item' :  { url: "maya/org/{}/warehouses/{}/inventory/stored-items/{}" },
 
-	//scanner
+	//scanner   
 	'get-scanner' : { url: "maya/org/{}/warehouses/{}/scanners/{}" },
 
 	//deliveries
